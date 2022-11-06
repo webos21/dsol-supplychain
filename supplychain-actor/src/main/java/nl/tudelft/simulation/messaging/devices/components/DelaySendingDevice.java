@@ -2,6 +2,7 @@ package nl.tudelft.simulation.messaging.devices.components;
 
 import java.io.Serializable;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
@@ -24,7 +25,7 @@ public class DelaySendingDevice extends SendingDevice
     private static final long serialVersionUID = 12L;
 
     /** the simulator to schedule on */
-    protected DEVSSimulatorInterface.TimeDoubleUnit simulator = null;
+    protected DEVSSimulatorInterface<Duration> simulator = null;
 
     /** the delay of the sender */
     protected DistContinuousDuration delay = null;
@@ -36,7 +37,7 @@ public class DelaySendingDevice extends SendingDevice
      * @param simulator the simulator
      * @param delay the delay
      */
-    public DelaySendingDevice(final String name, final DeviceType deviceType, final DEVSSimulatorInterface.TimeDoubleUnit simulator,
+    public DelaySendingDevice(final String name, final DeviceType deviceType, final DEVSSimulatorInterface<Duration> simulator,
             final DistContinuousDuration delay)
     {
         super(name, deviceType);
@@ -54,7 +55,7 @@ public class DelaySendingDevice extends SendingDevice
      * @param delay the delay
      */
     public DelaySendingDevice(final String name, final DeviceType deviceType, final int transmissionDelay,
-            final double transmissionFrequency, final DEVSSimulatorInterface.TimeDoubleUnit simulator,
+            final double transmissionFrequency, final DEVSSimulatorInterface<Duration> simulator,
             final DistContinuousDuration delay)
     {
         super(name, deviceType, transmissionDelay, transmissionFrequency);

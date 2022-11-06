@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventProducer;
 import org.pmw.tinylog.Logger;
@@ -38,14 +39,14 @@ public abstract class InternalActor extends EventProducer implements InternalAct
     protected String name;
 
     /** the simulator to schedule on */
-    protected DEVSSimulatorInterface.TimeDoubleUnit simulator;
+    protected DEVSSimulatorInterface<Duration> simulator;
 
     /**
      * Constructs a new Actor
      * @param name the name of the actor
      * @param simulator the simulator to use
      */
-    public InternalActor(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator)
+    public InternalActor(final String name, final DEVSSimulatorInterface<Duration> simulator)
     {
         super();
         this.name = name;
@@ -157,25 +158,16 @@ public abstract class InternalActor extends EventProducer implements InternalAct
 
     /** {@inheritDoc} */
     @Override
-    public DEVSSimulatorInterface.TimeDoubleUnit getSimulator()
+    public DEVSSimulatorInterface<Duration> getSimulator()
     {
         return this.simulator;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Time getSimulatorTime()
+    public Duration getSimulatorTime()
     {
-        Time time = Time.ZERO;
-        try
-        {
-            time = this.simulator.getSimulatorTime();
-        }
-        catch (Exception e)
-        {
-            Logger.warn(e, "getSimulatorTime");
-        }
-        return time;
+            return this.simulator.getSimulatorTime();
     }
 
     /** {@inheritDoc} */

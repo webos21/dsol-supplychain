@@ -2,6 +2,7 @@ package nl.tudelft.simulation.actor;
 
 import java.io.Serializable;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.content.HandlerInterface;
@@ -35,14 +36,14 @@ public interface InternalActorInterface extends HandlerInterface, Serializable
      * Get the simulator on which this actor schedules. This getSimulator method does <i>not </i> throw a RemoteException.
      * @return Returns the simulator.
      */
-    DEVSSimulatorInterface.TimeDoubleUnit getSimulator();
+    DEVSSimulatorInterface<Duration> getSimulator();
 
     /**
      * Get the time of the simulator on which this actor schedules. This getSimulatorTime method does <i>not</i> throw a
      * RemoteException.
      * @return Returns the simulator time.
      */
-    Time getSimulatorTime();
+    Duration getSimulatorTime();
     
     
     /**

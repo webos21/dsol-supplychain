@@ -3,7 +3,8 @@ package nl.tudelft.simulation.actor;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.vecmath.Point3d;
+import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.draw.point.Point2d;
 
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 
@@ -31,7 +32,7 @@ public abstract class ActorGroup extends Actor
      * @param simulator the simulator to schedule on
      * @param position the position of the actor
      */
-    public ActorGroup(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position)
+    public ActorGroup(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point2d position)
     {
         super(name, simulator, position);
     }

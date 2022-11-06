@@ -1,6 +1,7 @@
 package nl.tudelft.simulation.messaging.devices.reference;
 
 import org.djunits.unit.DurationUnit;
+import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.DistTriangular;
@@ -30,7 +31,7 @@ public class WebApplication extends SendingReceivingDevice
      * @param name the name of the email application
      * @param simulator the simulator to use
      */
-    public WebApplication(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator)
+    public WebApplication(final String name, final DEVSSimulatorInterface<Duration> simulator)
     {
         super(name, new ReceivingDevice(name + "-R", DeviceType.NETWORK, new MessageQueue(new FiFo())),
                 new DelaySendingDevice(name + "-S", DeviceType.NETWORK, simulator,

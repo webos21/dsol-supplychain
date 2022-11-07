@@ -36,7 +36,7 @@ public class Phone extends SendingReceivingDevice
         super(name, new ReceivingDevice(name + "-R", DeviceType.PHONE, new MessageQueue(new FiFo())),
                 new DelaySendingDevice(name + "-S", DeviceType.PHONE, simulator,
                         new DistContinuousDuration(
-                                new DistTriangular(simulator.getReplication().getStream("default"), 5.0, 10.0, 15.0),
+                                new DistTriangular(simulator.getModel().getStream("default"), 5.0, 10.0, 15.0),
                                 DurationUnit.MINUTE)));
     }
 }

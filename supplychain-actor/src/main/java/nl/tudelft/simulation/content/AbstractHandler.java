@@ -30,7 +30,7 @@ public abstract class AbstractHandler implements HandlerInterface
     {
         super();
         this.owner = owner;
-        this.stream = owner.getSimulator().getReplication().getStream("default");
+        this.stream = owner.getSimulator().getModel().getStream("default");
     }
 
     /**

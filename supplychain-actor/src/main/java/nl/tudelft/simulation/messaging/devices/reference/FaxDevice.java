@@ -36,7 +36,7 @@ public class FaxDevice extends SendingReceivingDevice
         super(name, new ReceivingDevice(name + "-R", DeviceType.EMAIL, new MessageQueue(new FiFo())),
                 new DelaySendingDevice(name + "-S", DeviceType.EMAIL, simulator,
                         new DistContinuousDuration(
-                                new DistTriangular(simulator.getReplication().getStream("default"), 10.0, 20.0, 60.0),
+                                new DistTriangular(simulator.getModel().getStream("default"), 10.0, 20.0, 60.0),
                                 DurationUnit.SECOND)));
     }
 }

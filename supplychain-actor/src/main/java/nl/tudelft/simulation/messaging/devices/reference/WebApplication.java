@@ -36,7 +36,7 @@ public class WebApplication extends SendingReceivingDevice
         super(name, new ReceivingDevice(name + "-R", DeviceType.NETWORK, new MessageQueue(new FiFo())),
                 new DelaySendingDevice(name + "-S", DeviceType.NETWORK, simulator,
                         new DistContinuousDuration(
-                                new DistTriangular(simulator.getReplication().getStream("default"), 1.0, 2.0, 5.0),
+                                new DistTriangular(simulator.getModel().getStream("default"), 1.0, 2.0, 5.0),
                                 DurationUnit.SECOND)));
     }
 }

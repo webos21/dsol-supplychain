@@ -36,7 +36,7 @@ public class EmailApplication extends SendingReceivingDevice
         super(name, new ReceivingDevice(name + "-R", DeviceType.EMAIL, new MessageQueue(new FiFo())),
                 new DelaySendingDevice(name + "-S", DeviceType.EMAIL, simulator,
                         new DistContinuousDuration(
-                                new DistTriangular(simulator.getReplication().getStream("default"), 1.0, 5.0, 15.0),
+                                new DistTriangular(simulator.getModel().getStream("default"), 1.0, 5.0, 15.0),
                                 DurationUnit.SECOND)));
     }
 }

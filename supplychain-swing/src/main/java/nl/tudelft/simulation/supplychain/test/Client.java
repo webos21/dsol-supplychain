@@ -73,7 +73,7 @@ public class Client extends Customer
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public Client(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position,
+    public Client(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
         final Bank bank, final Money initialBankAccount, final Product product, final Retailer retailer,
         final ContentStoreInterface contentStore) throws RemoteException, NamingException
     {
@@ -94,7 +94,7 @@ public class Client extends Customer
      */
     public void init() throws RemoteException
     {
-        StreamInterface stream = this.simulator.getReplication().getStream("default");
+        StreamInterface stream = this.simulator.getModel().getStream("default");
         Duration hour = new Duration(1.0, DurationUnit.HOUR);
         //
         // give the actor a fax device which is checked every hour

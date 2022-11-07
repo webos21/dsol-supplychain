@@ -40,7 +40,7 @@ public class BankPlot extends XYChart
      * @param title
      * @param bankAccount
      */
-    public BankPlot(DEVSSimulatorInterface.TimeDoubleUnit simulator, String title, BankAccount bankAccount)
+    public BankPlot(DEVSSimulatorInterface<Duration> simulator, String title, BankAccount bankAccount)
     {
         super(simulator, title);
         BalanceListener balanceListener = new BalanceListener(simulator, bankAccount);
@@ -71,7 +71,7 @@ public class BankPlot extends XYChart
         private static final long serialVersionUID = 1L;
 
         /** the simulator to get the time for the TimedEvent. */
-        private final DEVSSimulatorInterface.TimeDoubleUnit simulator;
+        private final DEVSSimulatorInterface<Duration> simulator;
 
         /** An event to indicate stock levels changed */
         static final EventType BALANCE_CHANGE_EVENT = new EventType("BALANCE_CHANGE_EVENT");
@@ -80,7 +80,7 @@ public class BankPlot extends XYChart
          * @param simulator
          * @param bankAccount
          */
-        public BalanceListener(DEVSSimulatorInterface.TimeDoubleUnit simulator, BankAccount bankAccount)
+        public BalanceListener(DEVSSimulatorInterface<Duration> simulator, BankAccount bankAccount)
         {
             super();
             this.simulator = simulator;

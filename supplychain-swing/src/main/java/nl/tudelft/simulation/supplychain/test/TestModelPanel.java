@@ -27,7 +27,7 @@ public class TestModelPanel extends DSOLPanel<Time, Duration, SimTimeDoubleUnit>
      * @param model
      * @param simulator
      */
-    public TestModelPanel(TestModel model, DEVSSimulatorInterface.TimeDoubleUnit simulator)
+    public TestModelPanel(TestModel model, DEVSSimulatorInterface<Duration> simulator)
     {
         super(model, simulator);
         addTabs(model);
@@ -43,7 +43,7 @@ public class TestModelPanel extends DSOLPanel<Time, Duration, SimTimeDoubleUnit>
         super.tabbedPane.addTab("statistics", charts);
         super.tabbedPane.setSelectedIndex(1);
 
-        DEVSSimulatorInterface.TimeDoubleUnit devsSimulator = (DEVSSimulatorInterface.TimeDoubleUnit) this.simulator;
+        DEVSSimulatorInterface<Duration> devsSimulator = (DEVSSimulatorInterface<Duration>) this.simulator;
 
         BankPlot fb = new BankPlot(devsSimulator, "Factory Bank balance", model.factory.getBankAccount());
         charts.setCell(fb.getSwingPanel(), 0, 0);

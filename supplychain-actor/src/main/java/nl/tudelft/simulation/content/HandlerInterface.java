@@ -19,5 +19,4 @@ public interface HandlerInterface extends Serializable
      */
     boolean handleContent(Serializable content);
 
-
 }

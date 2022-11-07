@@ -83,7 +83,7 @@ public class HandleMessagesTimeDelay implements MessageHandlerInterface
             messageQueue.remove(message);
             try
             {
-                this.simulator.scheduleEventRel(this.handlingTime.draw(), this, this, "check", new Object[] { messageQueue });
+                this.simulator.scheduleEventRel(this.handlingTime.draw(), this, this, "check", new Object[] {messageQueue});
                 return;
             }
             catch (Exception e)

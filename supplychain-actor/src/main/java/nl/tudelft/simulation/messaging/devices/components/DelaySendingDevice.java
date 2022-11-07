@@ -70,7 +70,7 @@ public class DelaySendingDevice extends SendingDevice
         ReceivingDeviceInterface receiver = message.getReceiver().getReceivingDevices(this.getDeviceType())[0];
         try
         {
-            this.simulator.scheduleEventRel(this.delay.draw(), this, receiver, "receive", new Serializable[] { message });
+            this.simulator.scheduleEventRel(this.delay.draw(), this, receiver, "receive", new Serializable[] {message});
         }
         catch (Exception exception)
         {

@@ -34,9 +34,7 @@ public class FaxDevice extends SendingReceivingDevice
     public FaxDevice(final String name, final DEVSSimulatorInterface<Duration> simulator)
     {
         super(name, new ReceivingDevice(name + "-R", DeviceType.EMAIL, new MessageQueue(new FiFo())),
-                new DelaySendingDevice(name + "-S", DeviceType.EMAIL, simulator,
-                        new DistContinuousDuration(
-                                new DistTriangular(simulator.getModel().getStream("default"), 10.0, 20.0, 60.0),
-                                DurationUnit.SECOND)));
+                new DelaySendingDevice(name + "-S", DeviceType.EMAIL, simulator, new DistContinuousDuration(
+                        new DistTriangular(simulator.getModel().getStream("default"), 10.0, 20.0, 60.0), DurationUnit.SECOND)));
     }
 }

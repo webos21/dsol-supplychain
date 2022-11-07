@@ -112,6 +112,5 @@ public abstract class AbstractDevice extends EventProducer implements DeviceInte
     {
         return getName();
     }
-    
-    
+
 }

@@ -23,7 +23,7 @@ import nl.tudelft.simulation.messaging.Message;
  * the actor is informed of the fact that there is a waiting message. All this is implemented through the event mechanism. <br>
  * <br>
  * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
+ * for project information <a href="https://www.simulation.tudelft.nl/" target= "_blank">www.simulation.tudelft.nl</a>. The
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
@@ -165,9 +165,9 @@ public abstract class InternalActor extends EventProducer implements InternalAct
 
     /** {@inheritDoc} */
     @Override
-    public Duration getSimulatorTime()
+    public Time getSimulatorTime()
     {
-            return this.simulator.getSimulatorTime();
+        return Time.instantiateSI(this.simulator.getSimulatorTime().si);
     }
 
     /** {@inheritDoc} */

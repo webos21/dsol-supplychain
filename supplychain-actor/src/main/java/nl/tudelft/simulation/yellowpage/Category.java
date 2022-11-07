@@ -20,7 +20,7 @@ public class Category implements Serializable
 
     /** the description of the category */
     private final String description;
-    
+
     /** a quick-and-dirty default category for simple models. */
     public static Category DEFAULT = new Category("Default");
 

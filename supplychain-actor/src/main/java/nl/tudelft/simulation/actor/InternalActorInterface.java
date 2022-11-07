@@ -43,9 +43,8 @@ public interface InternalActorInterface extends HandlerInterface, Serializable
      * RemoteException.
      * @return Returns the simulator time.
      */
-    Duration getSimulatorTime();
-    
-    
+    Time getSimulatorTime();
+
     /**
      * Handle the content of the message.
      * @param content the content to be handled, can be of any type

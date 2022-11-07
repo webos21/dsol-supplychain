@@ -251,7 +251,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
 
     /** {@inheritDoc} */
     @Override
-    public boolean changeFutureOrderedAmount(Product product, double delta, Time time)
+    public boolean changeFutureOrderedAmount(final Product product, final double delta, final Time time)
     {
         if (time.lt(this.owner.getSimulatorTime()))
         {
@@ -371,6 +371,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
      * Method sendStockUpdateEvent.
      * @param product the product for which the stock is updated
      */
+    @Override
     public void sendStockUpdateEvent(final Product product)
     {
         StockRecord stockRecord = this.stockRecords.get(product);

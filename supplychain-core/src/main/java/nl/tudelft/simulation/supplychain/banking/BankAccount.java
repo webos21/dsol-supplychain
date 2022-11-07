@@ -36,7 +36,7 @@ public class BankAccount extends EventProducer
     private Bank bank;
 
     /** the simulator for the interest rate */
-    private DEVSSimulatorInterface.TimeDoubleUnit simulator;
+    private DEVSSimulatorInterface<Duration> simulator;
 
     /** the balance of the actor */
     private Money balance;

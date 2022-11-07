@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.roles;
 
+import org.djunits.value.vdouble.scalar.Duration;
+
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.Bill;
@@ -44,7 +46,7 @@ public class BuyingRole extends Role implements BuyingRoleInterface
      * @param shipmentHandler the shipment handler
      * @param billHandler the bill handler
      */
-    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface.TimeDoubleUnit simulator,
+    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
             final InternalDemandPolicy internalDemandHandler, final OrderConfirmationPolicy orderConfirmationHandler,
             final ShipmentPolicy shipmentHandler, final BillPolicy billHandler)
     {
@@ -64,7 +66,7 @@ public class BuyingRole extends Role implements BuyingRoleInterface
      * @param shipmentHandler the shipment handler
      * @param billHandler the bill handler
      */
-    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface.TimeDoubleUnit simulator,
+    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
             final InternalDemandPolicyOrder internalDemandHandler, final OrderConfirmationPolicy orderConfirmationHandler,
             final ShipmentPolicy shipmentHandler, final BillPolicy billHandler)
     {
@@ -85,7 +87,7 @@ public class BuyingRole extends Role implements BuyingRoleInterface
      * @param shipmentHandler the shipment handler
      * @param billHandler the bill handler
      */
-    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface.TimeDoubleUnit simulator,
+    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
             final InternalDemandPolicyRFQ internalDemandHandler, final QuotePolicy quoteHandler,
             final OrderConfirmationPolicy orderConfirmationHandler, final ShipmentPolicy shipmentHandler,
             final BillPolicy billHandler)
@@ -109,7 +111,7 @@ public class BuyingRole extends Role implements BuyingRoleInterface
      * @param shipmentHandler the shipment handler
      * @param billHandler the bill handler
      */
-    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface.TimeDoubleUnit simulator,
+    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
             final InternalDemandPolicyYP internalDemandHandler, final YellowPageAnswerPolicy ypAnswerHandler,
             final QuotePolicy quoteHandler, final OrderConfirmationPolicy orderConfirmationHandler,
             final ShipmentPolicy shipmentHandler, final BillPolicy billHandler)

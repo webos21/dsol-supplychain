@@ -30,7 +30,7 @@ public class StockRecord implements Serializable
     private StockKeepingActor owner = null;
 
     /** the simulator to schedule the depriciation */
-    private DEVSSimulatorInterface.TimeDoubleUnit simulator = null;
+    private DEVSSimulatorInterface<Duration> simulator = null;
 
     /** the product for which to keep information */
     private Product product;
@@ -55,7 +55,7 @@ public class StockRecord implements Serializable
      * @param simulator the simulator
      * @param product the product
      */
-    public StockRecord(final StockKeepingActor owner, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Product product)
+    public StockRecord(final StockKeepingActor owner, final DEVSSimulatorInterface<Duration> simulator, final Product product)
     {
         super();
         this.owner = owner;

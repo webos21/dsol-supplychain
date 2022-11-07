@@ -38,7 +38,7 @@ public class LeanContentStore extends ContentStore
     private static final long serialVersionUID = 12L;
 
     /** the simulator to schedule time-out events */
-    protected DEVSSimulatorInterface.TimeDoubleUnit simulator;
+    protected DEVSSimulatorInterface<Duration> simulator;
 
     /** the map of unanswered content */
     private Map<Serializable, Content> unansweredContentMap = Collections.synchronizedMap(new LinkedHashMap<Serializable, Content>());
@@ -46,7 +46,7 @@ public class LeanContentStore extends ContentStore
     /**
      * @param simulator the simulator
      */
-    public LeanContentStore(final DEVSSimulatorInterface.TimeDoubleUnit simulator)
+    public LeanContentStore(final DEVSSimulatorInterface<Duration> simulator)
     {
         super();
         this.simulator = simulator;

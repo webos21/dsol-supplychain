@@ -2,6 +2,8 @@ package nl.tudelft.simulation.supplychain.roles;
 
 import java.io.Serializable;
 
+import org.djunits.value.vdouble.scalar.Duration;
+
 import nl.tudelft.simulation.actor.InternalActor;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
@@ -44,12 +46,12 @@ public abstract class Role extends InternalActor
      * @param name the role name
      * @param simulator the simulator to schedule on
      */
-    public Role(final SupplyChainActor owner, final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator)
+    public Role(final SupplyChainActor owner, final String name, final DEVSSimulatorInterface<Duration> simulator)
     {
         super(name, simulator);
         this.owner = owner;
         this.simulator = simulator;
-        this.stream = this.simulator.getReplication().getStream("default");
+        this.stream = this.simulator.getModel().getStream("default");
         
         // register the role with the owner
         owner.addRole(this);

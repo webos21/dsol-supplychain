@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.vecmath.Point3d;
+import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.capabilities.ProducerInterface;
@@ -52,7 +53,7 @@ public class Manufacturer extends DistributionCenter implements ProducerInterfac
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public Manufacturer(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position,
+    public Manufacturer(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), contentStore);
@@ -66,7 +67,7 @@ public class Manufacturer extends DistributionCenter implements ProducerInterfac
      * @param initialBankAccount the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public Manufacturer(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position,
+    public Manufacturer(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
             final Bank bank, final Money initialBankAccount, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);

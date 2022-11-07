@@ -1,6 +1,7 @@
 package nl.tudelft.simulation.supplychain.reference;
 
-import javax.vecmath.Point3d;
+import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.supplychain.banking.Bank;
@@ -28,8 +29,8 @@ public class YellowPage extends SupplyChainYellowPage
      * @param bank
      * @param contentStore
      */
-    public YellowPage(String name, DEVSSimulatorInterface.TimeDoubleUnit simulator, Point3d position, Bank bank,
-            ContentStoreInterface contentStore)
+    public YellowPage(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position, final Bank bank,
+            final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
     }
@@ -42,8 +43,8 @@ public class YellowPage extends SupplyChainYellowPage
      * @param initialBankBalance
      * @param contentStore
      */
-    public YellowPage(String name, DEVSSimulatorInterface.TimeDoubleUnit simulator, Point3d position, Bank bank,
-            Money initialBankBalance, ContentStoreInterface contentStore)
+    public YellowPage(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position, final Bank bank,
+            final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankBalance, contentStore);
     }

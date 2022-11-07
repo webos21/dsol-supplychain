@@ -3,9 +3,8 @@ package nl.tudelft.simulation.supplychain.policy.quote;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import javax.vecmath.Point3d;
-
 import org.djunits.value.vdouble.scalar.Time;
+import org.djutils.draw.point.Point3d;
 import org.djutils.exceptions.Throw;
 import org.pmw.tinylog.Logger;
 

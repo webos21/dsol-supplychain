@@ -11,10 +11,10 @@ import java.util.TreeMap;
 import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
+import org.djutils.draw.point.Point3d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.language.d3.DirectedPoint;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.Content;
 import nl.tudelft.simulation.supplychain.content.YellowPageAnswer;
@@ -96,7 +96,7 @@ public class YellowPageRequestPolicy extends SupplyChainHandler
      * @return a map of suppliers, sorted on distance
      */
     private SortedMap<Length, SupplyChainActor> pruneDistance(final Set<SupplyChainActor> supplierSet, final Length maxDistance,
-            final DirectedPoint location)
+            final Point3d location)
     {
         SortedMap<Length, SupplyChainActor> sortedSuppliers = new TreeMap<>();
         Iterator<SupplyChainActor> i = supplierSet.iterator();

@@ -1,6 +1,7 @@
 package nl.tudelft.simulation.supplychain.banking;
 
-import javax.vecmath.Point3d;
+import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.Actor;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
@@ -29,7 +30,7 @@ public class Bank extends Actor
      * @param simulator the simulator
      * @param position the position
      */
-    public Bank(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position)
+    public Bank(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position)
     {
         super(name, simulator, position);
     }

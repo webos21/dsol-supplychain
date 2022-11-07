@@ -2,6 +2,7 @@ package nl.tudelft.simulation.supplychain.messaging.product;
 
 import java.io.Serializable;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
@@ -28,7 +29,7 @@ public class ProductSender extends SendingDevice
     private final DistContinuousDuration delayDist;
 
     /** simulator. */
-    private final DEVSSimulatorInterface.TimeDoubleUnit simulator;
+    private final DEVSSimulatorInterface<Duration> simulator;
 
     /**
      * Constructs a new EmailApplication.
@@ -36,7 +37,7 @@ public class ProductSender extends SendingDevice
      * @param simulator the simulator to use
      * @param delayDist the delay to send
      */
-    public ProductSender(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator,
+    public ProductSender(final String name, final DEVSSimulatorInterface<Duration> simulator,
             final DistContinuousDuration delayDist)
     {
         super(name, DeviceType.OTHER);

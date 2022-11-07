@@ -26,7 +26,7 @@ public abstract class RestockingPolicy implements Serializable
     private static final long serialVersionUID = 12L;
 
     /** the simulator on which to schedule */
-    protected DEVSSimulatorInterface.TimeDoubleUnit simulator;
+    protected DEVSSimulatorInterface<Duration> simulator;
 
     /** the stock for which the policy holds */
     protected StockInterface stock;

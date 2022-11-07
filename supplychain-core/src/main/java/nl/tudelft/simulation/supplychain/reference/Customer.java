@@ -2,7 +2,8 @@ package nl.tudelft.simulation.supplychain.reference;
 
 import java.io.Serializable;
 
-import javax.vecmath.Point3d;
+import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
@@ -41,7 +42,7 @@ public class Customer extends SupplyChainActor implements BuyerInterface
      * @param initialBankAccount the initial bank account
      * @param contentStore the contentStore for the messages
      */
-    public Customer(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position,
+    public Customer(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
             final Bank bank, final Money initialBankAccount, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);
@@ -54,7 +55,7 @@ public class Customer extends SupplyChainActor implements BuyerInterface
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public Customer(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position,
+    public Customer(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);

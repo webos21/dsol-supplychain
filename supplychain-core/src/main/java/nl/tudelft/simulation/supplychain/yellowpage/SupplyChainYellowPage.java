@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.vecmath.Point3d;
+import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.ActorInterface;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
@@ -45,8 +46,8 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
      * @param bank
      * @param contentStore
      */
-    public SupplyChainYellowPage(String name, DEVSSimulatorInterface.TimeDoubleUnit simulator, Point3d position, Bank bank,
-            ContentStoreInterface contentStore)
+    public SupplyChainYellowPage(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position, final Bank bank,
+            final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
         this.yp = new nl.tudelft.simulation.yellowpage.YellowPage();
@@ -60,8 +61,8 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
      * @param initialBankBalance
      * @param contentStore
      */
-    public SupplyChainYellowPage(String name, DEVSSimulatorInterface.TimeDoubleUnit simulator, Point3d position, Bank bank,
-            Money initialBankBalance, ContentStoreInterface contentStore)
+    public SupplyChainYellowPage(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position, final Bank bank,
+            final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankBalance, contentStore);
         this.yp = new nl.tudelft.simulation.yellowpage.YellowPage();
@@ -113,28 +114,28 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(String regex)
+    public List<ActorInterface> findActor(final String regex)
     {
         return this.yp.findActor(regex);
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(String regex, Category category)
+    public List<ActorInterface> findActor(final String regex, final Category category)
     {
         return this.yp.findActor(regex, category);
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(Category category)
+    public List<ActorInterface> findActor(final Category category)
     {
         return this.yp.findActor(category);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean register(ActorInterface actor, Category category)
+    public boolean register(final ActorInterface actor, final Category category)
     {
         return this.yp.register(actor, category);
     }

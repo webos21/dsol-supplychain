@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.vecmath.Point3d;
-
 import org.djunits.unit.DurationUnit;
 import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
+import org.djutils.draw.point.Point3d;
 import org.djutils.event.EventType;
 import org.pmw.tinylog.Logger;
 
@@ -69,7 +68,7 @@ public abstract class SupplyChainActor extends Actor
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public SupplyChainActor(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position,
+    public SupplyChainActor(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position);
@@ -87,7 +86,7 @@ public abstract class SupplyChainActor extends Actor
      * @param initialBankBalance the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public SupplyChainActor(final String name, final DEVSSimulatorInterface.TimeDoubleUnit simulator, final Point3d position,
+    public SupplyChainActor(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
             final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, contentStore);
@@ -271,9 +270,9 @@ public abstract class SupplyChainActor extends Actor
     /**
      * @return the simulator without throwing an exception
      */
-    public DEVSSimulatorInterface.TimeDoubleUnit getDEVSSimulator()
+    public DEVSSimulatorInterface<Duration> getDEVSSimulator()
     {
-        DEVSSimulatorInterface.TimeDoubleUnit _simulator = null;
+        DEVSSimulatorInterface<Duration> _simulator = null;
         try
         {
             _simulator = super.getSimulator();

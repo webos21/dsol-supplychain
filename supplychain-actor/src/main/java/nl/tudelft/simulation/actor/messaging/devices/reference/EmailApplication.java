@@ -1,17 +1,17 @@
-package nl.tudelft.simulation.messaging.devices.reference;
+package nl.tudelft.simulation.actor.messaging.devices.reference;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 
+import nl.tudelft.simulation.actor.messaging.comparators.FiFo;
+import nl.tudelft.simulation.actor.messaging.devices.components.DelaySendingDevice;
+import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDevice;
+import nl.tudelft.simulation.actor.messaging.devices.components.SendingReceivingDevice;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueue;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.DistTriangular;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.messaging.comparators.FiFo;
-import nl.tudelft.simulation.messaging.devices.components.DelaySendingDevice;
-import nl.tudelft.simulation.messaging.devices.components.ReceivingDevice;
-import nl.tudelft.simulation.messaging.devices.components.SendingReceivingDevice;
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
-import nl.tudelft.simulation.messaging.queues.MessageQueue;
 
 /**
  * A reference implementation of an email application. <br>

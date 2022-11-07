@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.content;
+package nl.tudelft.simulation.actor.content;
 
 import java.io.Serializable;
 

@@ -1,6 +1,6 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
 
 /**
  * Abstract implementation of a sending device. The send method still needs to be implemented. <br>

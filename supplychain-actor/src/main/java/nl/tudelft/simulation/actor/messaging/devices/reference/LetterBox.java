@@ -1,9 +1,9 @@
-package nl.tudelft.simulation.messaging.devices.reference;
+package nl.tudelft.simulation.actor.messaging.devices.reference;
 
-import nl.tudelft.simulation.messaging.comparators.FiFo;
-import nl.tudelft.simulation.messaging.devices.components.ReceivingDevice;
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
-import nl.tudelft.simulation.messaging.queues.MessageQueue;
+import nl.tudelft.simulation.actor.messaging.comparators.FiFo;
+import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDevice;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueue;
 
 /**
  * A reference implementation of receiving regular mail. <br>

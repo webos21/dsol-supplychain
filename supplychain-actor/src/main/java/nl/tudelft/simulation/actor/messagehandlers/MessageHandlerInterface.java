@@ -2,7 +2,7 @@ package nl.tudelft.simulation.actor.messagehandlers;
 
 import java.io.Serializable;
 
-import nl.tudelft.simulation.messaging.queues.MessageQueueInterface;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueueInterface;
 
 /**
  * A MessageHandler that implements the MessageHandlerInterface should be able to take a MessageQueue from a device, and take

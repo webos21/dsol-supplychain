@@ -9,12 +9,12 @@ import java.util.TreeSet;
 
 import org.djunits.value.vdouble.scalar.Duration;
 
+import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.Content;
 import nl.tudelft.simulation.supplychain.content.Quote;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
-import nl.tudelft.simulation.unit.dist.DistConstantDuration;
 
 /**
  * The abstract QuoteHandler can be extended into several ways how to deal with Quotes. One is the QuoteHandlerAll that waits

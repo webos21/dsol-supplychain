@@ -7,6 +7,7 @@ import java.util.Map;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.InternalDemand;
@@ -15,7 +16,6 @@ import nl.tudelft.simulation.supplychain.content.OrderStandAlone;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
-import nl.tudelft.simulation.unit.dist.DistConstantDuration;
 
 /**
  * The InternalDemandHandlerOrder is a simple implementation of the business logic to handle a request for new products through

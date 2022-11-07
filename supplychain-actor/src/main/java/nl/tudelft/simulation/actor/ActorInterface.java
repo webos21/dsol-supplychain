@@ -1,9 +1,9 @@
 package nl.tudelft.simulation.actor;
 
+import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDeviceInterface;
+import nl.tudelft.simulation.actor.messaging.devices.components.SendingDeviceInterface;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
 import nl.tudelft.simulation.dsol.animation.Locatable;
-import nl.tudelft.simulation.messaging.devices.components.ReceivingDeviceInterface;
-import nl.tudelft.simulation.messaging.devices.components.SendingDeviceInterface;
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
 
 /**
  * ActorInterface defines the necessary methods for the 'communicating simulation object' aka actor. <br>
@@ -20,7 +20,7 @@ public interface ActorInterface extends InternalActorInterface, Locatable
      * @param deviceType the devices to search for
      * @return the devices with the given DeviceType
      */
-    SendingDeviceInterface[] getSendingDevices(final DeviceType deviceType);
+    SendingDeviceInterface[] getSendingDevices(DeviceType deviceType);
 
     /**
      * Retrieve all sending devices of the actor.
@@ -33,7 +33,7 @@ public interface ActorInterface extends InternalActorInterface, Locatable
      * @param deviceType the devices to search for
      * @return the devices with the given DeviceType
      */
-    ReceivingDeviceInterface[] getReceivingDevices(final DeviceType deviceType);
+    ReceivingDeviceInterface[] getReceivingDevices(DeviceType deviceType);
 
     /**
      * Retrieve all receiving devices of the actor.

@@ -1,10 +1,10 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 
-import nl.tudelft.simulation.messaging.Message;
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
-import nl.tudelft.simulation.messaging.queues.MessageQueueInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueueInterface;
 
 /**
  * Standard implementation of a receiving device. <br>

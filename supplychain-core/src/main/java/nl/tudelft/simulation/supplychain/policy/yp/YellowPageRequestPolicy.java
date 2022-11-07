@@ -14,6 +14,7 @@ import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.point.Point3d;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.Content;
@@ -21,7 +22,6 @@ import nl.tudelft.simulation.supplychain.content.YellowPageAnswer;
 import nl.tudelft.simulation.supplychain.content.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
 import nl.tudelft.simulation.supplychain.yellowpage.SupplyChainYellowPage;
-import nl.tudelft.simulation.unit.dist.DistConstantDuration;
 
 /**
  * The YellowPageRequestHandler implements the business logic for a yellow page actor who receives a YellowPageRequest and has

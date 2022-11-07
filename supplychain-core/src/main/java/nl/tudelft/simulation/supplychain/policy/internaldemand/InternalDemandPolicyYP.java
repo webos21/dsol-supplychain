@@ -5,12 +5,12 @@ import java.io.Serializable;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 
+import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.InternalDemand;
 import nl.tudelft.simulation.supplychain.content.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
-import nl.tudelft.simulation.unit.dist.DistConstantDuration;
 
 /**
  * The InternalDemandHandlerYP is a simple implementation of the business logic to handle a request for new products through a

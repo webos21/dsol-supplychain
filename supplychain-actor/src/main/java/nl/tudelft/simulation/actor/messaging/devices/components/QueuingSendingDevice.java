@@ -1,12 +1,12 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 
 import org.djutils.event.EventType;
 
-import nl.tudelft.simulation.messaging.Message;
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
-import nl.tudelft.simulation.messaging.queues.MessageQueueInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueueInterface;
 
 /**
  * Models a sending device with a queue of messages. The queue can be implemented as FiFo, LiFo, priority, or any other queuing

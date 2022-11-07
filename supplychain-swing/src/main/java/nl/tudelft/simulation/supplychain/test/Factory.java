@@ -11,12 +11,13 @@ import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
+import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
+import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.language.d3.BoundingBox;
-import nl.tudelft.simulation.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
@@ -31,7 +32,6 @@ import nl.tudelft.simulation.supplychain.reference.Supplier;
 import nl.tudelft.simulation.supplychain.roles.SellingRole;
 import nl.tudelft.simulation.supplychain.stock.Stock;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
-import nl.tudelft.simulation.unit.dist.DistConstantDuration;
 
 /**
  * The ComputerShop named Factory. <br>

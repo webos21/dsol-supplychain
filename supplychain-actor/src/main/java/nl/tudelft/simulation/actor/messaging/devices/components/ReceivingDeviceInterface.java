@@ -1,11 +1,11 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 
 import org.djutils.event.EventType;
 
-import nl.tudelft.simulation.messaging.Message;
-import nl.tudelft.simulation.messaging.queues.MessageQueueInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueueInterface;
 
 /**
  * The ReceivingDeviceInterface, which extends the standard functionality of a device by adding a method to receive a message,

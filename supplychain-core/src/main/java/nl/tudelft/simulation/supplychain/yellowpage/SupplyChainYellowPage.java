@@ -11,6 +11,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.ActorInterface;
+import nl.tudelft.simulation.actor.yellowpage.Category;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.capabilities.YPInterface;
@@ -18,7 +19,6 @@ import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.yellowpage.Category;
 
 /**
  * YellowPage.java. <br>
@@ -34,7 +34,7 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
     private static final long serialVersionUID = 1L;
 
     /** the wrapped YP from the actor package. */
-    private nl.tudelft.simulation.yellowpage.YellowPage yp;
+    private nl.tudelft.simulation.actor.yellowpage.YellowPage yp;
 
     /** the dictionary of product-actor combinations */
     private Map<Product, HashSet<SupplyChainActor>> dictionary = new LinkedHashMap<>();
@@ -50,7 +50,7 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
             final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
-        this.yp = new nl.tudelft.simulation.yellowpage.YellowPage();
+        this.yp = new nl.tudelft.simulation.actor.yellowpage.YellowPage();
     }
 
     /**
@@ -65,7 +65,7 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
             final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankBalance, contentStore);
-        this.yp = new nl.tudelft.simulation.yellowpage.YellowPage();
+        this.yp = new nl.tudelft.simulation.actor.yellowpage.YellowPage();
     }
 
     /**

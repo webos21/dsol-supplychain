@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.yellowpage;
+package nl.tudelft.simulation.actor.yellowpage;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

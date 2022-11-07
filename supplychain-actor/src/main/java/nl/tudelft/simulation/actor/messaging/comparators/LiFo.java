@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.messaging.comparators;
+package nl.tudelft.simulation.actor.messaging.comparators;
 
 import java.util.Comparator;
 

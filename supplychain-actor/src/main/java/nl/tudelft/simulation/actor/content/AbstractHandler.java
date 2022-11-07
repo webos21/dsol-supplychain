@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.content;
+package nl.tudelft.simulation.actor.content;
 
 import nl.tudelft.simulation.actor.ActorInterface;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;

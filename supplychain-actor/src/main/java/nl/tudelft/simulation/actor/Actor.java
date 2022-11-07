@@ -10,17 +10,16 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.draw.bounds.Bounds2d;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.Point3d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
+import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDeviceInterface;
+import nl.tudelft.simulation.actor.messaging.devices.components.SendingDeviceInterface;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.messaging.devices.components.ReceivingDeviceInterface;
-import nl.tudelft.simulation.messaging.devices.components.SendingDeviceInterface;
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
 
 /**
  * The actor is the basic entity in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'
@@ -36,23 +35,24 @@ import nl.tudelft.simulation.messaging.devices.types.DeviceType;
  */
 public abstract class Actor extends InternalActor implements ActorInterface
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the sending devices */
-    protected Set<SendingDeviceInterface> sendingDevices;
+    /** the sending devices. */
+    private final  Set<SendingDeviceInterface> sendingDevices;
 
-    /** the receiving devices with their messageHandler */
-    protected Map<ReceivingDeviceInterface, MessageHandlerInterface> receivingDevices;
+    /** the receiving devices with their messageHandler. */
+    private final Map<ReceivingDeviceInterface, MessageHandlerInterface> receivingDevices;
 
-    /** the location of the actor */
-    protected Point3d location;
+    /** the location of the actor. */
+    private final Point3d location;
 
-    /** the description of the location of an actor */
-    protected String locationDescription = "";
+    /** the description of the location of an actor. */
+    @SuppressWarnings("checkstyle:visibilitymodifier")
+    private String locationDescription = "";
 
     /**
-     * Constructs a new Actor
+     * Constructs a new Actor.
      * @param name the name of the actor
      * @param simulator the simulator to use
      * @param position the location of the actor
@@ -66,7 +66,7 @@ public abstract class Actor extends InternalActor implements ActorInterface
     }
 
     /**
-     * adds a sending device to the actor
+     * add a sending device to the actor.
      * @param device device
      * @return success or not
      */
@@ -179,9 +179,9 @@ public abstract class Actor extends InternalActor implements ActorInterface
     }
 
     /**
-     * removes a device to the actor
+     * remove a device from the actor.
      * @param device device
-     * @return succes
+     * @return success
      */
     public boolean removeSendingDevice(final SendingDeviceInterface device)
     {
@@ -189,7 +189,7 @@ public abstract class Actor extends InternalActor implements ActorInterface
     }
 
     /**
-     * removed a device to the actor
+     * remove a device from the actor.
      * @param device device
      */
     public void removeReceivingDevice(final ReceivingDeviceInterface device)

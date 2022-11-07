@@ -1,10 +1,10 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 
 import org.djutils.event.EventProducer;
 
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
 
 /**
  * An abstract Device that can be extended to a sending device, a receiving device, or a device that combines sending and

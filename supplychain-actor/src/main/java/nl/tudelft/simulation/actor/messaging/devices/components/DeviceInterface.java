@@ -1,11 +1,11 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 
 import org.djutils.event.EventProducerInterface;
 import org.djutils.event.EventType;
 
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
 
 /**
  * A DeviceInterface <br>

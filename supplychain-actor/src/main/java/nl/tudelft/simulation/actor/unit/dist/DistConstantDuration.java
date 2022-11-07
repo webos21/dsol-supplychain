@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.unit.dist;
+package nl.tudelft.simulation.actor.unit.dist;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;

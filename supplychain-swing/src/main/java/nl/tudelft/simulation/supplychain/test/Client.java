@@ -11,6 +11,8 @@ import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
+import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
+import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
@@ -20,7 +22,6 @@ import nl.tudelft.simulation.jstats.distributions.DistExponential;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.language.d3.BoundingBox;
-import nl.tudelft.simulation.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
@@ -40,7 +41,6 @@ import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Customer;
 import nl.tudelft.simulation.supplychain.reference.Retailer;
 import nl.tudelft.simulation.supplychain.roles.BuyingRole;
-import nl.tudelft.simulation.unit.dist.DistConstantDuration;
 
 /**
  * Customer. <br>

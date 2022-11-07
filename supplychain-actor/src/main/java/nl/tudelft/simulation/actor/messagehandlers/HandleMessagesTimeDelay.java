@@ -4,10 +4,10 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.ActorInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueueInterface;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.messaging.Message;
-import nl.tudelft.simulation.messaging.queues.MessageQueueInterface;
 
 /**
  * The MessageHandlerTimeDelay takes messages one by one and only looks at the next message after a certain time delay. A busy

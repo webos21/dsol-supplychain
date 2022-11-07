@@ -1,8 +1,8 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 
-import nl.tudelft.simulation.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.Message;
 
 /**
  * The SendingDeviceInterface, which extends the normal DeviceInterface with a 'send' method. <br>

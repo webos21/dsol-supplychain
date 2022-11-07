@@ -1,8 +1,8 @@
 package nl.tudelft.simulation.actor.messagehandlers;
 
 import nl.tudelft.simulation.actor.ActorInterface;
-import nl.tudelft.simulation.messaging.Message;
-import nl.tudelft.simulation.messaging.queues.MessageQueueInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueueInterface;
 
 /**
  * The HandleAllMessage class takes out all messages in the MessageQueue at once and handles them right away. <br>

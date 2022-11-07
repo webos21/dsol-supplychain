@@ -5,12 +5,12 @@ import java.io.Serializable;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.actor.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDeviceInterface;
+import nl.tudelft.simulation.actor.messaging.devices.components.SendingDevice;
+import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.messaging.Message;
-import nl.tudelft.simulation.messaging.devices.components.ReceivingDeviceInterface;
-import nl.tudelft.simulation.messaging.devices.components.SendingDevice;
-import nl.tudelft.simulation.messaging.devices.types.DeviceType;
 
 /**
  * A reference implementation of a product sender (e.g., a crossdock or a warehouse). <br>

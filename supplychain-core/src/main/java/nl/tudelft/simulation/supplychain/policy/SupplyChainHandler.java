@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.content.AbstractHandler;
+import nl.tudelft.simulation.actor.content.AbstractHandler;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.Content;
 import nl.tudelft.simulation.supplychain.content.InternalDemand;

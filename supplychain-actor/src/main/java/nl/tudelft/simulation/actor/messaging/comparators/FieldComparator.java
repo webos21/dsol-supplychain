@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.messaging.comparators;
+package nl.tudelft.simulation.actor.messaging.comparators;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 import org.djutils.reflection.ClassUtil;
 
-import nl.tudelft.simulation.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.Message;
 
 /**
  * A FieldComparator <br>

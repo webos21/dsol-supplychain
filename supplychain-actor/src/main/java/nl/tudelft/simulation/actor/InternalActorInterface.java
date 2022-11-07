@@ -5,9 +5,9 @@ import java.io.Serializable;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.content.HandlerInterface;
+import nl.tudelft.simulation.actor.content.HandlerInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
-import nl.tudelft.simulation.messaging.Message;
 
 /**
  * InternalActorInterface defines the necessary methods for handling a message. <br>
@@ -30,7 +30,7 @@ public interface InternalActorInterface extends HandlerInterface, Serializable
      * @param message the message to be handled
      * @return a boolean acknowledgement
      */
-    boolean handleMessage(final Message message);
+    boolean handleMessage(Message message);
 
     /**
      * Get the simulator on which this actor schedules. This getSimulator method does <i>not </i> throw a RemoteException.
@@ -51,5 +51,5 @@ public interface InternalActorInterface extends HandlerInterface, Serializable
      * @param logWarnings indicate whether to log warnings or not when handling fails
      * @return a boolean acknowledgement; true or false
      */
-    public boolean handleContent(final Serializable content, final boolean logWarnings);
+    boolean handleContent(Serializable content, boolean logWarnings);
 }

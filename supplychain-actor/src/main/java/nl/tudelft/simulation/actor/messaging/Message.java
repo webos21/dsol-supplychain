@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.messaging;
+package nl.tudelft.simulation.actor.messaging;
 
 import java.io.Serializable;
 

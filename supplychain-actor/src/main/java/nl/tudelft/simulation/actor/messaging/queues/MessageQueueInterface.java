@@ -1,8 +1,8 @@
-package nl.tudelft.simulation.messaging.queues;
+package nl.tudelft.simulation.actor.messaging.queues;
 
 import java.io.Serializable;
 
-import nl.tudelft.simulation.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.Message;
 
 /**
  * The MessageQueueInterface gives the possibility to store and retrieve messages, according to different types of sorting

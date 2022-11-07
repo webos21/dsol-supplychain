@@ -16,11 +16,11 @@ import org.djutils.event.EventType;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.Actor;
-import nl.tudelft.simulation.content.HandlerInterface;
+import nl.tudelft.simulation.actor.content.HandlerInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.devices.components.SendingDeviceInterface;
+import nl.tudelft.simulation.actor.messaging.devices.components.SendingReceivingDevice;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
-import nl.tudelft.simulation.messaging.Message;
-import nl.tudelft.simulation.messaging.devices.components.SendingDeviceInterface;
-import nl.tudelft.simulation.messaging.devices.components.SendingReceivingDevice;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.banking.FixedCost;

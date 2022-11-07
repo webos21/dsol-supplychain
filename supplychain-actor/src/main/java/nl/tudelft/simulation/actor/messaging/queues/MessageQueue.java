@@ -1,10 +1,10 @@
-package nl.tudelft.simulation.messaging.queues;
+package nl.tudelft.simulation.actor.messaging.queues;
 
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import nl.tudelft.simulation.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.Message;
 
 /**
  * The MessageQueue sorts messages on priority, and within the same priority on the moment the messages entered the queue.<br>

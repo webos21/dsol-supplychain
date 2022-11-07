@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.messaging.devices.components;
+package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -7,8 +7,8 @@ import org.djutils.event.EventInterface;
 import org.djutils.event.EventListenerInterface;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.messaging.Message;
-import nl.tudelft.simulation.messaging.queues.MessageQueueInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
+import nl.tudelft.simulation.actor.messaging.queues.MessageQueueInterface;
 
 /**
  * A SendingReceivingDevice combines the sending device and receiving device in one aggregated object. <br>

@@ -11,9 +11,9 @@ import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventProducer;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.content.HandlerInterface;
+import nl.tudelft.simulation.actor.content.HandlerInterface;
+import nl.tudelft.simulation.actor.messaging.Message;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
-import nl.tudelft.simulation.messaging.Message;
 
 /**
  * The actor is the basic entity in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'

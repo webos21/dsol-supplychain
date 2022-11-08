@@ -34,7 +34,7 @@ import nl.tudelft.simulation.supplychain.product.Unit;
  *         "http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh
  *         Zohoori</a>
  */
-public class ATOModel extends AbstractDSOLModel.TimeDoubleUnit<DEVSSimulatorInterface<Duration>>
+public class ATOModel extends AbstractDSOLModel.TimeDoubleUnit<SCSimulatorInterface>
 {
     /** */
     private static final long serialVersionUID = 1L;
@@ -46,7 +46,7 @@ public class ATOModel extends AbstractDSOLModel.TimeDoubleUnit<DEVSSimulatorInte
      * construct new ATOModel
      * @param simulator the simulator
      */
-    public ATOModel(final DEVSSimulatorInterface<Duration> simulator)
+    public ATOModel(final SCSimulatorInterface simulator)
     {
         super(simulator);
         // We don't do anything to prevent state-based replications.

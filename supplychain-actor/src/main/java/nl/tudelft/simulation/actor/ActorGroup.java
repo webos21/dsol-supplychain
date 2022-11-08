@@ -3,10 +3,9 @@ package nl.tudelft.simulation.actor;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.point.Point3d;
 
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 
 /**
  * An ActorGroup is a group of actors that acts like a normal Actor object, but which can also act on behalf of the <i>group</i>
@@ -32,7 +31,7 @@ public abstract class ActorGroup extends Actor
      * @param simulator the simulator to schedule on
      * @param position the position of the actor
      */
-    public ActorGroup(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position)
+    public ActorGroup(final String name, final SCSimulatorInterface simulator, final Point3d position)
     {
         super(name, simulator, position);
     }

@@ -31,7 +31,7 @@ public class SCSimulationPanel extends JPanel
     private static final long serialVersionUID = 20150617L;
 
     /** The simulator. */
-    private final DEVSSimulatorInterface<Duration> simulator;
+    private final SCSimulatorInterface simulator;
 
     /** The console to log messages. */
     private final Console console = new Console();
@@ -57,7 +57,7 @@ public class SCSimulationPanel extends JPanel
      * @param wrappableAnimation the builder and rebuilder of the simulation, based on properties.
      * @throws RemoteException when communications to a remote machine fails
      */
-    public SCSimulationPanel(final DEVSSimulatorInterface<Duration> simulator, final WrappableAnimation wrappableAnimation)
+    public SCSimulationPanel(final SCSimulatorInterface simulator, final WrappableAnimation wrappableAnimation)
             throws RemoteException
     {
 
@@ -95,7 +95,7 @@ public class SCSimulationPanel extends JPanel
     /**
      * @return simulator.
      */
-    public final DEVSSimulatorInterface<Duration> getSimulator()
+    public final SCSimulatorInterface getSimulator()
     {
         return this.simulator;
     }

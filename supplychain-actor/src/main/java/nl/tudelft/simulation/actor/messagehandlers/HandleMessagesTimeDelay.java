@@ -1,12 +1,11 @@
 package nl.tudelft.simulation.actor.messagehandlers;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.ActorInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messaging.Message;
 import nl.tudelft.simulation.actor.messaging.queues.MessageQueueInterface;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 
 /**
@@ -28,7 +27,7 @@ public class HandleMessagesTimeDelay implements MessageHandlerInterface
     private ActorInterface owner;
 
     /** the simulator to schedule on */
-    private DEVSSimulatorInterface<Duration> simulator;
+    private SCSimulatorInterface simulator;
 
     /** the time distribution for handling the message */
     private DistContinuousDuration handlingTime;
@@ -43,7 +42,7 @@ public class HandleMessagesTimeDelay implements MessageHandlerInterface
      * @param simulator to schedule on
      * @param handlingTime distribution for handling the message
      */
-    public HandleMessagesTimeDelay(final ActorInterface owner, final DEVSSimulatorInterface<Duration> simulator,
+    public HandleMessagesTimeDelay(final ActorInterface owner, final SCSimulatorInterface simulator,
             final DistContinuousDuration handlingTime)
     {
         super();

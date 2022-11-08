@@ -29,7 +29,7 @@ public class DistributionCenter extends Retailer
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public DistributionCenter(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public DistributionCenter(final String name, final SCSimulatorInterface simulator, final Point3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), contentStore);
@@ -43,7 +43,7 @@ public class DistributionCenter extends Retailer
      * @param initialBankAccount the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public DistributionCenter(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public DistributionCenter(final String name, final SCSimulatorInterface simulator, final Point3d position,
             final Bank bank, final Money initialBankAccount, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);

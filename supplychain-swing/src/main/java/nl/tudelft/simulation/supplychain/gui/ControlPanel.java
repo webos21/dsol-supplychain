@@ -80,7 +80,7 @@ public class ControlPanel extends JPanel
     private static final long serialVersionUID = 20150617L;
 
     /** The simulator. */
-    private DEVSSimulatorInterface<Duration> simulator;
+    private SCSimulatorInterface simulator;
 
     /** The WrappableAnimation (needed for restart operation). */
     private final WrappableAnimation wrappableAnimation;
@@ -115,7 +115,7 @@ public class ControlPanel extends JPanel
      * @param wrappableAnimation WrappableAnimation; if non-null, the restart button should work
      * @throws RemoteException when simulator cannot be accessed for listener attachment
      */
-    public ControlPanel(final DEVSSimulatorInterface<Duration> simulator, final WrappableAnimation wrappableAnimation)
+    public ControlPanel(final SCSimulatorInterface simulator, final WrappableAnimation wrappableAnimation)
             throws RemoteException
     {
         this.simulator = simulator;

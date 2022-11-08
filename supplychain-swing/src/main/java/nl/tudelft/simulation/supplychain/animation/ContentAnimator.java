@@ -22,13 +22,13 @@ import nl.tudelft.simulation.supplychain.content.Content;
 public class ContentAnimator implements EventListenerInterface
 {
     /** the simulator. */
-    private final DEVSSimulatorInterface<Duration> simulator;
+    private final SCSimulatorInterface simulator;
 
     /**
      * Create an animator for the moving content that listens to the SupplyChainActor.SEND_CONTENT_EVENT
      * @param simulator the simulator
      */
-    public ContentAnimator(final DEVSSimulatorInterface<Duration> simulator)
+    public ContentAnimator(final SCSimulatorInterface simulator)
     {
         this.simulator = simulator;
     }
@@ -59,7 +59,7 @@ public class ContentAnimator implements EventListenerInterface
     /**
      * @return the simulator
      */
-    public DEVSSimulatorInterface<Duration> getSimulator()
+    public SCSimulatorInterface getSimulator()
     {
         return this.simulator;
     }

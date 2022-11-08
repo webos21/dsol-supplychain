@@ -14,11 +14,11 @@ import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.Point3d;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDeviceInterface;
 import nl.tudelft.simulation.actor.messaging.devices.components.SendingDeviceInterface;
 import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 
 /**
@@ -39,7 +39,7 @@ public abstract class Actor extends InternalActor implements ActorInterface
     private static final long serialVersionUID = 12L;
 
     /** the sending devices. */
-    private final  Set<SendingDeviceInterface> sendingDevices;
+    private final Set<SendingDeviceInterface> sendingDevices;
 
     /** the receiving devices with their messageHandler. */
     private final Map<ReceivingDeviceInterface, MessageHandlerInterface> receivingDevices;
@@ -57,7 +57,7 @@ public abstract class Actor extends InternalActor implements ActorInterface
      * @param simulator the simulator to use
      * @param position the location of the actor
      */
-    public Actor(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position)
+    public Actor(final String name, final SCSimulatorInterface simulator, final Point3d position)
     {
         super(name, simulator);
         this.sendingDevices = new LinkedHashSet<>();

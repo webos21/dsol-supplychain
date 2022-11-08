@@ -29,7 +29,7 @@ public class ProductSender extends SendingDevice
     private final DistContinuousDuration delayDist;
 
     /** simulator. */
-    private final DEVSSimulatorInterface<Duration> simulator;
+    private final SCSimulatorInterface simulator;
 
     /**
      * Constructs a new EmailApplication.
@@ -37,7 +37,7 @@ public class ProductSender extends SendingDevice
      * @param simulator the simulator to use
      * @param delayDist the delay to send
      */
-    public ProductSender(final String name, final DEVSSimulatorInterface<Duration> simulator,
+    public ProductSender(final String name, final SCSimulatorInterface simulator,
             final DistContinuousDuration delayDist)
     {
         super(name, DeviceType.OTHER);

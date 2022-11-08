@@ -48,7 +48,7 @@ public class StockPlot extends XYChart
      * @param product
      */
     @SuppressWarnings("static-access")
-    public StockPlot(DEVSSimulatorInterface<Duration> simulator, String title, StockInterface stock, Product product)
+    public StockPlot(SCSimulatorInterface simulator, String title, StockInterface stock, Product product)
     {
         super(simulator, title);
         StockListener stockListener = new StockListener(simulator, stock, product);
@@ -88,7 +88,7 @@ public class StockPlot extends XYChart
         private final Product product;
 
         /** the simulator to get the time for the TimedEvent. */
-        private final DEVSSimulatorInterface<Duration> simulator;
+        private final SCSimulatorInterface simulator;
 
         /** An event to indicate stock levels changed */
         static final EventType STOCK_ACTUAL_CHANGE_EVENT = new EventType("STOCK_ACTUAL_CHANGE_EVENT");
@@ -104,7 +104,7 @@ public class StockPlot extends XYChart
          * @param stock
          * @param product
          */
-        public StockListener(DEVSSimulatorInterface<Duration> simulator, StockInterface stock, Product product)
+        public StockListener(SCSimulatorInterface simulator, StockInterface stock, Product product)
         {
             super();
             this.product = product;

@@ -46,7 +46,7 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
      * @param bank
      * @param contentStore
      */
-    public SupplyChainYellowPage(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position, final Bank bank,
+    public SupplyChainYellowPage(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
             final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
@@ -61,7 +61,7 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
      * @param initialBankBalance
      * @param contentStore
      */
-    public SupplyChainYellowPage(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position, final Bank bank,
+    public SupplyChainYellowPage(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
             final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankBalance, contentStore);

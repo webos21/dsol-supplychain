@@ -46,7 +46,7 @@ public abstract class Role extends InternalActor
      * @param name the role name
      * @param simulator the simulator to schedule on
      */
-    public Role(final SupplyChainActor owner, final String name, final DEVSSimulatorInterface<Duration> simulator)
+    public Role(final SupplyChainActor owner, final String name, final SCSimulatorInterface simulator)
     {
         super(name, simulator);
         this.owner = owner;

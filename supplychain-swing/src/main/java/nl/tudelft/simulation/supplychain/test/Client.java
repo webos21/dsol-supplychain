@@ -73,7 +73,7 @@ public class Client extends Customer
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public Client(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public Client(final String name, final SCSimulatorInterface simulator, final Point3d position,
         final Bank bank, final Money initialBankAccount, final Product product, final Retailer retailer,
         final ContentStoreInterface contentStore) throws RemoteException, NamingException
     {

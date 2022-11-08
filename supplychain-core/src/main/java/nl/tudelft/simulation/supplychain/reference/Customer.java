@@ -42,7 +42,7 @@ public class Customer extends SupplyChainActor implements BuyerInterface
      * @param initialBankAccount the initial bank account
      * @param contentStore the contentStore for the messages
      */
-    public Customer(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public Customer(final String name, final SCSimulatorInterface simulator, final Point3d position,
             final Bank bank, final Money initialBankAccount, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);
@@ -55,7 +55,7 @@ public class Customer extends SupplyChainActor implements BuyerInterface
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public Customer(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public Customer(final String name, final SCSimulatorInterface simulator, final Point3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);

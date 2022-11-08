@@ -6,14 +6,13 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventProducer;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.content.HandlerInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messaging.Message;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 
 /**
  * The actor is the basic entity in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'
@@ -39,14 +38,14 @@ public abstract class InternalActor extends EventProducer implements InternalAct
     protected String name;
 
     /** the simulator to schedule on */
-    protected DEVSSimulatorInterface<Duration> simulator;
+    protected SCSimulatorInterface simulator;
 
     /**
      * Constructs a new Actor
      * @param name the name of the actor
      * @param simulator the simulator to use
      */
-    public InternalActor(final String name, final DEVSSimulatorInterface<Duration> simulator)
+    public InternalActor(final String name, final SCSimulatorInterface simulator)
     {
         super();
         this.name = name;
@@ -158,7 +157,7 @@ public abstract class InternalActor extends EventProducer implements InternalAct
 
     /** {@inheritDoc} */
     @Override
-    public DEVSSimulatorInterface<Duration> getSimulator()
+    public SCSimulatorInterface getSimulator()
     {
         return this.simulator;
     }

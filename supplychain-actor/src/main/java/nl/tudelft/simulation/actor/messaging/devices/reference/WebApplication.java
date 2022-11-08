@@ -1,15 +1,14 @@
 package nl.tudelft.simulation.actor.messaging.devices.reference;
 
 import org.djunits.unit.DurationUnit;
-import org.djunits.value.vdouble.scalar.Duration;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messaging.comparators.FiFo;
 import nl.tudelft.simulation.actor.messaging.devices.components.DelaySendingDevice;
 import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDevice;
 import nl.tudelft.simulation.actor.messaging.devices.components.SendingReceivingDevice;
 import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
 import nl.tudelft.simulation.actor.messaging.queues.MessageQueue;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.DistTriangular;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 
@@ -31,7 +30,7 @@ public class WebApplication extends SendingReceivingDevice
      * @param name the name of the email application
      * @param simulator the simulator to use
      */
-    public WebApplication(final String name, final DEVSSimulatorInterface<Duration> simulator)
+    public WebApplication(final String name, final SCSimulatorInterface simulator)
     {
         super(name, new ReceivingDevice(name + "-R", DeviceType.NETWORK, new MessageQueue(new FiFo())),
                 new DelaySendingDevice(name + "-S", DeviceType.NETWORK, simulator, new DistContinuousDuration(

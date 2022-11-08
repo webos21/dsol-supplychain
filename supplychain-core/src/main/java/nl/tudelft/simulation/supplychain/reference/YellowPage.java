@@ -29,7 +29,7 @@ public class YellowPage extends SupplyChainYellowPage
      * @param bank
      * @param contentStore
      */
-    public YellowPage(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position, final Bank bank,
+    public YellowPage(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
             final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
@@ -43,7 +43,7 @@ public class YellowPage extends SupplyChainYellowPage
      * @param initialBankBalance
      * @param contentStore
      */
-    public YellowPage(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position, final Bank bank,
+    public YellowPage(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
             final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankBalance, contentStore);

@@ -68,7 +68,7 @@ public abstract class SupplyChainActor extends Actor
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public SupplyChainActor(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final Point3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position);
@@ -86,7 +86,7 @@ public abstract class SupplyChainActor extends Actor
      * @param initialBankBalance the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public SupplyChainActor(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final Point3d position,
             final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, contentStore);
@@ -270,9 +270,9 @@ public abstract class SupplyChainActor extends Actor
     /**
      * @return the simulator without throwing an exception
      */
-    public DEVSSimulatorInterface<Duration> getDEVSSimulator()
+    public SCSimulatorInterface getDEVSSimulator()
     {
-        DEVSSimulatorInterface<Duration> _simulator = null;
+        SCSimulatorInterface _simulator = null;
         try
         {
             _simulator = super.getSimulator();

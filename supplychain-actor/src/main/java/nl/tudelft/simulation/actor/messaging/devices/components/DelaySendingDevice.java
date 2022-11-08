@@ -2,12 +2,11 @@ package nl.tudelft.simulation.actor.messaging.devices.components;
 
 import java.io.Serializable;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messaging.Message;
 import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 
 /**
@@ -25,7 +24,7 @@ public class DelaySendingDevice extends SendingDevice
     private static final long serialVersionUID = 12L;
 
     /** the simulator to schedule on */
-    protected DEVSSimulatorInterface<Duration> simulator = null;
+    protected SCSimulatorInterface simulator = null;
 
     /** the delay of the sender */
     protected DistContinuousDuration delay = null;
@@ -37,7 +36,7 @@ public class DelaySendingDevice extends SendingDevice
      * @param simulator the simulator
      * @param delay the delay
      */
-    public DelaySendingDevice(final String name, final DeviceType deviceType, final DEVSSimulatorInterface<Duration> simulator,
+    public DelaySendingDevice(final String name, final DeviceType deviceType, final SCSimulatorInterface simulator,
             final DistContinuousDuration delay)
     {
         super(name, deviceType);
@@ -55,7 +54,7 @@ public class DelaySendingDevice extends SendingDevice
      * @param delay the delay
      */
     public DelaySendingDevice(final String name, final DeviceType deviceType, final int transmissionDelay,
-            final double transmissionFrequency, final DEVSSimulatorInterface<Duration> simulator,
+            final double transmissionFrequency, final SCSimulatorInterface simulator,
             final DistContinuousDuration delay)
     {
         super(name, deviceType, transmissionDelay, transmissionFrequency);

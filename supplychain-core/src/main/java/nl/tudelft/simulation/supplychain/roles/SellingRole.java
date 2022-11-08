@@ -33,7 +33,7 @@ public class SellingRole extends Role implements SellingRoleInterface
      * @param orderHandler the order handler
      * @param paymentHandler the payment handler
      */
-    public SellingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
+    public SellingRole(final SupplyChainActor owner, final SCSimulatorInterface simulator,
             final OrderPolicy orderHandler, final PaymentPolicy paymentHandler)
     {
         super(owner, owner.getName() + "-SELLLING", simulator);
@@ -49,7 +49,7 @@ public class SellingRole extends Role implements SellingRoleInterface
      * @param orderHandler the order handler
      * @param paymentHandler the payment handler
      */
-    public SellingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
+    public SellingRole(final SupplyChainActor owner, final SCSimulatorInterface simulator,
             final RequestForQuotePolicy rfqHandler, final OrderPolicy orderHandler, final PaymentPolicy paymentHandler)
     {
         super(owner, owner.getName() + "-SELLLING", simulator);

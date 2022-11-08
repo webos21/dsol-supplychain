@@ -30,7 +30,7 @@ public class Bank extends Actor
      * @param simulator the simulator
      * @param position the position
      */
-    public Bank(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position)
+    public Bank(final String name, final SCSimulatorInterface simulator, final Point3d position)
     {
         super(name, simulator, position);
     }

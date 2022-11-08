@@ -32,7 +32,7 @@ import nl.tudelft.simulation.supplychain.product.Unit;
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public class TestModelCentralDatabase extends AbstractDSOLModel.TimeDoubleUnit<DEVSSimulatorInterface<Duration>>
+public class TestModelCentralDatabase extends AbstractDSOLModel.TimeDoubleUnit<SCSimulatorInterface>
 {
     /** the serial version uid */
     private static final long serialVersionUID = 12L;
@@ -41,13 +41,13 @@ public class TestModelCentralDatabase extends AbstractDSOLModel.TimeDoubleUnit<D
     private long startTimeMs = 0;
 
     /** the simulator. */
-    private DEVSSimulatorInterface<Duration> devsSimulator;
+    private SCSimulatorInterface devsSimulator;
 
     /**
      * constructs a new TestModel
      * @param simulator the simulator
      */
-    public TestModelCentralDatabase(final DEVSSimulatorInterface<Duration> simulator)
+    public TestModelCentralDatabase(final SCSimulatorInterface simulator)
     {
         super(simulator);
         // We don't do anything to prevent state-based replications.
@@ -60,7 +60,7 @@ public class TestModelCentralDatabase extends AbstractDSOLModel.TimeDoubleUnit<D
         try
         {
             this.startTimeMs = System.currentTimeMillis();
-            this.devsSimulator = (DEVSSimulatorInterface<Duration>) simulator;
+            this.devsSimulator = (SCSimulatorInterface) simulator;
             if (this.devsSimulator instanceof AnimatorInterface)
             {
                 // First we create some background. We set the zValue to

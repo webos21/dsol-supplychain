@@ -36,7 +36,7 @@ public class ContentAnimation implements Locatable, Serializable
     private static final long serialVersionUID = 12L;
 
     /** the simulator on which to schedule */
-    private DEVSSimulatorInterface<Duration> simulator;
+    private SCSimulatorInterface simulator;
 
     /** a helper instance for linear interpolation */
     private LinearInterpolation linearInterpolation = null;

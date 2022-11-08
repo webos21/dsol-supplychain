@@ -57,7 +57,7 @@ public class Factory extends Supplier
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public Factory(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public Factory(final String name, final SCSimulatorInterface simulator, final Point3d position,
             final Bank bank, final Product product, final double amount, final ContentStoreInterface contentStore)
             throws RemoteException, NamingException
     {
@@ -76,7 +76,7 @@ public class Factory extends Supplier
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public Factory(final String name, final DEVSSimulatorInterface<Duration> simulator, final Point3d position,
+    public Factory(final String name, final SCSimulatorInterface simulator, final Point3d position,
             final Bank bank, final Money initialBankAccount, final Product product, final double amount,
             final ContentStoreInterface contentStore) throws RemoteException, NamingException
     {

@@ -46,7 +46,7 @@ public class BuyingRole extends Role implements BuyingRoleInterface
      * @param shipmentHandler the shipment handler
      * @param billHandler the bill handler
      */
-    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
+    public BuyingRole(final SupplyChainActor owner, final SCSimulatorInterface simulator,
             final InternalDemandPolicy internalDemandHandler, final OrderConfirmationPolicy orderConfirmationHandler,
             final ShipmentPolicy shipmentHandler, final BillPolicy billHandler)
     {
@@ -66,7 +66,7 @@ public class BuyingRole extends Role implements BuyingRoleInterface
      * @param shipmentHandler the shipment handler
      * @param billHandler the bill handler
      */
-    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
+    public BuyingRole(final SupplyChainActor owner, final SCSimulatorInterface simulator,
             final InternalDemandPolicyOrder internalDemandHandler, final OrderConfirmationPolicy orderConfirmationHandler,
             final ShipmentPolicy shipmentHandler, final BillPolicy billHandler)
     {
@@ -87,7 +87,7 @@ public class BuyingRole extends Role implements BuyingRoleInterface
      * @param shipmentHandler the shipment handler
      * @param billHandler the bill handler
      */
-    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
+    public BuyingRole(final SupplyChainActor owner, final SCSimulatorInterface simulator,
             final InternalDemandPolicyRFQ internalDemandHandler, final QuotePolicy quoteHandler,
             final OrderConfirmationPolicy orderConfirmationHandler, final ShipmentPolicy shipmentHandler,
             final BillPolicy billHandler)
@@ -111,7 +111,7 @@ public class BuyingRole extends Role implements BuyingRoleInterface
      * @param shipmentHandler the shipment handler
      * @param billHandler the bill handler
      */
-    public BuyingRole(final SupplyChainActor owner, final DEVSSimulatorInterface<Duration> simulator,
+    public BuyingRole(final SupplyChainActor owner, final SCSimulatorInterface simulator,
             final InternalDemandPolicyYP internalDemandHandler, final YellowPageAnswerPolicy ypAnswerHandler,
             final QuotePolicy quoteHandler, final OrderConfirmationPolicy orderConfirmationHandler,
             final ShipmentPolicy shipmentHandler, final BillPolicy billHandler)

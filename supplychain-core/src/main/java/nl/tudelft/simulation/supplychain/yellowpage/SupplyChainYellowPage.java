@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.ActorInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.yellowpage.Category;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.capabilities.YPInterface;
 import nl.tudelft.simulation.supplychain.banking.Bank;

@@ -3,7 +3,6 @@ package nl.tudelft.simulation.supplychain.content;
 import java.io.Serializable;
 import java.util.Random;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;

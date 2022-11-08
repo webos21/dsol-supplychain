@@ -2,10 +2,9 @@ package nl.tudelft.simulation.supplychain.reference;
 
 import java.io.Serializable;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.point.Point3d;
 
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.capabilities.BuyerInterface;
 import nl.tudelft.simulation.supplychain.actor.capabilities.SellerInterface;

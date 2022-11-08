@@ -6,11 +6,11 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventProducer;
-import org.djutils.event.EventType;
 import org.djutils.event.TimedEvent;
+import org.djutils.event.TimedEventType;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
@@ -26,23 +26,23 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
  */
 public class BankAccount extends EventProducer
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the owner of the bank account */
+    /** the owner of the bank account. */
     private SupplyChainActor owner;
 
-    /** the bank */
+    /** the bank. */
     private Bank bank;
 
-    /** the simulator for the interest rate */
+    /** the simulator for the interest rate. */
     private SCSimulatorInterface simulator;
 
-    /** the balance of the actor */
+    /** the balance of the actor. */
     private Money balance;
 
-    /** for who is interested, the BankAccount can send updates of changes */
-    public static final EventType BANK_ACCOUNT_CHANGED_EVENT = new EventType("BANK_ACCOUNT_CHANGED_EVENT");
+    /** for who is interested, the BankAccount can send updates of changes. */
+    public static final TimedEventType BANK_ACCOUNT_CHANGED_EVENT = new TimedEventType("BANK_ACCOUNT_CHANGED_EVENT");
 
     /**
      * Constructor for BankAccount.
@@ -110,7 +110,8 @@ public class BankAccount extends EventProducer
     {
         this.balance = this.balance.plus(amount);
         this.roundBalance();
-        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this, this.balance, this.owner.getSimulatorTime()));
+        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this.getSourceId(), this.balance,
+                this.owner.getSimulatorTime()));
     }
 
     /**
@@ -121,7 +122,8 @@ public class BankAccount extends EventProducer
     {
         this.balance = this.balance.minus(amount);
         this.roundBalance();
-        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this, this.balance, this.owner.getSimulatorTime()));
+        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this.getSourceId(), this.balance,
+                this.owner.getSimulatorTime()));
     }
 
     /**
@@ -129,11 +131,12 @@ public class BankAccount extends EventProducer
      */
     public void sendBalanceUpdateEvent()
     {
-        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this, this.balance, this.owner.getSimulatorTime()));
+        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this.getSourceId(), this.balance,
+                this.owner.getSimulatorTime()));
     }
 
     /**
-     * Round the balance
+     * Round the balance.
      */
     private void roundBalance()
     {
@@ -141,7 +144,7 @@ public class BankAccount extends EventProducer
     }
 
     /**
-     * receive or pay interest according to the current rates
+     * receive or pay interest according to the current rates.
      */
     protected void interest()
     {

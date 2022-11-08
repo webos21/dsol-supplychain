@@ -1,8 +1,6 @@
 package nl.tudelft.simulation.supplychain.roles;
 
-import org.djunits.value.vdouble.scalar.Duration;
-
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.Bill;
 import nl.tudelft.simulation.supplychain.content.InternalDemand;

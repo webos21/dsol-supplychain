@@ -2,10 +2,8 @@ package nl.tudelft.simulation.supplychain.roles;
 
 import java.io.Serializable;
 
-import org.djunits.value.vdouble.scalar.Duration;
-
 import nl.tudelft.simulation.actor.InternalActor;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 

@@ -2,14 +2,13 @@ package nl.tudelft.simulation.supplychain.messaging.product;
 
 import java.io.Serializable;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messaging.Message;
 import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDeviceInterface;
 import nl.tudelft.simulation.actor.messaging.devices.components.SendingDevice;
 import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 
 /**

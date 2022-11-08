@@ -17,10 +17,10 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.Actor;
 import nl.tudelft.simulation.actor.content.HandlerInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messaging.Message;
 import nl.tudelft.simulation.actor.messaging.devices.components.SendingDeviceInterface;
 import nl.tudelft.simulation.actor.messaging.devices.components.SendingReceivingDevice;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.banking.FixedCost;
@@ -45,31 +45,31 @@ public abstract class SupplyChainActor extends Actor
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** the bank account of the actor */
+    /** the bank account of the actor. */
     protected final BankAccount bankAccount;
 
-    /** the store for the content to use */
+    /** the store for the content to use. */
     private final ContentStoreInterface contentStore;
 
     /** the roles for this actor; avoid roles to be registered multiple times (Set). */
     private Set<Role> roles = new LinkedHashSet<Role>();
 
-    /** the fixed costs for this supply chain actor */
+    /** the fixed costs for this supply chain actor. */
     private List<FixedCost> fixedCosts = new ArrayList<FixedCost>();
 
     /** the event to indicate that information has been sent. E.g., for animation. */
     public static EventType SEND_CONTENT_EVENT = new EventType("SEND_CONTENT_EVENT");
 
     /**
-     * Constructs a new SupplyChainActor
+     * Constructs a new SupplyChainActor.
      * @param name the name to display for this supply chain actor
      * @param simulator the simulator on which to schedule
      * @param position the location for transportation calculations, which can also be used for animation purposes
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final Point3d position,
-            final Bank bank, final ContentStoreInterface contentStore)
+    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
+            final ContentStoreInterface contentStore)
     {
         super(name, simulator, position);
         this.bankAccount = new BankAccount(this, bank);
@@ -78,7 +78,7 @@ public abstract class SupplyChainActor extends Actor
     }
 
     /**
-     * Constructs a new SupplyChainActor
+     * Constructs a new SupplyChainActor.
      * @param name the name to display for this supply chain actor
      * @param simulator the simulator on which to schedule
      * @param position the location for transportation calculations, which can also be used for animation purposes
@@ -86,8 +86,8 @@ public abstract class SupplyChainActor extends Actor
      * @param initialBankBalance the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final Point3d position,
-            final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
+    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
+            final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, contentStore);
         this.bankAccount.addToBalance(initialBankBalance);
@@ -105,7 +105,7 @@ public abstract class SupplyChainActor extends Actor
     }
 
     /**
-     * Remove an existing role
+     * Remove an existing role.
      * @param role the role to remove
      */
     public void removeRole(final Role role)
@@ -157,20 +157,20 @@ public abstract class SupplyChainActor extends Actor
             {
                 if (content.getReceiver().equals(content.getSender()) && (sendingDevice instanceof SendingReceivingDevice))
                 {
-                    Serializable[] args = { message };
+                    Serializable[] args = {message};
                     this.simulator.scheduleEventRel(administrativeDelay, this, sendingDevice, "receive", args);
                 }
                 else
                 {
                     if (content instanceof Shipment)
                     {
-                        Serializable[] args = { message, sendingDevice, administrativeDelay };
+                        Serializable[] args = {message, sendingDevice, administrativeDelay};
                         this.simulator.scheduleEventRel(new Duration(0.0001, DurationUnit.SECOND), this, this,
                                 "scheduledSendContent", args);
                     }
                     else
                     {
-                        Serializable[] args = { message, sendingDevice };
+                        Serializable[] args = {message, sendingDevice};
                         this.simulator.scheduleEventRel(new Duration(administrativeDelay.si + 0.0001, DurationUnit.SI), this,
                                 this, "scheduledSendContent", args);
                     }
@@ -193,7 +193,7 @@ public abstract class SupplyChainActor extends Actor
     protected void scheduledSendContent(final Message message, final SendingDeviceInterface sendingDevice)
     {
         sendingDevice.send(message); // ignore success or failure
-        fireEvent(SEND_CONTENT_EVENT, new Object[] { message.getBody(), new Duration(1.0, DurationUnit.HOUR) });
+        fireEvent(SEND_CONTENT_EVENT, new Object[] {message.getBody(), new Duration(1.0, DurationUnit.HOUR)});
     }
 
     /**
@@ -204,14 +204,14 @@ public abstract class SupplyChainActor extends Actor
      */
     protected void scheduledSendContent(final Message message, final SendingDeviceInterface sendingDevice, final Duration delay)
     {
-        fireEvent(SEND_CONTENT_EVENT, new Object[] { message.getBody(), delay });
+        fireEvent(SEND_CONTENT_EVENT, new Object[] {message.getBody(), delay});
         Logger.trace("SupplyChainActor: scheduledSendContent: delay in days for content: '{}', delay: {}", message.getBody(),
                 delay);
 
         // we schedule the delayed invocation of the send content
         try
         {
-            Serializable[] args = { message };
+            Serializable[] args = {message};
             this.simulator.scheduleEventRel(delay, this, sendingDevice, "send", args);
         }
         catch (Exception exception)
@@ -221,7 +221,7 @@ public abstract class SupplyChainActor extends Actor
     }
 
     /**
-     * Add a fixed cost for this actor
+     * Add a fixed cost for this actor.
      * @param description the description of the fixed cost
      * @param interval the interval
      * @param amount the amount
@@ -257,35 +257,18 @@ public abstract class SupplyChainActor extends Actor
     }
 
     /**
-     * Calculates the distance to another actor
+     * Calculates the distance to another actor.
      * @param actor the other actor
      * @return the distance (might be overridden if the geography is known)
      */
     public Length calculateDistance(final SupplyChainActor actor)
     {
         // TODO: Assume kilometers for now.
-        return new Length(this.location.distance(actor.getLocation()), LengthUnit.KILOMETER);
+        return new Length(getLocation().distance(actor.getLocation()), LengthUnit.KILOMETER);
     }
 
     /**
-     * @return the simulator without throwing an exception
-     */
-    public SCSimulatorInterface getDEVSSimulator()
-    {
-        SCSimulatorInterface _simulator = null;
-        try
-        {
-            _simulator = super.getSimulator();
-        }
-        catch (Exception exception)
-        {
-            Logger.error(exception, "getSimulator");
-        }
-        return _simulator;
-    }
-
-    /**
-     * Method getContentHandlers
+     * Method getContentHandlers.
      * @return returns the map with content handlers
      */
     public Map<Class<?>, Set<HandlerInterface>> getContentHandlers()

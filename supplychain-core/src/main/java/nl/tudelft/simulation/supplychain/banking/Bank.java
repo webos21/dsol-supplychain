@@ -1,10 +1,9 @@
 package nl.tudelft.simulation.supplychain.banking;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.Actor;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 
 /**
  * The Bank to store the interest rates for the Bank accounts. <br>

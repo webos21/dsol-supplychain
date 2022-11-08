@@ -166,7 +166,7 @@ public abstract class InternalActor extends EventProducer implements InternalAct
     @Override
     public Time getSimulatorTime()
     {
-        return Time.instantiateSI(this.simulator.getSimulatorTime().si);
+        return this.simulator.getAbsSimulatorTime();
     }
 
     /** {@inheritDoc} */

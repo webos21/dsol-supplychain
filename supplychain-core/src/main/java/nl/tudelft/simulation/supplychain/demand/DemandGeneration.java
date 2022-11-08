@@ -5,8 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.djunits.value.vdouble.scalar.Time;
-import org.djutils.event.EventType;
 import org.djutils.event.TimedEvent;
+import org.djutils.event.TimedEventType;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.InternalActor;
@@ -28,22 +28,22 @@ import nl.tudelft.simulation.supplychain.product.Product;
  */
 public class DemandGeneration extends InternalActor
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** an event fired in case demand has been generated */
-    public static final EventType DEMAND_GENERATED_EVENT = new EventType("DEMAND_GENERATED_EVENT");
+    /** an event fired in case demand has been generated. */
+    public static final TimedEventType DEMAND_GENERATED_EVENT = new TimedEventType("DEMAND_GENERATED_EVENT");
 
-    /** map of Product - Demand pairs */
+    /** map of Product - Demand pairs. */
     protected Map<Product, Demand> demandGenerators = new LinkedHashMap<Product, Demand>();
 
-    /** the administrative delay when sending messages */
+    /** the administrative delay when sending messages. */
     private DistContinuousDuration administrativeDelay;
 
-    /** the owner of the role */
+    /** the owner of the role. */
     protected SupplyChainActor owner = null;
 
-    /** the default stream to use for the time delays */
+    /** the default stream to use for the time delays. */
     protected StreamInterface stream = null;
 
     /**
@@ -77,7 +77,7 @@ public class DemandGeneration extends InternalActor
     }
 
     /**
-     * Method getDemandGenerator
+     * Method getDemandGenerator.
      * @param product the product to return the demand generator for
      * @return Returns a demand, or null if it could not be found
      */
@@ -107,17 +107,17 @@ public class DemandGeneration extends InternalActor
             {
                 double amount = demand.getAmountDistribution() instanceof DistContinuous ? ((DistContinuous) demand
                     .getAmountDistribution()).draw() : ((DistDiscrete) demand.getAmountDistribution()).draw();
-                InternalDemand id = new InternalDemand(getOwner(), product, amount, super.simulator.getSimulatorTime().plus(
-                    demand.getEarliestDeliveryDurationDistribution().draw()), super.simulator.getSimulatorTime().plus(demand
+                InternalDemand id = new InternalDemand(getOwner(), product, amount, super.simulator.getAbsSimulatorTime().plus(
+                    demand.getEarliestDeliveryDurationDistribution().draw()), super.simulator.getAbsSimulatorTime().plus(demand
                         .getLatestDeliveryDuration().draw()));
                 getOwner().sendContent(id, this.administrativeDelay.draw());
                 Serializable[] args = {product, demand};
-                Time time = super.simulator.getSimulatorTime().plus(demand.getIntervalDistribution().draw());
+                Time time = super.simulator.getAbsSimulatorTime().plus(demand.getIntervalDistribution().draw());
                 super.simulator.scheduleEventAbs(time, this, this, "createInternalDemand", args);
 
                 // we collect some statistics for the internal demand
                 super.fireEvent(new TimedEvent<Time>(DemandGeneration.DEMAND_GENERATED_EVENT, this, id, super.simulator
-                    .getSimulatorTime()));
+                    .getAbsSimulatorTime()));
             }
             catch (Exception e)
             {

@@ -22,29 +22,29 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
  */
 public class FixedCost implements Serializable
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the supply chain actor */
+    /** the supply chain actor. */
     private SupplyChainActor owner;
 
-    /** The bank account */
+    /** The bank account. */
     private BankAccount bankAccount;
 
-    /** the description of the type of fixed cost */
+    /** the description of the type of fixed cost. */
     private String description;
 
-    /** The interval for booking the fixed cost */
+    /** The interval for booking the fixed cost. */
     private Duration interval = Duration.ZERO;
 
-    /** The amount to book on every interval */
+    /** The amount to book on every interval. */
     private Money amount = new Money(0.0, MoneyUnit.USD);
 
-    /** the event for the next period -- stored to be able to remove it */
-    private SimEvent.TimeDoubleUnit fixedAmountEvent = null;
+    /** the event for the next period -- stored to be able to remove it. */
+    private SimEvent<Duration> fixedAmountEvent = null;
 
     /**
-     * The constructor for the Fixed cost of an actor
+     * The constructor for the Fixed cost of an actor.
      * @param owner the supply chain actor
      * @param bankAccount the bank account
      * @param description the description
@@ -96,7 +96,7 @@ public class FixedCost implements Serializable
     }
 
     /**
-     * Scheduled method to book the fixed costs
+     * Scheduled method to book the fixed costs.
      */
     protected void bookFixedCost()
     {

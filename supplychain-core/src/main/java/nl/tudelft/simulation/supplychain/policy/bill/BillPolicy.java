@@ -28,7 +28,7 @@ import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
  */
 public class BillPolicy extends SupplyChainHandler
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the bank account to use. */
@@ -57,7 +57,7 @@ public class BillPolicy extends SupplyChainHandler
     }
 
     /**
-     * Constructs a new BillHandler that takes care of paying exactly on time
+     * Constructs a new BillHandler that takes care of paying exactly on time.
      * @param owner the owner of the handler.
      * @param bankAccount the bankaccount to use.
      */
@@ -77,7 +77,7 @@ public class BillPolicy extends SupplyChainHandler
         Bill bill = (Bill) content;
         // schedule the payment
         Time currentTime = Time.ZERO;
-        currentTime = getOwner().getSimulator().getSimulatorTime();
+        currentTime = getOwner().getSimulator().getAbsSimulatorTime();
         Time paymentTime = bill.getFinalPaymentDate();
         switch (this.paymentPolicy)
         {

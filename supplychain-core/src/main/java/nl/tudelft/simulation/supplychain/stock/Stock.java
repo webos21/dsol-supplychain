@@ -42,18 +42,16 @@ import nl.tudelft.simulation.supplychain.product.Product;
  */
 public class Stock extends EventProducer implements StockInterface, StockForecastInterface
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the actow that owns of the stock */
+    /** the actow that owns of the stock. */
     protected StockKeepingActor owner;
 
-    /** record keeping of the stock */
+    /** record keeping of the stock. */
     protected Map<Product, StockRecord> stockRecords = new LinkedHashMap<Product, StockRecord>();
 
-    /**
-     * <Product, <time moment, ArrayList<values for time moment>>> future changes
-     */
+    /** Map of Product to Map of time to ArrayList of values for time moment: future changes. */
     protected Map<Product, TreeMap<Time, ArrayList<Double>>> futureChanges = new LinkedHashMap<>();
 
     /**

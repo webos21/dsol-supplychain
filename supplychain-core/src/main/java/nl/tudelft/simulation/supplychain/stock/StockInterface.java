@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 import org.djutils.event.EventProducerInterface;
-import org.djutils.event.EventType;
+import org.djutils.event.TimedEventType;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.content.Shipment;
@@ -25,7 +25,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public interface StockInterface extends Serializable, EventProducerInterface
 {
     /** An event to indicate stock levels changed */
-    EventType STOCK_CHANGE_EVENT = new EventType("STOCK_CHANGE_EVENT");
+    TimedEventType STOCK_CHANGE_EVENT = new TimedEventType("STOCK_CHANGE_EVENT");
 
     /**
      * @return the trader who owns this stock

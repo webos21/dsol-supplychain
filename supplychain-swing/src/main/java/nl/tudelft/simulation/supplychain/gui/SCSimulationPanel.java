@@ -2,6 +2,7 @@ package nl.tudelft.simulation.supplychain.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Insets;
+import java.io.Console;
 import java.rmi.RemoteException;
 
 import javax.swing.JPanel;
@@ -9,8 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
-import nl.tudelft.simulation.dsol.swing.gui.Console;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.gui.StatusBar;
 import nl.tudelft.simulation.dsol.swing.gui.TabbedContentPane;
 

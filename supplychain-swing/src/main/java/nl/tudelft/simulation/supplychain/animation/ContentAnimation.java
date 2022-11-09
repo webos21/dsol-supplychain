@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.net.URL;
 import java.rmi.RemoteException;
 
-import javax.media.j3d.Bounds;
-
 import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.draw.bounds.Bounds;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.animation.interpolation.LinearInterpolation;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.language.d3.BoundingBox;
 import nl.tudelft.simulation.language.d3.DirectedPoint;
 import nl.tudelft.simulation.supplychain.content.Content;
@@ -32,25 +31,25 @@ import nl.tudelft.simulation.supplychain.content.Content;
  */
 public class ContentAnimation implements Locatable, Serializable
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the simulator on which to schedule */
+    /** the simulator on which to schedule. */
     private SCSimulatorInterface simulator;
 
-    /** a helper instance for linear interpolation */
+    /** a helper instance for linear interpolation. */
     private LinearInterpolation linearInterpolation = null;
 
-    /** the content of the source */
+    /** the content of the source. */
     private Content content = null;
 
-    /** the name of the url for the image */
+    /** the name of the url for the image. */
     private String imageURLlName = null;
 
-    /** the image renderable */
+    /** the image renderable. */
     private SingleImageRenderable imageRenderable = null;
 
-    /** the animation delay for the content */
+    /** the animation delay for the content. */
     private Duration delay = Duration.ZERO;
 
     /**

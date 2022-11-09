@@ -11,8 +11,8 @@ import org.djutils.event.EventProducer;
 import org.djutils.event.EventType;
 import org.djutils.event.TimedEvent;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.simtime.SimTimeDoubleUnit;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.product.Product;

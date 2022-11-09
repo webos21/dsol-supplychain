@@ -53,6 +53,7 @@ import org.djutils.event.EventListenerInterface;
 import org.djutils.io.URLResource;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEvent;
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEventInterface;

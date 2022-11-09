@@ -3,20 +3,20 @@ package nl.tudelft.simulation.supplychain.test;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 
-import javax.media.j3d.Bounds;
 import javax.naming.NamingException;
-import javax.vecmath.Point3d;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.draw.bounds.Bounds;
+import org.djutils.draw.point.Point3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.language.d3.BoundingBox;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;

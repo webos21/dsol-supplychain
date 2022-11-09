@@ -44,7 +44,7 @@ import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.animation.Locatable;
-import nl.tudelft.simulation.dsol.animation.D2.GisRenderable2D;
+import nl.tudelft.simulation.dsol.animation.gis.GisRenderable2D;
 import nl.tudelft.simulation.dsol.experiment.Replication;
 import nl.tudelft.simulation.dsol.experiment.ReplicationMode;
 import nl.tudelft.simulation.dsol.model.DSOLModel;

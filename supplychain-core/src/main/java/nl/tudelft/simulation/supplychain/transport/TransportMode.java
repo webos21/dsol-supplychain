@@ -10,6 +10,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djunits.value.vdouble.scalar.Mass;
 import org.djunits.value.vdouble.scalar.Speed;
+import org.djutils.draw.point.Point3d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
@@ -26,22 +27,22 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
  */
 public class TransportMode implements Serializable
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** description of the transport mode */
+    /** description of the transport mode. */
     protected String name;
 
-    /** the fixed time for loading and unloading in hours */
+    /** the fixed time for loading and unloading in hours. */
     protected Duration fixedDuration;
 
-    /** average transportation speed in kilometers per hours */
+    /** average transportation speed in kilometers per hours. */
     protected Speed speed;
 
-    /** the fixed cost for a transport */
+    /** the fixed cost for a transport. */
     protected Money fixedCost;
 
-    /** the cost per km per kg */
+    /** the cost per km per kg. */
     protected Money costKmKg;
 
     /**
@@ -52,8 +53,8 @@ public class TransportMode implements Serializable
             new Speed(800.0, SpeedUnit.KM_PER_HOUR), new Money(250.0, MoneyUnit.USD), new Money(0.0007, MoneyUnit.USD));
 
     /**
-     * predefined transport mode: truck including transport to/from the airport 50 dollar handling costs, taxes
-     * The price is $1.50 per km, with 10000 kg on board -> 0.00015 $/km/kg.
+     * predefined transport mode: truck including transport to/from the airport 50 dollar handling costs, taxes The price is
+     * $1.50 per km, with 10000 kg on board -> 0.00015 $/km/kg.
      */
     public static final TransportMode TRUCK = new TransportMode("Truck", new Duration(2.0, DurationUnit.HOUR),
             new Speed(80.0, SpeedUnit.KM_PER_HOUR), new Money(50.0, MoneyUnit.USD), new Money(0.00015, MoneyUnit.USD));
@@ -88,7 +89,9 @@ public class TransportMode implements Serializable
         try
         {
             // TODO: assume km for now...
-            distance = new Length(loc1.getLocation().distance(loc2.getLocation()), LengthUnit.KILOMETER);
+            // TODO: change after update in dsol for Locatable
+            distance =
+                    new Length(((Point3d) loc1.getLocation()).distance(((Point3d) loc2.getLocation())), LengthUnit.KILOMETER);
         }
         catch (Exception exception)
         {

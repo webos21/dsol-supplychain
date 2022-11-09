@@ -43,9 +43,10 @@ public class DistDiscreteTriangular extends DistDiscrete
 
     /** {@inheritDoc} */
     @Override
-    public double probability(final int observation)
+    public double probability(final long observation)
     {
-        return this.distTriangular.probDensity(observation + 0.5) - this.distTriangular.probDensity(observation - 0.5);
+        return this.distTriangular.getProbabilityDensity(observation + 0.5)
+                - this.distTriangular.getProbabilityDensity(observation - 0.5);
     }
 
     /** {@inheritDoc} */

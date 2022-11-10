@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.banking;
 
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.actor.Actor;
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
@@ -15,13 +15,13 @@ import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
  */
 public class Bank extends Actor
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the interest rate for a positive bank account */
+    /** the interest rate for a positive bank account. */
     private double annualInterestRatePos = 0.025;
 
-    /** the interest rate for a negative bank account */
+    /** the interest rate for a negative bank account. */
     private double annualInterestRateNeg = 0.08;
 
     /**
@@ -29,7 +29,7 @@ public class Bank extends Actor
      * @param simulator the simulator
      * @param position the position
      */
-    public Bank(final String name, final SCSimulatorInterface simulator, final Point3d position)
+    public Bank(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position)
     {
         super(name, simulator, position);
     }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
@@ -31,26 +31,26 @@ public abstract class StockKeepingActor extends SupplyChainActor implements Stoc
     private static final long serialVersionUID = 1L;
 
     /**
-     * the stock of the trader
+     * the stock of the trader.
      */
     protected StockInterface stock = null;
 
     /**
-     * Constructs a new Trader
+     * Constructs a new Trader.
      * @param name the name to display for this supply chain actor
      * @param simulator the simulator on which to schedule
      * @param position the location for transportation calculations, which can also be used for animation purposes
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public StockKeepingActor(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public StockKeepingActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
     }
 
     /**
-     * Constructs a new Trader with a certain bank balance
+     * Constructs a new Trader with a certain bank balance.
      * @param name the name to display for this supply chain actor
      * @param simulator the simulator on which to schedule
      * @param position the location for transportation calculations, which can also be used for animation purposes
@@ -58,7 +58,7 @@ public abstract class StockKeepingActor extends SupplyChainActor implements Stoc
      * @param initialBankBalance the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public StockKeepingActor(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public StockKeepingActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankBalance, contentStore);
@@ -82,7 +82,7 @@ public abstract class StockKeepingActor extends SupplyChainActor implements Stoc
     }
 
     /**
-     * Implement to check whether the stock is below some level, might trigger ordering of extra amount of the product
+     * Implement to check whether the stock is below some level, might trigger ordering of extra amount of the product.
      * @param product the product to check the stock for.
      */
     public abstract void checkStock(final Product product);

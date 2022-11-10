@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.reference;
 
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.banking.Bank;
@@ -18,7 +18,7 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
  */
 public class DistributionCenter extends Retailer
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /**
@@ -28,7 +28,7 @@ public class DistributionCenter extends Retailer
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public DistributionCenter(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public DistributionCenter(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), contentStore);
@@ -42,7 +42,7 @@ public class DistributionCenter extends Retailer
      * @param initialBankAccount the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public DistributionCenter(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public DistributionCenter(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final Money initialBankAccount, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);

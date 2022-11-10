@@ -23,22 +23,22 @@ public abstract class Content implements Serializable
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** unique id of the message */
+    /** unique id of the message. */
     private Serializable uniqueID;
 
-    /** unique id of the InternalDemand that triggered the message chain */
+    /** unique id of the InternalDemand that triggered the message chain. */
     protected Serializable internalDemandID;
 
-    /** the creation time of the content */
+    /** the creation time of the content. */
     private Time creationTime;
 
-    /** sender of the message */
+    /** sender of the message. */
     private SupplyChainActor sender;
 
-    /** receiver of the message */
+    /** receiver of the message. */
     private SupplyChainActor receiver;
 
-    /** the random stream */
+    /** the random stream. */
     private static Random random = new Random();
 
     /**
@@ -77,7 +77,7 @@ public abstract class Content implements Serializable
     }
 
     /**
-     * Returns Returns the unique ID of this message
+     * Returns Returns the unique ID of this message.
      * @return the uniqueID.
      */
     public Serializable getUniqueID()
@@ -86,7 +86,7 @@ public abstract class Content implements Serializable
     }
 
     /**
-     * Returns Sets the unique ID of this message
+     * Returns Sets the unique ID of this message.
      * @param id the uniqueID.
      */
     public void setUniqueID(final Serializable id)

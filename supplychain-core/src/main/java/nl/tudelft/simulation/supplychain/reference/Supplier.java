@@ -15,7 +15,7 @@ package nl.tudelft.simulation.supplychain.reference;
 
 import java.io.Serializable;
 
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
@@ -37,10 +37,10 @@ import nl.tudelft.simulation.supplychain.roles.SellingRole;
  */
 public class Supplier extends StockKeepingActor implements SellerInterface
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** The role to sell */
+    /** The role to sell. */
     private SellingRole sellingRole = null;
 
     /**
@@ -50,7 +50,7 @@ public class Supplier extends StockKeepingActor implements SellerInterface
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public Supplier(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public Supplier(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), contentStore);
@@ -64,7 +64,7 @@ public class Supplier extends StockKeepingActor implements SellerInterface
      * @param initialBankAccount the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public Supplier(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public Supplier(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final Money initialBankAccount, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);

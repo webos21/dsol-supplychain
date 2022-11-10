@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.actor.ActorInterface;
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
@@ -45,8 +45,8 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
      * @param bank
      * @param contentStore
      */
-    public SupplyChainYellowPage(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
-            final ContentStoreInterface contentStore)
+    public SupplyChainYellowPage(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+            final Bank bank, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
         this.yp = new nl.tudelft.simulation.actor.yellowpage.YellowPage();
@@ -60,8 +60,8 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
      * @param initialBankBalance
      * @param contentStore
      */
-    public SupplyChainYellowPage(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
-            final Money initialBankBalance, final ContentStoreInterface contentStore)
+    public SupplyChainYellowPage(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+            final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankBalance, contentStore);
         this.yp = new nl.tudelft.simulation.actor.yellowpage.YellowPage();

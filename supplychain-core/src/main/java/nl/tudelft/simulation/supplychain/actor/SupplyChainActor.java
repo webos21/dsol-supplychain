@@ -11,7 +11,7 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.event.EventType;
 import org.pmw.tinylog.Logger;
 
@@ -68,8 +68,8 @@ public abstract class SupplyChainActor extends Actor
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
-            final ContentStoreInterface contentStore)
+    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+            final Bank bank, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position);
         this.bankAccount = new BankAccount(this, bank);
@@ -86,8 +86,8 @@ public abstract class SupplyChainActor extends Actor
      * @param initialBankBalance the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final Point3d position, final Bank bank,
-            final Money initialBankBalance, final ContentStoreInterface contentStore)
+    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+            final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, contentStore);
         this.bankAccount.addToBalance(initialBankBalance);

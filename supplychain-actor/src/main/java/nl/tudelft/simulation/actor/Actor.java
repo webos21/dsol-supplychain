@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
@@ -45,7 +45,7 @@ public abstract class Actor extends InternalActor implements ActorInterface
     private final Map<ReceivingDeviceInterface, MessageHandlerInterface> receivingDevices;
 
     /** the location of the actor. */
-    private final Point3d location;
+    private final OrientedPoint3d location;
 
     /** the description of the location of an actor. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
@@ -57,7 +57,7 @@ public abstract class Actor extends InternalActor implements ActorInterface
      * @param simulator the simulator to use
      * @param position the location of the actor
      */
-    public Actor(final String name, final SCSimulatorInterface simulator, final Point3d position)
+    public Actor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position)
     {
         super(name, simulator);
         this.sendingDevices = new LinkedHashSet<>();
@@ -199,7 +199,7 @@ public abstract class Actor extends InternalActor implements ActorInterface
 
     /** {@inheritDoc} */
     @Override
-    public Point3d getLocation()
+    public OrientedPoint3d getLocation()
     {
         return this.location;
     }

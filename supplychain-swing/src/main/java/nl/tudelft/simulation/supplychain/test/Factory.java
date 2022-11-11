@@ -7,6 +7,7 @@ import javax.naming.NamingException;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
+import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
@@ -56,7 +57,7 @@ public class Factory extends Supplier
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public Factory(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public Factory(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final Product product, final double amount, final ContentStoreInterface contentStore)
             throws RemoteException, NamingException
     {
@@ -75,7 +76,7 @@ public class Factory extends Supplier
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public Factory(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public Factory(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final Money initialBankAccount, final Product product, final double amount,
             final ContentStoreInterface contentStore) throws RemoteException, NamingException
     {
@@ -126,7 +127,7 @@ public class Factory extends Supplier
         //
         if (this.simulator instanceof AnimatorInterface)
         {
-            XYChart bankChart = new XYChart("BankAccount " + this.name);
+            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + this.name);
             bankChart.add("bank account", this.bankAccount, BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
         }
     }

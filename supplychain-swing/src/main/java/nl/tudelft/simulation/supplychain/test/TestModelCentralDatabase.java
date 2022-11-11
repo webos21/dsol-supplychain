@@ -1,14 +1,13 @@
 package nl.tudelft.simulation.supplychain.test;
 
-import java.awt.Dimension;
 import java.io.Serializable;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.unit.MassUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Mass;
+import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
-import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
@@ -31,7 +30,7 @@ import nl.tudelft.simulation.supplychain.product.Unit;
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public class TestModelCentralDatabase extends AbstractDSOLModel<Duration, SCSimulatorInterface><SCSimulatorInterface>
+public class TestModelCentralDatabase extends AbstractDSOLModel<Duration, SCSimulatorInterface>
 {
     /** the serial version uid */
     private static final long serialVersionUID = 12L;
@@ -59,43 +58,43 @@ public class TestModelCentralDatabase extends AbstractDSOLModel<Duration, SCSimu
         try
         {
             this.startTimeMs = System.currentTimeMillis();
-            this.devsSimulator = (SCSimulatorInterface) simulator;
+            this.devsSimulator = (SCSimulatorInterface) this.simulator;
             if (this.devsSimulator instanceof AnimatorInterface)
             {
                 // First we create some background. We set the zValue to
                 // -Double.Min
                 // value to ensure that it is actually drawn "below" our actors and
                 // messages.
-                new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Dimension(1618, 716),
-                    this.devsSimulator, TestModel.class.getResource(
-                        "/nl/tudelft/simulation/supplychain/images/worldmap.gif"));
+                new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Bounds3d(1618, 716, 0),
+                        this.devsSimulator,
+                        TestModel.class.getResource("/nl/tudelft/simulation/supplychain/images/worldmap.gif"));
             }
             // create the bank
-            Bank ing = new Bank("ING", this.devsSimulator, new Point3d(0, 0, 0));
+            Bank ing = new Bank("ING", this.devsSimulator, new OrientedPoint3d(0, 0, 0));
             ing.setAnnualInterestRateNeg(0.080);
             ing.setAnnualInterestRatePos(0.025);
             // create a product
-            Product laptop = new Product("Laptop", Unit.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5,
-                MassUnit.KILOGRAM), 0.0);
+            Product laptop =
+                    new Product("Laptop", Unit.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM), 0.0);
 
             // create a ContentStore
             DatabaseWorkerInterface dbw = new CachingDatabaseWorker("TestModel_simulation");
 
             // create a manufacturer
-            Factory Factory = new Factory("Factory", this.devsSimulator, new Point3d(200, 200, 0), ing, new Money(50000.0,
-                MoneyUnit.USD), laptop, 1000, new CentralDatabaseContentStore(dbw));
+            Factory factory = new Factory("Factory", this.devsSimulator, new OrientedPoint3d(200, 200, 0), ing,
+                    new Money(50000.0, MoneyUnit.USD), laptop, 1000, new CentralDatabaseContentStore(dbw));
 
             // create a retailer
-            PCShop pcShop = new PCShop("PCshop", this.devsSimulator, new Point3d(20, 200, 0), ing, new Money(50000.0,
-                MoneyUnit.USD), laptop, 10, Factory, new CentralDatabaseContentStore(dbw));
+            PCShop pcShop = new PCShop("PCshop", this.devsSimulator, new OrientedPoint3d(20, 200, 0), ing,
+                    new Money(50000.0, MoneyUnit.USD), laptop, 10, factory, new CentralDatabaseContentStore(dbw));
 
             // create a customer
-            Client Client = new Client("Client", this.devsSimulator, new Point3d(100, 100, 0), ing, new Money(1500000.0,
-                MoneyUnit.USD), laptop, pcShop, new CentralDatabaseContentStore(dbw));
+            Client client = new Client("Client", this.devsSimulator, new OrientedPoint3d(100, 100, 0), ing,
+                    new Money(1500000.0, MoneyUnit.USD), laptop, pcShop, new CentralDatabaseContentStore(dbw));
 
             // schedule a remark that the simulation is ready
-            Duration endTime = new Duration(simulator.getReplication().getTreatment().getRunLength().doubleValue() - 0.001,
-                DurationUnit.SI);
+            Duration endTime =
+                    new Duration(this.simulator.getReplication().getRunLength().doubleValue() - 0.001, DurationUnit.SI);
             this.devsSimulator.scheduleEventRel(endTime, this, this, "endSimulation", new Serializable[] {});
         }
         catch (Exception e)

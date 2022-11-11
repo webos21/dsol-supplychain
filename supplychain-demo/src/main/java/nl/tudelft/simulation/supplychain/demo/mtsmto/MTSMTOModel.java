@@ -35,7 +35,7 @@ import nl.tudelft.simulation.supplychain.test.TestModel;
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public class MTSMTOModel extends AbstractDSOLModel<Duration, SCSimulatorInterface><SCSimulatorInterface>
+public class MTSMTOModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
 {
     /** the serial version uid */
     private static final long serialVersionUID = 12L;
@@ -90,52 +90,52 @@ public class MTSMTOModel extends AbstractDSOLModel<Duration, SCSimulatorInterfac
             pcBOM.add(monitor, 1.0);
 
             // create the bank
-            Bank ing = new Bank("ING", getSimulator(), new Point3d(0, 0, 0));
+            Bank ing = new Bank("ING", getSimulator(), new OrientedPoint3d(0, 0, 0));
             ing.setAnnualInterestRateNeg(0.080);
             ing.setAnnualInterestRatePos(0.025);
 
             // we create two yellow page 'domains', one between the customers and the retailers,
             // and one between the retailers, manufacturers, and suppliers
-            DemoYP ypCustomerMTS = new DemoYP("YP_customer_MTS", getSimulator(), new Point3d(-300, -270, 1), ing);
-            DemoYP ypCustomerMTO = new DemoYP("YP_customer_MTO", getSimulator(), new Point3d(-300, 30, 1), ing);
-            DemoYP ypProductionMTS = new DemoYP("YP_production_MTS", getSimulator(), new Point3d(100, -270, 1), ing);
-            DemoYP ypProductionMTO = new DemoYP("YP_production_MTO", getSimulator(), new Point3d(100, 30, 1), ing);
+            DemoYP ypCustomerMTS = new DemoYP("YP_customer_MTS", getSimulator(), new OrientedPoint3d(-300, -270, 1), ing);
+            DemoYP ypCustomerMTO = new DemoYP("YP_customer_MTO", getSimulator(), new OrientedPoint3d(-300, 30, 1), ing);
+            DemoYP ypProductionMTS = new DemoYP("YP_production_MTS", getSimulator(), new OrientedPoint3d(100, -270, 1), ing);
+            DemoYP ypProductionMTO = new DemoYP("YP_production_MTO", getSimulator(), new OrientedPoint3d(100, 30, 1), ing);
 
             // Markets
-            DemoMarket marketMTS = new DemoMarket("Market_MTS", getSimulator(), new Point3d(-360, -150, 1), ing, new Money(
+            DemoMarket marketMTS = new DemoMarket("Market_MTS", getSimulator(), new OrientedPoint3d(-360, -150, 1), ing, new Money(
                 10000.0, MoneyUnit.USD), pc, ypCustomerMTS, streamMTS);
-            DemoMarket marketMTO = new DemoMarket("Market_MTO", getSimulator(), new Point3d(-360, 150, 1), ing, new Money(
+            DemoMarket marketMTO = new DemoMarket("Market_MTO", getSimulator(), new OrientedPoint3d(-360, 150, 1), ing, new Money(
                 10000.0, MoneyUnit.USD), pc, ypCustomerMTO, streamMTO);
 
             // Retailers
             DemoRetailer[] mtsRet = new DemoRetailer[5];
-            mtsRet[0] = new DemoRetailer("Seattle_MTS", getSimulator(), new Point3d(-200, -270, 1), ing, new Money(100000,
+            mtsRet[0] = new DemoRetailer("Seattle_MTS", getSimulator(), new OrientedPoint3d(-200, -270, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            mtsRet[1] = new DemoRetailer("LosAngeles_MTS", getSimulator(), new Point3d(-200, -210, 1), ing, new Money(100000,
+            mtsRet[1] = new DemoRetailer("LosAngeles_MTS", getSimulator(), new OrientedPoint3d(-200, -210, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            mtsRet[2] = new DemoRetailer("NewYork_MTS", getSimulator(), new Point3d(-200, -150, 1), ing, new Money(100000,
+            mtsRet[2] = new DemoRetailer("NewYork_MTS", getSimulator(), new OrientedPoint3d(-200, -150, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            mtsRet[3] = new DemoRetailer("Washington_MTS", getSimulator(), new Point3d(-200, -90, 1), ing, new Money(100000,
+            mtsRet[3] = new DemoRetailer("Washington_MTS", getSimulator(), new OrientedPoint3d(-200, -90, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            mtsRet[4] = new DemoRetailer("Miami_MTS", getSimulator(), new Point3d(-200, -30, 1), ing, new Money(100000,
+            mtsRet[4] = new DemoRetailer("Miami_MTS", getSimulator(), new OrientedPoint3d(-200, -30, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
 
             DemoRetailer[] mtoRet = new DemoRetailer[5];
-            mtoRet[0] = new DemoRetailer("Seattle_MTO", getSimulator(), new Point3d(-200, 30, 1), ing, new Money(100000,
+            mtoRet[0] = new DemoRetailer("Seattle_MTO", getSimulator(), new OrientedPoint3d(-200, 30, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
-            mtoRet[1] = new DemoRetailer("LosAngeles_MTO", getSimulator(), new Point3d(-200, 90, 1), ing, new Money(100000,
+            mtoRet[1] = new DemoRetailer("LosAngeles_MTO", getSimulator(), new OrientedPoint3d(-200, 90, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
-            mtoRet[2] = new DemoRetailer("NewYork_MTO", getSimulator(), new Point3d(-200, 150, 1), ing, new Money(100000,
+            mtoRet[2] = new DemoRetailer("NewYork_MTO", getSimulator(), new OrientedPoint3d(-200, 150, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
-            mtoRet[3] = new DemoRetailer("Washington_MTO", getSimulator(), new Point3d(-200, 210, 1), ing, new Money(100000,
+            mtoRet[3] = new DemoRetailer("Washington_MTO", getSimulator(), new OrientedPoint3d(-200, 210, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
-            mtoRet[4] = new DemoRetailer("Miami_MTO", getSimulator(), new Point3d(-200, 270, 1), ing, new Money(100000,
+            mtoRet[4] = new DemoRetailer("Miami_MTO", getSimulator(), new OrientedPoint3d(-200, 270, 1), ing, new Money(100000,
                 MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
 
             // Manufacturers
-            DemoManufacturer mtsMan = new DemoManufacturer("MexicoCity_MTS", getSimulator(), new Point3d(0, -150, 1), ing,
+            DemoManufacturer mtsMan = new DemoManufacturer("MexicoCity_MTS", getSimulator(), new OrientedPoint3d(0, -150, 1), ing,
                 new Money(1000000, MoneyUnit.USD), pc, 50, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            DemoManufacturer mtoMan = new DemoManufacturer("MexicoCity_MTO", getSimulator(), new Point3d(0, 150, 1), ing,
+            DemoManufacturer mtoMan = new DemoManufacturer("MexicoCity_MTO", getSimulator(), new OrientedPoint3d(0, 150, 1), ing,
                 new Money(1000000, MoneyUnit.USD), pc, 50, ypCustomerMTO, ypProductionMTO, streamMTO, false);
 
             // Suppliers

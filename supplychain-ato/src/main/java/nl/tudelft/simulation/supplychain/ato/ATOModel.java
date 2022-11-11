@@ -33,7 +33,7 @@ import nl.tudelft.simulation.supplychain.product.Unit;
  *         "http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh
  *         Zohoori</a>
  */
-public class ATOModel extends AbstractDSOLModel<Duration, SCSimulatorInterface><SCSimulatorInterface>
+public class ATOModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
 {
     /** */
     private static final long serialVersionUID = 1L;
@@ -114,58 +114,58 @@ public class ATOModel extends AbstractDSOLModel<Duration, SCSimulatorInterface><
                 finalProductBom.add(partD, 1);
 
                 // create the bank
-                Bank ing = new Bank("ING", getSimulator(), new Point3d(0, 0, 0));
+                Bank ing = new Bank("ING", getSimulator(), new OrientedPoint3d(0, 0, 0));
                 ing.setAnnualInterestRateNeg(0.080);
                 ing.setAnnualInterestRatePos(0.025);
 
                 // Yellow page
-                ATOYP ypCustomer = new ATOYP("yellow-page-customer", getSimulator(), new Point3d(-300, -270, 1), ing);
-                ATOYP ypManufacturer = new ATOYP("yellow-page-manufacturer", getSimulator(), new Point3d(-300, -270, 1),
+                ATOYP ypCustomer = new ATOYP("yellow-page-customer", getSimulator(), new OrientedPoint3d(-300, -270, 1), ing);
+                ATOYP ypManufacturer = new ATOYP("yellow-page-manufacturer", getSimulator(), new OrientedPoint3d(-300, -270, 1),
                     ing);
-                ATOYP ypSupplier = new ATOYP("yellow-page-supplier", getSimulator(), new Point3d(-300, -270, 1), ing);
+                ATOYP ypSupplier = new ATOYP("yellow-page-supplier", getSimulator(), new OrientedPoint3d(-300, -270, 1), ing);
 
                 // customer
                 // do we need to define order amount?
-                ATOMarket CustomerUK = new ATOMarket("customer-UK", getSimulator(), new Point3d(-360, -150, 1), ing,
+                ATOMarket CustomerUK = new ATOMarket("customer-UK", getSimulator(), new OrientedPoint3d(-360, -150, 1), ing,
                     new Money(10000.0, MoneyUnit.USD), finalProduct, ypCustomer, streamATO);
-                ATOMarket CustomerTurkey = new ATOMarket("customer-Turkey", getSimulator(), new Point3d(-360, 150, 1), ing,
+                ATOMarket CustomerTurkey = new ATOMarket("customer-Turkey", getSimulator(), new OrientedPoint3d(-360, 150, 1), ing,
                     new Money(10000.0, MoneyUnit.USD), finalProduct, ypCustomer, streamATO);
 
                 // Manufacturer-fianlProduct
                 // why manufacturer need yp-customer? and why it does not need yp supplier?
                 // how to deal with sub-assembly?
                 ATOManufacturer manufacturerFNNL = new ATOManufacturer("manufacturer-finalProduct-NL", getSimulator(),
-                    new Point3d(0, -150, 1), ing, new Money(1000000, MoneyUnit.USD), finalProduct, 0, ypCustomer,
+                    new OrientedPoint3d(0, -150, 1), ing, new Money(1000000, MoneyUnit.USD), finalProduct, 0, ypCustomer,
                     ypManufacturer, streamATO, false);
                 // Manufacturer-subAssembly
                 ATOManufacturer manufacturerSANL = new ATOManufacturer("manufacturer-subAssembly-NL", getSimulator(),
-                    new Point3d(0, -150, 1), ing, new Money(1000000, MoneyUnit.USD), subAssembly, 10, ypCustomer,
+                    new OrientedPoint3d(0, -150, 1), ing, new Money(1000000, MoneyUnit.USD), subAssembly, 10, ypCustomer,
                     ypManufacturer, streamATO, true);
 
                 // how to create internalDemand for MTO suppliers who dont have restocking policy for creating internal demand?
                 // Supplier-1st tier-MTS
-                ATOSupplier SupPartA = new ATOSupplier("supplier-partA-Germany", getSimulator(), new Point3d(0, 150, 1), ing,
+                ATOSupplier SupPartA = new ATOSupplier("supplier-partA-Germany", getSimulator(), new OrientedPoint3d(0, 150, 1), ing,
                     new Money(1000000, MoneyUnit.USD), partA, 20, ypSupplier, streamATO, true);
 
-                ATOSupplier SupPartB = new ATOSupplier("supplier-partB-Italy", getSimulator(), new Point3d(0, 150, 1), ing,
+                ATOSupplier SupPartB = new ATOSupplier("supplier-partB-Italy", getSimulator(), new OrientedPoint3d(0, 150, 1), ing,
                     new Money(1000000, MoneyUnit.USD), partB, 30, ypSupplier, streamATO, true);
 
                 // Supplier-1st tier-MTo
-                ATOSupplier SupPartC = new ATOSupplier("supplier-partC-France", getSimulator(), new Point3d(0, 150, 1), ing,
+                ATOSupplier SupPartC = new ATOSupplier("supplier-partC-France", getSimulator(), new OrientedPoint3d(0, 150, 1), ing,
                     new Money(1000000, MoneyUnit.USD), partC, 0, ypSupplier, streamATO, false);
-                ATOSupplier SupPartD = new ATOSupplier("supplier-partD-NL", getSimulator(), new Point3d(0, 150, 1), ing,
+                ATOSupplier SupPartD = new ATOSupplier("supplier-partD-NL", getSimulator(), new OrientedPoint3d(0, 150, 1), ing,
                     new Money(1000000, MoneyUnit.USD), partD, 0, ypSupplier, streamATO, false);
 
                 // Supplier-2nd tier-MTS
-                ATOSupplier SupPartCa = new ATOSupplier("supplier-partCa-Poland", getSimulator(), new Point3d(0, 150, 1),
+                ATOSupplier SupPartCa = new ATOSupplier("supplier-partCa-Poland", getSimulator(), new OrientedPoint3d(0, 150, 1),
                     ing, new Money(1000000, MoneyUnit.USD), partCa, 10, ypSupplier, streamATO, true);
-                ATOSupplier SupPartCb = new ATOSupplier("supplier-partCb-Denmark", getSimulator(), new Point3d(0, 150, 1),
+                ATOSupplier SupPartCb = new ATOSupplier("supplier-partCb-Denmark", getSimulator(), new OrientedPoint3d(0, 150, 1),
                     ing, new Money(1000000, MoneyUnit.USD), partCb, 20, ypSupplier, streamATO, true);
-                ATOSupplier SupPartCc = new ATOSupplier("supplier-partCb-Austria", getSimulator(), new Point3d(0, 150, 1),
+                ATOSupplier SupPartCc = new ATOSupplier("supplier-partCb-Austria", getSimulator(), new OrientedPoint3d(0, 150, 1),
                     ing, new Money(1000000, MoneyUnit.USD), partCc, 25, ypSupplier, streamATO, true);
-                ATOSupplier SupPartDa = new ATOSupplier("supplier-partDa-UK", getSimulator(), new Point3d(0, 150, 1), ing,
+                ATOSupplier SupPartDa = new ATOSupplier("supplier-partDa-UK", getSimulator(), new OrientedPoint3d(0, 150, 1), ing,
                     new Money(1000000, MoneyUnit.USD), partDa, 30, ypSupplier, streamATO, true);
-                ATOSupplier SupPartDb = new ATOSupplier("supplier-partDb-Spain", getSimulator(), new Point3d(0, 150, 1), ing,
+                ATOSupplier SupPartDb = new ATOSupplier("supplier-partDb-Spain", getSimulator(), new OrientedPoint3d(0, 150, 1), ing,
                     new Money(1000000, MoneyUnit.USD), partDb, 50, ypSupplier, streamATO, true);
             }
         }

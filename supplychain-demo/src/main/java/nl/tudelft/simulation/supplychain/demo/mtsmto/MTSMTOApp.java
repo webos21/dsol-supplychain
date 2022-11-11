@@ -18,7 +18,7 @@ import nl.tudelft.simulation.dsol.experiment.Replication;
 import nl.tudelft.simulation.dsol.experiment.ReplicationMode;
 import nl.tudelft.simulation.dsol.model.DSOLModel;
 import nl.tudelft.simulation.dsol.simtime.SimTimeDoubleUnit;
-import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeClock;
+import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.SimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.animation.D2.AnimationPanel;
 import nl.tudelft.simulation.dsol.swing.gui.DSOLApplication;
@@ -60,7 +60,7 @@ public class MTSMTOApp extends DSOLApplication
         CategoryLogger.setAllLogLevel(Level.TRACE);
         CategoryLogger.setAllLogMessageFormat("{level} - {class_name}.{method}:{line}  {message}");
 
-        DEVSRealTimeClock.TimeDoubleUnit animator = new DEVSRealTimeClock.TimeDoubleUnit("MTSMTO");
+        DEVSRealTimeAnimator.TimeDoubleUnit animator = new DEVSRealTimeAnimator.TimeDoubleUnit("MTSMTO");
         DSOLModel<Duration, SCSimulatorInterface> model = new MTSMTOModel(animator);
         Replication.TimeDoubleUnit replication = Replication.TimeDoubleUnit.create("rep1", Time.ZERO, Duration.ZERO,
                 new Duration(3000.0, DurationUnit.HOUR), model);

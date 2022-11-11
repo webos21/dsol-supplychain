@@ -17,7 +17,7 @@ import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.experiment.Replication;
 import nl.tudelft.simulation.dsol.experiment.ReplicationMode;
 import nl.tudelft.simulation.dsol.simtime.SimTimeDoubleUnit;
-import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeClock;
+import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.SimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.animation.D2.AnimationPanel;
 import nl.tudelft.simulation.dsol.swing.gui.DSOLApplication;
@@ -42,7 +42,7 @@ public class TestModelApp extends DSOLApplication
      * @param title
      * @param panel
      */
-    public TestModelApp(String title, DSOLPanel<Time, Duration, SimTimeDoubleUnit> panel)
+    public TestModelApp(final String title, final DSOLPanel panel)
     {
         super(title, panel);
     }
@@ -59,7 +59,7 @@ public class TestModelApp extends DSOLApplication
         CategoryLogger.setAllLogLevel(Level.INFO);
         CategoryLogger.setAllLogMessageFormat("{level} - {class_name}.{method}:{line}  {message}");
 
-        DEVSRealTimeClock.TimeDoubleUnit animator = new DEVSRealTimeClock.TimeDoubleUnit("MTSMTO");
+        DEVSRealTimeAnimator.TimeDoubleUnit animator = new DEVSRealTimeAnimator.TimeDoubleUnit("MTSMTO");
         TestModel model = new TestModel(animator);
         Replication.TimeDoubleUnit replication = Replication.TimeDoubleUnit.create("rep1", Time.ZERO, Duration.ZERO,
                 new Duration(1800.0, DurationUnit.HOUR), model);

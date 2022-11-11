@@ -1,14 +1,13 @@
 package nl.tudelft.simulation.supplychain.test;
 
-import java.awt.Dimension;
 import java.io.Serializable;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.unit.MassUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Mass;
+import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
-import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
@@ -30,12 +29,12 @@ import nl.tudelft.simulation.supplychain.product.Unit;
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface><SCSimulatorInterface>
+public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** timing run-time */
+    /** timing run-time. */
     private long startTimeMs = 0;
 
     /** the simulator. */
@@ -54,7 +53,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
     Client client;
 
     /**
-     * constructs a new TestModel
+     * constructs a new TestModel.
      * @param simulator the simulator
      */
     public TestModel(final SCSimulatorInterface simulator)
@@ -70,18 +69,18 @@ public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
         try
         {
             this.startTimeMs = System.currentTimeMillis();
-            this.devsSimulator = (SCSimulatorInterface) simulator;
+            this.devsSimulator = (SCSimulatorInterface) this.simulator;
             if (this.devsSimulator instanceof AnimatorInterface)
             {
                 // First we create some background. We set the zValue to -Double.Min value to ensure that it is actually drawn
                 // "below" our actors and messages.
-                new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Dimension(1618, 716),
+                new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Bounds3d(1618, 716, 0),
                     this.devsSimulator, TestModel.class.getResource(
                         "/nl/tudelft/simulation/supplychain/images/worldmap.gif"));
             }
 
             // create the bank
-            Bank ing = new Bank("ING", this.devsSimulator, new Point3d(0, 0, 0));
+            Bank ing = new Bank("ING", this.devsSimulator, new OrientedPoint3d(0, 0, 0));
             ing.setAnnualInterestRateNeg(0.080);
             ing.setAnnualInterestRatePos(0.025);
 
@@ -90,19 +89,19 @@ public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
                 MassUnit.KILOGRAM), 0.0);
 
             // create a manufacturer
-            this.factory = new Factory("Factory", this.devsSimulator, new Point3d(200, 200, 0), ing, new Money(50000.0,
+            this.factory = new Factory("Factory", this.devsSimulator, new OrientedPoint3d(200, 200, 0), ing, new Money(50000.0,
                 MoneyUnit.USD), this.laptop, 1000, new LeanContentStore(this.devsSimulator));
 
             // create a retailer
-            this.pcShop = new PCShop("PCshop", this.devsSimulator, new Point3d(20, 200, 0), ing, new Money(50000.0,
+            this.pcShop = new PCShop("PCshop", this.devsSimulator, new OrientedPoint3d(20, 200, 0), ing, new Money(50000.0,
                 MoneyUnit.USD), this.laptop, 10, this.factory, new LeanContentStore(this.devsSimulator));
 
             // create a customer
-            this.client = new Client("Client", this.devsSimulator, new Point3d(100, 100, 0), ing, new Money(1500000.0,
+            this.client = new Client("Client", this.devsSimulator, new OrientedPoint3d(100, 100, 0), ing, new Money(1500000.0,
                 MoneyUnit.USD), this.laptop, this.pcShop, new LeanContentStore(this.devsSimulator));
 
             // schedule a remark that the simulation is ready
-            Duration endTime = new Duration(simulator.getReplication().getTreatment().getRunLength().doubleValue() - 0.001,
+            Duration endTime = new Duration(this.simulator.getReplication().getRunLength().doubleValue() - 0.001,
                 DurationUnit.SI);
             this.devsSimulator.scheduleEventRel(endTime, this, this, "endSimulation", new Serializable[] {});
 

@@ -58,7 +58,7 @@ import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEvent;
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEventInterface;
 import nl.tudelft.simulation.dsol.simtime.SimTimeDoubleUnit;
-import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeClock;
+import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulator;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
 import nl.tudelft.simulation.dsol.simulators.SimulatorInterface;
@@ -167,7 +167,7 @@ public class ControlPanel extends JPanel
         this.simulator.addListener(this, SimulatorInterface.END_REPLICATION_EVENT);
         this.simulator.addListener(this, SimulatorInterface.START_EVENT);
         this.simulator.addListener(this, SimulatorInterface.STOP_EVENT);
-        this.simulator.addListener(this, DEVSRealTimeClock.CHANGE_SPEED_FACTOR_EVENT);
+        this.simulator.addListener(this, DEVSRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT);
     }
 
     /**
@@ -796,9 +796,9 @@ public class ControlPanel extends JPanel
              */
 
             // initial value of simulation speed
-            if (simulator instanceof DEVSRealTimeClock)
+            if (simulator instanceof DEVSRealTimeAnimator)
             {
-                DEVSRealTimeClock<?, ?, ?> clock = (DEVSRealTimeClock<?, ?, ?>) simulator;
+                DEVSRealTimeAnimator<?, ?, ?> clock = (DEVSRealTimeAnimator<?, ?, ?>) simulator;
                 clock.setSpeedFactor(TimeWarpPanel.this.tickValues.get(this.slider.getValue()));
             }
 
@@ -809,9 +809,9 @@ public class ControlPanel extends JPanel
                 public void stateChanged(final ChangeEvent ce)
                 {
                     JSlider source = (JSlider) ce.getSource();
-                    if (!source.getValueIsAdjusting() && simulator instanceof DEVSRealTimeClock)
+                    if (!source.getValueIsAdjusting() && simulator instanceof DEVSRealTimeAnimator)
                     {
-                        DEVSRealTimeClock<?, ?, ?> clock = (DEVSRealTimeClock<?, ?, ?>) simulator;
+                        DEVSRealTimeAnimator<?, ?, ?> clock = (DEVSRealTimeAnimator<?, ?, ?>) simulator;
                         clock.setSpeedFactor(((TimeWarpPanel) source.getParent()).getTickValues().get(source.getValue()));
                     }
                 }
@@ -1128,9 +1128,9 @@ public class ControlPanel extends JPanel
         if (event.getType().equals(SimulatorInterface.END_REPLICATION_EVENT)
                 || event.getType().equals(SimulatorInterface.START_EVENT)
                 || event.getType().equals(SimulatorInterface.STOP_EVENT)
-                || event.getType().equals(DEVSRealTimeClock.CHANGE_SPEED_FACTOR_EVENT))
+                || event.getType().equals(DEVSRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT))
         {
-            if (event.getType().equals(DEVSRealTimeClock.CHANGE_SPEED_FACTOR_EVENT))
+            if (event.getType().equals(DEVSRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT))
             {
                 this.timeWarpPanel.setSpeedFactor((Double) event.getContent());
             }

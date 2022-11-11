@@ -7,7 +7,7 @@ import javax.naming.NamingException;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
@@ -72,7 +72,7 @@ public class Client extends Customer
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public Client(final String name, final SCSimulatorInterface simulator, final Point3d position,
+    public Client(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
         final Bank bank, final Money initialBankAccount, final Product product, final Retailer retailer,
         final ContentStoreInterface contentStore) throws RemoteException, NamingException
     {
@@ -140,7 +140,7 @@ public class Client extends Customer
         //
         if (this.simulator instanceof AnimatorInterface)
         {
-            XYChart bankChart = new XYChart("BankAccount " + this.name);
+            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + this.name);
             bankChart.add("bank account", this.bankAccount, BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
         }
     }

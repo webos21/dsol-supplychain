@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
 
+import org.djutils.draw.point.OrientedPoint3d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.animation.D2.Renderable2DInterface;
@@ -22,7 +23,7 @@ import nl.tudelft.simulation.dsol.swing.introspection.gui.IntrospectionDialog;
 public class MouseEditor extends InputListener
 {
     /**
-     * constructs a new MouseEditor
+     * constructs a new MouseEditor.
      * @param panel the animation panel
      */
     public MouseEditor(final AnimationPanel panel)
@@ -42,7 +43,7 @@ public class MouseEditor extends InputListener
             for (Iterator i = targets.iterator(); i.hasNext();)
             {
                 Renderable2DInterface next = (Renderable2DInterface) i.next();
-                double z = next.getSource().getLocation().z;
+                double z = ((OrientedPoint3d) next.getSource().getLocation()).z;
                 if (z > zValue)
                 {
                     zValue = z;

@@ -31,7 +31,7 @@ public interface WrappableSimulation
      * @throws SimRuntimeException on ???
      * @throws NamingException when context for the animation cannot be created
      */
-    SimulatorInterface.TimeDoubleUnit buildSimulator(String id, Time startTime, Duration warmupPeriod, Duration runLength)
+    SCSimulatorInterface buildSimulator(String id, Time startTime, Duration warmupPeriod, Duration runLength)
         throws SimRuntimeException, NamingException;
 
     /**

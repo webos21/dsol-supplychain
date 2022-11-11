@@ -456,7 +456,7 @@ public abstract class AbstractWrappableAnimation implements WrappableAnimation, 
      * Make additional tabs in the main simulation window.
      * @param simulator SimpleSimulatorInterface; the simulator
      */
-    protected void addTabs(final SimulatorInterface.TimeDoubleUnit simulator)
+    protected void addTabs(final SCSimulatorInterface simulator)
     {
         // Override this method to add custom tabs
     }

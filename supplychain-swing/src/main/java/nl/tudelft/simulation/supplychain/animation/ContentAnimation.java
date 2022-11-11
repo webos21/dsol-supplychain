@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds;
+import org.djutils.draw.point.OrientedPoint3d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
@@ -13,7 +14,6 @@ import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.animation.interpolation.LinearInterpolation;
 import nl.tudelft.simulation.language.d3.BoundingBox;
-import nl.tudelft.simulation.language.d3.DirectedPoint;
 import nl.tudelft.simulation.supplychain.content.Content;
 
 /**
@@ -47,7 +47,7 @@ public class ContentAnimation implements Locatable, Serializable
     private String imageURLlName = null;
 
     /** the image renderable. */
-    private SingleImageRenderable imageRenderable = null;
+    private SingleImageRenderable<ContentAnimation> imageRenderable = null;
 
     /** the animation delay for the content. */
     private Duration delay = Duration.ZERO;
@@ -104,7 +104,7 @@ public class ContentAnimation implements Locatable, Serializable
                     content.getReceiver().getLocation());
 
             // We load the image
-            this.imageRenderable = new SingleImageRenderable<>(this, this.simulator, imageURL);
+            this.imageRenderable = new SingleImageRenderable<ContentAnimation>(this, this.simulator, imageURL);
             // new GISContentAnimation(this, this.simulator, imageURL);
 
             // We do rotate and thus not flip the image
@@ -124,10 +124,10 @@ public class ContentAnimation implements Locatable, Serializable
 
     /** {@inheritDoc} */
     @Override
-    public DirectedPoint getLocation() throws RemoteException
+    public OrientedPoint3d getLocation() throws RemoteException
     {
-        DirectedPoint dp = this.linearInterpolation.getLocation(this.simulator.getSimulatorTime().si);
-        return new DirectedPoint(dp.x, dp.y, 100.0);
+        OrientedPoint3d dp = this.linearInterpolation.getLocation(this.simulator.getSimulatorTime().si);
+        return new OrientedPoint3d(dp.x, dp.y, 100.0);
     }
 
     /** {@inheritDoc} */

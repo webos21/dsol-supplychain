@@ -9,12 +9,13 @@ import java.rmi.RemoteException;
 
 import javax.naming.NamingException;
 
+import org.djutils.draw.point.OrientedPoint3d;
+
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.D2.Renderable2DInterface;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.SimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.animation.D2.AnimationPanel;
-import nl.tudelft.simulation.language.d3.DirectedPoint;
 
 /**
  * The GISContentAnimation is useful in combination with a GIS based map as a background image. Based on the zoom level of an
@@ -66,7 +67,7 @@ public class GISContentAnimation extends SingleImageRenderable
      * @throws NamingException
      * @throws RemoteException
      */
-    public GISContentAnimation(final DirectedPoint staticLocation, final Dimension size,
+    public GISContentAnimation(final OrientedPoint3d staticLocation, final Dimension size,
             final SimulatorInterface.TimeDoubleUnit simulator, final URL image) throws RemoteException, NamingException
     {
         super(staticLocation, size, simulator, image);

@@ -7,13 +7,13 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.unit.MassUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Mass;
+import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
-import nl.tudelft.simulation.language.d3.DirectedPoint;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimator;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.memory.LeanContentStore;
@@ -75,7 +75,7 @@ public class TestModel extends AbstractDSOLModel.TimeDoubleUnit<SCSimulatorInter
             {
                 // First we create some background. We set the zValue to -Double.Min value to ensure that it is actually drawn
                 // "below" our actors and messages.
-                new SingleImageRenderable<>(new DirectedPoint(0.0, 0.0, -Double.MIN_VALUE), new Dimension(1618, 716),
+                new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Dimension(1618, 716),
                     this.devsSimulator, TestModel.class.getResource(
                         "/nl/tudelft/simulation/supplychain/images/worldmap.gif"));
             }

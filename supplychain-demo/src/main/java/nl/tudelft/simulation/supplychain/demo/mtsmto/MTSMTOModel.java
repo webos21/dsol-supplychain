@@ -35,7 +35,7 @@ import nl.tudelft.simulation.supplychain.test.TestModel;
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public class MTSMTOModel extends AbstractDSOLModel.TimeDoubleUnit<SCSimulatorInterface>
+public class MTSMTOModel extends AbstractDSOLModel<Duration, SCSimulatorInterface><SCSimulatorInterface>
 {
     /** the serial version uid */
     private static final long serialVersionUID = 12L;

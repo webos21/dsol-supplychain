@@ -33,7 +33,7 @@ import nl.tudelft.simulation.supplychain.product.Unit;
  *         "http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh
  *         Zohoori</a>
  */
-public class ATOModel extends AbstractDSOLModel.TimeDoubleUnit<SCSimulatorInterface>
+public class ATOModel extends AbstractDSOLModel<Duration, SCSimulatorInterface><SCSimulatorInterface>
 {
     /** */
     private static final long serialVersionUID = 1L;

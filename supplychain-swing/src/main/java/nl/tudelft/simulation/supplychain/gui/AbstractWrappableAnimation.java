@@ -42,6 +42,7 @@ import javax.swing.event.ChangeListener;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.gis.GisRenderable2D;
@@ -49,7 +50,6 @@ import nl.tudelft.simulation.dsol.experiment.Replication;
 import nl.tudelft.simulation.dsol.experiment.ReplicationMode;
 import nl.tudelft.simulation.dsol.model.DSOLModel;
 import nl.tudelft.simulation.dsol.simulators.DEVSAnimator;
-import nl.tudelft.simulation.dsol.simulators.SimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.animation.D2.AnimationPanel;
 import nl.tudelft.simulation.jstats.streams.MersenneTwister;
 import nl.tudelft.simulation.language.DSOLException;
@@ -90,7 +90,7 @@ public abstract class AbstractWrappableAnimation implements WrappableAnimation, 
     private Duration savedRunLength;
 
     /** The model. */
-    private DSOLModel.TimeDoubleUnit model;
+    private DSOLModel<Duration, SCSimulatorInterface> model;
 
     /** Override the replication number by this value if non-null. */
     private Integer replication = 0;
@@ -113,12 +113,12 @@ public abstract class AbstractWrappableAnimation implements WrappableAnimation, 
      * @throws NamingException when context for the animation cannot be created
      */
     @SuppressWarnings("checkstyle:designforextension")
-    protected DEVSAnimator.TimeDoubleUnit buildSimpleAnimator(final String id, final Time startTime,
-        final Duration warmupPeriod, final Duration runLength, final DSOLModel.TimeDoubleUnit scModel)
+    protected DEVSAnimator<Duration> buildSimpleAnimator(final String id, final Time startTime,
+        final Duration warmupPeriod, final Duration runLength, final DSOLModel<Duration, SCSimulatorInterface> scModel)
         throws SimRuntimeException, NamingException
     {
         this.id = id;
-        DEVSAnimator.TimeDoubleUnit animator = new DEVSAnimator.TimeDoubleUnit(id);
+        DEVSAnimator<Duration> animator = new DEVSAnimator<Duration>(id);
         animator.setPauseOnError(true);
         animator.setAnimationDelay(20); // 50 Hz animation update
         Replication.TimeDoubleUnit rep = Replication.TimeDoubleUnit.create("rep" + ++this.replication, startTime,
@@ -141,11 +141,11 @@ public abstract class AbstractWrappableAnimation implements WrappableAnimation, 
      * @throws NamingException when context for the animation cannot be created
      */
     @SuppressWarnings("checkstyle:designforextension")
-    protected DEVSAnimator.TimeDoubleUnit buildSimpleAnimator(final String id, final Time startTime,
-        final Duration warmupPeriod, final Duration runLength, final DSOLModel.TimeDoubleUnit scModel,
+    protected DEVSAnimator<Duration> buildSimpleAnimator(final String id, final Time startTime,
+        final Duration warmupPeriod, final Duration runLength, final DSOLModel<Duration, SCSimulatorInterface> scModel,
         final int replicationNumber) throws SimRuntimeException, NamingException
     {
-        DEVSAnimator.TimeDoubleUnit animator = new DEVSAnimator.TimeDoubleUnit(id);
+        DEVSAnimator<Duration> animator = new DEVSAnimator<Duration>(id);
         animator.setPauseOnError(true);
         animator.setAnimationDelay(20); // 50 Hz animation update
         Replication.TimeDoubleUnit rep = Replication.TimeDoubleUnit.create("rep" + replicationNumber, startTime,
@@ -159,7 +159,7 @@ public abstract class AbstractWrappableAnimation implements WrappableAnimation, 
     /** {@inheritDoc} */
     @Override
     @SuppressWarnings("checkstyle:designforextension")
-    public DEVSAnimator.TimeDoubleUnit buildAnimator(final String id, final Time startTime, final Duration warmupPeriod,
+    public DEVSAnimator<Duration> buildAnimator(final String id, final Time startTime, final Duration warmupPeriod,
         final Duration runLength, final Rectangle rect, final boolean eoc) throws SimRuntimeException, NamingException
     {
         this.exitOnClose = eoc;
@@ -173,7 +173,7 @@ public abstract class AbstractWrappableAnimation implements WrappableAnimation, 
         }
 
         // Animator
-        final DEVSAnimator.TimeDoubleUnit simulator = null == this.replication ? buildSimpleAnimator(id, startTime,
+        final DEVSAnimator<Duration> simulator = null == this.replication ? buildSimpleAnimator(id, startTime,
             warmupPeriod, runLength, this.model) : buildSimpleAnimator(id, startTime, warmupPeriod, runLength, this.model,
                 this.replication);
         try
@@ -583,11 +583,11 @@ public abstract class AbstractWrappableAnimation implements WrappableAnimation, 
     /**
      * @return the demo model. Don't forget to keep a local copy.
      */
-    protected abstract DSOLModel.TimeDoubleUnit makeModel();
+    protected abstract DSOLModel<Duration, SCSimulatorInterface> makeModel();
 
     /** {@inheritDoc} */
     @Override
-    public final DEVSAnimator.TimeDoubleUnit rebuildSimulator(final Rectangle rect) throws SimRuntimeException,
+    public final DEVSAnimator<Duration> rebuildSimulator(final Rectangle rect) throws SimRuntimeException,
         NamingException
     {
         return buildAnimator(getId(), this.savedStartTime, this.savedWarmupPeriod, this.savedRunLength, rect, this.exitOnClose);

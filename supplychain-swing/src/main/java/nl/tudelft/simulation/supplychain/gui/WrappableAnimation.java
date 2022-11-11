@@ -35,7 +35,7 @@ public interface WrappableAnimation
      * @throws SimRuntimeException on ???
      * @throws NamingException when context for the animation cannot be created
      */
-    DEVSAnimator.TimeDoubleUnit buildAnimator(String id, Time startTime, Duration warmupPeriod, Duration runLength, Rectangle rect,
+    DEVSAnimator<Duration> buildAnimator(String id, Time startTime, Duration warmupPeriod, Duration runLength, Rectangle rect,
             boolean exitOnClose) throws SimRuntimeException, NamingException;
 
     /**
@@ -45,7 +45,7 @@ public interface WrappableAnimation
      * @throws SimRuntimeException on ???
      * @throws NamingException when context for the animation cannot be created
      */
-    DEVSAnimator.TimeDoubleUnit rebuildSimulator(Rectangle rect) throws SimRuntimeException, NamingException;
+    DEVSAnimator<Duration> rebuildSimulator(Rectangle rect) throws SimRuntimeException, NamingException;
 
     /**
      * Return a very short description of the simulation.

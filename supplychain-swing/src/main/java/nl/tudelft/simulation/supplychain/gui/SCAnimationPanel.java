@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.Event;
 import org.djutils.event.EventInterface;
 import org.djutils.event.EventListenerInterface;
@@ -107,7 +108,7 @@ public class SCAnimationPanel extends SCSimulationPanel implements ActionListene
      * @throws RemoteException when notification of the animation panel fails
      * @throws DSOLException on dsol error
      */
-    public SCAnimationPanel(final Rectangle2D extent, final Dimension size, final DEVSAnimator.TimeDoubleUnit simulator,
+    public SCAnimationPanel(final Rectangle2D extent, final Dimension size, final DEVSAnimator<Duration> simulator,
             final WrappableAnimation wrappableAnimation) throws RemoteException, DSOLException
     {
         super(simulator, wrappableAnimation);

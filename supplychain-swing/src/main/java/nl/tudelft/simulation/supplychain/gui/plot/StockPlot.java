@@ -4,15 +4,13 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventInterface;
 import org.djutils.event.EventListenerInterface;
 import org.djutils.event.EventProducer;
-import org.djutils.event.EventType;
 import org.djutils.event.TimedEvent;
+import org.djutils.event.TimedEventType;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.dsol.simtime.SimTimeDoubleUnit;
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -33,13 +31,13 @@ public class StockPlot extends XYChart
     private static final long serialVersionUID = 20200211L;
 
     /** */
-    private SimPersistent<Time, Duration, SimTimeDoubleUnit> actualPersistent;
+    private SimPersistent<Duration> actualPersistent;
 
     /** */
-    private SimPersistent<Time, Duration, SimTimeDoubleUnit> claimedPersistent;
+    private SimPersistent<Duration> claimedPersistent;
 
     /** */
-    private SimPersistent<Time, Duration, SimTimeDoubleUnit> orderedPersistent;
+    private SimPersistent<Duration> orderedPersistent;
 
     /**
      * @param simulator
@@ -48,21 +46,21 @@ public class StockPlot extends XYChart
      * @param product
      */
     @SuppressWarnings("static-access")
-    public StockPlot(SCSimulatorInterface simulator, String title, StockInterface stock, Product product)
+    public StockPlot(final SCSimulatorInterface simulator, final String title, final StockInterface stock, final Product product)
     {
         super(simulator, title);
         StockListener stockListener = new StockListener(simulator, stock, product);
         try
         {
             this.actualPersistent = new SimPersistent<>("actual stock " + title, simulator, stockListener,
-                StockListener.STOCK_ACTUAL_CHANGE_EVENT);
+                    StockListener.STOCK_ACTUAL_CHANGE_EVENT);
             this.claimedPersistent = new SimPersistent<>("claimed stock " + title, simulator, stockListener,
-                StockListener.STOCK_CLAIMED_CHANGE_EVENT);
+                    StockListener.STOCK_CLAIMED_CHANGE_EVENT);
             this.orderedPersistent = new SimPersistent<>("ordered stock " + title, simulator, stockListener,
-                StockListener.STOCK_ORDERED_CHANGE_EVENT);
-            add("actual stock", this.actualPersistent, SimPersistent.VALUE_EVENT);
-            add("claimed stock", this.claimedPersistent, SimPersistent.VALUE_EVENT);
-            add("ordered stock", this.orderedPersistent, SimPersistent.VALUE_EVENT);
+                    StockListener.STOCK_ORDERED_CHANGE_EVENT);
+            add("actual stock", this.actualPersistent, SimPersistent.TIMED_OBSERVATION_ADDED_EVENT);
+            add("claimed stock", this.claimedPersistent, SimPersistent.TIMED_OBSERVATION_ADDED_EVENT);
+            add("ordered stock", this.orderedPersistent, SimPersistent.TIMED_OBSERVATION_ADDED_EVENT);
         }
         catch (RemoteException exception)
         {
@@ -91,20 +89,20 @@ public class StockPlot extends XYChart
         private final SCSimulatorInterface simulator;
 
         /** An event to indicate stock levels changed */
-        static final EventType STOCK_ACTUAL_CHANGE_EVENT = new EventType("STOCK_ACTUAL_CHANGE_EVENT");
+        static final TimedEventType STOCK_ACTUAL_CHANGE_EVENT = new TimedEventType("STOCK_ACTUAL_CHANGE_EVENT");
 
         /** An event to indicate stock levels changed */
-        static final EventType STOCK_CLAIMED_CHANGE_EVENT = new EventType("STOCK_CLAIMED_CHANGE_EVENT");
+        static final TimedEventType STOCK_CLAIMED_CHANGE_EVENT = new TimedEventType("STOCK_CLAIMED_CHANGE_EVENT");
 
         /** An event to indicate stock levels changed */
-        static final EventType STOCK_ORDERED_CHANGE_EVENT = new EventType("STOCK_ORDERED_CHANGE_EVENT");
+        static final TimedEventType STOCK_ORDERED_CHANGE_EVENT = new TimedEventType("STOCK_ORDERED_CHANGE_EVENT");
 
         /**
          * @param simulator
          * @param stock
          * @param product
          */
-        public StockListener(SCSimulatorInterface simulator, StockInterface stock, Product product)
+        public StockListener(final SCSimulatorInterface simulator, final StockInterface stock, final Product product)
         {
             super();
             this.product = product;
@@ -121,17 +119,17 @@ public class StockPlot extends XYChart
 
         /** {@inheritDoc} */
         @Override
-        public void notify(EventInterface event) throws RemoteException
+        public void notify(final EventInterface event) throws RemoteException
         {
             StockUpdateData data = (StockUpdateData) event.getContent();
             if (!data.getProductName().equals(this.product.getName()))
                 return;
-            fireEvent(new TimedEvent<Double>(STOCK_ACTUAL_CHANGE_EVENT, this, data.getActualAmount(), this.simulator
-                .getSimulatorTime().si));
-            fireEvent(new TimedEvent<Double>(STOCK_CLAIMED_CHANGE_EVENT, this, data.getClaimedAmount(), this.simulator
-                .getSimulatorTime().si));
-            fireEvent(new TimedEvent<Double>(STOCK_ORDERED_CHANGE_EVENT, this, data.getOrderedAmount(), this.simulator
-                .getSimulatorTime().si));
+            fireEvent(new TimedEvent<Double>(STOCK_ACTUAL_CHANGE_EVENT, this, data.getActualAmount(),
+                    this.simulator.getSimulatorTime().si));
+            fireEvent(new TimedEvent<Double>(STOCK_CLAIMED_CHANGE_EVENT, this, data.getClaimedAmount(),
+                    this.simulator.getSimulatorTime().si));
+            fireEvent(new TimedEvent<Double>(STOCK_ORDERED_CHANGE_EVENT, this, data.getOrderedAmount(),
+                    this.simulator.getSimulatorTime().si));
         }
 
         /** {@inheritDoc} */

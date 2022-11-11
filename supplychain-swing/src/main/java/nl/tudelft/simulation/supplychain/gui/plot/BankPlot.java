@@ -4,18 +4,15 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventInterface;
 import org.djutils.event.EventListenerInterface;
 import org.djutils.event.EventProducer;
-import org.djutils.event.EventType;
 import org.djutils.event.TimedEvent;
+import org.djutils.event.TimedEventType;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.dsol.simtime.SimTimeDoubleUnit;
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
-import nl.tudelft.simulation.jstats.statistics.Persistent;
 import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 
@@ -33,14 +30,14 @@ public class BankPlot extends XYChart
     private static final long serialVersionUID = 20200211L;
     
     /** */
-    private SimPersistent<Time, Duration, SimTimeDoubleUnit> balancePersistent;
+    private SimPersistent<Duration> balancePersistent;
 
     /**
      * @param simulator
      * @param title
      * @param bankAccount
      */
-    public BankPlot(SCSimulatorInterface simulator, String title, BankAccount bankAccount)
+    public BankPlot(final SCSimulatorInterface simulator, final String title, final BankAccount bankAccount)
     {
         super(simulator, title);
         BalanceListener balanceListener = new BalanceListener(simulator, bankAccount);
@@ -48,7 +45,7 @@ public class BankPlot extends XYChart
         {
             this.balancePersistent = new SimPersistent<>("balance " + title, simulator, balanceListener,
                 BalanceListener.BALANCE_CHANGE_EVENT);
-            add("balance", this.balancePersistent, Persistent.VALUE_EVENT);
+            add("balance", this.balancePersistent, SimPersistent.TIMED_OBSERVATION_ADDED_EVENT);
         }
         catch (RemoteException exception)
         {
@@ -74,13 +71,13 @@ public class BankPlot extends XYChart
         private final SCSimulatorInterface simulator;
 
         /** An event to indicate stock levels changed */
-        static final EventType BALANCE_CHANGE_EVENT = new EventType("BALANCE_CHANGE_EVENT");
+        static final TimedEventType BALANCE_CHANGE_EVENT = new TimedEventType("BALANCE_CHANGE_EVENT");
 
         /**
          * @param simulator
          * @param bankAccount
          */
-        public BalanceListener(SCSimulatorInterface simulator, BankAccount bankAccount)
+        public BalanceListener(final SCSimulatorInterface simulator, final BankAccount bankAccount)
         {
             super();
             this.simulator = simulator;
@@ -89,7 +86,7 @@ public class BankPlot extends XYChart
 
         /** {@inheritDoc} */
         @Override
-        public void notify(EventInterface event) throws RemoteException
+        public void notify(final EventInterface event) throws RemoteException
         {
             Money balance = (Money) event.getContent();
             fireEvent(new TimedEvent<Double>(BALANCE_CHANGE_EVENT, this, balance.getAmount(), this.simulator

@@ -6,7 +6,9 @@ import org.djunits.value.vdouble.scalar.Time;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.Executable;
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEventInterface;
+import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.naming.context.Contextualized;
 
 /**
  * SCSimulatorInterface extends the DEVSSimulatorInterface to work with absolute Time for the simulation time and for the
@@ -17,7 +19,7 @@ import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface SCSimulatorInterface extends DEVSSimulatorInterface<Duration>
+public interface SCSimulatorInterface extends DEVSSimulatorInterface<Duration>, Contextualized
 {
     /**
      * Return the absolute start time .

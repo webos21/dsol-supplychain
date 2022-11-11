@@ -6,6 +6,7 @@ import java.io.Serializable;
 import org.djunits.unit.DurationUnit;
 import org.djunits.unit.MassUnit;
 import org.djunits.value.vdouble.scalar.Mass;
+import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
@@ -20,7 +21,6 @@ import nl.tudelft.simulation.jstats.distributions.DistNormal;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.MersenneTwister;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
-import nl.tudelft.simulation.language.d3.DirectedPoint;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.demand.Demand;
 import nl.tudelft.simulation.supplychain.demo.DemoContentAnimator;
@@ -72,7 +72,7 @@ public class BullwhipModel extends AbstractDSOLModel.TimeDoubleUnit<SCSimulatorI
             {
                 // First we create some background. We set the zValue to -Double.Min value to ensure that it is actually drawn
                 // "below" our actors and messages.
-                new SingleImageRenderable<>(new DirectedPoint(0.0, 0.0, -Double.MIN_VALUE), new Dimension(800, 600),
+                new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Dimension(800, 600),
                     getSimulator(), TestModel.class.getResource(
                         "/nl/tudelft/simulation/supplychain/demo/bullwhip/images/background.gif"));
             }

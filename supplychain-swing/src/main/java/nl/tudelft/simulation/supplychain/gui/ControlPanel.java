@@ -798,7 +798,7 @@ public class ControlPanel extends JPanel
             // initial value of simulation speed
             if (simulator instanceof DEVSRealTimeAnimator)
             {
-                DEVSRealTimeAnimator<?, ?, ?> clock = (DEVSRealTimeAnimator<?, ?, ?>) simulator;
+                DEVSRealTimeAnimator<?> clock = (DEVSRealTimeAnimator<?>) simulator;
                 clock.setSpeedFactor(TimeWarpPanel.this.tickValues.get(this.slider.getValue()));
             }
 
@@ -811,7 +811,7 @@ public class ControlPanel extends JPanel
                     JSlider source = (JSlider) ce.getSource();
                     if (!source.getValueIsAdjusting() && simulator instanceof DEVSRealTimeAnimator)
                     {
-                        DEVSRealTimeAnimator<?, ?, ?> clock = (DEVSRealTimeAnimator<?, ?, ?>) simulator;
+                        DEVSRealTimeAnimator<?> clock = (DEVSRealTimeAnimator<?>) simulator;
                         clock.setSpeedFactor(((TimeWarpPanel) source.getParent()).getTickValues().get(source.getValue()));
                     }
                 }

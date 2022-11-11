@@ -5,7 +5,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.draw.bounds.Bounds;
+import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 import org.pmw.tinylog.Logger;
 
@@ -13,7 +13,6 @@ import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.animation.interpolation.LinearInterpolation;
-import nl.tudelft.simulation.language.d3.BoundingBox;
 import nl.tudelft.simulation.supplychain.content.Content;
 
 /**
@@ -132,10 +131,10 @@ public class ContentAnimation implements Locatable, Serializable
 
     /** {@inheritDoc} */
     @Override
-    public Bounds getBounds() throws RemoteException
+    public Bounds3d getBounds() throws RemoteException
     {
         // determines the size on the screen (!)
-        return new BoundingBox(10, 10, 2.0);
+        return new Bounds3d(10, 10, 2.0);
     }
 
     /**

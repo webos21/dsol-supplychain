@@ -9,7 +9,7 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
-import org.djutils.draw.bounds.Bounds;
+import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
@@ -23,7 +23,6 @@ import nl.tudelft.simulation.jstats.distributions.DistConstant;
 import nl.tudelft.simulation.jstats.distributions.DistTriangular;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
-import nl.tudelft.simulation.language.d3.BoundingBox;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.memory.LeanContentStore;
 import nl.tudelft.simulation.supplychain.finance.Money;
@@ -180,9 +179,9 @@ public class ATORetailer extends Retailer
 
     /** {@inheritDoc} */
     @Override
-    public Bounds getBounds()
+    public Bounds3d getBounds()
     {
-        return new BoundingBox(25.0, 25.0, 1.0);
+        return new Bounds3d(25.0, 25.0, 1.0);
     }
 
 }

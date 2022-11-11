@@ -6,7 +6,7 @@ import javax.naming.NamingException;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.draw.bounds.Bounds;
+import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
@@ -15,7 +15,6 @@ import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
 import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
-import nl.tudelft.simulation.language.d3.BoundingBox;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.content.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.contentstore.memory.EmptyContentStore;
@@ -74,9 +73,9 @@ public class DemoYP extends YellowPage
 
     /** {@inheritDoc} */
     @Override
-    public Bounds getBounds()
+    public Bounds3d getBounds()
     {
-        return new BoundingBox(25.0, 25.0, 1.0);
+        return new Bounds3d(25.0, 25.0, 1.0);
     }
 
 }

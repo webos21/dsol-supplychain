@@ -8,12 +8,14 @@ import javax.naming.NamingException;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
+import nl.tudelft.simulation.actor.yellowpage.Category;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
@@ -40,8 +42,10 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * </p>
  * $LastChangedDate: 2015-07-24 02:58:59 +0200 (Fri, 24 Jul 2015) $, @version $Revision: 1147 $, by $Author: averbraeck $,
  * initial version Oct 12, 2018 <br>
- * @author <a href="http://www.tbm.tudelft.nl/averbraeck">Alexander Verbraeck</a> 
- * @author <a href="http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh Zohoori</a> 
+ * @author <a href="http://www.tbm.tudelft.nl/averbraeck">Alexander Verbraeck</a>
+ * @author <a href=
+ *         "http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh
+ *         Zohoori</a>
  */
 public class ATOSupplier extends Supplier
 {
@@ -60,8 +64,9 @@ public class ATOSupplier extends Supplier
      * @param stream
      * @param mts true if MTS, false if MTO
      */
-    public ATOSupplier(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank, Money initialBankAccount,
-            Product product, double initialStock, YellowPage ypSupplier, StreamInterface stream, boolean mts)
+    public ATOSupplier(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final Money initialBankAccount, final Product product, final double initialStock, final YellowPage ypSupplier,
+            final StreamInterface stream, final boolean mts)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));
 
@@ -104,7 +109,7 @@ public class ATOSupplier extends Supplier
         Iterator<Product> stockIter = super.stock.iterator();
         while (stockIter.hasNext())
         {
-          //which list of products are considered here?  
+            // which list of products are considered here?
             Product stockProduct = stockIter.next();
             // the restocking policy will generate InternalDemand, handled by the BuyingRole
             new RestockingPolicySafety(super.stock, stockProduct, new Duration(24.0, DurationUnit.HOUR), false, initialStock,

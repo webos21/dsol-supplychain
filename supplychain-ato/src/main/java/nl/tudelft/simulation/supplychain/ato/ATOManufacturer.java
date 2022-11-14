@@ -10,13 +10,15 @@ import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
 import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
+import nl.tudelft.simulation.actor.yellowpage.Category;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.jstats.distributions.DistConstant;
@@ -60,8 +62,10 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * </p>
  * $LastChangedDate: 2015-07-24 02:58:59 +0200 (Fri, 24 Jul 2015) $, @version $Revision: 1147 $, by $Author: averbraeck $,
  * initial version Oct 12, 2018 <br>
- * @author <a href="http://www.tbm.tudelft.nl/averbraeck">Alexander Verbraeck</a> 
- * @author <a href="http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh Zohoori</a> 
+ * @author <a href="http://www.tbm.tudelft.nl/averbraeck">Alexander Verbraeck</a>
+ * @author <a href=
+ *         "http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh
+ *         Zohoori</a>
  */
 public class ATOManufacturer extends Manufacturer
 {
@@ -82,10 +86,10 @@ public class ATOManufacturer extends Manufacturer
      * @param mts true if MTS, false if MTO
      */
     // another constructor not using yellowPage
-    //lean contentstrore create empty content store?
-    public ATOManufacturer(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank, Money initialBankAccount,
-            Product product, double initialStock, YellowPage ypCustomer, YellowPage ypManufacturer, StreamInterface stream,
-            boolean mts)
+    // lean contentstrore create empty content store?
+    public ATOManufacturer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+            final Bank bank, final Money initialBankAccount, final Product product, final double initialStock,
+            final YellowPage ypCustomer, final YellowPage ypManufacturer, final StreamInterface stream, final boolean mts)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));
 
@@ -123,7 +127,7 @@ public class ATOManufacturer extends Manufacturer
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
         InternalDemandPolicyYP internalDemandHandler = new InternalDemandPolicyYP(this, administrativeDelayInternalDemand,
                 ypManufacturer, new Length(1E6, LengthUnit.METER), 1000, super.stock);
-// InternalDemandHandlerOrder
+        // InternalDemandHandlerOrder
         DistContinuousDuration administrativeDelayYellowPageAnswer =
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
         YellowPageAnswerPolicy ypAnswerHandler = new YellowPageAnswerPolicy(this, administrativeDelayYellowPageAnswer);
@@ -137,8 +141,7 @@ public class ATOManufacturer extends Manufacturer
 
         ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
 
-        DistContinuousDuration paymentDelay =
-                new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
+        DistContinuousDuration paymentDelay = new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
         BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME, paymentDelay);
 
         BuyingRole buyingRole = new BuyingRole(this, simulator, internalDemandHandler, ypAnswerHandler, quoteHandler,
@@ -162,13 +165,13 @@ public class ATOManufacturer extends Manufacturer
         super.setSellingRole(sellingRole);
 
         // RESTOCKING
-//which product stock it gives?
+        // which product stock it gives?
         Iterator<Product> stockIter = super.stock.iterator();
         while (stockIter.hasNext())
         {
             Product stockProduct = stockIter.next();
             // the restocking policy will generate InternalDemand, handled by the BuyingRole
-           // if (mts)
+            // if (mts)
             new RestockingPolicySafety(super.stock, stockProduct, new Duration(24.0, DurationUnit.HOUR), false, initialStock,
                     true, 2.0 * initialStock, new Duration(14.0, DurationUnit.DAY));
         }
@@ -202,6 +205,4 @@ public class ATOManufacturer extends Manufacturer
         return new Bounds3d(25.0, 25.0, 1.0);
     }
 
-
 }
-

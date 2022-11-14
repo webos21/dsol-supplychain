@@ -9,8 +9,9 @@ import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
@@ -73,7 +74,7 @@ public class ATOMarket extends Customer
     // Another constructor to handle demand not through yellowPage? if we want to create another constructor should we add
     // everything again including communication?
     public ATOMarket(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank, Money initialBankAccount,
-        Product product, YellowPage ypCustomre, StreamInterface stream)
+            Product product, YellowPage ypCustomre, StreamInterface stream)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));
 
@@ -88,49 +89,48 @@ public class ATOMarket extends Customer
         // DEMAND GENERATION
         // shall we createInternalDeman here? how to change demand to internal demand?
         Demand demand = new Demand(product, new DistContinuousDuration(new DistExponential(stream, 8.0), DurationUnit.HOUR),
-            new DistConstant(stream, 1.0), new DistConstantDuration(Duration.ZERO), new DistConstantDuration(new Duration(
-                14.0, DurationUnit.DAY)));
-        DemandGeneration dg = new DemandGeneration(this, new DistContinuousDuration(new DistExponential(stream,
-            2.0), DurationUnit.MINUTE));
+                new DistConstant(stream, 1.0), new DistConstantDuration(Duration.ZERO),
+                new DistConstantDuration(new Duration(14.0, DurationUnit.DAY)));
+        DemandGeneration dg =
+                new DemandGeneration(this, new DistContinuousDuration(new DistExponential(stream, 2.0), DurationUnit.MINUTE));
         dg.addDemandGenerator(product, demand);
         this.setDemandGeneration(dg);
         // why we can not use dg.createInternalDemand? what is the meaning of protection?
 
         // MESSAGE HANDLING
 
-        DistContinuousDuration administrativeDelayInternalDemand = new DistContinuousDuration(new DistTriangular(stream, 2,
-            2.5, 3), DurationUnit.HOUR);
+        DistContinuousDuration administrativeDelayInternalDemand =
+                new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
         // handling massage through yellow page-create yellow page request. what exactly ypCustomer does?
         // why in the Internal DemanHandler we use this? this is the owner of internal demand!
         InternalDemandPolicyYP internalDemandHandler = new InternalDemandPolicyYP(this, administrativeDelayInternalDemand,
-            ypCustomre, new Length(1E6, LengthUnit.METER), 1000, null);
+                ypCustomre, new Length(1E6, LengthUnit.METER), 1000, null);
 
         // InternalDemandHandlerOrder internalDemandHandlerOrder = new
         // InternalDemandhandlerOrder(this,administrativeDelayInternalDemand, stochInterface Stock?)
 
-        DistContinuousDuration administrativeDelayYellowPageAnswer = new DistContinuousDuration(new DistTriangular(stream, 2,
-            2.5, 3), DurationUnit.HOUR);
+        DistContinuousDuration administrativeDelayYellowPageAnswer =
+                new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
         // why its not YellowpageRequestHandler?beacuse that handler is taking care of yellowPage stuff(such as search ,...)
         // YellowPageAnswerHandler is the buyer who should reply to the findings of yellowpage
         YellowPageAnswerPolicy ypAnswerHandler = new YellowPageAnswerPolicy(this, administrativeDelayYellowPageAnswer);
 
-        DistContinuousDuration administrativeDelayQuote = new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3),
-            DurationUnit.HOUR);
+        DistContinuousDuration administrativeDelayQuote =
+                new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
         // quotes are received from RFQ request
         QuotePolicy quoteHandler =
 
-            new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE, administrativeDelayQuote, 0.5, 0);
+                new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE, administrativeDelayQuote, 0.5, 0);
 
         OrderConfirmationPolicy orderConfirmationHandler = new OrderConfirmationPolicy(this);
 
         ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
 
         DistContinuousDuration paymentDelay = new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
-        BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME,
-            paymentDelay);
+        BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME, paymentDelay);
 
         BuyingRole buyingRole = new BuyingRole(this, simulator, internalDemandHandler, ypAnswerHandler, quoteHandler,
-            orderConfirmationHandler, shipmentHandler, billHandler);
+                orderConfirmationHandler, shipmentHandler, billHandler);
         this.setBuyingRole(buyingRole);
 
         // ANIMATION
@@ -139,8 +139,8 @@ public class ATOMarket extends Customer
         {
             try
             {
-                new SingleImageRenderable<>(this, simulator, ATOMarket.class.getResource(
-                    "/nl/tudelft/simulation/supplychain/images/Market.gif"));
+                new SingleImageRenderable<>(this, simulator,
+                        ATOMarket.class.getResource("/nl/tudelft/simulation/supplychain/images/Market.gif"));
             }
             catch (RemoteException | NamingException exception)
             {

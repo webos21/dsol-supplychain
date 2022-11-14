@@ -10,13 +10,15 @@ import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
 import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
+import nl.tudelft.simulation.actor.yellowpage.Category;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.jstats.distributions.DistConstant;
@@ -57,8 +59,10 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * </p>
  * $LastChangedDate: 2015-07-24 02:58:59 +0200 (Fri, 24 Jul 2015) $, @version $Revision: 1147 $, by $Author: averbraeck $,
  * initial version Oct 12, 2018 <br>
- * @author <a href="http://www.tbm.tudelft.nl/averbraeck">Alexander Verbraeck</a> 
- * @author <a href="http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh Zohoori</a> 
+ * @author <a href="http://www.tbm.tudelft.nl/averbraeck">Alexander Verbraeck</a>
+ * @author <a href=
+ *         "http://https://www.tudelft.nl/tbm/over-de-faculteit/afdelingen/multi-actor-systems/people/phd-candidates/b-bahareh-zohoori/">Bahareh
+ *         Zohoori</a>
  */
 public class ATORetailer extends Retailer
 {
@@ -73,13 +77,14 @@ public class ATORetailer extends Retailer
      * @param initialBankAccount
      * @param product
      * @param initialStock
-     * @param ypCustomer 
-     * @param ypProduction 
+     * @param ypCustomer
+     * @param ypProduction
      * @param stream
      * @param mts true if MTS, false if MTO
      */
-    public ATORetailer (String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank, Money initialBankAccount,
-            Product product, double initialStock, YellowPage ypCustomer, YellowPage ypProduction, StreamInterface stream, boolean mts)
+    public ATORetailer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final Money initialBankAccount, final Product product, final double initialStock, final YellowPage ypCustomer,
+            final YellowPage ypProduction, final StreamInterface stream, final boolean mts)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));
 
@@ -96,10 +101,10 @@ public class ATORetailer extends Retailer
         super.addReceivingDevice(fax, faxChecker, new DistConstantDuration(new Duration(1.0, DurationUnit.HOUR)));
 
         // REGISTER IN YP
-        
+
         ypCustomer.register(this, Category.DEFAULT);
         ypCustomer.addSupplier(product, this);
-        
+
         // STOCK
 
         Stock _stock = new Stock(this);
@@ -110,8 +115,8 @@ public class ATORetailer extends Retailer
 
         DistContinuousDuration administrativeDelayInternalDemand =
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
-        InternalDemandPolicyYP internalDemandHandler = new InternalDemandPolicyYP(this, administrativeDelayInternalDemand, ypProduction,
-                new Length(1E6, LengthUnit.METER), 1000, super.stock);
+        InternalDemandPolicyYP internalDemandHandler = new InternalDemandPolicyYP(this, administrativeDelayInternalDemand,
+                ypProduction, new Length(1E6, LengthUnit.METER), 1000, super.stock);
 
         DistContinuousDuration administrativeDelayYellowPageAnswer =
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
@@ -126,8 +131,7 @@ public class ATORetailer extends Retailer
 
         ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
 
-        DistContinuousDuration paymentDelay =
-                new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
+        DistContinuousDuration paymentDelay = new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
         BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME, paymentDelay);
 
         BuyingRole buyingRole = new BuyingRole(this, simulator, internalDemandHandler, ypAnswerHandler, quoteHandler,
@@ -185,8 +189,3 @@ public class ATORetailer extends Retailer
     }
 
 }
-
-
-
-
-

@@ -7,8 +7,9 @@ import javax.naming.NamingException;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
@@ -40,7 +41,7 @@ public class DemoYP extends YellowPage
      * @param position
      * @param bank
      */
-    public DemoYP(String name, TimeDoubleUnit simulator, Point3d position, Bank bank)
+    public DemoYP(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank)
     {
         super(name, simulator, position, bank, new EmptyContentStore());
 

@@ -10,13 +10,15 @@ import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
 import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
+import nl.tudelft.simulation.actor.yellowpage.Category;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.jstats.distributions.DistConstant;
@@ -79,9 +81,9 @@ public class DemoManufacturer extends Manufacturer
      * @param stream
      * @param mts true if MTS, false if MTO
      */
-    public DemoManufacturer(String name, TimeDoubleUnit simulator, Point3d position, Bank bank, Money initialBankAccount,
-            Product product, double initialStock, YellowPage ypCustomer, YellowPage ypProduction, StreamInterface stream,
-            boolean mts)
+    public DemoManufacturer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+            final Bank bank, final Money initialBankAccount, final Product product, final double initialStock,
+            final YellowPage ypCustomer, final YellowPage ypProduction, final StreamInterface stream, final boolean mts)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));
 
@@ -133,8 +135,7 @@ public class DemoManufacturer extends Manufacturer
 
         ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
 
-        DistContinuousDuration paymentDelay =
-                new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
+        DistContinuousDuration paymentDelay = new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
         BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME, paymentDelay);
 
         BuyingRole buyingRole = new BuyingRole(this, simulator, internalDemandHandler, ypAnswerHandler, quoteHandler,

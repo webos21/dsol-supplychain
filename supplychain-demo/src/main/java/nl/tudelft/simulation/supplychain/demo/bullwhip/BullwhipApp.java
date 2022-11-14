@@ -13,6 +13,7 @@ import org.djutils.event.Event;
 import org.djutils.logger.CategoryLogger;
 import org.pmw.tinylog.Level;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.experiment.Replication;
 import nl.tudelft.simulation.dsol.experiment.ReplicationMode;

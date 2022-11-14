@@ -1,13 +1,13 @@
 package nl.tudelft.simulation.supplychain.demo.bullwhip;
 
-import java.awt.Dimension;
 import java.io.Serializable;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.unit.MassUnit;
+import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Mass;
+import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
-import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
@@ -72,25 +72,25 @@ public class BullwhipModel extends AbstractDSOLModel<Duration, SCSimulatorInterf
             {
                 // First we create some background. We set the zValue to -Double.Min value to ensure that it is actually drawn
                 // "below" our actors and messages.
-                new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Dimension(800, 600),
-                    getSimulator(), TestModel.class.getResource(
-                        "/nl/tudelft/simulation/supplychain/demo/bullwhip/images/background.gif"));
+                new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Bounds3d(800, 600, 0),
+                        getSimulator(),
+                        TestModel.class.getResource("/nl/tudelft/simulation/supplychain/demo/bullwhip/images/background.gif"));
             }
 
             // basics
             StreamInterface stream = new MersenneTwister();
 
             // Products and BOM
-            Product keyboard = new Product("keyboard", Unit.PIECE, new Money(15.0, MoneyUnit.USD), new Mass(0.5,
-                MassUnit.KILOGRAM), 0.0);
-            Product casing = new Product("casing", Unit.PIECE, new Money(400.0, MoneyUnit.USD), new Mass(10.0,
-                MassUnit.KILOGRAM), 0.02);
-            Product mouse = new Product("mouse", Unit.PIECE, new Money(10.0, MoneyUnit.USD), new Mass(0.1,
-                MassUnit.KILOGRAM), 0.0);
-            Product monitor = new Product("monitor", Unit.PIECE, new Money(200.0, MoneyUnit.USD), new Mass(5.0,
-                MassUnit.KILOGRAM), 0.01);
-            Product pc = new Product("PC", Unit.PIECE, new Money(1100.0, MoneyUnit.USD), new Mass(16.0, MassUnit.KILOGRAM),
-                0.02);
+            Product keyboard =
+                    new Product("keyboard", Unit.PIECE, new Money(15.0, MoneyUnit.USD), new Mass(0.5, MassUnit.KILOGRAM), 0.0);
+            Product casing =
+                    new Product("casing", Unit.PIECE, new Money(400.0, MoneyUnit.USD), new Mass(10.0, MassUnit.KILOGRAM), 0.02);
+            Product mouse =
+                    new Product("mouse", Unit.PIECE, new Money(10.0, MoneyUnit.USD), new Mass(0.1, MassUnit.KILOGRAM), 0.0);
+            Product monitor =
+                    new Product("monitor", Unit.PIECE, new Money(200.0, MoneyUnit.USD), new Mass(5.0, MassUnit.KILOGRAM), 0.01);
+            Product pc =
+                    new Product("PC", Unit.PIECE, new Money(1100.0, MoneyUnit.USD), new Mass(16.0, MassUnit.KILOGRAM), 0.02);
             BillOfMaterials pcBOM = new BillOfMaterials(pc);
             pcBOM.add(keyboard, 1.0);
             pcBOM.add(casing, 1.0);
@@ -109,18 +109,18 @@ public class BullwhipModel extends AbstractDSOLModel<Duration, SCSimulatorInterf
             DemoYP ypMarket2 = new DemoYP("YP_production_MTS", getSimulator(), new OrientedPoint3d(600, 40, 0), ing);
 
             // CUSTOMER or MARKET
-            DemoMarket customer = new DemoMarket("US East", getSimulator(), new OrientedPoint3d(40, 150, 0), ing, new Money(10000.0,
-                MoneyUnit.USD), pc, ypCustomer, stream);
+            DemoMarket customer = new DemoMarket("US East", getSimulator(), new OrientedPoint3d(40, 150, 0), ing,
+                    new Money(10000.0, MoneyUnit.USD), pc, ypCustomer, stream);
             // Buy AINT(TRIA(2,5,10)) computers every NORM(3,1) hour starting at t=0.1
-            DistContinuousDuration generatorStartTime1 = new DistContinuousDuration(new DistConstant(stream, 0.1),
-                DurationUnit.HOUR);
-            DistContinuousDuration generatorEndTime = new DistContinuousDuration(new DistConstant(stream, 1.0E6),
-                DurationUnit.HOUR);
-            DistContinuousDuration interBuyingTime1 = new DistContinuousDuration(new DistNormal(stream, 3.0, 1.0),
-                DurationUnit.HOUR);
+            DistContinuousDuration generatorStartTime1 =
+                    new DistContinuousDuration(new DistConstant(stream, 0.1), DurationUnit.HOUR);
+            DistContinuousDuration generatorEndTime =
+                    new DistContinuousDuration(new DistConstant(stream, 1.0E6), DurationUnit.HOUR);
+            DistContinuousDuration interBuyingTime1 =
+                    new DistContinuousDuration(new DistNormal(stream, 3.0, 1.0), DurationUnit.HOUR);
             DistDiscrete batchSize1 = new DistDiscreteTriangular(stream, 2.0, 5.0, 10.0);
-            customer.getDemandGeneration().addDemandGenerator(pc, new Demand(pc, interBuyingTime1, batchSize1,
-                generatorStartTime1, generatorEndTime));
+            customer.getDemandGeneration().addDemandGenerator(pc,
+                    new Demand(pc, interBuyingTime1, batchSize1, generatorStartTime1, generatorEndTime));
             customer.addDemand(generatorStartTime1, interBuyingTime1, batchSize1, pc);
             // Buy AINT(TRIA(2,4,5)) computers every NORM(4,2) hour starting at t=0.1
             DistContinuous generatorStartTime2 = new DistConstant(stream, 0.1);
@@ -142,34 +142,34 @@ public class BullwhipModel extends AbstractDSOLModel<Duration, SCSimulatorInterf
 
             // Retailers
             DemoRetailer[] mtsRet = new DemoRetailer[5];
-            mtsRet[0] = new DemoRetailer("Seattle_MTS", getSimulator(), new OrientedPoint3d(-200, -270, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            mtsRet[1] = new DemoRetailer("LosAngeles_MTS", getSimulator(), new OrientedPoint3d(-200, -210, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            mtsRet[2] = new DemoRetailer("NewYork_MTS", getSimulator(), new OrientedPoint3d(-200, -150, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            mtsRet[3] = new DemoRetailer("Washington_MTS", getSimulator(), new OrientedPoint3d(-200, -90, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            mtsRet[4] = new DemoRetailer("Miami_MTS", getSimulator(), new OrientedPoint3d(-200, -30, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
+            mtsRet[0] = new DemoRetailer("Seattle_MTS", getSimulator(), new OrientedPoint3d(-200, -270, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
+            mtsRet[1] = new DemoRetailer("LosAngeles_MTS", getSimulator(), new OrientedPoint3d(-200, -210, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
+            mtsRet[2] = new DemoRetailer("NewYork_MTS", getSimulator(), new OrientedPoint3d(-200, -150, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
+            mtsRet[3] = new DemoRetailer("Washington_MTS", getSimulator(), new OrientedPoint3d(-200, -90, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
+            mtsRet[4] = new DemoRetailer("Miami_MTS", getSimulator(), new OrientedPoint3d(-200, -30, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
 
             DemoRetailer[] mtoRet = new DemoRetailer[5];
-            mtoRet[0] = new DemoRetailer("Seattle_MTO", getSimulator(), new OrientedPoint3d(-200, 30, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
-            mtoRet[1] = new DemoRetailer("LosAngeles_MTO", getSimulator(), new OrientedPoint3d(-200, 90, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
-            mtoRet[2] = new DemoRetailer("NewYork_MTO", getSimulator(), new OrientedPoint3d(-200, 150, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
-            mtoRet[3] = new DemoRetailer("Washington_MTO", getSimulator(), new OrientedPoint3d(-200, 210, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
-            mtoRet[4] = new DemoRetailer("Miami_MTO", getSimulator(), new OrientedPoint3d(-200, 270, 1), ing, new Money(100000,
-                MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
+            mtoRet[0] = new DemoRetailer("Seattle_MTO", getSimulator(), new OrientedPoint3d(-200, 30, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
+            mtoRet[1] = new DemoRetailer("LosAngeles_MTO", getSimulator(), new OrientedPoint3d(-200, 90, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
+            mtoRet[2] = new DemoRetailer("NewYork_MTO", getSimulator(), new OrientedPoint3d(-200, 150, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
+            mtoRet[3] = new DemoRetailer("Washington_MTO", getSimulator(), new OrientedPoint3d(-200, 210, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
+            mtoRet[4] = new DemoRetailer("Miami_MTO", getSimulator(), new OrientedPoint3d(-200, 270, 1), ing,
+                    new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTO, ypProductionMTO, streamMTO, false);
 
             // Manufacturers
-            DemoManufacturer mtsMan = new DemoManufacturer("MexicoCity_MTS", getSimulator(), new OrientedPoint3d(0, -150, 1), ing,
-                new Money(1000000, MoneyUnit.USD), pc, 50, ypCustomerMTS, ypProductionMTS, streamMTS, true);
-            DemoManufacturer mtoMan = new DemoManufacturer("MexicoCity_MTO", getSimulator(), new OrientedPoint3d(0, 150, 1), ing,
-                new Money(1000000, MoneyUnit.USD), pc, 50, ypCustomerMTO, ypProductionMTO, streamMTO, false);
+            DemoManufacturer mtsMan = new DemoManufacturer("MexicoCity_MTS", getSimulator(), new OrientedPoint3d(0, -150, 1),
+                    ing, new Money(1000000, MoneyUnit.USD), pc, 50, ypCustomerMTS, ypProductionMTS, streamMTS, true);
+            DemoManufacturer mtoMan = new DemoManufacturer("MexicoCity_MTO", getSimulator(), new OrientedPoint3d(0, 150, 1),
+                    ing, new Money(1000000, MoneyUnit.USD), pc, 50, ypCustomerMTO, ypProductionMTO, streamMTO, false);
 
             // Suppliers
 

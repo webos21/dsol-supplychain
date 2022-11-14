@@ -8,12 +8,14 @@ import javax.naming.NamingException;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
+import nl.tudelft.simulation.actor.yellowpage.Category;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
@@ -56,8 +58,9 @@ public class DemoSupplier extends Supplier
      * @param ypProduction
      * @param stream
      */
-    public DemoSupplier(String name, TimeDoubleUnit simulator, Point3d position, Bank bank, Money initialBankAccount,
-            Product product, double initialStock, YellowPage ypProduction, StreamInterface stream)
+    public DemoSupplier(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+            final Bank bank, final Money initialBankAccount, final Product product, final double initialStock,
+            final YellowPage ypProduction, final StreamInterface stream)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));
 

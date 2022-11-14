@@ -9,8 +9,9 @@ import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
@@ -65,8 +66,8 @@ public class DemoMarket extends Customer
      * @param ypCustomre
      * @param stream
      */
-    public DemoMarket(String name, TimeDoubleUnit simulator, Point3d position, Bank bank, Money initialBankAccount,
-        Product product, YellowPage ypCustomre, StreamInterface stream)
+    public DemoMarket(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank,
+            Money initialBankAccount, Product product, YellowPage ypCustomre, StreamInterface stream)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));
 
@@ -80,39 +81,38 @@ public class DemoMarket extends Customer
         // DEMAND GENERATION
 
         Demand demand = new Demand(product, new DistContinuousDuration(new DistExponential(stream, 8.0), DurationUnit.HOUR),
-            new DistConstant(stream, 1.0), new DistConstantDuration(Duration.ZERO), new DistConstantDuration(new Duration(
-                14.0, DurationUnit.DAY)));
-        DemandGeneration dg = new DemandGeneration(this, new DistContinuousDuration(new DistExponential(stream, 2.0),
-            DurationUnit.MINUTE));
+                new DistConstant(stream, 1.0), new DistConstantDuration(Duration.ZERO),
+                new DistConstantDuration(new Duration(14.0, DurationUnit.DAY)));
+        DemandGeneration dg =
+                new DemandGeneration(this, new DistContinuousDuration(new DistExponential(stream, 2.0), DurationUnit.MINUTE));
         dg.addDemandGenerator(product, demand);
         this.setDemandGeneration(dg);
 
         // MESSAGE HANDLING
 
-        DistContinuousDuration administrativeDelayInternalDemand = new DistContinuousDuration(new DistTriangular(stream, 2,
-            2.5, 3), DurationUnit.HOUR);
+        DistContinuousDuration administrativeDelayInternalDemand =
+                new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
         InternalDemandPolicyYP internalDemandHandler = new InternalDemandPolicyYP(this, administrativeDelayInternalDemand,
-            ypCustomre, new Length(1E6, LengthUnit.METER), 1000, null);
+                ypCustomre, new Length(1E6, LengthUnit.METER), 1000, null);
 
-        DistContinuousDuration administrativeDelayYellowPageAnswer = new DistContinuousDuration(new DistTriangular(stream, 2,
-            2.5, 3), DurationUnit.HOUR);
+        DistContinuousDuration administrativeDelayYellowPageAnswer =
+                new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
         YellowPageAnswerPolicy ypAnswerHandler = new YellowPageAnswerPolicy(this, administrativeDelayYellowPageAnswer);
 
-        DistContinuousDuration administrativeDelayQuote = new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3),
-            DurationUnit.HOUR);
-        QuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE,
-            administrativeDelayQuote, 0.5, 0);
+        DistContinuousDuration administrativeDelayQuote =
+                new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
+        QuotePolicy quoteHandler =
+                new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE, administrativeDelayQuote, 0.5, 0);
 
         OrderConfirmationPolicy orderConfirmationHandler = new OrderConfirmationPolicy(this);
 
         ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
 
         DistContinuousDuration paymentDelay = new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
-        BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME,
-            paymentDelay);
+        BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME, paymentDelay);
 
         BuyingRole buyingRole = new BuyingRole(this, simulator, internalDemandHandler, ypAnswerHandler, quoteHandler,
-            orderConfirmationHandler, shipmentHandler, billHandler);
+                orderConfirmationHandler, shipmentHandler, billHandler);
         this.setBuyingRole(buyingRole);
 
         // ANIMATION
@@ -121,8 +121,8 @@ public class DemoMarket extends Customer
         {
             try
             {
-                new SingleImageRenderable<>(this, simulator, DemoMarket.class.getResource(
-                    "/nl/tudelft/simulation/supplychain/images/Market.gif"));
+                new SingleImageRenderable<>(this, simulator,
+                        DemoMarket.class.getResource("/nl/tudelft/simulation/supplychain/images/Market.gif"));
             }
             catch (RemoteException | NamingException exception)
             {

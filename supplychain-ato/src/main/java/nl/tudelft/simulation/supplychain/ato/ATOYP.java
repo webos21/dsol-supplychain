@@ -42,7 +42,7 @@ public class ATOYP extends YellowPage
      * @param position
      * @param bank
      */
-    public ATOYP(String name, TimeDoubleUnit simulator, Point3d position, Bank bank)
+    public ATOYP(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank)
     {
         super(name, simulator, position, bank, new EmptyContentStore());
 

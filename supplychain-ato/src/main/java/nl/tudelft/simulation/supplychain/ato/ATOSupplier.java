@@ -60,7 +60,7 @@ public class ATOSupplier extends Supplier
      * @param stream
      * @param mts true if MTS, false if MTO
      */
-    public ATOSupplier(String name, TimeDoubleUnit simulator, Point3d position, Bank bank, Money initialBankAccount,
+    public ATOSupplier(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank, Money initialBankAccount,
             Product product, double initialStock, YellowPage ypSupplier, StreamInterface stream, boolean mts)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));

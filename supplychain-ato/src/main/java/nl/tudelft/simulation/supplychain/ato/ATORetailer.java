@@ -78,7 +78,7 @@ public class ATORetailer extends Retailer
      * @param stream
      * @param mts true if MTS, false if MTO
      */
-    public ATORetailer (String name, TimeDoubleUnit simulator, Point3d position, Bank bank, Money initialBankAccount,
+    public ATORetailer (String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank, Money initialBankAccount,
             Product product, double initialStock, YellowPage ypCustomer, YellowPage ypProduction, StreamInterface stream, boolean mts)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));

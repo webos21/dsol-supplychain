@@ -72,7 +72,7 @@ public class ATOMarket extends Customer
 
     // Another constructor to handle demand not through yellowPage? if we want to create another constructor should we add
     // everything again including communication?
-    public ATOMarket(String name, TimeDoubleUnit simulator, Point3d position, Bank bank, Money initialBankAccount,
+    public ATOMarket(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank, Money initialBankAccount,
         Product product, YellowPage ypCustomre, StreamInterface stream)
     {
         super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));

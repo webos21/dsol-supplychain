@@ -83,7 +83,7 @@ public class ATOManufacturer extends Manufacturer
      */
     // another constructor not using yellowPage
     //lean contentstrore create empty content store?
-    public ATOManufacturer(String name, TimeDoubleUnit simulator, Point3d position, Bank bank, Money initialBankAccount,
+    public ATOManufacturer(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank, Money initialBankAccount,
             Product product, double initialStock, YellowPage ypCustomer, YellowPage ypManufacturer, StreamInterface stream,
             boolean mts)
     {

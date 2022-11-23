@@ -1,7 +1,5 @@
 package nl.tudelft.simulation.supplychain.test;
 
-import java.awt.Dimension;
-import java.awt.geom.Rectangle2D;
 import java.rmi.RemoteException;
 
 import javax.naming.NamingException;
@@ -9,21 +7,24 @@ import javax.naming.NamingException;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
-import org.djutils.event.Event;
+import org.djutils.draw.bounds.Bounds2d;
 import org.djutils.logger.CategoryLogger;
 import org.pmw.tinylog.Level;
 
+import nl.tudelft.simulation.actor.dsol.SCAnimator;
+import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
-import nl.tudelft.simulation.dsol.experiment.Replication;
-import nl.tudelft.simulation.dsol.experiment.ReplicationMode;
-import nl.tudelft.simulation.dsol.simtime.SimTimeDoubleUnit;
-import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
-import nl.tudelft.simulation.dsol.simulators.SimulatorInterface;
-import nl.tudelft.simulation.dsol.swing.animation.D2.AnimationPanel;
-import nl.tudelft.simulation.dsol.swing.gui.DSOLApplication;
+import nl.tudelft.simulation.dsol.experiment.ReplicationInterface;
+import nl.tudelft.simulation.dsol.experiment.SingleReplication;
+import nl.tudelft.simulation.dsol.swing.gui.ConsoleLogger;
+import nl.tudelft.simulation.dsol.swing.gui.ConsoleOutput;
 import nl.tudelft.simulation.dsol.swing.gui.DSOLPanel;
-import nl.tudelft.simulation.jstats.streams.MersenneTwister;
+import nl.tudelft.simulation.dsol.swing.gui.TablePanel;
+import nl.tudelft.simulation.dsol.swing.gui.animation.DSOLAnimationApplication;
+import nl.tudelft.simulation.dsol.swing.gui.control.RealTimeControlPanel;
 import nl.tudelft.simulation.language.DSOLException;
+import nl.tudelft.simulation.supplychain.gui.plot.BankPlot;
+import nl.tudelft.simulation.supplychain.gui.plot.StockPlot;
 
 /**
  * TestModelApp.java. <br>
@@ -33,18 +34,52 @@ import nl.tudelft.simulation.language.DSOLException;
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public class TestModelApp extends DSOLApplication
+public class TestModelApp extends DSOLAnimationApplication
 {
     /** */
     private static final long serialVersionUID = 1L;
 
+    /** the model. */
+    private final TestModel model;
+
     /**
      * @param title
      * @param panel
+     * @param model
+     * @throws DSOLException
+     * @throws IllegalArgumentException
+     * @throws RemoteException
      */
-    public TestModelApp(final String title, final DSOLPanel panel)
+    public TestModelApp(final String title, final DSOLPanel panel, final TestModel model)
+            throws RemoteException, IllegalArgumentException, DSOLException
     {
-        super(title, panel);
+        super(panel, title, new Bounds2d(-100, 300, 50, 250));
+        this.model = model;
+        panel.enableSimulationControlButtons();
+        addTabs();
+    }
+
+    private void addTabs()
+    {
+        TablePanel charts = new TablePanel(3, 2);
+        getDSOLPanel().addTab("statistics", charts);
+        getDSOLPanel().getTabbedPane().setSelectedIndex(1);
+        SCSimulatorInterface devsSimulator = this.model.getSimulator();
+
+        BankPlot fb = new BankPlot(devsSimulator, "Factory Bank balance", this.model.factory.getBankAccount());
+        charts.setCell(fb.getSwingPanel(), 0, 0);
+
+        BankPlot pb = new BankPlot(devsSimulator, "PCShop Bank balance", this.model.pcShop.getBankAccount());
+        charts.setCell(pb.getSwingPanel(), 1, 0);
+
+        BankPlot cb = new BankPlot(devsSimulator, "Client Bank balance", this.model.client.getBankAccount());
+        charts.setCell(cb.getSwingPanel(), 2, 0);
+
+        StockPlot fs = new StockPlot(devsSimulator, "Factory stock Laptop", this.model.factory.getStock(), this.model.laptop);
+        charts.setCell(fs.getSwingPanel(), 0, 1);
+
+        StockPlot ps = new StockPlot(devsSimulator, "PCShop stock Laptop", this.model.pcShop.getStock(), this.model.laptop);
+        charts.setCell(ps.getSwingPanel(), 1, 1);
     }
 
     /**
@@ -59,27 +94,15 @@ public class TestModelApp extends DSOLApplication
         CategoryLogger.setAllLogLevel(Level.INFO);
         CategoryLogger.setAllLogMessageFormat("{level} - {class_name}.{method}:{line}  {message}");
 
-        DEVSRealTimeAnimator.TimeDoubleUnit animator = new DEVSRealTimeAnimator.TimeDoubleUnit("MTSMTO");
+        SCAnimator animator = new SCAnimator("MTSMTO", Time.ZERO);
         TestModel model = new TestModel(animator);
-        Replication.TimeDoubleUnit replication = Replication.TimeDoubleUnit.create("rep1", Time.ZERO, Duration.ZERO,
-                new Duration(1800.0, DurationUnit.HOUR), model);
-        animator.setPauseOnError(true);
-        animator.setAnimationDelay(20); // 50 Hz animation update
-        replication.getStreams().put("default", new MersenneTwister(1L));
-        animator.initialize(replication, ReplicationMode.TERMINATING);
-        animator.setSpeedFactor(10000.0);
-
-        TestModelPanel panel = new TestModelPanel(model, animator);
-
-        Rectangle2D extent = new Rectangle2D.Double(-100, 50, 400, 200);
-        Dimension size = new Dimension(1024, 768);
-        AnimationPanel animationPanel = new AnimationPanel(extent, size, animator);
-        panel.getTabbedPane().addTab(0, "animation", animationPanel);
-        panel.getTabbedPane().setSelectedIndex(0);
-        // tell the animation panel to update its statistics
-        animationPanel.notify(new Event(SimulatorInterface.START_REPLICATION_EVENT, animator, null));
-
-        new TestModelApp("TestModelApp", panel);
+        ReplicationInterface<Duration> replication =
+                new SingleReplication<Duration>("rep1", Duration.ZERO, Duration.ZERO, new Duration(1800.0, DurationUnit.HOUR));
+        animator.initialize(model, replication);
+        DSOLPanel panel = new DSOLPanel(new RealTimeControlPanel.TimeDoubleUnit(model, animator));
+        panel.addTab("logger", new ConsoleLogger(Level.INFO));
+        panel.addTab("console", new ConsoleOutput());
+        new TestModelApp("TestModelApp", panel, model);
     }
 
 }

@@ -75,8 +75,8 @@ public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
                 // First we create some background. We set the zValue to -Double.Min value to ensure that it is actually drawn
                 // "below" our actors and messages.
                 new SingleImageRenderable<>(new OrientedPoint3d(0.0, 0.0, -Double.MIN_VALUE), new Bounds3d(1618, 716, 0),
-                    this.devsSimulator, TestModel.class.getResource(
-                        "/nl/tudelft/simulation/supplychain/images/worldmap.gif"));
+                        this.devsSimulator,
+                        TestModel.class.getResource("/nl/tudelft/simulation/supplychain/images/worldmap.gif"));
             }
 
             // create the bank
@@ -85,24 +85,24 @@ public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
             ing.setAnnualInterestRatePos(0.025);
 
             // create a product
-            this.laptop = new Product("Laptop", Unit.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5,
-                MassUnit.KILOGRAM), 0.0);
+            this.laptop =
+                    new Product("Laptop", Unit.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM), 0.0);
 
             // create a manufacturer
-            this.factory = new Factory("Factory", this.devsSimulator, new OrientedPoint3d(200, 200, 0), ing, new Money(50000.0,
-                MoneyUnit.USD), this.laptop, 1000, new LeanContentStore(this.devsSimulator));
+            this.factory = new Factory("Factory", this.devsSimulator, new OrientedPoint3d(200, 200, 0), ing,
+                    new Money(50000.0, MoneyUnit.USD), this.laptop, 1000, new LeanContentStore(this.devsSimulator));
 
             // create a retailer
-            this.pcShop = new PCShop("PCshop", this.devsSimulator, new OrientedPoint3d(20, 200, 0), ing, new Money(50000.0,
-                MoneyUnit.USD), this.laptop, 10, this.factory, new LeanContentStore(this.devsSimulator));
+            this.pcShop = new PCShop("PCshop", this.devsSimulator, new OrientedPoint3d(20, 200, 0), ing,
+                    new Money(50000.0, MoneyUnit.USD), this.laptop, 10, this.factory, new LeanContentStore(this.devsSimulator));
 
             // create a customer
-            this.client = new Client("Client", this.devsSimulator, new OrientedPoint3d(100, 100, 0), ing, new Money(1500000.0,
-                MoneyUnit.USD), this.laptop, this.pcShop, new LeanContentStore(this.devsSimulator));
+            this.client = new Client("Client", this.devsSimulator, new OrientedPoint3d(100, 100, 0), ing,
+                    new Money(1500000.0, MoneyUnit.USD), this.laptop, this.pcShop, new LeanContentStore(this.devsSimulator));
 
             // schedule a remark that the simulation is ready
-            Duration endTime = new Duration(this.simulator.getReplication().getRunLength().doubleValue() - 0.001,
-                DurationUnit.SI);
+            Duration endTime =
+                    new Duration(this.simulator.getReplication().getRunLength().doubleValue() - 0.001, DurationUnit.SI);
             this.devsSimulator.scheduleEventRel(endTime, this, this, "endSimulation", new Serializable[] {});
 
             // Create the animation.

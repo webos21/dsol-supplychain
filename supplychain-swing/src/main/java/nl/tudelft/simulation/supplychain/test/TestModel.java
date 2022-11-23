@@ -9,6 +9,7 @@ import org.djunits.value.vdouble.scalar.Mass;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCAnimator;
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
@@ -29,7 +30,7 @@ import nl.tudelft.simulation.supplychain.product.Unit;
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
+public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -56,7 +57,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
      * constructs a new TestModel.
      * @param simulator the simulator
      */
-    public TestModel(final SCSimulatorInterface simulator)
+    public TestModel(final SCAnimator simulator)
     {
         super(simulator);
         // We don't do anything to prevent state-based replications.

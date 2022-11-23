@@ -21,8 +21,8 @@ import nl.tudelft.simulation.dsol.swing.gui.ConsoleOutput;
 import nl.tudelft.simulation.dsol.swing.gui.DSOLPanel;
 import nl.tudelft.simulation.dsol.swing.gui.TablePanel;
 import nl.tudelft.simulation.dsol.swing.gui.animation.DSOLAnimationApplication;
-import nl.tudelft.simulation.dsol.swing.gui.control.RealTimeControlPanel;
 import nl.tudelft.simulation.language.DSOLException;
+import nl.tudelft.simulation.supplychain.gui.SCControlPanel;
 import nl.tudelft.simulation.supplychain.gui.plot.BankPlot;
 import nl.tudelft.simulation.supplychain.gui.plot.StockPlot;
 
@@ -99,7 +99,7 @@ public class TestModelApp extends DSOLAnimationApplication
         ReplicationInterface<Duration> replication =
                 new SingleReplication<Duration>("rep1", Duration.ZERO, Duration.ZERO, new Duration(1800.0, DurationUnit.HOUR));
         animator.initialize(model, replication);
-        DSOLPanel panel = new DSOLPanel(new RealTimeControlPanel.TimeDoubleUnit(model, animator));
+        DSOLPanel panel = new DSOLPanel(new SCControlPanel(model, animator));
         panel.addTab("logger", new ConsoleLogger(Level.INFO));
         panel.addTab("console", new ConsoleOutput());
         new TestModelApp("TestModelApp", panel, model);

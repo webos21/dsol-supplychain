@@ -6,10 +6,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.actor.dsol.SCAnimator;
 import nl.tudelft.simulation.dsol.model.DSOLModel;
-import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
-import nl.tudelft.simulation.dsol.swing.gui.control.RealTimeControlPanel;
 import nl.tudelft.simulation.dsol.swing.gui.control.RunUntilPanel;
-import nl.tudelft.simulation.dsol.swing.gui.control.SpeedPanel;
 
 /**
  * DEVS Real Time ControlPanel for a djunits double timeunit.
@@ -19,7 +16,7 @@ import nl.tudelft.simulation.dsol.swing.gui.control.SpeedPanel;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SCControlPanel extends RealTimeControlPanel<Duration, DEVSRealTimeAnimator<Duration>>
+public class SCControlPanel extends SCRealTimeControlPanel
 {
     /** */
     private static final long serialVersionUID = 20221123;
@@ -38,7 +35,7 @@ public class SCControlPanel extends RealTimeControlPanel<Duration, DEVSRealTimeA
     {
         super(model, simulator);
         setClockPanel(new SCClockPanel(simulator));
-        setSpeedPanel(new SpeedPanel.TimeDoubleUnit(simulator));
+        setSpeedPanel(new SCSpeedPanel(simulator));
         setRunUntilPanel(new RunUntilPanel.TimeDoubleUnit(simulator));
     }
 

@@ -1,0 +1,143 @@
+package nl.tudelft.simulation.supplychain.gui;
+
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
+
+import javax.swing.JButton;
+
+import org.djunits.value.vdouble.scalar.Duration;
+import org.djutils.event.EventInterface;
+
+import nl.tudelft.simulation.actor.dsol.SCAnimator;
+import nl.tudelft.simulation.dsol.model.DSOLModel;
+import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
+import nl.tudelft.simulation.dsol.simulators.RunState;
+import nl.tudelft.simulation.dsol.swing.gui.control.DEVSControlPanel;
+
+/**
+ * SCRealTimeControlPanel.java.
+ * <p>
+ * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
+ */
+public class SCRealTimeControlPanel extends DEVSControlPanel<Duration, SCAnimator> implements PropertyChangeListener
+{
+    /** */
+    private static final long serialVersionUID = 20201227L;
+
+    /** The timeWarpPanel to control the speed. */
+    private final SCRunSpeedSliderPanel runSpeedSliderPanel;
+
+    /** The default animation delay (stored during fast forward). */
+    private long savedAnimationDelay = 100L;
+
+    /**
+     * Generic control panel with a different set of control buttons. The control panel assumes a RealTimeDEVSAnimator and
+     * animation, but the model specification is not necessarily specified as "real time"; its execution is.
+     * @param model DSOLModel&lt;T, ? extends DEVSSimulationInterface&lt;T&gt;&gt;; the model for the control panel, to allow a
+     *            reset of the model
+     * @param simulator S; the simulator. Specified separately, because the model can have been specified with a superclass of
+     *            the simulator that the ControlPanel actually needs (e.g., model has been specified with a DEVSAnimator,
+     *            whereas the panel needs a RealTimeControlAnimator)
+     * @throws RemoteException when simulator cannot be accessed for listener attachment
+     */
+    public SCRealTimeControlPanel(final DSOLModel<Duration, SCAnimator> model, final SCAnimator simulator)
+            throws RemoteException
+    {
+        super(model, simulator);
+
+        getControlButtonsPanel().add(makeButton("fastForwardButton", "/resources/FastForward.png", "FastForward",
+                "Run the simulation as fast as possible", true));
+
+        this.runSpeedSliderPanel = new SCRunSpeedSliderPanel(0.1, 1000, 1, 3600.0, 3, getSimulator());
+        add(this.runSpeedSliderPanel);
+
+        getSimulator().addListener(this, DEVSRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void actionPerformed(final ActionEvent actionEvent)
+    {
+        String actionCommand = actionEvent.getActionCommand();
+        try
+        {
+            if (actionCommand.equals("FastForward"))
+            {
+                if (getSimulator().isStoppingOrStopped())
+                {
+                    this.savedAnimationDelay = getSimulator().getAnimationDelay();
+                    getSimulator().setAnimationDelay(0L);
+                    getSimulator().setUpdateMsec(1000);
+                    getSimulator().setAnimationDelay(500); // 2 Hz
+                    getSimulator().start();
+                }
+            }
+            if (actionCommand.equals("RunPause") || actionCommand.equals("Reset"))
+            {
+                getSimulator().setAnimationDelay(this.savedAnimationDelay);
+            }
+        }
+        catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
+        super.actionPerformed(actionEvent); // includes fixButtons()
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void fixButtons()
+    {
+        final boolean moreWorkToDo = getSimulator().getRunState() != RunState.ENDED;
+        for (JButton button : getControlButtons())
+        {
+            final String actionCommand = button.getActionCommand();
+            if (actionCommand.equals("FastForward"))
+            {
+                button.setEnabled(moreWorkToDo && isControlButtonsEnabled() && getSimulator().isStoppingOrStopped());
+            }
+        }
+        super.fixButtons(); // handles the start/stop button
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void invalidateButtons()
+    {
+        for (JButton button : getControlButtons())
+        {
+            final String actionCommand = button.getActionCommand();
+            if (actionCommand.equals("FastForward"))
+            {
+                button.setEnabled(false);
+            }
+        }
+        super.invalidateButtons(); // handles the start/stop button
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void propertyChange(final PropertyChangeEvent evt)
+    {
+        // TODO: when external change on speed -- update the slider panel
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void notify(final EventInterface event) throws RemoteException
+    {
+        if (event.getType().equals(DEVSRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT))
+        {
+            this.runSpeedSliderPanel.setSpeed((Double) event.getContent());
+            fixButtons();
+        }
+        super.notify(event);
+    }
+
+
+}

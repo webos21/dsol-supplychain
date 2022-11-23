@@ -113,7 +113,7 @@ public class ContentAnimation implements Locatable, Serializable
             this.imageRenderable.setScale(true);
 
             // We schedule its destroy.
-            this.simulator.scheduleEventRel(delay, this, this.imageRenderable, "destroy", null);
+            this.simulator.scheduleEventRel(delay, this, this.imageRenderable, "destroy", new Object[] {this.simulator});
         }
         catch (Exception remoteException)
         {

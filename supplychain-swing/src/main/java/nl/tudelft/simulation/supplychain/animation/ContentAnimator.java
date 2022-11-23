@@ -25,7 +25,7 @@ public class ContentAnimator implements EventListenerInterface
     private final SCSimulatorInterface simulator;
 
     /**
-     * Create an animator for the moving content that listens to the SupplyChainActor.SEND_CONTENT_EVENT
+     * Create an animator for the moving content that listens to the SupplyChainActor.SEND_CONTENT_EVENT.
      * @param simulator the simulator
      */
     public ContentAnimator(final SCSimulatorInterface simulator)
@@ -44,7 +44,7 @@ public class ContentAnimator implements EventListenerInterface
     
     /** {@inheritDoc} */
     @Override
-    public void notify(EventInterface event) throws RemoteException
+    public void notify(final EventInterface event) throws RemoteException
     {
         if (event.getType().equals(SupplyChainActor.SEND_CONTENT_EVENT))
         {

@@ -57,6 +57,7 @@ public class TestModelApp extends DSOLAnimationApplication
         this.model = model;
         panel.enableSimulationControlButtons();
         addTabs();
+        panel.getTabbedPane().setSelectedIndex(0);
     }
 
     private void addTabs()
@@ -95,6 +96,7 @@ public class TestModelApp extends DSOLAnimationApplication
         CategoryLogger.setAllLogMessageFormat("{level} - {class_name}.{method}:{line}  {message}");
 
         SCAnimator animator = new SCAnimator("MTSMTO", Time.ZERO);
+        animator.setSpeedFactor(3600.0);
         TestModel model = new TestModel(animator);
         ReplicationInterface<Duration> replication =
                 new SingleReplication<Duration>("rep1", Duration.ZERO, Duration.ZERO, new Duration(1800.0, DurationUnit.HOUR));

@@ -12,12 +12,13 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
  * handlers. The typical usage is as follows:
  * 
  * <pre>
- * / Customer customer = new Customer(name, simulator, position, bank);
- * / InternalDemandHandler demandHandler = new InternalDemandHandler(customer, args);
- * / OrderConfirmationHandler confirmationHandler = new OrderConfirmationHandler(customer, args);
- * / ShipmentHandler shipmentHandler = new ShipmentHandler(customer, args);
- * / BillHandler billHandler = new BillHandler(customer, args);
- * / BuyingRole buyingRole = new BuyingRole(customer, simulator, demandHandler, confirmationHandler, shipmentHandler, billHandler);
+ *   Customer customer = new Customer(name, simulator, position, bank);
+ *   InternalDemandHandler demandHandler = new InternalDemandHandler(customer, args);
+ *   OrderConfirmationHandler confirmationHandler = new OrderConfirmationHandler(customer, args);
+ *   ShipmentHandler shipmentHandler = new ShipmentHandler(customer, args);
+ *   BillHandler billHandler = new BillHandler(customer, args);
+ *   BuyingRole buyingRole = new BuyingRole(customer, simulator, demandHandler, confirmationHandler, 
+ *       shipmentHandler, billHandler);
  * </pre>
  * 
  * Note: customer.addRole(buyingRole); will be executed automatically!<br>
@@ -29,17 +30,17 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
  */
 public abstract class Role extends InternalActor
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the owner of the role */
+    /** the owner of the role. */
     protected SupplyChainActor owner = null;
 
-    /** the default stream to use for the time delays */
+    /** the default stream to use for the time delays. */
     protected StreamInterface stream = null;
 
     /**
-     * Constructs a new Role
+     * Constructs a new Role.
      * @param owner the owner of this role
      * @param name the role name
      * @param simulator the simulator to schedule on
@@ -50,7 +51,7 @@ public abstract class Role extends InternalActor
         this.owner = owner;
         this.simulator = simulator;
         this.stream = this.simulator.getModel().getStream("default");
-        
+
         // register the role with the owner
         owner.addRole(this);
     }
@@ -69,6 +70,5 @@ public abstract class Role extends InternalActor
     {
         return super.handleContent(content, false);
     }
-    
-    
+
 }

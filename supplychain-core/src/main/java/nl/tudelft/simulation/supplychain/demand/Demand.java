@@ -25,25 +25,25 @@ import nl.tudelft.simulation.supplychain.product.Product;
  */
 public class Demand implements Serializable
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the product */
+    /** the product. */
     private Product product;
 
-    /** the interval between demand requests */
+    /** the interval between demand requests. */
     private DistContinuousDuration intervalDistribution;
 
-    /** the amount of products to order or make */
+    /** the amount of products to order or make. */
     private Dist amountDistribution;
 
-    /** the earliest delivery date relative to the current simulator time */
+    /** the earliest delivery date relative to the current simulator time. */
     private DistContinuousDuration earliestDeliveryDurationDistribution;
 
-    /** the latest delivery date relative to the current simulator time */
+    /** the latest delivery date relative to the current simulator time. */
     private DistContinuousDuration latestDeliveryDurationDistribution;
 
-    /** a default stream for DistConstant */
+    /** a default stream for DistConstant. */
     private static StreamInterface stream = new Java2Random();
 
     /**

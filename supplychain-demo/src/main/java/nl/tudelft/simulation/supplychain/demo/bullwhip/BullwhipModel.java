@@ -14,7 +14,6 @@ import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.jstats.distributions.DistConstant;
-import nl.tudelft.simulation.jstats.distributions.DistContinuous;
 import nl.tudelft.simulation.jstats.distributions.DistDiscrete;
 import nl.tudelft.simulation.jstats.distributions.DistExponential;
 import nl.tudelft.simulation.jstats.distributions.DistNormal;
@@ -46,14 +45,14 @@ import nl.tudelft.simulation.supplychain.util.DistDiscreteTriangular;
  */
 public class BullwhipModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the simulator. */
     private SCSimulatorInterface devsSimulator;
 
     /**
-     * constructs a new TestModel
+     * constructs a new BullwhipModel.
      * @param simulator the simulator
      */
     public BullwhipModel(final SCSimulatorInterface simulator)
@@ -104,13 +103,14 @@ public class BullwhipModel extends AbstractDSOLModel<Duration, SCSimulatorInterf
 
             // we create two yellow page 'domains', one between the customers and the retailers,
             // and one between the retailers, manufacturers, and suppliers
-            DemoYP ypCustomer = new DemoYP("YP_customer_MTS", getSimulator(), new OrientedPoint3d(400, 40, 0), ing);
-            DemoYP ypMarket = new DemoYP("YP_customer_MTO", getSimulator(), new OrientedPoint3d(500, 40, 0), ing);
-            DemoYP ypMarket2 = new DemoYP("YP_production_MTS", getSimulator(), new OrientedPoint3d(600, 40, 0), ing);
+            DemoYP ypCustomerMTS = new DemoYP("YP_customer_MTS", getSimulator(), new OrientedPoint3d(400, 40, 0), ing);
+            DemoYP ypCustomerMTO = new DemoYP("YP_customer_MTO", getSimulator(), new OrientedPoint3d(500, 40, 0), ing);
+            DemoYP ypProductionMTS = new DemoYP("YP_production_MTS", getSimulator(), new OrientedPoint3d(600, 40, 0), ing);
+            DemoYP ypProductionMTO = new DemoYP("YP_production_MTO", getSimulator(), new OrientedPoint3d(700, 40, 0), ing);
 
             // CUSTOMER or MARKET
             DemoMarket customer = new DemoMarket("US East", getSimulator(), new OrientedPoint3d(40, 150, 0), ing,
-                    new Money(10000.0, MoneyUnit.USD), pc, ypCustomer, stream);
+                    new Money(10000.0, MoneyUnit.USD), pc, ypCustomerMTS, stream);
             // Buy AINT(TRIA(2,5,10)) computers every NORM(3,1) hour starting at t=0.1
             DistContinuousDuration generatorStartTime1 =
                     new DistContinuousDuration(new DistConstant(stream, 0.1), DurationUnit.HOUR);
@@ -121,26 +121,36 @@ public class BullwhipModel extends AbstractDSOLModel<Duration, SCSimulatorInterf
             DistDiscrete batchSize1 = new DistDiscreteTriangular(stream, 2.0, 5.0, 10.0);
             customer.getDemandGeneration().addDemandGenerator(pc,
                     new Demand(pc, interBuyingTime1, batchSize1, generatorStartTime1, generatorEndTime));
-            customer.addDemand(generatorStartTime1, interBuyingTime1, batchSize1, pc);
             // Buy AINT(TRIA(2,4,5)) computers every NORM(4,2) hour starting at t=0.1
-            DistContinuous generatorStartTime2 = new DistConstant(stream, 0.1);
-            DistContinuous interBuyingTime2 = new DistNormal(stream, 4.0, 2.0);
+            DistContinuousDuration generatorStartTime2 =
+                    new DistContinuousDuration(new DistConstant(stream, 0.1), DurationUnit.HOUR);
+            DistContinuousDuration interBuyingTime2 =
+                    new DistContinuousDuration(new DistNormal(stream, 4.0, 2.0), DurationUnit.HOUR);
             DistDiscrete batchSize2 = new DistDiscreteTriangular(stream, 2.0, 4.0, 5.0);
-            customer.addDemand(generatorStartTime2, interBuyingTime2, batchSize2, pc);
+            customer.getDemandGeneration().addDemandGenerator(pc,
+                    new Demand(pc, interBuyingTime2, batchSize2, generatorStartTime2, generatorEndTime));
             // Buy AINT(TRIA(5,8,12)) computers every NORM(5,3) hour starting at t=0.1
-            DistContinuous generatorStartTime3 = new DistConstant(stream, 0.1);
-            DistContinuous interBuyingTime3 = new DistNormal(stream, 5.0, 3.0);
+            DistContinuousDuration generatorStartTime3 =
+                    new DistContinuousDuration(new DistConstant(stream, 0.1), DurationUnit.HOUR);
+            DistContinuousDuration interBuyingTime3 =
+                    new DistContinuousDuration(new DistNormal(stream, 5.0, 3.0), DurationUnit.HOUR);
             DistDiscrete batchSize3 = new DistDiscreteTriangular(stream, 5.0, 8.0, 12.0);
-            customer.addDemand(generatorStartTime3, interBuyingTime3, batchSize3, pc);
+            customer.getDemandGeneration().addDemandGenerator(pc,
+                    new Demand(pc, interBuyingTime3, batchSize3, generatorStartTime3, generatorEndTime));
             // Buy AINT(TRIA(3,8,10)) computers every EXPO(1) hour starting at t=504.0
-            DistContinuous generatorStartTime4 = new DistConstant(stream, 504.0);
-            DistContinuous interBuyingTime4 = new DistExponential(stream, 1.0);
+            DistContinuousDuration generatorStartTime4 =
+                    new DistContinuousDuration(new DistConstant(stream, 504.0), DurationUnit.HOUR);
+            DistContinuousDuration interBuyingTime4 =
+                    new DistContinuousDuration(new DistExponential(stream, 1.0), DurationUnit.HOUR);
             DistDiscrete batchSize4 = new DistDiscreteTriangular(stream, 3.0, 8.0, 10.0);
-            customer.addDemand(generatorStartTime4, interBuyingTime4, batchSize4, pc);
+            customer.getDemandGeneration().addDemandGenerator(pc,
+                    new Demand(pc, interBuyingTime4, batchSize4, generatorStartTime4, generatorEndTime));
             // set max distance for suppliers to 6000 km
-            customer.setMaxDistanceSuppliers(6000.0);
+            // TODO: customer.setMaxDistanceSuppliers(6000.0);
 
             // Retailers
+            StreamInterface streamMTS = new MersenneTwister(2L);
+            StreamInterface streamMTO = new MersenneTwister(4L);
             DemoRetailer[] mtsRet = new DemoRetailer[5];
             mtsRet[0] = new DemoRetailer("Seattle_MTS", getSimulator(), new OrientedPoint3d(-200, -270, 1), ing,
                     new Money(100000, MoneyUnit.USD), pc, 4.0, ypCustomerMTS, ypProductionMTS, streamMTS, true);
@@ -180,8 +190,8 @@ public class BullwhipModel extends AbstractDSOLModel<Duration, SCSimulatorInterf
             contentAnimator.subscribe(ypCustomerMTO);
             contentAnimator.subscribe(ypProductionMTS);
             contentAnimator.subscribe(ypProductionMTO);
-            contentAnimator.subscribe(marketMTS);
-            contentAnimator.subscribe(marketMTO);
+            contentAnimator.subscribe(customer);
+            // contentAnimator.subscribe(marketMTO);
             for (DemoRetailer r : mtsRet)
                 contentAnimator.subscribe(r);
             for (DemoRetailer r : mtoRet)

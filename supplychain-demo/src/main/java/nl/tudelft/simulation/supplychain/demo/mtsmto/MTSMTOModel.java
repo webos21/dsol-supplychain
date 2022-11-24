@@ -8,6 +8,7 @@ import org.djunits.value.vdouble.scalar.Mass;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 
+import nl.tudelft.simulation.actor.dsol.SCAnimator;
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
@@ -28,26 +29,26 @@ import nl.tudelft.simulation.supplychain.product.Unit;
 import nl.tudelft.simulation.supplychain.test.TestModel;
 
 /**
- * MTSMTO.java. <br>
+ * MTSMTOModel.java. <br>
  * <br>
  * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
  * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public class MTSMTOModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
+public class MTSMTOModel extends AbstractDSOLModel<Duration, SCAnimator>
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the simulator. */
-    private SCSimulatorInterface devsSimulator;
+    private SCAnimator devsSimulator;
 
     /**
-     * constructs a new TestModel
+     * constructs a new MTSMTOModel.
      * @param simulator the simulator
      */
-    public MTSMTOModel(final SCSimulatorInterface simulator)
+    public MTSMTOModel(final SCAnimator simulator)
     {
         super(simulator);
         // We don't do anything to prevent state-based replications.

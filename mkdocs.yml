@@ -1,0 +1,28 @@
+site_name: DSOL SUPPLYCHAIN MANUAL
+site_url: https://simulation.tudelft.nl/dsol-supplychain/manual/
+site_favicon: images/favicon.png
+copyright: (c) 2003-2022 Delft University of Technology
+
+theme:
+  name: readthedocs
+  navigation_depth: 1
+    
+markdown_extensions:
+  - admonition
+
+extra_css: 
+  - css/custom.css
+  
+extra_javascript:
+  - js/collapse_menu.js
+    
+nav:
+  - Home: index.md
+  - Getting started:
+    - Installing Eclipse: 1-getting-started/eclipse.md
+    - Sub-projects: 1-getting-started/subprojects.md
+    - Technical docs: https://simulation.tudelft.nl/dsol-supplychain/docs/latest/index.html
+    - API dsol-core: https://simulation.tudelft.nl/dsol-supplychain/docs/latest/dsol-core/apidocs/index.html
+  - ACTOR project:
+    - Introduction: 2-actor/introduction.md
+    

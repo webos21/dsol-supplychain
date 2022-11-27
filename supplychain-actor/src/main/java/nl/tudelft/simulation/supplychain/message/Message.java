@@ -14,7 +14,7 @@ import nl.tudelft.simulation.supplychain.actor.Actor;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Message implements Serializable, Cloneable
+public abstract class Message implements Serializable
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -31,8 +31,8 @@ public abstract class Message implements Serializable, Cloneable
     /** the timestamp of a message. */
     private final Time timestamp;
 
-    /** the message id. */
-    private final long id;
+    /** the unqiue message id. */
+    private final long uniqueId;
 
     /**
      * Construct a new message.
@@ -46,7 +46,7 @@ public abstract class Message implements Serializable, Cloneable
         this.sender = sender;
         this.receiver = receiver;
         this.timestamp = sender.getSimulatorTime();
-        this.id = sender.getSimulator().getUniqueMessageId();
+        this.uniqueId = sender.getSimulator().getUniqueMessageId();
     }
 
     /**
@@ -89,9 +89,9 @@ public abstract class Message implements Serializable, Cloneable
      * Return the unique message id.
      * @return long; the unique message id.
      */
-    public long getId()
+    public long getUniqueId()
     {
-        return this.id;
+        return this.uniqueId;
     }
 
 }

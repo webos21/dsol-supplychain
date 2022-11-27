@@ -13,8 +13,8 @@ import nl.tudelft.simulation.actor.message.MessageType;
 import nl.tudelft.simulation.actor.message.policy.MessagePolicyInterface;
 
 /**
- * Role is a template for a consistent set of handlers for messages, representing a certain part of the organization, such as
- * sales, inventory, finance, or purchasing.
+ * Role is a template for a consistent set of policies for handling messages, representing a certain part of the organization,
+ * such as sales, inventory, finance, or purchasing.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -28,12 +28,12 @@ public abstract class Role implements Serializable, Identifiable
 
     /** the role id. */
     private final String id;
-    
+
     /** the actor to which this role belongs. */
     private final Actor owner;
-    
-    /** the message handlers. */
-    private final Map<MessageType, List<MessagePolicyInterface>> messageHandlers = new LinkedHashMap<>();
+
+    /** the message policies. */
+    private final Map<MessageType, List<MessagePolicyInterface>> messagePolicies = new LinkedHashMap<>();
 
     /**
      * Create a new Role.
@@ -49,39 +49,39 @@ public abstract class Role implements Serializable, Identifiable
     }
 
     /**
-     * Add a message handler to the Role.
-     * @param handler HandlerInterface; the handler to add
+     * Add a message handling policy to the Role.
+     * @param policy MessagePolicyInterface; the policy to add
      */
-    public void addHandler(final MessagePolicyInterface handler)
+    public void addMessagePolicy(final MessagePolicyInterface policy)
     {
-        Throw.whenNull(handler, "handler cannot be null");
-        MessageType messageType = handler.getMessageType();
-        List<MessagePolicyInterface> handlerList = this.messageHandlers.get(messageType);
-        if (handlerList == null)
+        Throw.whenNull(policy, "policy cannot be null");
+        MessageType messageType = policy.getMessageType();
+        List<MessagePolicyInterface> policyList = this.messagePolicies.get(messageType);
+        if (policyList == null)
         {
-            handlerList = new ArrayList<>();
-            this.messageHandlers.put(messageType, handlerList);
+            policyList = new ArrayList<>();
+            this.messagePolicies.put(messageType, policyList);
         }
-        handlerList.add(handler);
+        policyList.add(policy);
     }
-    
+
     /**
-     * Remove a message handler from the Role.
-     * @param messageType MessageType; the message type of the handler to remove
-     * @param handlerId String; the id of the handler to remove
+     * Remove a message handling policy from the Role.
+     * @param messageType MessageType; the message type of the policy to remove
+     * @param policyId String; the id of the policy to remove
      */
-    public void removeHandler(final MessageType messageType, final String handlerId)
+    public void removeMessagePolicy(final MessageType messageType, final String policyId)
     {
         Throw.whenNull(messageType, "messageType cannot be null");
-        Throw.whenNull(handlerId, "handlerId cannot be null");
-        List<MessagePolicyInterface> handlerList = this.messageHandlers.get(messageType);
-        if (handlerList != null)
+        Throw.whenNull(policyId, "policyId cannot be null");
+        List<MessagePolicyInterface> policyList = this.messagePolicies.get(messageType);
+        if (policyList != null)
         {
-            for (MessagePolicyInterface handler : handlerList)
+            for (MessagePolicyInterface policy : policyList)
             {
-                if (handler.getId().equals(handlerId))
+                if (policy.getId().equals(policyId))
                 {
-                    handlerList.remove(handler);
+                    policyList.remove(policy);
                 }
             }
         }

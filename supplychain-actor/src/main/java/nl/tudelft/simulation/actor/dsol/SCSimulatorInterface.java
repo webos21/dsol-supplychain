@@ -27,6 +27,12 @@ public interface SCSimulatorInterface extends DEVSSimulatorInterface<Duration>, 
     Time getAbsStartTime();
 
     /**
+     * Return a unique message id.
+     * @return long; a unique message id
+     */
+    long getUniqueMessageId();
+    
+    /**
      * Return the absolute simulation time.
      * @return Time; the absolute simulation time
      */

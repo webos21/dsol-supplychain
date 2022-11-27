@@ -24,6 +24,9 @@ public class SCAnimator extends DEVSRealTimeAnimator.TimeDoubleUnit implements S
     /** the start time of the simulator. */
     private final Time absStartTime;
 
+    /** the counter for the unique message id. */
+    private long uniqueMessageId = 1000000L;
+
     /**
      * Construct the SCAnimator that extends the DEVSRealTimeAnimator.TimeDoubleUnit, and offers absolute Time for the
      * simulation time in addition to relative duration.
@@ -48,6 +51,13 @@ public class SCAnimator extends DEVSRealTimeAnimator.TimeDoubleUnit implements S
     public Time getAbsStartTime()
     {
         return this.absStartTime;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getUniqueMessageId()
+    {
+        return this.uniqueMessageId++;
     }
 
 }

@@ -24,6 +24,9 @@ public class SCSimulator extends DEVSSimulator<Duration> implements SCSimulatorI
     /** the start time of the simulator. */
     private final Time absStartTime;
 
+    /** the counter for the unique message id. */
+    private long uniqueMessageId = 1000000L;
+
     /**
      * Construct the SCSimulator that extends the DEVSSimulator, and offers absolute Time for the simulation time in addition to
      * relative duration.
@@ -48,6 +51,13 @@ public class SCSimulator extends DEVSSimulator<Duration> implements SCSimulatorI
     public Time getAbsStartTime()
     {
         return this.absStartTime;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public long getUniqueMessageId()
+    {
+        return this.uniqueMessageId++;
     }
 
 }

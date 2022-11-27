@@ -10,6 +10,8 @@ import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.event.EventProducer;
 import org.djutils.exceptions.Throw;
+import org.djutils.immutablecollections.ImmutableLinkedHashSet;
+import org.djutils.immutablecollections.ImmutableSet;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.actor.message.Message;
@@ -42,7 +44,7 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     private final SCSimulatorInterface simulator;
 
     /** the roles. */
-    private final Set<Role> roles = new LinkedHashSet<>();
+    private ImmutableSet<Role> roles = new ImmutableLinkedHashSet<>(new LinkedHashSet<Role>());
     
     /** the message handler. */
     private final MessageHandlerInterface messageHandler;
@@ -101,24 +103,16 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     public void addRole(final Role role)
     {
         Throw.whenNull(role, "role cannot be null");
-        this.roles.add(role);
-    }
-    
-    /**
-     * Remove a role from the actor.
-     * @param role Role; the role to remove from the actor
-     */
-    public void removeRole(final Role role)
-    {
-        Throw.whenNull(role, "role cannot be null");
-        this.roles.remove(role);
+        Set<Role> newRoles = this.roles.toSet();
+        newRoles.add(role);
+        this.roles = new ImmutableLinkedHashSet<>(newRoles);
     }
     
     /**
      * Return the set of roles for this actor.
      * @return Set&lt;roles&gt;; the roles of this actor
      */
-    public Set<Role> getRoles()
+    public ImmutableSet<Role> getRoles()
     {
         return this.roles;
     }

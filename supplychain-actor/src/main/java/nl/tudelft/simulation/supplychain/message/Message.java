@@ -2,6 +2,8 @@ package nl.tudelft.simulation.supplychain.message;
 
 import java.io.Serializable;
 
+import org.djunits.value.vdouble.scalar.Time;
+
 import nl.tudelft.simulation.supplychain.actor.Actor;
 
 /**
@@ -19,7 +21,7 @@ public abstract class Message implements Serializable, Cloneable
 
     /** the message type. */
     private final MessageType type;
-    
+
     /** sender of the message (necessary for a possible reply). */
     private final Actor sender;
 
@@ -27,7 +29,7 @@ public abstract class Message implements Serializable, Cloneable
     private final Actor receiver;
 
     /** the timestamp of a message. */
-    private final double timestamp;
+    private final Time timestamp;
 
     /** the message id. */
     private final long id;
@@ -43,12 +45,12 @@ public abstract class Message implements Serializable, Cloneable
         this.type = type;
         this.sender = sender;
         this.receiver = receiver;
-        this.timestamp = sender.getSimulatorTime().si;
+        this.timestamp = sender.getSimulatorTime();
         this.id = sender.getSimulator().getUniqueMessageId();
     }
 
     /**
-     * Return the type of message. 
+     * Return the type of message.
      * @return MessageType; the message type
      */
     public MessageType getType()
@@ -75,10 +77,10 @@ public abstract class Message implements Serializable, Cloneable
     }
 
     /**
-     * Return the (si-value of the) timestamp of the message.
-     * @return double; the (si-value of the) timestamp of the message
+     * Return the timestamp of the message.
+     * @return Time; the timestamp of the message
      */
-    public double getTimestamp()
+    public Time getTimestamp()
     {
         return this.timestamp;
     }

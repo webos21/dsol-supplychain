@@ -2,10 +2,10 @@ package nl.tudelft.simulation.supplychain.finance;
 
 import java.io.Serializable;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEvent;
+import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEventInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 
 /**
@@ -22,40 +22,38 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 public class FixedCost implements Serializable
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221127L;
 
     /** the supply chain actor. */
     private SupplyChainActor owner;
-
-    /** The bank account. */
-    private BankAccount bankAccount;
 
     /** the description of the type of fixed cost. */
     private String description;
 
     /** The interval for booking the fixed cost. */
-    private Duration interval = Duration.ZERO;
+    private Duration interval;
 
     /** The amount to book on every interval. */
-    private Money amount = new Money(0.0, MoneyUnit.USD);
+    private Money amount;
 
     /** the event for the next period -- stored to be able to remove it. */
-    private SimEvent<Duration> fixedAmountEvent = null;
+    private SimEventInterface<Duration> fixedAmountEvent;
 
     /**
-     * The constructor for the Fixed cost of an actor.
+     * Create a Fixed cost item for an actor.
      * @param owner the supply chain actor
-     * @param bankAccount the bank account
      * @param description the description
      * @param interval the interval for booking fixed cost
      * @param amount the fixed cost per interval
      */
-    public FixedCost(final SupplyChainActor owner, final BankAccount bankAccount, final String description,
-            final Duration interval, final Money amount)
+    public FixedCost(final SupplyChainActor owner, final String description, final Duration interval, final Money amount)
     {
-        super();
+        Throw.whenNull(owner, "owner cannot be null");
+        Throw.whenNull(description, "description cannot be null");
+        Throw.whenNull(interval, "interval cannot be null");
+        Throw.when(interval.le0(), IllegalArgumentException.class, "interval duration cannot be <= 0");
+        Throw.whenNull(amount, "amount cannot be null");
         this.owner = owner;
-        this.bankAccount = bankAccount;
         this.description = description;
         this.changeInterval(interval);
         this.changeAmount(amount);
@@ -68,20 +66,15 @@ public class FixedCost implements Serializable
      */
     public void changeInterval(final Duration newInterval)
     {
+        Throw.whenNull(newInterval, "interval cannot be null");
+        Throw.when(newInterval.le0(), IllegalArgumentException.class, "interval duration cannot be <= 0");
         this.interval = newInterval;
-        try
+        if (this.fixedAmountEvent != null)
         {
-            if (this.fixedAmountEvent != null)
-            {
-                // cancel the previous event
-                this.owner.getSimulator().cancelEvent(this.fixedAmountEvent);
-            }
-            this.owner.getSimulator().scheduleEventRel(this.interval, this, this, "bookFixedCost", null);
+            // cancel the previous event
+            this.owner.getSimulator().cancelEvent(this.fixedAmountEvent);
         }
-        catch (Exception exception)
-        {
-            Logger.error(exception, "changeInterval");
-        }
+        this.fixedAmountEvent = this.owner.getSimulator().scheduleEventRel(this.interval, this, this, "bookFixedCost", null);
     }
 
     /**
@@ -99,19 +92,13 @@ public class FixedCost implements Serializable
      */
     protected void bookFixedCost()
     {
-        this.bankAccount.withdrawFromBalance(this.amount);
-        try
-        {
-            this.owner.getSimulator().scheduleEventRel(this.interval, this, this, "bookFixedCost", null);
-        }
-        catch (Exception exception)
-        {
-            Logger.error(exception, "changeInterval");
-        }
+        this.owner.getBankAccount().withdrawFromBalance(this.amount);
+        this.fixedAmountEvent = this.owner.getSimulator().scheduleEventRel(this.interval, this, this, "bookFixedCost", null);
     }
 
     /**
-     * @return Returns the amount.
+     * Return the fixed cost per interval.
+     * @return Money; the fixed cost per interval
      */
     public Money getAmount()
     {
@@ -119,7 +106,8 @@ public class FixedCost implements Serializable
     }
 
     /**
-     * @return Returns the description.
+     * Return the description of the fixed cost item.
+     * @return String; the description of the fixed cost item
      */
     public String getDescription()
     {
@@ -127,7 +115,8 @@ public class FixedCost implements Serializable
     }
 
     /**
-     * @return Returns the interval.
+     * Return the withdrawal interval.
+     * @return Duration; the withdrawal interval
      */
     public Duration getInterval()
     {
@@ -135,7 +124,8 @@ public class FixedCost implements Serializable
     }
 
     /**
-     * @return Returns the owner.
+     * Return the actor to which these fixed costs apply.
+     * @return SupplyChainActor; the actor to which these fixed costs apply
      */
     public SupplyChainActor getOwner()
     {

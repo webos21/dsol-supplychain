@@ -37,12 +37,13 @@ import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
  * <br>
  * The ContentStore has a HashMap called internalDemandMap that maps the internal demand's uniqueID onto the so-called
  * contentClassMap. This map has the Content's class as key, and maps that onto an ArrayList called 'contentList', which
- * contains all the contents sent or received in order of arrival or sending. <br>
+ * contains all the contents sent or received in order of arrival or sending.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class ContentStore extends EventProducer implements ContentStoreInterface
 {
@@ -54,10 +55,12 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             Collections.synchronizedMap(new LinkedHashMap<Serializable, Map<Class<?>, List<Content>>>());
 
     /** the received content, latest state */
-    private Map<Class<?>, List<Content>> receivedStateMap = Collections.synchronizedMap(new LinkedHashMap<Class<?>, List<Content>>());
+    private Map<Class<?>, List<Content>> receivedStateMap =
+            Collections.synchronizedMap(new LinkedHashMap<Class<?>, List<Content>>());
 
     /** the sent content, latest state */
-    private Map<Class<?>, List<Content>> sentStateMap = Collections.synchronizedMap(new LinkedHashMap<Class<?>, List<Content>>());
+    private Map<Class<?>, List<Content>> sentStateMap =
+            Collections.synchronizedMap(new LinkedHashMap<Class<?>, List<Content>>());
 
     /** the owner */
     private SupplyChainActor owner;
@@ -585,5 +588,5 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
     {
         return this.owner.getName() + ".ContentStore";
     }
-    
+
 }

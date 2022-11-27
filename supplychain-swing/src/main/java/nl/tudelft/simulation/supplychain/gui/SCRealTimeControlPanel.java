@@ -139,5 +139,4 @@ public class SCRealTimeControlPanel extends DEVSControlPanel<Duration, SCAnimato
         super.notify(event);
     }
 
-
 }

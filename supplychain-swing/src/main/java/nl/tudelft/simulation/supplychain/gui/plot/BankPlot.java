@@ -12,23 +12,24 @@ import org.djutils.event.TimedEventType;
 
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.banking.BankAccount;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 
 /**
  * StockPlot.java. <br>
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * <br>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class BankPlot extends XYChart
 {
     /** */
     private static final long serialVersionUID = 20200211L;
-    
+
     /** */
     private SimPersistent<Duration> balancePersistent;
 
@@ -43,8 +44,8 @@ public class BankPlot extends XYChart
         BalanceListener balanceListener = new BalanceListener(simulator, bankAccount);
         try
         {
-            this.balancePersistent = new SimPersistent<>("balance " + title, simulator, balanceListener,
-                BalanceListener.BALANCE_CHANGE_EVENT);
+            this.balancePersistent =
+                    new SimPersistent<>("balance " + title, simulator, balanceListener, BalanceListener.BALANCE_CHANGE_EVENT);
             add("balance", this.balancePersistent, SimPersistent.TIMED_OBSERVATION_ADDED_EVENT);
         }
         catch (RemoteException exception)
@@ -57,10 +58,11 @@ public class BankPlot extends XYChart
      * LalanceListener - delegate class to handle the bank account balance change subscription and event production for the
      * Persistent variables. <br>
      * <br>
-     * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
-     * See for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>.
-     * The source code and binary code of this software is proprietary information of Delft University of Technology.
-     * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+     * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+     * <br>
+     * The supply chain Java library uses a BSD-3 style license.
+     * </p>
+     * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
      */
     private static class BalanceListener extends EventProducer implements EventListenerInterface
     {
@@ -89,8 +91,8 @@ public class BankPlot extends XYChart
         public void notify(final EventInterface event) throws RemoteException
         {
             Money balance = (Money) event.getContent();
-            fireEvent(new TimedEvent<Double>(BALANCE_CHANGE_EVENT, this, balance.getAmount(), this.simulator
-                .getSimulatorTime().si));
+            fireEvent(new TimedEvent<Double>(BALANCE_CHANGE_EVENT, this, balance.getAmount(),
+                    this.simulator.getSimulatorTime().si));
         }
 
         /** {@inheritDoc} */

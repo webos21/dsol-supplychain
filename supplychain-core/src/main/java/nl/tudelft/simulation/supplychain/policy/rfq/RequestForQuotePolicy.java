@@ -22,12 +22,13 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 /**
  * The RequestForQuotehandler implements the business logic for a supplier who receives a RequestForQuote. The most simple
  * version answers yes if the product is on stock or ordered, and bases the price on the average costs of the items on stock,
- * after adding a fixed, but changeable, profit margin. The answer is no if the product is not on stock, nor ordered. <br>
+ * after adding a fixed, but changeable, profit margin. The answer is no if the product is not on stock, nor ordered.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class RequestForQuotePolicy extends SupplyChainHandler
 {
@@ -110,7 +111,6 @@ public class RequestForQuotePolicy extends SupplyChainHandler
         getOwner().sendContent(quote, this.handlingTime.draw());
         return true;
     }
-
 
     /** {@inheritDoc} */
     @Override

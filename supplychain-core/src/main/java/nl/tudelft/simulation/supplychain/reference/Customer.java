@@ -6,21 +6,22 @@ import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.capabilities.BuyerInterface;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.demand.DemandGeneration;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.roles.BuyingRole;
 
 /**
  * A Customer is an actor which usually orders (pulls) products from a Distributor. <br>
- * TODO: implement push processes, such as when VMI (Vendor Managed Inventory) is used. <br>
+ * TODO: implement push processes, such as when VMI (Vendor Managed Inventory) is used.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class Customer extends SupplyChainActor implements BuyerInterface
 {
@@ -41,8 +42,8 @@ public class Customer extends SupplyChainActor implements BuyerInterface
      * @param initialBankAccount the initial bank account
      * @param contentStore the contentStore for the messages
      */
-    public Customer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final Money initialBankAccount, final ContentStoreInterface contentStore)
+    public Customer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final Money initialBankAccount, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);
     }
@@ -54,8 +55,8 @@ public class Customer extends SupplyChainActor implements BuyerInterface
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public Customer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final ContentStoreInterface contentStore)
+    public Customer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
     }

@@ -13,12 +13,13 @@ import nl.tudelft.simulation.supplychain.product.Product;
 /**
  * Production is a basic production unit for a producing Trader. It accepts a ProductionOrder, and searches for the right
  * ProductionService that can produce the ordered product. It only works for a Trader, because there needs to be stock to take
- * the raw materials from, and there needs to be stock to put the final products in. <br>
+ * the raw materials from, and there needs to be stock to put the final products in.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class Production implements Serializable
 {

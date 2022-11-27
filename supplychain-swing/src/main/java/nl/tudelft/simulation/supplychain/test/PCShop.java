@@ -14,16 +14,16 @@ import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
-import nl.tudelft.simulation.supplychain.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyRFQ;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
@@ -48,10 +48,11 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 /**
  * Retailer. <br>
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * <br>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class PCShop extends Retailer
 {
@@ -73,8 +74,8 @@ public class PCShop extends Retailer
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public PCShop(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final Product product, final double amount, final StockKeepingActor manufacturer,
+    public PCShop(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final Product product, final double amount, final StockKeepingActor manufacturer,
             final ContentStoreInterface contentStore) throws RemoteException, NamingException
     {
         this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), product, amount, manufacturer, contentStore);
@@ -93,9 +94,9 @@ public class PCShop extends Retailer
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public PCShop(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final Money initialBankAccount, final Product product, final double amount,
-            final StockKeepingActor manufacturer, final ContentStoreInterface contentStore) throws RemoteException, NamingException
+    public PCShop(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final Money initialBankAccount, final Product product, final double amount, final StockKeepingActor manufacturer,
+            final ContentStoreInterface contentStore) throws RemoteException, NamingException
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);
         this.manufacturer = manufacturer;

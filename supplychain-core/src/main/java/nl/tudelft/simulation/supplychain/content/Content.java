@@ -11,12 +11,13 @@ import nl.tudelft.simulation.supplychain.product.Product;
 /**
  * Content is the generic content for a Message. It creates a unique ID for itself, that is also unique over networks and in
  * distributed settings. Furthermore, it knows nothing more than a sender and a receiver. Content is abstract, as it should be
- * subclassed to give it a sensible 'payload'. <br>
+ * subclassed to give it a sensible 'payload'.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public abstract class Content implements Serializable
 {

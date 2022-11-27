@@ -6,12 +6,13 @@ import java.io.Serializable;
  * Unit is a class that helps to define SKUs (Stock Keeping Units). At this moment, it just is a placeholder for a unit name,
  * providing some standard static Unit types. We could provide extensions of this class allowing to calculate weight or volume
  * of products, based on the density of the product. It could also provide some basic measures to translate the number of units
- * from one Unit class to the other. <br>
+ * from one Unit class to the other.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class Unit implements Serializable
 {

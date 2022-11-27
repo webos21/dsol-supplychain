@@ -17,12 +17,13 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 /**
  * The most simple form of an OrderHandler that takes the orders from stock is one that sends out an OrderConfirmation right
  * away, and waits till the delivery date (should be minus the expected transportation time), picks the order, and ships it out
- * as a Shipment. When the order is not available: wait one day and try again till it is available. <br>
+ * as a Shipment. When the order is not available: wait one day and try again till it is available.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class OrderPolicyStock extends OrderPolicy
 {
@@ -45,18 +46,18 @@ public class OrderPolicyStock extends OrderPolicy
     {
         // get the order
         Order order = (Order) content;
-        
+
         // send out the confirmation
         OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandID(),
                 order, OrderConfirmation.CONFIRMED);
         getOwner().sendContent(orderConfirmation, Duration.ZERO);
 
-        Logger.trace("t={} - MTS ORDER CONFIRMATION of actor '{}': sent '{}'", getOwner().getSimulatorTime(), getOwner().getName(),
-                orderConfirmation);
+        Logger.trace("t={} - MTS ORDER CONFIRMATION of actor '{}': sent '{}'", getOwner().getSimulatorTime(),
+                getOwner().getName(), orderConfirmation);
 
         // tell the stock that we claimed some amount
         this.stock.changeClaimedAmount(order.getProduct(), order.getAmount());
-        
+
         // wait till the right time to start shipping
         try
         {
@@ -71,7 +72,7 @@ public class OrderPolicyStock extends OrderPolicy
             // start shipping 8 hours from now at the earliest
             Time shippingTime =
                     Time.max(getOwner().getSimulatorTime().plus(new Duration(8.0, DurationUnit.HOUR)), scheduledShippingTime);
-            Serializable[] args = new Serializable[] { order };
+            Serializable[] args = new Serializable[] {order};
             getOwner().getSimulator().scheduleEventAbs(shippingTime, this, this, "ship", args);
 
             Logger.trace("t={} - MTS SHIPPING from actor '{}': scheduled for t={}", getOwner().getSimulatorTime(),

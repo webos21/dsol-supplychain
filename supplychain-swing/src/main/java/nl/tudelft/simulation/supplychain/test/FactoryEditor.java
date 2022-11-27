@@ -1,16 +1,3 @@
-/*
- * @(#)FactoryEditor.java May 11, 2004
- * 
- * Copyright (c) 2003-2006 Delft University of Technology, Jaffalaan 5, 2628 BX
- * Delft, the Netherlands. All rights reserved.
- * 
- * See for project information <a href="http://www.simulation.tudelft.nl/">
- * www.simulation.tudelft.nl </a>.
- * 
- * The source code and binary code of this software is proprietary information
- * of Delft University of Technology.
- */
-
 package nl.tudelft.simulation.supplychain.test;
 
 import java.awt.BorderLayout;
@@ -31,11 +18,11 @@ import nl.tudelft.simulation.supplychain.banking.BankAccount;
 
 /**
  * <br>
- * Copyright (c) 2003-2006 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="http://www.simulation.tudelft.nl/"> www.simulation.tudelft.nl </a>. The source code and
- * binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="http://www.tbm.tudelft.nl/webstaf/stijnh/index.htm">Stijn-Pieter van Houten </a>
- * @version $$Revision: 1.1 $$ $$Date: 2009/03/10 22:54:03 $$
+ * Copyright (c) 2003-2006 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * <br>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class FactoryEditor extends AbstractCellEditor implements TableCellEditor
 {

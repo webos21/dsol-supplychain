@@ -20,12 +20,13 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
 /**
  * The InternalDemandHandlerOrder is a simple implementation of the business logic to handle a request for new products through
  * direct ordering at a known supplier. When receiving the internal demand, it just creates an Order based on a table that maps
- * Products onto Actors, and sends it after a given time delay. <br>
+ * Products onto Actors, and sends it after a given time delay.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class InternalDemandPolicyOrder extends InternalDemandPolicy
 {
@@ -100,12 +101,13 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
     }
 
     /**
-     * INNER CLASS FOR STORING RECORDS OF SUPPLIERS AND PRICE <br>
+     * INNER CLASS FOR STORING RECORDS OF SUPPLIERS AND PRICE
+     * <p>
+     * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
      * <br>
-     * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
-     * See for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>.
-     * The source code and binary code of this software is proprietary information of Delft University of Technology.
-     * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+     * The supply chain Java library uses a BSD-3 style license.
+     * </p>
+     * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
      */
     protected class SupplierRecord
     {

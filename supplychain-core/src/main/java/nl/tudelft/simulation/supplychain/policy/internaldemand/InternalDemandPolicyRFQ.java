@@ -22,12 +22,13 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * The InternalDemandHandlerRFQ is a simple implementation of the business logic to handle a request for new products through
  * sending out a number of RFQs to a list of preselected suppliers. When receiving the internal demand, it just creates a number
  * of RFQs based on a table that maps Products onto a list of Actors, and sends them out, all at the same time, after a given
- * time delay. <br>
+ * time delay.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class InternalDemandPolicyRFQ extends InternalDemandPolicy
 {

@@ -19,12 +19,13 @@ import nl.tudelft.simulation.supplychain.content.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * Demand generation.<br>
+ * Demand generation.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class DemandGeneration extends InternalActor
 {
@@ -67,8 +68,7 @@ public class DemandGeneration extends InternalActor
         try
         {
             Serializable[] args = {product, demand};
-            super.simulator.scheduleEventRel(demand.getIntervalDistribution().draw(), this, this, "createInternalDemand",
-                args);
+            super.simulator.scheduleEventRel(demand.getIntervalDistribution().draw(), this, this, "createInternalDemand", args);
         }
         catch (Exception e)
         {
@@ -105,19 +105,20 @@ public class DemandGeneration extends InternalActor
         {
             try
             {
-                double amount = demand.getAmountDistribution() instanceof DistContinuous ? ((DistContinuous) demand
-                    .getAmountDistribution()).draw() : ((DistDiscrete) demand.getAmountDistribution()).draw();
-                InternalDemand id = new InternalDemand(getOwner(), product, amount, super.simulator.getAbsSimulatorTime().plus(
-                    demand.getEarliestDeliveryDurationDistribution().draw()), super.simulator.getAbsSimulatorTime().plus(demand
-                        .getLatestDeliveryDuration().draw()));
+                double amount = demand.getAmountDistribution() instanceof DistContinuous
+                        ? ((DistContinuous) demand.getAmountDistribution()).draw()
+                        : ((DistDiscrete) demand.getAmountDistribution()).draw();
+                InternalDemand id = new InternalDemand(getOwner(), product, amount,
+                        super.simulator.getAbsSimulatorTime().plus(demand.getEarliestDeliveryDurationDistribution().draw()),
+                        super.simulator.getAbsSimulatorTime().plus(demand.getLatestDeliveryDuration().draw()));
                 getOwner().sendContent(id, this.administrativeDelay.draw());
                 Serializable[] args = {product, demand};
                 Time time = super.simulator.getAbsSimulatorTime().plus(demand.getIntervalDistribution().draw());
                 super.simulator.scheduleEventAbs(time, this, this, "createInternalDemand", args);
 
                 // we collect some statistics for the internal demand
-                super.fireEvent(new TimedEvent<Time>(DemandGeneration.DEMAND_GENERATED_EVENT, this, id, super.simulator
-                    .getAbsSimulatorTime()));
+                super.fireEvent(new TimedEvent<Time>(DemandGeneration.DEMAND_GENERATED_EVENT, this, id,
+                        super.simulator.getAbsSimulatorTime()));
             }
             catch (Exception e)
             {

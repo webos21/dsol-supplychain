@@ -7,9 +7,9 @@ import org.djutils.draw.point.OrientedPoint3d;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.capabilities.BuyerInterface;
 import nl.tudelft.simulation.supplychain.actor.capabilities.SellerInterface;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -17,12 +17,13 @@ import nl.tudelft.simulation.supplychain.roles.BuyingRole;
 import nl.tudelft.simulation.supplychain.roles.SellingRole;
 
 /**
- * Reference implementation for a Retailer. <br>
+ * Reference implementation for a Retailer.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class Retailer extends StockKeepingActor implements BuyerInterface, SellerInterface
 {
@@ -42,8 +43,8 @@ public class Retailer extends StockKeepingActor implements BuyerInterface, Selle
      * @param bank the bank
      * @param contentStore the contentStore for the messages
      */
-    public Retailer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final ContentStoreInterface contentStore)
+    public Retailer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final ContentStoreInterface contentStore)
     {
         this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), contentStore);
     }
@@ -56,8 +57,8 @@ public class Retailer extends StockKeepingActor implements BuyerInterface, Selle
      * @param initialBankAccount the initial bank balance
      * @param contentStore the contentStore for the messages
      */
-    public Retailer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final Money initialBankAccount, final ContentStoreInterface contentStore)
+    public Retailer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final Money initialBankAccount, final ContentStoreInterface contentStore)
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);
     }

@@ -9,12 +9,13 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
 /**
  * This restocking policy looks at the difference between ordered and stock on hand on one hand, and the committed stock on the
  * other hand. If we committed more than we ordered and have on hand, we overreact and order more products than strictly
- * necessary. This reaction tends to lead in an oscillation of order sizes upstream the supply chain. <br>
+ * necessary. This reaction tends to lead in an oscillation of order sizes upstream the supply chain.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class RestockingPolicyOscillation extends RestockingPolicyFixed
 {

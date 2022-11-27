@@ -11,12 +11,13 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
  * Product represents a certain type of product. It might have a billOfMaterials of other products and amounts, indicating from
  * which products this product can be put together in a production process. When a product does not have a billOfMaterials, the
  * product can not be manufactured in the simulation, in other words, it is a raw material that has always to be acquired from a
- * supplier. <br>
+ * supplier.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class Product implements Serializable
 {

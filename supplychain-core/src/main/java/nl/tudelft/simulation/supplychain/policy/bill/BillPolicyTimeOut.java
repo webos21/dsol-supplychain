@@ -13,12 +13,13 @@ import nl.tudelft.simulation.supplychain.content.Payment;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 
 /**
- * A Bill handler which has a restriction that after a time out the bill is paid automatically if not paid yet. <br>
+ * A Bill handler which has a restriction that after a time out the bill is paid automatically if not paid yet.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class BillPolicyTimeOut extends BillPolicy
 {
@@ -67,7 +68,7 @@ public class BillPolicyTimeOut extends BillPolicy
             try
             {
                 bill.getSender().getSimulator().scheduleEventAbs(bill.getFinalPaymentDate().plus(this.maximumTimeOut), this,
-                        this, "checkPayment", new Serializable[] { bill });
+                        this, "checkPayment", new Serializable[] {bill});
             }
             catch (Exception exception)
             {

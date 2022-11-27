@@ -9,12 +9,13 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
 import nl.tudelft.simulation.supplychain.production.Production;
 
 /**
- * Handles ProductionOrders. <br>
+ * Handles ProductionOrders.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class ProductionOrderPolicy extends SupplyChainHandler
 {
@@ -64,6 +65,5 @@ public class ProductionOrderPolicy extends SupplyChainHandler
     {
         return ProductionOrder.class;
     }
-    
-    
+
 }

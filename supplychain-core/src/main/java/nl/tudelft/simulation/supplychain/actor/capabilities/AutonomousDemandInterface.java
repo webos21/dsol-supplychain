@@ -10,10 +10,10 @@ import nl.tudelft.simulation.supplychain.product.Product;
 /**
  * AutonomousDemandInterface.java.
  * <p>
- * Copyright (c) 2019-2019 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
- * BSD-style license. See <a href="https://djunits.org/docs/license.html">DJUNITS License</a>.
- * <p>
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * Copyright (c) 2019-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public interface AutonomousDemandInterface
 {
@@ -32,11 +32,11 @@ public interface AutonomousDemandInterface
      * @param latestDeliveryDurationDistribution the latest delivery date distribution
      */
     default void addDemand(Product product, DistContinuousDuration interval, DistContinuous amount,
-        DistContinuousDuration earliestDeliveryDurationDistribution,
-        DistContinuousDuration latestDeliveryDurationDistribution)
+            DistContinuousDuration earliestDeliveryDurationDistribution,
+            DistContinuousDuration latestDeliveryDurationDistribution)
     {
-        Demand demand = new Demand(product, interval, amount, earliestDeliveryDurationDistribution,
-            latestDeliveryDurationDistribution);
+        Demand demand =
+                new Demand(product, interval, amount, earliestDeliveryDurationDistribution, latestDeliveryDurationDistribution);
         getDemandGeneration().addDemandGenerator(product, demand);
     }
 
@@ -49,11 +49,11 @@ public interface AutonomousDemandInterface
      * @param latestDeliveryDurationDistribution the latest delivery date distribution
      */
     default void addDemand(Product product, DistContinuousDuration interval, DistDiscrete amount,
-        DistContinuousDuration earliestDeliveryDurationDistribution,
-        DistContinuousDuration latestDeliveryDurationDistribution)
+            DistContinuousDuration earliestDeliveryDurationDistribution,
+            DistContinuousDuration latestDeliveryDurationDistribution)
     {
-        Demand demand = new Demand(product, interval, amount, earliestDeliveryDurationDistribution,
-            latestDeliveryDurationDistribution);
+        Demand demand =
+                new Demand(product, interval, amount, earliestDeliveryDurationDistribution, latestDeliveryDurationDistribution);
         getDemandGeneration().addDemandGenerator(product, demand);
     }
 

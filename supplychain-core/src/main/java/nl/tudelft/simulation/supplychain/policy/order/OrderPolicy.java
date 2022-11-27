@@ -31,12 +31,13 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * time minus the transportation time, the order is picked immediately (or as soon as it is available), and sent as a Shipment
  * to the other actor. <br>
  * A bill is sent out before, with, or after the shipment, and in some cases, the shipment has to wait for the payment to
- * arrive. <br>
+ * arrive.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public abstract class OrderPolicy extends SupplyChainHandler
 {
@@ -81,7 +82,7 @@ public abstract class OrderPolicy extends SupplyChainHandler
             if (this.stock.getActualAmount(product) < amount)
             {
                 // try again in one day
-                Serializable[] args = new Serializable[] { order };
+                Serializable[] args = new Serializable[] {order};
                 getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "ship", args);
             }
             else
@@ -106,7 +107,7 @@ public abstract class OrderPolicy extends SupplyChainHandler
                         "SALE");
 
                 // .... by scheduling it based on the transportation delay
-                Serializable[] args = new Serializable[] { bill };
+                Serializable[] args = new Serializable[] {bill};
                 getOwner().getSimulator().scheduleEventRel(
                         TransportMode.PLANE.transportTime(shipment.getSender(), shipment.getReceiver()), this, this, "sendBill",
                         args);

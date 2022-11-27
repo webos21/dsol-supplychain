@@ -1,16 +1,3 @@
-/*
- * @(#)Stock.java Mar 3, 2004
- * 
- * Copyright (c) 2003-2006 Delft University of Technology, Jaffalaan 5, 2628 BX
- * Delft, the Netherlands. All rights reserved.
- * 
- * See for project information <a href="http://www.simulation.tudelft.nl/">
- * www.simulation.tudelft.nl </a>.
- * 
- * The source code and binary code of this software is proprietary information
- * of Delft University of Technology.
- */
-
 package nl.tudelft.simulation.supplychain.stock;
 
 import java.io.Serializable;
@@ -33,12 +20,13 @@ import nl.tudelft.simulation.supplychain.product.Product;
 /**
  * Simple implementation of Stock for a Trader. The information on stocked amounts is stored in a HashTable of StockRecords.
  * Events on stock changes are fired by Stock, so subscribers who are interested in the stock amounts can see what is going on
- * in the Stock. <br>
+ * in the Stock.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class Stock extends EventProducer implements StockInterface, StockForecastInterface
 {
@@ -205,8 +193,8 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
     {
         if (time.lt(this.owner.getSimulatorTime()))
         {
-            Logger.error("changeFutureClaimedAmount - Time for the change is smaller than current simulator time (" + time
-                + "<" + this.owner.getSimulatorTime() + ").");
+            Logger.error("changeFutureClaimedAmount - Time for the change is smaller than current simulator time (" + time + "<"
+                    + this.owner.getSimulatorTime() + ").");
             return false;
         }
 
@@ -253,8 +241,8 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
     {
         if (time.lt(this.owner.getSimulatorTime()))
         {
-            Logger.error("changeFutureOrderedAmount - Time for the change is smaller than current simulator time (" + time
-                + "<" + this.owner.getSimulatorTime() + ").");
+            Logger.error("changeFutureOrderedAmount - Time for the change is smaller than current simulator time (" + time + "<"
+                    + this.owner.getSimulatorTime() + ").");
             return false;
         }
         if (delta < 0)
@@ -309,7 +297,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
     public void sendStockUpdateEvent(final StockRecord stockRecord)
     {
         StockUpdateData data = new StockUpdateData(stockRecord.getProduct().getName(), stockRecord.getActualAmount(),
-            stockRecord.getClaimedAmount(), stockRecord.getOrderedAmount());
+                stockRecord.getClaimedAmount(), stockRecord.getOrderedAmount());
 
         this.fireEvent(new TimedEvent<Time>(StockInterface.STOCK_CHANGE_EVENT, this, data, this.owner.getSimulatorTime()));
     }

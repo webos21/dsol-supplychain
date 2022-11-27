@@ -10,23 +10,24 @@ import nl.tudelft.simulation.supplychain.content.Content;
  * A ContentStore is taking care of storing content for later use, for instance for matching purposes. It acts as an ERP or
  * database system for the supply chain. In this implementation, all the messages are linked to an InternalDemand, as this sets
  * off the whole chain of messages, no matter whether it is a purchase, internal production, or stock replenishment: in all
- * cases the InternalDemand triggers all the other messages. <br>
+ * cases the InternalDemand triggers all the other messages.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public interface ContentStoreInterface extends Serializable
 {
     /**
-     * Set the owner for the content store after is has been created. The reason for explicitly having to set the owner and
-     * not include the owner in the constructor is that the SupplyChainActor needs a ContentStore in its constructor, so the
-     * ContentStore cannot be constructed with the owner. 
+     * Set the owner for the content store after is has been created. The reason for explicitly having to set the owner and not
+     * include the owner in the constructor is that the SupplyChainActor needs a ContentStore in its constructor, so the
+     * ContentStore cannot be constructed with the owner.
      * @param owner the owner
      */
     void setOwner(SupplyChainActor owner);
-    
+
     /**
      * Method addContent stores a new Content object into the store.
      * @param content the content to add

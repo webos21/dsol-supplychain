@@ -9,12 +9,13 @@ import java.util.Map;
  * the simulation of manufacturing processes to be able to pick the right materials in the right quantities to make a new
  * product. The amounts in the BillOfMaterials are related to producing one unit of the product to which it belongs, so if the
  * Unit is a Unit.CONTAINER20FT, the amounts in the BillOfMaterials (in their own units) indicate the quantities needed to
- * produce one 20 ft container load of end products. <br>
+ * produce one 20 ft container load of end products.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class BillOfMaterials implements Serializable
 {
@@ -47,7 +48,7 @@ public class BillOfMaterials implements Serializable
      */
     public void add(final Product _product, final double amount)
     {
-        this.materials.put(_product,Double.valueOf(amount));
+        this.materials.put(_product, Double.valueOf(amount));
     }
 
     /**

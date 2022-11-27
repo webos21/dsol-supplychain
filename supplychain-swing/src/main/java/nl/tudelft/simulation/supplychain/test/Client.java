@@ -16,9 +16,6 @@ import nl.tudelft.simulation.jstats.distributions.DistConstant;
 import nl.tudelft.simulation.jstats.distributions.DistExponential;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
-import nl.tudelft.simulation.supplychain.messagehandlers.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.banking.Bank;
@@ -26,7 +23,10 @@ import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.demand.Demand;
 import nl.tudelft.simulation.supplychain.demand.DemandGeneration;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyRFQ;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
@@ -44,10 +44,11 @@ import nl.tudelft.simulation.supplychain.roles.BuyingRole;
 /**
  * Customer. <br>
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * <br>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class Client extends Customer
 {
@@ -72,9 +73,9 @@ public class Client extends Customer
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
-    public Client(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-        final Bank bank, final Money initialBankAccount, final Product product, final Retailer retailer,
-        final ContentStoreInterface contentStore) throws RemoteException, NamingException
+    public Client(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
+            final Money initialBankAccount, final Product product, final Retailer retailer,
+            final ContentStoreInterface contentStore) throws RemoteException, NamingException
     {
         super(name, simulator, position, bank, initialBankAccount, contentStore);
         this.product = product;
@@ -83,8 +84,8 @@ public class Client extends Customer
         // Let's give Client its corresponding image
         if (simulator instanceof AnimatorInterface)
         {
-            new SingleImageRenderable<>(this, simulator, Factory.class.getResource(
-                "/nl/tudelft/simulation/supplychain/images/Market.gif"));
+            new SingleImageRenderable<>(this, simulator,
+                    Factory.class.getResource("/nl/tudelft/simulation/supplychain/images/Market.gif"));
         }
     }
 
@@ -103,36 +104,36 @@ public class Client extends Customer
         super.addReceivingDevice(fax, secretary, new DistConstantDuration(hour));
         //
         // create the internal demand for PCs
-        Demand demand = new Demand(this.product, new DistContinuousDuration(new DistExponential(stream, 24.0),
-            DurationUnit.HOUR), new DistConstant(stream, 1.0), new DistConstantDuration(Duration.ZERO),
-            new DistConstantDuration(new Duration(14.0, DurationUnit.DAY)));
-        DemandGeneration dg = new DemandGeneration(this, new DistContinuousDuration(new DistExponential(stream, 2.0),
-            DurationUnit.MINUTE));
+        Demand demand = new Demand(this.product,
+                new DistContinuousDuration(new DistExponential(stream, 24.0), DurationUnit.HOUR), new DistConstant(stream, 1.0),
+                new DistConstantDuration(Duration.ZERO), new DistConstantDuration(new Duration(14.0, DurationUnit.DAY)));
+        DemandGeneration dg =
+                new DemandGeneration(this, new DistContinuousDuration(new DistExponential(stream, 2.0), DurationUnit.MINUTE));
         dg.addDemandGenerator(this.product, demand);
         super.setDemandGeneration(dg);
         //
         // tell Client to use the InternalDemandHandler
-        InternalDemandPolicyRFQ internalDemandHandler = new InternalDemandPolicyRFQ(this, new Duration(24.0,
-            DurationUnit.HOUR), null); // XXX: Why does it need stock?
+        InternalDemandPolicyRFQ internalDemandHandler =
+                new InternalDemandPolicyRFQ(this, new Duration(24.0, DurationUnit.HOUR), null); // XXX: Why does it need stock?
         internalDemandHandler.addSupplier(this.product, this.retailer);
         //
         // tell Client to use the Quotehandler to handle quotes
         QuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE,
-            new DistConstantDuration(new Duration(2.0, DurationUnit.HOUR)), 0.4, 0.1);
+                new DistConstantDuration(new Duration(2.0, DurationUnit.HOUR)), 0.4, 0.1);
         //
         // Client has the standard order confirmation handler
         OrderConfirmationPolicy confirmationHandler = new OrderConfirmationPolicy(this);
         //
         // Client will get a bill in the end
         BillPolicy billHandler = new BillPolicy(this, super.bankAccount, PaymentPolicyEnum.PAYMENT_IMMEDIATE,
-            new DistConstantDuration(Duration.ZERO));
+                new DistConstantDuration(Duration.ZERO));
         //
         // hopefully, Client will get laptop shipments
         ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
         //
         // add the handlers to the buying role for Client
-        BuyingRole buyingRole = new BuyingRole(this, super.simulator, internalDemandHandler, quoteHandler,
-            confirmationHandler, shipmentHandler, billHandler);
+        BuyingRole buyingRole = new BuyingRole(this, super.simulator, internalDemandHandler, quoteHandler, confirmationHandler,
+                shipmentHandler, billHandler);
         super.setBuyingRole(buyingRole);
 
         //

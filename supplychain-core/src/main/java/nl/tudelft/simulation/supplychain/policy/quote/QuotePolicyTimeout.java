@@ -21,12 +21,13 @@ import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 /**
  * The QuoteHandlerTimeout handles quotes until a certain timeout is reached. When all Quotes are in, it reacts. It schedules
  * the timeout date when the FIRST Quote comes in, because it makes no sense to cut off the negotiation process without any
- * received Quote. <br>
+ * received Quote.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class QuotePolicyTimeout extends QuotePolicy
 {
@@ -111,7 +112,7 @@ public class QuotePolicyTimeout extends QuotePolicy
             try
             {
                 this.unansweredIDs.add(internalDemandID);
-                Serializable[] args = new Serializable[] { internalDemandID };
+                Serializable[] args = new Serializable[] {internalDemandID};
 
                 // calculate the actual time out
                 Time time = Time.max(getOwner().getSimulatorTime(), quote.getRequestForQuote().getCutoffDate());

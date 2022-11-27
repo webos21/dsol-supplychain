@@ -21,12 +21,13 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
 /**
  * The ResourceProductionService simulates a manufacturing or assembly process that is constrained by the (non-)availability of
  * resources. TODO: decide on cycle times, setup times, linked resources, capacity, cleaning times, batch sizes, maintenance,
- * etc. KPIs that should be calculated are B1 value and material completeness. <br>
+ * etc. KPIs that should be calculated are B1 value and material completeness.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class ResourceProductionService extends ProductionService
 {
@@ -95,10 +96,10 @@ public class ResourceProductionService extends ProductionService
             Product raw = bomIter.next();
             double amount = bom.get(raw).doubleValue();
             amount *= productionOrder.getAmount();
-            availableMaterials.put(raw,Double.valueOf(amount));
+            availableMaterials.put(raw, Double.valueOf(amount));
         }
         // don't do anyting before production has to start
-        Serializable[] args = new Serializable[] { productionOrder, ptime, availableMaterials };
+        Serializable[] args = new Serializable[] {productionOrder, ptime, availableMaterials};
         try
         {
             System.out.println("DelayProduction: production started for product: " + productionOrder.getProduct());
@@ -132,7 +133,7 @@ public class ResourceProductionService extends ProductionService
             Product raw = bomIter.next();
             double amount = bom.get(raw).doubleValue();
             amount *= productionOrder.getAmount();
-            availableMaterials.put(raw,Double.valueOf(amount));
+            availableMaterials.put(raw, Double.valueOf(amount));
         }
 
         boolean enoughOnStock = pickRawMaterials(productionOrder, availableMaterials, false);
@@ -164,7 +165,7 @@ public class ResourceProductionService extends ProductionService
         {
             pickRawMaterials(productionOrder, availableMaterials, true);
             // wait for the production time to put the final products together
-            Serializable[] args = new Serializable[] { productionOrder };
+            Serializable[] args = new Serializable[] {productionOrder};
             try
             {
                 this.owner.getSimulator().scheduleEventRel(prodctionDuration, this, this, "endProduction", args);
@@ -181,7 +182,7 @@ public class ResourceProductionService extends ProductionService
                 pickRawMaterials(productionOrder, availableMaterials, true);
             }
             // try again in one day
-            Serializable[] args = new Serializable[] { productionOrder, prodctionDuration, availableMaterials };
+            Serializable[] args = new Serializable[] {productionOrder, prodctionDuration, availableMaterials};
             try
             {
                 this.owner.getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "startProduction",

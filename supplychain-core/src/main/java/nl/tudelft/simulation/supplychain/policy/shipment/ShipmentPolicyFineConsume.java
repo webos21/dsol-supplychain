@@ -13,12 +13,13 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 
 /**
  * When a Shipment comes in, consume it. In other words and in terms of the supply chain simulation: do nothing... <br>
- * However a check is performed whether the shipment was delivered on time. If not,a fine is imposed. <br>
+ * However a check is performed whether the shipment was delivered on time. If not,a fine is imposed.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class ShipmentPolicyFineConsume extends ShipmentPolicyConsume
 {
@@ -41,8 +42,8 @@ public class ShipmentPolicyFineConsume extends ShipmentPolicyConsume
      * @param fineMarginPerDay the fine margin per day
      * @param fixedFinePerDay the fixed fine per day
      */
-    public ShipmentPolicyFineConsume(final SupplyChainActor owner, final Duration maximumTimeOut,
-            final double fineMarginPerDay, final Money fixedFinePerDay)
+    public ShipmentPolicyFineConsume(final SupplyChainActor owner, final Duration maximumTimeOut, final double fineMarginPerDay,
+            final Money fixedFinePerDay)
     {
         super(owner);
         this.maximumTimeOut = maximumTimeOut;

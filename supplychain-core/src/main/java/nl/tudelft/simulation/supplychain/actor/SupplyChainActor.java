@@ -15,10 +15,6 @@ import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.event.EventType;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.components.SendingDeviceInterface;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.components.SendingReceivingDevice;
 import nl.tudelft.simulation.supplychain.banking.Bank;
@@ -27,17 +23,21 @@ import nl.tudelft.simulation.supplychain.banking.FixedCost;
 import nl.tudelft.simulation.supplychain.content.Content;
 import nl.tudelft.simulation.supplychain.content.Shipment;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 import nl.tudelft.simulation.supplychain.roles.Role;
 
 /**
  * A SupplyChainActor is an Actor from the Actor package with a bank account, and a way to keep track of its messages. It can
- * play certain roles, to which it can delegate the handling of its messages. It can also choose to handle messages itself. <br>
+ * play certain roles, to which it can delegate the handling of its messages. It can also choose to handle messages itself.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 
 public abstract class SupplyChainActor extends Actor

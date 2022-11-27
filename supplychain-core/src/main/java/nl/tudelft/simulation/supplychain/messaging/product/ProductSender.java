@@ -5,19 +5,20 @@ import java.io.Serializable;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.components.ReceivingDeviceInterface;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.components.SendingDevice;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.types.DeviceType;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
- * A reference implementation of a product sender (e.g., a crossdock or a warehouse). <br>
+ * A reference implementation of a product sender (e.g., a crossdock or a warehouse).
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class ProductSender extends SendingDevice
 {
@@ -36,8 +37,7 @@ public class ProductSender extends SendingDevice
      * @param simulator the simulator to use
      * @param delayDist the delay to send
      */
-    public ProductSender(final String name, final SCSimulatorInterface simulator,
-            final DistContinuousDuration delayDist)
+    public ProductSender(final String name, final SCSimulatorInterface simulator, final DistContinuousDuration delayDist)
     {
         super(name, DeviceType.OTHER);
         this.simulator = simulator;
@@ -51,7 +51,7 @@ public class ProductSender extends SendingDevice
         ReceivingDeviceInterface receiver = message.getReceiver().getReceivingDevices(this.getDeviceType())[0];
         try
         {
-            this.simulator.scheduleEventRel(this.delayDist.draw(), this, receiver, "receive", new Serializable[] { message });
+            this.simulator.scheduleEventRel(this.delayDist.draw(), this, receiver, "receive", new Serializable[] {message});
         }
         catch (Exception exception)
         {

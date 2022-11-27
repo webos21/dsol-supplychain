@@ -3,12 +3,13 @@ package nl.tudelft.simulation.supplychain.contentstore.database;
 import java.io.Serializable;
 
 /**
+ * RecordDescriptor.
+ * <p>
+ * Copyright (c) 2003-2005 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2005 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="http://www.simulation.tudelft.nl/"> www.simulation.tudelft.nl</a>. The source code and
- * binary code of this software is proprietary information of Delft University of Technology.
- * @version Aug 25, 2005 <br>
- * @author <a href="http://www.tbm.tudelft.nl/webstaf/alexandv/index.htm">Alexander Verbraeck </a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class RecordDescriptor implements Serializable
 {
@@ -19,7 +20,8 @@ public class RecordDescriptor implements Serializable
     private String name;
 
     /** the field types */
-    public enum FieldType {
+    public enum FieldType
+    {
         /** VARCHAR - String */
         VARCHAR,
         /** TEXT - multiline text field */
@@ -44,13 +46,11 @@ public class RecordDescriptor implements Serializable
 
     /**
      * Construstor for the RecordDescriptor
-     * 
      * @param name the field name
      * @param type the field type
      * @param autoKey automatic key or not
      */
-    public RecordDescriptor(final String name, final FieldType type,
-            final boolean autoKey)
+    public RecordDescriptor(final String name, final FieldType type, final boolean autoKey)
     {
         super();
         this.name = name;

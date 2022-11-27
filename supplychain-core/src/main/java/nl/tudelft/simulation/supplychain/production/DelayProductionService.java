@@ -22,12 +22,13 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * The DelayProductionService starts production at the latest possible moment to meet the delivery date of the production order.
  * Two versions are available: one that waits till all the raw materials are available. If not, production is delayed until all
  * materials of the BoM are available in the right quantities. The other version is a greedy one, it takes all the materials it
- * needs from the moment production should start, and delays if necessary to get the missing materials. <br>
+ * needs from the moment production should start, and delays if necessary to get the missing materials.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class DelayProductionService extends ProductionService
 {
@@ -96,10 +97,10 @@ public class DelayProductionService extends ProductionService
             Product raw = bomIter.next();
             double amount = bom.get(raw).doubleValue();
             amount *= productionOrder.getAmount();
-            availableMaterials.put(raw,Double.valueOf(amount));
+            availableMaterials.put(raw, Double.valueOf(amount));
         }
         // don't do anyting before production has to start
-        Serializable[] args = new Serializable[] { productionOrder, ptime, availableMaterials };
+        Serializable[] args = new Serializable[] {productionOrder, ptime, availableMaterials};
         try
         {
             System.out.println("DelayProduction: production started for product: " + productionOrder.getProduct());
@@ -133,7 +134,7 @@ public class DelayProductionService extends ProductionService
             Product raw = bomIter.next();
             double amount = bom.get(raw).doubleValue();
             amount *= productionOrder.getAmount();
-            availableMaterials.put(raw,Double.valueOf(amount));
+            availableMaterials.put(raw, Double.valueOf(amount));
         }
 
         boolean enoughOnStock = pickRawMaterials(productionOrder, availableMaterials, false);
@@ -165,7 +166,7 @@ public class DelayProductionService extends ProductionService
         {
             pickRawMaterials(productionOrder, availableMaterials, true);
             // wait for the production time to put the final products together
-            Serializable[] args = new Serializable[] { productionOrder };
+            Serializable[] args = new Serializable[] {productionOrder};
             try
             {
                 this.owner.getSimulator().scheduleEventRel(prodctionDuration, this, this, "endProduction", args);
@@ -182,7 +183,7 @@ public class DelayProductionService extends ProductionService
                 pickRawMaterials(productionOrder, availableMaterials, true);
             }
             // try again in one day
-            Serializable[] args = new Serializable[] { productionOrder, prodctionDuration, availableMaterials };
+            Serializable[] args = new Serializable[] {productionOrder, prodctionDuration, availableMaterials};
             try
             {
                 this.owner.getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "startProduction",

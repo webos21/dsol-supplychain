@@ -19,12 +19,13 @@ import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 
 /**
  * The BillHandler is a simple implementation of the business logic to pay a bill. Four different policies are available in this
- * version -- which can be extended, of course: paying immediately, paying on time, paying early, and paying late. <br>
+ * version -- which can be extended, of course: paying immediately, paying on time, paying early, and paying late.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class BillPolicy extends SupplyChainHandler
 {
@@ -102,7 +103,7 @@ public class BillPolicy extends SupplyChainHandler
         paymentTime = Time.max(paymentTime, currentTime);
         try
         {
-            Serializable[] args = new Serializable[] { bill };
+            Serializable[] args = new Serializable[] {bill};
             getOwner().getSimulator().scheduleEventAbs(paymentTime, this, this, "pay", args);
         }
         catch (SimRuntimeException exception)
@@ -124,7 +125,7 @@ public class BillPolicy extends SupplyChainHandler
             // the bank account is not enough. Try one day later.
             try
             {
-                Serializable[] args = new Serializable[] { bill };
+                Serializable[] args = new Serializable[] {bill};
                 getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "pay", args);
             }
             catch (SimRuntimeException exception)

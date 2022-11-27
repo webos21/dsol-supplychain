@@ -18,10 +18,11 @@ import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
  * animation panel, choices can be made what to show, or what not. It is comparable with showing layers when using a GIS map.
  * <br>
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * <br>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class GISContentAnimation extends SingleImageRenderable
 {
@@ -48,8 +49,8 @@ public class GISContentAnimation extends SingleImageRenderable
      * @throws NamingException
      * @throws RemoteException
      */
-    public GISContentAnimation(final Point3d staticLocation, final Bounds3d size,
-            final SCSimulatorInterface simulator, final URL image) throws RemoteException, NamingException
+    public GISContentAnimation(final Point3d staticLocation, final Bounds3d size, final SCSimulatorInterface simulator,
+            final URL image) throws RemoteException, NamingException
     {
         super(staticLocation, size, simulator, image);
     }
@@ -63,8 +64,8 @@ public class GISContentAnimation extends SingleImageRenderable
      * @throws NamingException
      * @throws RemoteException
      */
-    public GISContentAnimation(final OrientedPoint3d staticLocation, final Bounds3d size,
-            final SCSimulatorInterface simulator, final URL image) throws RemoteException, NamingException
+    public GISContentAnimation(final OrientedPoint3d staticLocation, final Bounds3d size, final SCSimulatorInterface simulator,
+            final URL image) throws RemoteException, NamingException
     {
         super(staticLocation, size, simulator, image);
     }
@@ -76,7 +77,7 @@ public class GISContentAnimation extends SingleImageRenderable
     {
         AnimationPanel animationPanel = (AnimationPanel) observer;
         double _scale = Renderable2DInterface.Util.getScale(animationPanel.getExtent(), animationPanel.getSize());
-
+    
         // we only draw our images if their is a certain zoom level
         if (_scale < 0.05063)
         {

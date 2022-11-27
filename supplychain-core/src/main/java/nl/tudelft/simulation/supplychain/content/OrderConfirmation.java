@@ -10,12 +10,13 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * negative, and when it is negative, it contains a reason for not being able to satisfy the Order. The reason can be a
  * combination of a number of status indicators, e.g. OrderConfirmation.NO_CONFIRM_DATE | OrderConfirmation.NO_CONFIRM_AMOUNT.
  * This would mean: we cannot get the products to you it at the requested date, nor do we have the amount you asked for in
- * stock. Helper methods are available to find out the reason(s) for failing when the confirmation is negative. <br>
+ * stock. Helper methods are available to find out the reason(s) for failing when the confirmation is negative.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class OrderConfirmation extends Content
 {
@@ -29,7 +30,7 @@ public class OrderConfirmation extends Content
     public static final int NO_CONFIRM = 1;
 
     /** textual representation of the confirmation options */
-    public static final String[] CONFIRMATION_OPTIONS = { "confirm the order", "I don't confirm the order" };
+    public static final String[] CONFIRMATION_OPTIONS = {"confirm the order", "I don't confirm the order"};
 
     /** the order for which this was the confirmation */
     private Order order;

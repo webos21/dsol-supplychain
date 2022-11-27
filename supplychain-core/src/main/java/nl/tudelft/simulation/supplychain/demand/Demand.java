@@ -16,12 +16,13 @@ import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * The Demand. <br>
+ * The Demand.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class Demand implements Serializable
 {
@@ -54,8 +55,8 @@ public class Demand implements Serializable
      * @param latestDeliveryDurationDistribution the latest delivery date distribution
      */
     public Demand(final Product product, final DistContinuousDuration interval, final DistContinuous amount,
-        final DistContinuousDuration earliestDeliveryDurationDistribution,
-        final DistContinuousDuration latestDeliveryDurationDistribution)
+            final DistContinuousDuration earliestDeliveryDurationDistribution,
+            final DistContinuousDuration latestDeliveryDurationDistribution)
     {
         super();
         this.product = product;
@@ -73,16 +74,16 @@ public class Demand implements Serializable
      * @param latestDeliveryDuration the latest delivery date
      */
     public Demand(final Product product, final DistContinuousDuration interval, final double amount,
-        final Duration earliestDeliveryDuration, final Duration latestDeliveryDuration)
+            final Duration earliestDeliveryDuration, final Duration latestDeliveryDuration)
     {
         super();
         this.product = product;
         this.intervalDistribution = interval;
         this.amountDistribution = new DistConstant(Demand.stream, amount);
-        this.earliestDeliveryDurationDistribution = new DistContinuousDuration(new DistConstant(Demand.stream,
-            earliestDeliveryDuration.si), DurationUnit.SI);
-        this.latestDeliveryDurationDistribution = new DistContinuousDuration(new DistConstant(Demand.stream,
-            latestDeliveryDuration.si), DurationUnit.SI);
+        this.earliestDeliveryDurationDistribution =
+                new DistContinuousDuration(new DistConstant(Demand.stream, earliestDeliveryDuration.si), DurationUnit.SI);
+        this.latestDeliveryDurationDistribution =
+                new DistContinuousDuration(new DistConstant(Demand.stream, latestDeliveryDuration.si), DurationUnit.SI);
     }
 
     /**
@@ -93,7 +94,7 @@ public class Demand implements Serializable
      * @param latestDeliveryDate the latest delivery date distribution
      */
     public Demand(final Product product, final DistContinuousDuration interval, final DistDiscrete amount,
-        final DistContinuousDuration earliestDeliveryDate, final DistContinuousDuration latestDeliveryDate)
+            final DistContinuousDuration earliestDeliveryDate, final DistContinuousDuration latestDeliveryDate)
     {
         super();
         this.product = product;
@@ -111,16 +112,16 @@ public class Demand implements Serializable
      * @param latestDeliveryDate the latest delivery date
      */
     public Demand(final Product product, final DistContinuousDuration interval, final long amount,
-        final Duration earliestDeliveryDate, final Duration latestDeliveryDate)
+            final Duration earliestDeliveryDate, final Duration latestDeliveryDate)
     {
         super();
         this.product = product;
         this.intervalDistribution = interval;
         this.amountDistribution = new DistDiscreteConstant(Demand.stream, amount);
-        this.earliestDeliveryDurationDistribution = new DistContinuousDuration(new DistConstant(Demand.stream,
-            earliestDeliveryDate.si), DurationUnit.SI);
-        this.latestDeliveryDurationDistribution = new DistContinuousDuration(new DistConstant(Demand.stream,
-            latestDeliveryDate.si), DurationUnit.SI);
+        this.earliestDeliveryDurationDistribution =
+                new DistContinuousDuration(new DistConstant(Demand.stream, earliestDeliveryDate.si), DurationUnit.SI);
+        this.latestDeliveryDurationDistribution =
+                new DistContinuousDuration(new DistConstant(Demand.stream, latestDeliveryDate.si), DurationUnit.SI);
     }
 
     /**

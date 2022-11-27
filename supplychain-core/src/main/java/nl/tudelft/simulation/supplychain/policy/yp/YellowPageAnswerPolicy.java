@@ -20,12 +20,13 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
 /**
  * The YellowPageAnswerHandler implements the business logic for a buyer who receives a YellowPageAnswer from a yellow page
  * supply chain actor. The most simple version that is implemented here, sends out RFQs to <b>all </b> the actors that are
- * reported back inside the YellowPageAnswer. <br>
+ * reported back inside the YellowPageAnswer.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
- * for project information <a href="https://www.simulation.tudelft.nl/" target="_blank">www.simulation.tudelft.nl</a>. The
- * source code and binary code of this software is proprietary information of Delft University of Technology.
- * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
+ * The supply chain Java library uses a BSD-3 style license.
+ * </p>
+ * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class YellowPageAnswerPolicy extends SupplyChainHandler
 {
@@ -71,8 +72,8 @@ public class YellowPageAnswerPolicy extends SupplyChainHandler
                 contentStore.getContentList(ypRequest.getInternalDemandID(), InternalDemand.class);
         if (internalDemandList.size() == 0) // we send it to ourselves, so it is 2x in the content store
         {
-            Logger.warn("YPAnswerHandler - Actor '{}' could not find InternalDemandID '{}' for YPAnswer '{}'", getOwner().getName(),
-                    ypRequest.getInternalDemandID(), ypAnswer.toString());
+            Logger.warn("YPAnswerHandler - Actor '{}' could not find InternalDemandID '{}' for YPAnswer '{}'",
+                    getOwner().getName(), ypRequest.getInternalDemandID(), ypAnswer.toString());
             return false;
         }
         InternalDemand internalDemand = internalDemandList.get(0);

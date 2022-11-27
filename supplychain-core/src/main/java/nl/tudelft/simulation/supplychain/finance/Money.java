@@ -2,8 +2,10 @@ package nl.tudelft.simulation.supplychain.finance;
 
 import java.io.Serializable;
 
+import org.djunits.Throw;
+
 /**
- * Money.java.
+ * Money implements a monetary value and is modeled after the Scalar and Unit in djunits.
  * <p>
  * Copyright (c) 2019-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -15,23 +17,28 @@ public class Money extends Number implements Serializable
     /** */
     private static final long serialVersionUID = 20200211L;
 
+    /** the monetary value in the money unit. */
     private final double amount;
 
+    /** the money unit for this monetary value. */
     private final MoneyUnit moneyUnit;
 
     /**
-     * @param amount
-     * @param moneyUnit
+     * Create a monetary value.
+     * @param amount double; the monetary value in the money unit
+     * @param moneyUnit MoneyUnit; the money unit for this monetary value
      */
-    public Money(double amount, MoneyUnit moneyUnit)
+    public Money(final double amount, final MoneyUnit moneyUnit)
     {
-        super();
+        Throw.whenNull(moneyUnit, "moneyUnit cannot be null");
+        Throw.when(Double.isNaN(amount), IllegalArgumentException.class, "amount cannot be NaN");
         this.amount = amount;
         this.moneyUnit = moneyUnit;
     }
 
     /**
-     * @return amount
+     * Return the monetary value in the money unit.
+     * @return double; the monetary value in the money unit
      */
     public double getAmount()
     {
@@ -39,69 +46,120 @@ public class Money extends Number implements Serializable
     }
 
     /**
-     * @return moneyUnit
+     * Return the money unit for this monetary value.
+     * @return moneyUnit MoneyUnit; the money unit for this monetary value
      */
     public MoneyUnit getMoneyUnit()
     {
         return this.moneyUnit;
     }
 
-    public Money plus(Money inc)
+    /**
+     * Return a monetary amount that is the sum of this monetary amount and the increment.
+     * @param inc Money; the amount of money to add
+     * @return Money; a monetary amount that is the sum of this monetary amount and the increment
+     */
+    public Money plus(final Money inc)
     {
-        // TODO: check same MoneyUnit
-        return new Money(amount + inc.getAmount(), getMoneyUnit());
+        Throw.when(!getMoneyUnit().equals(inc.getMoneyUnit()), IllegalArgumentException.class, "unequal money units");
+        return new Money(this.amount + inc.getAmount(), getMoneyUnit());
     }
 
-    public Money minus(Money dec)
+    /**
+     * Return a monetary amount that is the difference of this monetary amount and the decrement.
+     * @param dec Money; the amount of money to subtract
+     * @return Money; a monetary amount that is the diffference of this monetary amount and the decrement
+     */
+    public Money minus(final Money dec)
     {
-        // TODO: check same MoneyUnit
-        return new Money(amount - dec.getAmount(), getMoneyUnit());
+        Throw.when(!getMoneyUnit().equals(dec.getMoneyUnit()), IllegalArgumentException.class, "unequal money units");
+        return new Money(this.amount - dec.getAmount(), getMoneyUnit());
     }
 
-    public Money multiplyBy(double factor)
+    /**
+     * Return a monetary amount that is the multiplication of this monetary amount and the factor.
+     * @param factor double; the multiplication factor
+     * @return Money; a monetary amount that is the multiplication of this monetary amount and the factor
+     */
+    public Money multiplyBy(final double factor)
     {
-        return new Money(amount * factor, getMoneyUnit());
+        return new Money(this.amount * factor, getMoneyUnit());
     }
 
-    public Money divideBy(double factor)
+    /**
+     * Return a monetary amount that is the division of this monetary amount by the factor.
+     * @param factor double; the division factor
+     * @return Money; a monetary amount that is the division of this monetary amount by the factor
+     */
+    public Money divideBy(final double factor)
     {
-        return new Money(amount / factor, getMoneyUnit());
+        return new Money(this.amount / factor, getMoneyUnit());
     }
 
-    public boolean eq(Money other)
+    /**
+     * Return whether this monetary amount is equal to the other monetary amount.
+     * @param other Money; the other monetary amount to compare with
+     * @return boolean; whether this monetary amount is equal to the other monetary amount
+     */
+    public boolean eq(final Money other)
     {
-        // TODO: check same MoneyUnit
-        return amount == other.getAmount();
+        Throw.when(!getMoneyUnit().equals(other.getMoneyUnit()), IllegalArgumentException.class, "unequal money units");
+        return this.amount == other.getAmount();
     }
 
-    public boolean ne(Money other)
+    /**
+     * Return whether this monetary amount is unequal to the other monetary amount.
+     * @param other Money; the other monetary amount to compare with
+     * @return boolean; whether this monetary amount is unequal to the other monetary amount
+     */
+    public boolean ne(final Money other)
     {
-        // TODO: check same MoneyUnit
-        return amount != other.getAmount();
+        Throw.when(!getMoneyUnit().equals(other.getMoneyUnit()), IllegalArgumentException.class, "unequal money units");
+        return this.amount != other.getAmount();
     }
 
-    public boolean lt(Money other)
+    /**
+     * Return whether this monetary amount is less than the other monetary amount.
+     * @param other Money; the other monetary amount to compare with
+     * @return boolean; whether this monetary amount is less than the other monetary amount
+     */
+    public boolean lt(final Money other)
     {
-        // TODO: check same MoneyUnit
-        return amount < other.getAmount();
+        Throw.when(!getMoneyUnit().equals(other.getMoneyUnit()), IllegalArgumentException.class, "unequal money units");
+        return this.amount < other.getAmount();
     }
 
-    public boolean le(Money other)
+    /**
+     * Return whether this monetary amount is less than or equal to the other monetary amount.
+     * @param other Money; the other monetary amount to compare with
+     * @return boolean; whether this monetary amount is less than or equal to the other monetary amount
+     */
+    public boolean le(final Money other)
     {
-        // TODO: check same MoneyUnit
-        return amount <= other.getAmount();
+        Throw.when(!getMoneyUnit().equals(other.getMoneyUnit()), IllegalArgumentException.class, "unequal money units");
+        return this.amount <= other.getAmount();
     }
 
-    public boolean gt(Money other)
+    /**
+     * Return whether this monetary amount is greater than the other monetary amount.
+     * @param other Money; the other monetary amount to compare with
+     * @return boolean; whether this monetary amount is greater than the other monetary amount
+     */
+    public boolean gt(final Money other)
     {
-        // TODO: check same MoneyUnit
-        return amount > other.getAmount();
+        Throw.when(!getMoneyUnit().equals(other.getMoneyUnit()), IllegalArgumentException.class, "unequal money units");
+        return this.amount > other.getAmount();
     }
 
-    public boolean ge(Money other)
+    /**
+     * Return whether this monetary amount is greater than or equal to the other monetary amount.
+     * @param other Money; the other monetary amount to compare with
+     * @return boolean; whether this monetary amount is greater than or equal to the other monetary amount
+     */
+    public boolean ge(final Money other)
     {
-        // TODO: check same MoneyUnit
-        return amount >= other.getAmount();
+        Throw.when(!getMoneyUnit().equals(other.getMoneyUnit()), IllegalArgumentException.class, "unequal money units");
+        return this.amount >= other.getAmount();
     }
 
     /** {@inheritDoc} */

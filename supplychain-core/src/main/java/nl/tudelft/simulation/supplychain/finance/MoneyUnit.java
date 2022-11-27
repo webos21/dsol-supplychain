@@ -2,8 +2,10 @@ package nl.tudelft.simulation.supplychain.finance;
 
 import java.io.Serializable;
 
+import org.djunits.Throw;
+
 /**
- * MoneyUnit.java.
+ * MoneyUnit implements a currency unit, such as the Euro or US Dollar.
  * <p>
  * Copyright (c) 2019-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -15,29 +17,39 @@ public class MoneyUnit implements Serializable
     /** */
     private static final long serialVersionUID = 20200211L;
 
+    /** The (short) name of the money unit. */ 
     private final String name;
 
+    /** The symbol to use when displaying the money unit. */
     private final String symbol;
 
+    /** Default USD money unit. */
     public static final MoneyUnit USD = new MoneyUnit("USD", "$");
 
+    /** Default EUR money unit. */
     public static final MoneyUnit EUR = new MoneyUnit("EUR", "\u20AC");
 
-    public static final MoneyUnit LBP = new MoneyUnit("LBP", "\u00A3");
+    /** Default GBP money unit. */
+    public static final MoneyUnit GBP = new MoneyUnit("GBP", "\u00A3");
 
     /**
-     * @param name
-     * @param symbol
+     * Create a new money unit.
+     * @param name String; the (short) name of the money unit
+     * @param symbol String; the symbol to use when displaying the money unit
      */
-    public MoneyUnit(String name, String symbol)
+    public MoneyUnit(final String name, final String symbol)
     {
-        super();
+        Throw.whenNull(name, "name cannot be null");
+        Throw.whenNull(symbol, "symbol cannot be null");
+        Throw.when(name.length() == 0, IllegalArgumentException.class, "name length cannot be 0");
+        Throw.when(symbol.length() == 0, IllegalArgumentException.class, "symbol length cannot be 0");
         this.name = name;
         this.symbol = symbol;
     }
 
     /**
-     * @return name
+     * Return the (short) name of the money unit.
+     * @return String; the (short) name of the money unit 
      */
     public String getName()
     {
@@ -45,7 +57,8 @@ public class MoneyUnit implements Serializable
     }
 
     /**
-     * @return symbol
+     * Return the symbol to use when displaying the money unit.
+     * @return String; the symbol to use when displaying the money unit
      */
     public String getSymbol()
     {

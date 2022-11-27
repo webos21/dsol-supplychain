@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.actor;
+package nl.tudelft.simulation.supplychain.actor;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
@@ -13,12 +13,12 @@ import org.djutils.exceptions.Throw;
 import org.djutils.immutablecollections.ImmutableLinkedHashSet;
 import org.djutils.immutablecollections.ImmutableSet;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.actor.message.Message;
-import nl.tudelft.simulation.actor.message.MessageType;
-import nl.tudelft.simulation.actor.message.handler.MessageHandlerInterface;
-import nl.tudelft.simulation.actor.message.policy.MessagePolicyInterface;
 import nl.tudelft.simulation.dsol.animation.Locatable;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.MessageType;
+import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
  * The actor is the basic class in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'

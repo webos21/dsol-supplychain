@@ -12,19 +12,19 @@ import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
-import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
-import nl.tudelft.simulation.actor.messaging.devices.reference.FaxDevice;
-import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
-import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.actor.yellowpage.Category;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.jstats.distributions.DistConstant;
 import nl.tudelft.simulation.jstats.distributions.DistTriangular;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
+import nl.tudelft.simulation.supplychain.messagehandlers.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
+import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.WebApplication;
+import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
+import nl.tudelft.simulation.supplychain.actor.yellowpage.Topic;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.memory.LeanContentStore;
 import nl.tudelft.simulation.supplychain.finance.Money;
@@ -98,7 +98,7 @@ public class DemoRetailer extends Retailer
 
         // REGISTER IN YP
 
-        ypCustomer.register(this, Category.DEFAULT);
+        ypCustomer.register(this, Topic.DEFAULT);
         ypCustomer.addSupplier(product, this);
 
         // STOCK

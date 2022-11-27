@@ -9,11 +9,11 @@ import org.djutils.event.TimedEvent;
 import org.djutils.event.TimedEventType;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.actor.InternalActor;
 import nl.tudelft.simulation.jstats.distributions.DistContinuous;
 import nl.tudelft.simulation.jstats.distributions.DistDiscrete;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
+import nl.tudelft.simulation.supplychain.actor.InternalActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.content.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;

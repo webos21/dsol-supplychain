@@ -11,7 +11,6 @@ import org.djutils.draw.bounds.Bounds2d;
 import org.djutils.logger.CategoryLogger;
 import org.pmw.tinylog.Level;
 
-import nl.tudelft.simulation.actor.dsol.SCAnimator;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.experiment.ReplicationInterface;
 import nl.tudelft.simulation.dsol.experiment.SingleReplication;
@@ -20,6 +19,7 @@ import nl.tudelft.simulation.dsol.swing.gui.ConsoleOutput;
 import nl.tudelft.simulation.dsol.swing.gui.DSOLPanel;
 import nl.tudelft.simulation.dsol.swing.gui.animation.DSOLAnimationApplication;
 import nl.tudelft.simulation.language.DSOLException;
+import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
 import nl.tudelft.simulation.supplychain.demo.mtsmto.MTSMTOModel;
 import nl.tudelft.simulation.supplychain.gui.SCControlPanel;
 

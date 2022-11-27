@@ -1,8 +1,8 @@
-package nl.tudelft.simulation.actor.message;
+package nl.tudelft.simulation.supplychain.message;
 
 import java.io.Serializable;
 
-import nl.tudelft.simulation.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 
 /**
  * A message, which can be sent from a sender to a receiver. Extend this class to add content.

@@ -10,9 +10,9 @@ import java.util.Map;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.content.InternalDemand;
 import nl.tudelft.simulation.supplychain.content.RequestForQuote;
 import nl.tudelft.simulation.supplychain.product.Product;

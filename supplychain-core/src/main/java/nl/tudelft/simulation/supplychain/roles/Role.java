@@ -2,10 +2,10 @@ package nl.tudelft.simulation.supplychain.roles;
 
 import java.io.Serializable;
 
-import nl.tudelft.simulation.actor.InternalActor;
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
+import nl.tudelft.simulation.supplychain.actor.InternalActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 
 /**
  * A Role is a bundled set of Handlers that belong together. A Role takes care of the "consistent" implementation of a number of

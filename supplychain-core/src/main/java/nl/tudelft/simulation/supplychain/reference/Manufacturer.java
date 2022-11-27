@@ -19,8 +19,8 @@ import java.util.List;
 
 import org.djutils.draw.point.OrientedPoint3d;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.capabilities.ProducerInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;

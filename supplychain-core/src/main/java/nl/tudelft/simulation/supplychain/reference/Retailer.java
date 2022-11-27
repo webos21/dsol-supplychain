@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import org.djutils.draw.point.OrientedPoint3d;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.capabilities.BuyerInterface;
 import nl.tudelft.simulation.supplychain.actor.capabilities.SellerInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;

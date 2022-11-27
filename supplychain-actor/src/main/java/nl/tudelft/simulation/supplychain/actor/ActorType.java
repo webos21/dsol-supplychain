@@ -1,11 +1,11 @@
-package nl.tudelft.simulation.actor;
+package nl.tudelft.simulation.supplychain.actor;
 
 import java.io.Serializable;
 
 import org.djunits.Throw;
 import org.djutils.base.Identifiable;
 
-import nl.tudelft.simulation.actor.dsol.SCModelInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
 
 /**
  * ActorType denotes a type of actor, especially for the yellow page searches.

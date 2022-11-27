@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.roles;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.content.Bill;
 import nl.tudelft.simulation.supplychain.content.InternalDemand;
 import nl.tudelft.simulation.supplychain.content.OrderConfirmation;

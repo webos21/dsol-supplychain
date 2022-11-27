@@ -1,12 +1,12 @@
-package nl.tudelft.simulation.actor;
+package nl.tudelft.simulation.supplychain.actor;
 
 import java.io.Serializable;
 
 import org.djutils.base.Identifiable;
 import org.djutils.exceptions.Throw;
 
-import nl.tudelft.simulation.actor.message.MessageType;
-import nl.tudelft.simulation.actor.message.policy.MessagePolicyInterface;
+import nl.tudelft.simulation.supplychain.message.MessageType;
+import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
  * Role is a template for a consistent set of policies for handling messages, representing a certain part of the organization,

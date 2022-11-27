@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.actor.capabilities;
 
-import nl.tudelft.simulation.actor.yellowpage.YellowPageInterface;
+import nl.tudelft.simulation.supplychain.actor.yellowpage.YellowPageInterface;
 
 /**
  * BuyerYPInterface.java. <br>

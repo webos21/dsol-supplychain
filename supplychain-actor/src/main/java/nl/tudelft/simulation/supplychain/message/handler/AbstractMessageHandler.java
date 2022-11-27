@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.actor.message.handler;
+package nl.tudelft.simulation.supplychain.message.handler;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -8,10 +8,10 @@ import java.util.Map;
 import org.djunits.Throw;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.actor.Actor;
-import nl.tudelft.simulation.actor.message.Message;
-import nl.tudelft.simulation.actor.message.MessageType;
-import nl.tudelft.simulation.actor.message.policy.MessagePolicyInterface;
+import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.MessageType;
+import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
  * AbstractMessageHandler contains the base implementation of a message handler.

@@ -6,9 +6,9 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.EventInterface;
 import org.djutils.event.EventListenerInterface;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.content.Content;
 
 /**

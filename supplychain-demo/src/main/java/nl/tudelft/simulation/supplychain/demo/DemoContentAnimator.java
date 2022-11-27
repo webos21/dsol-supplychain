@@ -5,9 +5,9 @@ import java.rmi.RemoteException;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.EventInterface;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimation;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimator;
 import nl.tudelft.simulation.supplychain.content.Content;

@@ -7,8 +7,8 @@ import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.actor.content.AbstractHandler;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.message.policy.AbstractMessagePolicy;
 import nl.tudelft.simulation.supplychain.content.Content;
 import nl.tudelft.simulation.supplychain.content.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public abstract class SupplyChainHandler extends AbstractHandler
+public abstract class SupplyChainHandler extends AbstractMessagePolicy
 {
     /** */
     private static final long serialVersionUID = 1L;

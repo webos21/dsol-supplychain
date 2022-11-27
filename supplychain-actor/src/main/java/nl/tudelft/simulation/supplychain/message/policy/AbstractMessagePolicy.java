@@ -1,9 +1,9 @@
-package nl.tudelft.simulation.actor.message.policy;
+package nl.tudelft.simulation.supplychain.message.policy;
 
 import org.djutils.exceptions.Throw;
 
-import nl.tudelft.simulation.actor.Actor;
-import nl.tudelft.simulation.actor.message.MessageType;
+import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.message.MessageType;
 
 /**
  * An abstract definition of a handler with an owner. <br>

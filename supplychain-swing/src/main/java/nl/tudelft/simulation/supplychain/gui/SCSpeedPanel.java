@@ -2,8 +2,8 @@ package nl.tudelft.simulation.supplychain.gui;
 
 import org.djunits.value.vdouble.scalar.Duration;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.dsol.swing.gui.control.SpeedPanel;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 
 /**
  * SCSpeedPanel takes 1 hour (3600 seconds) as "1".

@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.actor.message;
+package nl.tudelft.simulation.supplychain.message;
 
 import java.util.Objects;
 

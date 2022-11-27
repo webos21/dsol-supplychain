@@ -7,9 +7,9 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Mass;
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
+import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.content.Content;
 import nl.tudelft.simulation.supplychain.content.Quote;
 import nl.tudelft.simulation.supplychain.content.RequestForQuote;

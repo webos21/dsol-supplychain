@@ -3,8 +3,8 @@ package nl.tudelft.simulation.supplychain.gui;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 
-import nl.tudelft.simulation.actor.dsol.SCAnimator;
 import nl.tudelft.simulation.dsol.swing.gui.control.ClockPanel;
+import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
 
 /**
  * SCClockPanel for a djunits Time.

@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.actor.dsol;
+package nl.tudelft.simulation.supplychain.dsol;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,10 +8,10 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.immutablecollections.ImmutableLinkedHashMap;
 import org.djutils.immutablecollections.ImmutableMap;
 
-import nl.tudelft.simulation.actor.ActorType;
-import nl.tudelft.simulation.actor.RoleType;
 import nl.tudelft.simulation.dsol.experiment.StreamInformation;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
+import nl.tudelft.simulation.supplychain.actor.ActorType;
+import nl.tudelft.simulation.supplychain.actor.RoleType;
 
 /**
  * AbstractSupplyChainModel is the base model for supply chain models as it contains a registry of actor types and role types.

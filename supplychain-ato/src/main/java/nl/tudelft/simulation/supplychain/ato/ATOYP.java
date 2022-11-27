@@ -9,13 +9,13 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.actor.messagehandlers.HandleAllMessages;
-import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
-import nl.tudelft.simulation.actor.messaging.devices.reference.WebApplication;
-import nl.tudelft.simulation.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
+import nl.tudelft.simulation.supplychain.messagehandlers.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.WebApplication;
+import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.content.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.contentstore.memory.EmptyContentStore;

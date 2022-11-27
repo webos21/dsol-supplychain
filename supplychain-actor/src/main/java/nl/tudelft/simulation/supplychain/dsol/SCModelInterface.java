@@ -1,11 +1,11 @@
-package nl.tudelft.simulation.actor.dsol;
+package nl.tudelft.simulation.supplychain.dsol;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.immutablecollections.ImmutableMap;
 
-import nl.tudelft.simulation.actor.ActorType;
-import nl.tudelft.simulation.actor.RoleType;
 import nl.tudelft.simulation.dsol.model.DSOLModel;
+import nl.tudelft.simulation.supplychain.actor.ActorType;
+import nl.tudelft.simulation.supplychain.actor.RoleType;
 
 /**
  * SCModelInterface defines the extra methods of a supply chain model.

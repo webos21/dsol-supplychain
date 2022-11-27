@@ -10,11 +10,11 @@ import javax.swing.JButton;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.EventInterface;
 
-import nl.tudelft.simulation.actor.dsol.SCAnimator;
 import nl.tudelft.simulation.dsol.model.DSOLModel;
 import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.RunState;
 import nl.tudelft.simulation.dsol.swing.gui.control.DEVSControlPanel;
+import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
 
 /**
  * SCRealTimeControlPanel.java.

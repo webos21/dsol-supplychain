@@ -9,11 +9,11 @@ import java.util.Set;
 
 import org.djutils.draw.point.OrientedPoint3d;
 
-import nl.tudelft.simulation.actor.ActorInterface;
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.actor.yellowpage.Category;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.capabilities.YPInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.actor.yellowpage.Topic;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
@@ -113,28 +113,28 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(final String regex)
+    public List<Actor> findActor(final String regex)
     {
         return this.yp.findActor(regex);
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(final String regex, final Category category)
+    public List<Actor> findActor(final String regex, final Topic category)
     {
         return this.yp.findActor(regex, category);
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(final Category category)
+    public List<Actor> findActor(final Topic category)
     {
         return this.yp.findActor(category);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean register(final ActorInterface actor, final Category category)
+    public boolean register(final Actor actor, final Topic category)
     {
         return this.yp.register(actor, category);
     }

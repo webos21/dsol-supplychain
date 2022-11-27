@@ -15,12 +15,12 @@ import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.event.EventType;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.actor.Actor;
-import nl.tudelft.simulation.actor.content.HandlerInterface;
-import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.actor.messaging.Message;
-import nl.tudelft.simulation.actor.messaging.devices.components.SendingDeviceInterface;
-import nl.tudelft.simulation.actor.messaging.devices.components.SendingReceivingDevice;
+import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
+import nl.tudelft.simulation.supplychain.actor.messaging.devices.components.SendingDeviceInterface;
+import nl.tudelft.simulation.supplychain.actor.messaging.devices.components.SendingReceivingDevice;
 import nl.tudelft.simulation.supplychain.banking.Bank;
 import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.banking.FixedCost;
@@ -125,7 +125,7 @@ public abstract class SupplyChainActor extends Actor
         {
             success |= role.handleContent(content, false);
         }
-        for (HandlerInterface handler : this.resolveContentHandlers(content.getClass()))
+        for (MessagePolicyInterface handler : this.resolveContentHandlers(content.getClass()))
         {
             success |= handler.handleContent(content);
         }
@@ -271,7 +271,7 @@ public abstract class SupplyChainActor extends Actor
      * Method getContentHandlers.
      * @return returns the map with content handlers
      */
-    public Map<Class<?>, Set<HandlerInterface>> getContentHandlers()
+    public Map<Class<?>, Set<MessagePolicyInterface>> getContentHandlers()
     {
         return super.contentHandlers;
     }

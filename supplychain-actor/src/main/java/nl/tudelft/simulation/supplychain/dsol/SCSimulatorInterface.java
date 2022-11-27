@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.actor.dsol;
+package nl.tudelft.simulation.supplychain.dsol;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;

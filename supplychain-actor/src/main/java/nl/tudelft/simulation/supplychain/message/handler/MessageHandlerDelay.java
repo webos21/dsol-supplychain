@@ -1,10 +1,10 @@
-package nl.tudelft.simulation.actor.message.handler;
+package nl.tudelft.simulation.supplychain.message.handler;
 
 import org.djunits.Throw;
 
-import nl.tudelft.simulation.actor.Actor;
-import nl.tudelft.simulation.actor.message.Message;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
+import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
  * MessageHandlerDelay implements a message handler for an actor that handles messages after a (stochastic) delay time.

@@ -2,7 +2,7 @@ package nl.tudelft.simulation.actor.yellowpage;
 
 import java.util.List;
 
-import nl.tudelft.simulation.actor.ActorInterface;
+import nl.tudelft.simulation.actor.Actor;
 
 /**
  * A YellowPageInterface, which enables finding of actors based on a registry in which actors can register themselves. <br>
@@ -17,24 +17,24 @@ public interface YellowPageInterface
     /**
      * finds actors based on the regex
      * @param regex the name of the actor as regular expression
-     * @return ActorInterface[] the result
+     * @return Actor[] the result
      */
-    List<ActorInterface> findActor(final String regex);
+    List<Actor> findActor(final String regex);
 
     /**
      * finds an actor based on the regex
      * @param regex the name of the actor as regular expression
      * @param category the category for this actor
-     * @return ActorInterface[] the result
+     * @return Actor[] the result
      */
-    List<ActorInterface> findActor(final String regex, final Category category);
+    List<Actor> findActor(final String regex, final Category category);
 
     /**
      * finds an actor based on the category
      * @param category the category for this actor
-     * @return ActorInterface[] the result
+     * @return Actor[] the result
      */
-    List<ActorInterface> findActor(final Category category);
+    List<Actor> findActor(final Category category);
 
     /**
      * registers an actor
@@ -42,5 +42,5 @@ public interface YellowPageInterface
      * @param category the category
      * @return success
      */
-    boolean register(final ActorInterface actor, final Category category);
+    boolean register(final Actor actor, final Category category);
 }

@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import nl.tudelft.simulation.actor.ActorInterface;
+import nl.tudelft.simulation.actor.Actor;
 
 /**
  * A YellowPage implementation. <br>
@@ -21,7 +21,7 @@ public class YellowPage implements YellowPageInterface
     public static final long serialVersionUID = 12L;
 
     /** a map of entries */
-    protected Map<Category, List<ActorInterface>> entries = new LinkedHashMap<Category, List<ActorInterface>>();
+    protected Map<Category, List<Actor>> entries = new LinkedHashMap<Category, List<Actor>>();
 
     /** the parent of this yellowPage */
     protected YellowPage parent = null;
@@ -36,12 +36,12 @@ public class YellowPage implements YellowPageInterface
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(final String regex)
+    public List<Actor> findActor(final String regex)
     {
-        List<ActorInterface> result = new ArrayList<ActorInterface>();
-        for (List<ActorInterface> actors : this.entries.values())
+        List<Actor> result = new ArrayList<Actor>();
+        for (List<Actor> actors : this.entries.values())
         {
-            for (ActorInterface actor : actors)
+            for (Actor actor : actors)
             {
                 if (actor.getName().matches(regex))
                 {
@@ -54,15 +54,15 @@ public class YellowPage implements YellowPageInterface
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(final String regex, final Category category)
+    public List<Actor> findActor(final String regex, final Category category)
     {
-        List<ActorInterface> result = new ArrayList<ActorInterface>();
+        List<Actor> result = new ArrayList<Actor>();
         for (Category cat : this.entries.keySet())
         {
             if (Category.specializationOf(category, cat))
             {
-                List<ActorInterface> actors = this.entries.get(cat);
-                for (ActorInterface actor : actors)
+                List<Actor> actors = this.entries.get(cat);
+                for (Actor actor : actors)
                 {
                     if (actor.getName().matches(regex))
                     {
@@ -76,9 +76,9 @@ public class YellowPage implements YellowPageInterface
 
     /** {@inheritDoc} */
     @Override
-    public List<ActorInterface> findActor(final Category category)
+    public List<Actor> findActor(final Category category)
     {
-        List<ActorInterface> actors = new ArrayList<ActorInterface>();
+        List<Actor> actors = new ArrayList<Actor>();
         for (Category cat : this.entries.keySet())
         {
             if (Category.specializationOf(category, cat))
@@ -91,12 +91,12 @@ public class YellowPage implements YellowPageInterface
 
     /** {@inheritDoc} */
     @Override
-    public boolean register(final ActorInterface actor, final Category category)
+    public boolean register(final Actor actor, final Category category)
     {
-        List<ActorInterface> actors = this.entries.get(category);
+        List<Actor> actors = this.entries.get(category);
         if (actors == null)
         {
-            actors = new ArrayList<ActorInterface>();
+            actors = new ArrayList<Actor>();
             this.entries.put(category, actors);
         }
         return actors.add(actor);

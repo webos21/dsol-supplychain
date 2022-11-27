@@ -34,6 +34,9 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
 
+    /** the type of the actor (e.g., for yellow page requests). */
+    private final ActorType actorType;
+
     /** the name of the actor. */
     private final String name;
 
@@ -45,10 +48,10 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
 
     /** the roles. */
     private ImmutableSet<Role> roles = new ImmutableLinkedHashSet<>(new LinkedHashSet<Role>());
-    
+
     /** the message handler. */
     private final MessageHandlerInterface messageHandler;
-    
+
     /** the location of the actor. */
     private final OrientedPoint3d location;
 
@@ -57,19 +60,22 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
 
     /**
      * Construct a new Actor.
+     * @param actorType ActorType; the type of the actor
      * @param name String; the name of the actor
      * @param messageHandler MessageHandlerInterface; the message handler to use
      * @param simulator SCSimulatorInterface; the simulator to use
      * @param location OrientedPoint3d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
      */
-    public Actor(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
-            final OrientedPoint3d location, final String locationDescription)
+    public Actor(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
+            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription)
     {
+        Throw.whenNull(actorType, "actorType cannot be null");
         Throw.whenNull(name, "name cannot be null");
         Throw.whenNull(simulator, "simulator cannot be null");
         Throw.whenNull(location, "location cannot be null");
         Throw.whenNull(locationDescription, "locationDescription cannot be null");
+        this.actorType = actorType;
         this.name = name;
         this.locationDescription = locationDescription;
         this.simulator = simulator;
@@ -85,7 +91,7 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     {
         this.messageHandler.addMessagePolicy(policy);
     }
-    
+
     /**
      * Remove a message handling policy from the Actor.
      * @param messageType MessageType; the message type of the policy to remove
@@ -95,7 +101,7 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     {
         this.messageHandler.removeMessagePolicy(messageType, policyId);
     }
-    
+
     /**
      * Add a role to the actor.
      * @param role Role; the role to add to the actor
@@ -107,7 +113,7 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
         newRoles.add(role);
         this.roles = new ImmutableLinkedHashSet<>(newRoles);
     }
-    
+
     /**
      * Return the set of roles for this actor.
      * @return Set&lt;roles&gt;; the roles of this actor
@@ -125,7 +131,7 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     {
         this.messageHandler.handleMessageReceipt(message);
     }
-    
+
     /**
      * Send a message to another actor with a delay.
      * @param message message; the message to send
@@ -135,7 +141,7 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     {
         this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
     }
-    
+
     /**
      * Send a message to another actor without a delay.
      * @param message message; the message to send
@@ -144,7 +150,16 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     {
         sendMessage(message, Duration.ZERO);
     }
-    
+
+    /**
+     * Return the actor type (e.g., for yellow page requests).
+     * @return actorType ActorType; the actor type
+     */
+    public ActorType getActorType()
+    {
+        return this.actorType;
+    }
+
     /**
      * Return the name of the actor.
      * @return String; the name of the actor

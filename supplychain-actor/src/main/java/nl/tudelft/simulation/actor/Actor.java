@@ -1,200 +1,197 @@
 package nl.tudelft.simulation.actor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.djunits.value.vdouble.scalar.Duration;
+import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
-import org.pmw.tinylog.Logger;
+import org.djutils.event.EventProducer;
+import org.djutils.exceptions.Throw;
 
 import nl.tudelft.simulation.actor.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.actor.messagehandlers.MessageHandlerInterface;
-import nl.tudelft.simulation.actor.messaging.devices.components.ReceivingDeviceInterface;
-import nl.tudelft.simulation.actor.messaging.devices.components.SendingDeviceInterface;
-import nl.tudelft.simulation.actor.messaging.devices.types.DeviceType;
-import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
+import nl.tudelft.simulation.actor.message.Message;
+import nl.tudelft.simulation.actor.message.MessageType;
+import nl.tudelft.simulation.actor.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.actor.message.policy.MessagePolicyInterface;
+import nl.tudelft.simulation.dsol.animation.Locatable;
 
 /**
- * The actor is the basic entity in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'
- * object, that is able to exchange messages with other actors using devices. The devices can be found in the
- * nl.tudelft.simulation.messaging.device package; the default message object is nl.tudelft.simulation.messaging.Message. The
- * actor has to take care of periodically looking at the devices whether there are any messages, or -in case of some devices-
- * the actor is informed of the fact that there is a waiting message. All this is implemented through the event mechanism. <br>
+ * The actor is the basic class in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'
+ * object, that is able to exchange messages with other actors and process the incoming messages.<br>
  * <br>
- * Copyright (c) 2003-2018 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
+ * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved. See
  * for project information <a href="https://www.simulation.tudelft.nl/" target= "_blank">www.simulation.tudelft.nl</a>. The
  * source code and binary code of this software is proprietary information of Delft University of Technology.
  * @author <a href="https://www.tudelft.nl/averbraeck" target="_blank">Alexander Verbraeck</a>
  */
-public abstract class Actor extends InternalActor implements ActorInterface
+public abstract class Actor extends EventProducer implements Serializable, Locatable
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221126L;
 
-    /** the sending devices. */
-    private final Set<SendingDeviceInterface> sendingDevices;
+    /** the name of the actor. */
+    private final String name;
 
-    /** the receiving devices with their messageHandler. */
-    private final Map<ReceivingDeviceInterface, MessageHandlerInterface> receivingDevices;
+    /** the location description of the actor (e.g., a city, country). */
+    private final String locationDescription;
 
+    /** the simulator to schedule simulation events on. */
+    private final SCSimulatorInterface simulator;
+
+    /** the roles. */
+    private final Set<Role> roles = new LinkedHashSet<>();
+    
+    /** the message handler. */
+    private final MessageHandlerInterface messageHandler;
+    
     /** the location of the actor. */
     private final OrientedPoint3d location;
 
-    /** the description of the location of an actor. */
-    @SuppressWarnings("checkstyle:visibilitymodifier")
-    private String locationDescription = "";
+    /** the bounds of the object (size and relative height in the animation). */
+    private Bounds3d bounds = new Bounds3d(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 
     /**
-     * Constructs a new Actor.
-     * @param name the name of the actor
-     * @param simulator the simulator to use
-     * @param position the location of the actor
+     * Construct a new Actor.
+     * @param name String; the name of the actor
+     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param simulator SCSimulatorInterface; the simulator to use
+     * @param location OrientedPoint3d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
      */
-    public Actor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position)
+    public Actor(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
+            final OrientedPoint3d location, final String locationDescription)
     {
-        super(name, simulator);
-        this.sendingDevices = new LinkedHashSet<>();
-        this.receivingDevices = new LinkedHashMap<>();
-        this.location = position;
+        Throw.whenNull(name, "name cannot be null");
+        Throw.whenNull(simulator, "simulator cannot be null");
+        Throw.whenNull(location, "location cannot be null");
+        Throw.whenNull(locationDescription, "locationDescription cannot be null");
+        this.name = name;
+        this.locationDescription = locationDescription;
+        this.simulator = simulator;
+        this.location = location;
+        this.messageHandler = messageHandler;
     }
 
     /**
-     * add a sending device to the actor.
-     * @param device device
-     * @return success or not
+     * Add a message handling policy to the Actor.
+     * @param policy MessagePolicyInterface; the policy to add
      */
-    public boolean addSendingDevice(final SendingDeviceInterface device)
+    public void addMessagePolicy(final MessagePolicyInterface policy)
     {
-        return this.sendingDevices.add(device);
+        this.messageHandler.addMessagePolicy(policy);
+    }
+    
+    /**
+     * Remove a message handling policy from the Actor.
+     * @param messageType MessageType; the message type of the policy to remove
+     * @param policyId String; the id of the policy to remove
+     */
+    public void removeMessagePolicy(final MessageType messageType, final String policyId)
+    {
+        this.messageHandler.removeMessagePolicy(messageType, policyId);
+    }
+    
+    /**
+     * Add a role to the actor.
+     * @param role Role; the role to add to the actor
+     */
+    public void addRole(final Role role)
+    {
+        Throw.whenNull(role, "role cannot be null");
+        this.roles.add(role);
+    }
+    
+    /**
+     * Remove a role from the actor.
+     * @param role Role; the role to remove from the actor
+     */
+    public void removeRole(final Role role)
+    {
+        Throw.whenNull(role, "role cannot be null");
+        this.roles.remove(role);
+    }
+    
+    /**
+     * Return the set of roles for this actor.
+     * @return Set&lt;roles&gt;; the roles of this actor
+     */
+    public Set<Role> getRoles()
+    {
+        return this.roles;
     }
 
     /**
-     * adds a receiving device to the actor. The method does not implement a timer to check periodically for content.
-     * @param device device
-     * @param messageHandler the handler to use
+     * Receive a message from another actor, and handle it (storing or handling, depending on the MessageHandler).
+     * @param message message; the message to receive
      */
-    public void addReceivingDevice(final ReceivingDeviceInterface device, final MessageHandlerInterface messageHandler)
+    public void receiveMessage(final Message message)
     {
-        this.receivingDevices.put(device, messageHandler);
+        this.messageHandler.handleMessageReceipt(message);
+    }
+    
+    /**
+     * Send a message to another actor with a delay.
+     * @param message message; the message to send
+     * @param delay Duration; the time it takes between sending and receiving
+     */
+    protected void sendMessage(final Message message, final Duration delay)
+    {
+        this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
+    }
+    
+    /**
+     * Send a message to another actor without a delay.
+     * @param message message; the message to send
+     */
+    protected void sendMessage(final Message message)
+    {
+        sendMessage(message, Duration.ZERO);
+    }
+    
+    /**
+     * Return the name of the actor.
+     * @return String; the name of the actor
+     */
+    public String getName()
+    {
+        return this.name;
     }
 
     /**
-     * adds a receiving device to the actor. The method implements a timer to check periodically for content.
-     * @param device device
-     * @param messageHandler the handler to use
-     * @param checkInterval the distribution of times for checking the device
+     * Return the location description of the actor (e.g., a city, country).
+     * @return String; the location description of the actor
      */
-    public void addReceivingDevice(final ReceivingDeviceInterface device, final MessageHandlerInterface messageHandler,
-            final DistContinuousDuration checkInterval)
+    public String getLocationDescription()
     {
-        addReceivingDevice(device, messageHandler);
-        setCheckInterval(device, checkInterval);
+        return this.locationDescription;
     }
 
     /**
-     * The method implements a timer for an existing device to check periodically for content.
-     * @param device the device to set the check interval for
-     * @param checkInterval the interval for checking the device
+     * Return the simulator to schedule simulation events on.
+     * @return simulator SCSimulatorInterface the simulator
      */
-    public void setCheckInterval(final ReceivingDeviceInterface device, final DistContinuousDuration checkInterval)
+    public SCSimulatorInterface getSimulator()
     {
-        try
-        {
-            if (!this.receivingDevices.containsKey(device))
-            {
-                throw new Exception("Receiving device " + device.getName() + " not found at actor " + this.getName());
-            }
-            Duration delta = checkInterval.draw();
-            this.simulator.scheduleEventRel(delta, this, this, "checkReceivingDevice", new Object[] {device});
-            this.simulator.scheduleEventRel(delta, this, this, "setCheckInterval", new Serializable[] {device, checkInterval});
-        }
-        catch (Exception e)
-        {
-            Logger.warn(e, "setCheckInterval");
-        }
+        return this.simulator;
     }
 
     /**
-     * Checks whether the receiving device has messages to handle.
-     * @param device the device to check
+     * Return the current simulation time.
+     * @return Time; the current simulation time
      */
-    public void checkReceivingDevice(final ReceivingDeviceInterface device)
+    public Time getSimulatorTime()
     {
-        if (!device.getQueue().isEmpty())
-        {
-            MessageHandlerInterface messageHandler = this.receivingDevices.get(device);
-            messageHandler.handleMessageQueue(device.getQueue());
-        }
+        return this.simulator.getAbsSimulatorTime();
     }
 
     /** {@inheritDoc} */
     @Override
-    public ReceivingDeviceInterface[] getReceivingDevices()
+    public Serializable getSourceId()
     {
-        return this.receivingDevices.keySet().toArray(new ReceivingDeviceInterface[this.receivingDevices.size()]);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ReceivingDeviceInterface[] getReceivingDevices(final DeviceType deviceType)
-    {
-        ArrayList<ReceivingDeviceInterface> result = new ArrayList<ReceivingDeviceInterface>();
-        for (ReceivingDeviceInterface device : this.receivingDevices.keySet())
-        {
-            if (device.getDeviceType().equals(deviceType))
-            {
-                result.add(device);
-            }
-        }
-        return result.toArray(new ReceivingDeviceInterface[result.size()]);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SendingDeviceInterface[] getSendingDevices()
-    {
-        return this.sendingDevices.toArray(new SendingDeviceInterface[this.sendingDevices.size()]);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SendingDeviceInterface[] getSendingDevices(final DeviceType deviceType)
-    {
-        ArrayList<SendingDeviceInterface> result = new ArrayList<SendingDeviceInterface>();
-        for (SendingDeviceInterface device : this.sendingDevices)
-        {
-            if (device.getDeviceType().equals(deviceType))
-            {
-                result.add(device);
-            }
-        }
-        return result.toArray(new SendingDeviceInterface[result.size()]);
-    }
-
-    /**
-     * remove a device from the actor.
-     * @param device device
-     * @return success
-     */
-    public boolean removeSendingDevice(final SendingDeviceInterface device)
-    {
-        return this.sendingDevices.remove(device);
-    }
-
-    /**
-     * remove a device from the actor.
-     * @param device device
-     */
-    public void removeReceivingDevice(final ReceivingDeviceInterface device)
-    {
-        this.receivingDevices.remove(device);
+        return getName();
     }
 
     /** {@inheritDoc} */
@@ -204,59 +201,26 @@ public abstract class Actor extends InternalActor implements ActorInterface
         return this.location;
     }
 
+    /**
+     * Set the bounds of the object (size and relative height in the animation).
+     * @param bounds the bounds for the (animation) object
+     */
+    public void setBounds(final Bounds3d bounds)
+    {
+        this.bounds = bounds;
+    }
+
     /** {@inheritDoc} */
     @Override
     public Bounds3d getBounds()
     {
-        return new Bounds3d(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+        return this.bounds;
     }
 
-    /**
-     * Find the fastest connection between the sender and the receiver, based on the devices that they share. We look at the
-     * minimal transmission delay, and sort within that on maximum transmission frequency.
-     * @param sender the sender
-     * @param receiver the receiver
-     * @return the fastest device that is available at sender and receiver
-     */
-    protected SendingDeviceInterface resolveFastestDevice(final ActorInterface sender, final ActorInterface receiver)
+    /** {@inheritDoc} */
+    @Override
+    public String toString()
     {
-        SendingDeviceInterface[] _sendingDevices = sender.getSendingDevices();
-        ReceivingDeviceInterface[] _receivingDevices = receiver.getReceivingDevices();
-        SortedMap<Double, SendingDeviceInterface> possibleDevices = new TreeMap<Double, SendingDeviceInterface>();
-        for (int i = 0; i < _sendingDevices.length; i++)
-        {
-            for (int j = 0; j < _receivingDevices.length; j++)
-            {
-                if (_sendingDevices[i].getDeviceType().equals(_receivingDevices[j].getDeviceType()))
-                {
-                    possibleDevices.put(Double.valueOf(1000.0 * _sendingDevices[i].getTransmissionDelay()
-                            - 0.001 * _sendingDevices[i].getTransmissionFrequency()), _sendingDevices[i]);
-                }
-            }
-        }
-        if (possibleDevices.size() == 0)
-        {
-            Logger.warn("resolveFastestDevice - No appropriate device(s) found between actor {} and {}", sender.getName(),
-                    receiver.getName());
-            return null;
-        }
-        // return the key with the highest value (speed or priority)
-        return possibleDevices.get(possibleDevices.lastKey());
-    }
-
-    /**
-     * @return Returns the locationDescription.
-     */
-    public String getLocationDescription()
-    {
-        return this.locationDescription;
-    }
-
-    /**
-     * @param locationDescription The locationDescription to set.
-     */
-    public void setLocationDescription(final String locationDescription)
-    {
-        this.locationDescription = locationDescription;
+        return this.name;
     }
 }

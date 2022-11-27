@@ -1,10 +1,6 @@
 package nl.tudelft.simulation.actor;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.djutils.base.Identifiable;
 import org.djutils.exceptions.Throw;
@@ -32,9 +28,6 @@ public abstract class Role implements Serializable, Identifiable
     /** the actor to which this role belongs. */
     private final Actor owner;
 
-    /** the message policies. */
-    private final Map<MessageType, List<MessagePolicyInterface>> messagePolicies = new LinkedHashMap<>();
-
     /**
      * Create a new Role.
      * @param id String; the id of the role
@@ -54,15 +47,7 @@ public abstract class Role implements Serializable, Identifiable
      */
     public void addMessagePolicy(final MessagePolicyInterface policy)
     {
-        Throw.whenNull(policy, "policy cannot be null");
-        MessageType messageType = policy.getMessageType();
-        List<MessagePolicyInterface> policyList = this.messagePolicies.get(messageType);
-        if (policyList == null)
-        {
-            policyList = new ArrayList<>();
-            this.messagePolicies.put(messageType, policyList);
-        }
-        policyList.add(policy);
+        this.owner.addMessagePolicy(policy);
     }
 
     /**
@@ -72,19 +57,7 @@ public abstract class Role implements Serializable, Identifiable
      */
     public void removeMessagePolicy(final MessageType messageType, final String policyId)
     {
-        Throw.whenNull(messageType, "messageType cannot be null");
-        Throw.whenNull(policyId, "policyId cannot be null");
-        List<MessagePolicyInterface> policyList = this.messagePolicies.get(messageType);
-        if (policyList != null)
-        {
-            for (MessagePolicyInterface policy : policyList)
-            {
-                if (policy.getId().equals(policyId))
-                {
-                    policyList.remove(policy);
-                }
-            }
-        }
+        this.owner.removeMessagePolicy(messageType, policyId);
     }
 
     /** {@inheritDoc} */

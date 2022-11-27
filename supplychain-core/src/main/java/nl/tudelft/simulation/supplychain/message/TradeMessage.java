@@ -1,17 +1,13 @@
-package nl.tudelft.simulation.supplychain.content;
-
-import java.io.Serializable;
-import java.util.Random;
-
-import org.djunits.value.vdouble.scalar.Time;
+package nl.tudelft.simulation.supplychain.message;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * Content is the generic content for a Message. It creates a unique ID for itself, that is also unique over networks and in
- * distributed settings. Furthermore, it knows nothing more than a sender and a receiver. Content is abstract, as it should be
- * subclassed to give it a sensible 'payload'.
+ * TradeMessage is the generic content for a Message that is related to an InternalDemandId. In addition to the
+ * InternalDemandId, it also has a unique Id for itself, that is also unique over networks and in distributed settings, since it
+ * is provided by te central SupplyChainModel. Furthermore, it knows nothing more than a sender and a receiver. Content is
+ * abstract, as it should be subclassed to give it a sensible 'payload'.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
@@ -19,123 +15,48 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Content implements Serializable
+public abstract class TradeMessage extends Message
 {
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** unique id of the message. */
-    private Serializable uniqueID;
-
     /** unique id of the InternalDemand that triggered the message chain. */
-    protected Serializable internalDemandID;
-
-    /** the creation time of the content. */
-    private Time creationTime;
-
-    /** sender of the message. */
-    private SupplyChainActor sender;
-
-    /** receiver of the message. */
-    private SupplyChainActor receiver;
-
-    /** the random stream. */
-    private static Random random = new Random();
+    private long internalDemandId;
 
     /**
      * Constructs a new Content object.
-     * @param sender the sending actor of the message content
-     * @param receiver the receiving actor of the message content
-     * @param internalDemandID the InternalDemand id that triggered the chain. If it is equal to zero, assume that it is a new
-     *            InternalDemand and allocate the uniqueID of the Content to it.
+     * @param type MessageType; the type of the message
+     * @param sender SupplyChainActor; the sending actor of the message content
+     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param internalDemandId long; the InternalDemandId that triggered the chain
      */
-    public Content(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID)
+    public TradeMessage(final MessageType type, final SupplyChainActor sender, final SupplyChainActor receiver,
+            final long internalDemandId)
     {
-        super();
-        this.sender = sender;
-        this.receiver = receiver;
-        this.uniqueID = createUniqueID();
-        this.internalDemandID = internalDemandID;
-        this.creationTime = sender.getSimulatorTime();
+        super(type, sender, receiver);
+        this.internalDemandId = internalDemandId;
     }
 
     /**
-     * Returns the intended receiving actor of the message.
-     * @return the receiving actor of the message.
+     * Return the product for which this trade message applies.
+     * @return Product; the product for which this trade message applies
      */
-    public SupplyChainActor getReceiver()
-    {
-        return this.receiver;
-    }
+    public abstract Product getProduct();
 
     /**
-     * Returns the sending actor of the message.
-     * @return the sending actor of the message.
+     * Return the internalDemandId.
+     * @return long; the id of the internal demand that triggered the TtradeMessage chain.
      */
-    public SupplyChainActor getSender()
+    public long getInternalDemandId()
     {
-        return this.sender;
-    }
-
-    /**
-     * Returns Returns the unique ID of this message.
-     * @return the uniqueID.
-     */
-    public Serializable getUniqueID()
-    {
-        return this.uniqueID;
-    }
-
-    /**
-     * Returns Sets the unique ID of this message.
-     * @param id the uniqueID.
-     */
-    public void setUniqueID(final Serializable id)
-    {
-        this.uniqueID = id;
-    }
-
-    /**
-     * Returns a unique Serializable ID for this message.
-     * @return a unique ID.
-     */
-    private String createUniqueID()
-    {
-        return System.currentTimeMillis() + "-" + Math.abs(Content.random.nextLong());
-    }
-
-    /**
-     * Returns the internalDemandID.
-     * @return the Serializable unique ID of the Content.
-     */
-    public Serializable getInternalDemandID()
-    {
-        return this.internalDemandID;
-    }
-
-    /**
-     * Returns the creationTime.
-     * @return the time when the content was created.
-     */
-    public Time getCreationTime()
-    {
-        return this.creationTime;
+        return this.internalDemandId;
     }
 
     /** {@inheritDoc} */
     @Override
     public String toString()
     {
-        return this.getClass().getName().substring(this.getClass().getPackage().getName().length() + 1) + " from "
-                + this.getSender().getName() + " to " + this.getReceiver().getName();
+        return this.getType().getId() + " from " + this.getSender().getName() + " to " + this.getReceiver().getName();
     }
 
-    /**
-     * Initially a null product is returned.
-     * @return Returns the product.
-     */
-    public Product getProduct()
-    {
-        return null;
-    }
 }

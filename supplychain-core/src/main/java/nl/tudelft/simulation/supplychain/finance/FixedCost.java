@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.banking;
+package nl.tudelft.simulation.supplychain.finance;
 
 import java.io.Serializable;
 
@@ -7,8 +7,6 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEvent;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 
 /**
  * When a supply chain actor is created, one or more FixedCost objects can be created to book fixed costs for e.g. personnel,

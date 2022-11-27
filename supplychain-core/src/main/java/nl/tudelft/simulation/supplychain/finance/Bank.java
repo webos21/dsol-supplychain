@@ -1,12 +1,16 @@
-package nl.tudelft.simulation.supplychain.banking;
+package nl.tudelft.simulation.supplychain.finance;
 
 import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.ActorType;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 
 /**
- * The Bank to store the interest rates for the Bank accounts.
+ * The Bank to store the interest rates for the Bank accounts. In this case, we have chosen to not make the Bank work with
+ * Messages, but this is of course possible ti implement, e.g. to simulate risks of banks handling international transactions
+ * slowly, or to simulate cyber attacks on the financial infrastructure.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
@@ -17,7 +21,7 @@ import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 public class Bank extends Actor
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221127L;
 
     /** the interest rate for a positive bank account. */
     private double annualInterestRatePos = 0.025;
@@ -26,17 +30,23 @@ public class Bank extends Actor
     private double annualInterestRateNeg = 0.08;
 
     /**
-     * @param name the name
-     * @param simulator the simulator
-     * @param position the position
+     * Create a new Bank.
+     * @param actorType ActorType; the actor type for the bank, as registered in the model
+     * @param name String; the name of the bank
+     * @param messageHandler MessageHandlerInterface; the handler for messages
+     * @param simulator SCSimulatorInterface; the simulator
+     * @param location OrientedPoint3d; the location on the map
+     * @param locationDescription String; a description of the location (e.g., "Frankfurt")
      */
-    public Bank(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position)
+    public Bank(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
+            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription)
     {
-        super(name, simulator, position);
+        super(actorType, name, messageHandler, simulator, location, locationDescription);
     }
 
     /**
-     * @return Returns the annualInterestRateNeg.
+     * Return the negative annual interest rate.
+     * @return double; negative annual interest rate
      */
     public double getAnnualInterestRateNeg()
     {
@@ -44,7 +54,8 @@ public class Bank extends Actor
     }
 
     /**
-     * @param annualInterestRateNeg The annualInterestRateNeg to set.
+     * Set a new negative annual interest rate.
+     * @param annualInterestRateNeg double; new negative annual interest rate
      */
     public void setAnnualInterestRateNeg(final double annualInterestRateNeg)
     {
@@ -52,7 +63,8 @@ public class Bank extends Actor
     }
 
     /**
-     * @return Returns the annualInterestRatePos.
+     * Return the positive annual interest rate.
+     * @return double; positive annual interest rate
      */
     public double getAnnualInterestRatePos()
     {
@@ -60,7 +72,8 @@ public class Bank extends Actor
     }
 
     /**
-     * @param annualInterestRatePos The annualInterestRatePos to set.
+     * Set a new positive annual interest rate.
+     * @param annualInterestRatePos double; new positive annual interest rate
      */
     public void setAnnualInterestRatePos(final double annualInterestRatePos)
     {

@@ -1,24 +1,22 @@
-package nl.tudelft.simulation.supplychain.banking;
+package nl.tudelft.simulation.supplychain.finance;
 
 import java.io.Serializable;
 
+import org.djunits.Throw;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventProducer;
-import org.djutils.event.TimedEvent;
 import org.djutils.event.TimedEventType;
-import org.pmw.tinylog.Logger;
+import org.djutils.metadata.MetaData;
+import org.djutils.metadata.ObjectDescriptor;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 
 /**
  * The BackAccount keeps track of the balance of a SupplyChainActor. This simple implementation just has one number as the
  * account. No investments or loans are possible through this implementation. The BankAccount itself does not contain logic to
- * prevent it from going negative.>br> <br>
+ * prevent it from going negative.
+ * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -36,14 +34,12 @@ public class BankAccount extends EventProducer
     /** the bank. */
     private Bank bank;
 
-    /** the simulator for the interest rate. */
-    private SCSimulatorInterface simulator;
-
     /** the balance of the actor. */
     private Money balance;
 
     /** for who is interested, the BankAccount can send updates of changes. */
-    public static final TimedEventType BANK_ACCOUNT_CHANGED_EVENT = new TimedEventType("BANK_ACCOUNT_CHANGED_EVENT");
+    public static final TimedEventType BANK_ACCOUNT_CHANGED_EVENT = new TimedEventType("BANK_ACCOUNT_CHANGED_EVENT",
+            new MetaData("account", "bank account", new ObjectDescriptor("balance", "bank balance", double.class)));
 
     /**
      * Constructor for BankAccount.
@@ -53,50 +49,21 @@ public class BankAccount extends EventProducer
      */
     public BankAccount(final SupplyChainActor owner, final Bank bank, final Money initialBalance)
     {
-        super();
-        try
-        {
-            if (owner == null)
-            {
-                throw new Exception("owner = null");
-            }
-            this.owner = owner;
-            this.bank = bank;
-            this.simulator = this.owner.getSimulator();
-            if (Double.isInfinite(initialBalance.getAmount()))
-            {
-                throw new Exception("initial bank balance = infinite");
-            }
-            if (Double.isNaN(initialBalance.getAmount()))
-            {
-                throw new Exception("initial bank balance = NaN");
-            }
-            this.balance = initialBalance;
-            this.roundBalance();
-            super.fireEvent(BANK_ACCOUNT_CHANGED_EVENT, this.balance);
-            // start the interest process...
-            this.simulator.scheduleEventNow(this, this, "interest", null);
-
-        }
-        catch (Exception e)
-        {
-            Logger.warn(e, "<init>");
-        }
+        Throw.whenNull(owner, "owner cannot be null");
+        Throw.whenNull(bank, "bank cannot be null");
+        Throw.whenNull(initialBalance, "initialBalance cannot be null");
+        this.owner = owner;
+        this.bank = bank;
+        this.balance = initialBalance;
+        this.roundBalance();
+        sendBalanceUpdateEvent();
+        // start the interest process...
+        this.owner.getSimulator().scheduleEventNow(this, this, "interest", null);
     }
 
     /**
-     * Constructor for BankAccount.
-     * @param owner the owner of the bank account
-     * @param bank the bank where this account is located
-     */
-    public BankAccount(final SupplyChainActor owner, final Bank bank)
-    {
-        this(owner, bank, new Money(0.0, MoneyUnit.USD));
-    }
-
-    /**
-     * Returns the balance.
-     * @return double
+     * Return the bank balance.
+     * @return Money; the bank balance
      */
     public Money getBalance()
     {
@@ -104,42 +71,39 @@ public class BankAccount extends EventProducer
     }
 
     /**
-     * Adds money to the balance.
-     * @param amount The amount of money
+     * Add money to the bank balance.
+     * @param amount Money; the amount of money to add
      */
     public synchronized void addToBalance(final Money amount)
     {
         this.balance = this.balance.plus(amount);
         this.roundBalance();
-        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this.getSourceId(), this.balance,
-                this.owner.getSimulatorTime()));
+        sendBalanceUpdateEvent();
     }
 
     /**
-     * Withdraws money from the balance.
-     * @param amount The amount of money
+     * Withdraw money from the bank balance.
+     * @param amount Money; the amount of money to withdraw
      */
     public synchronized void withdrawFromBalance(final Money amount)
     {
         this.balance = this.balance.minus(amount);
         this.roundBalance();
-        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this.getSourceId(), this.balance,
-                this.owner.getSimulatorTime()));
+        sendBalanceUpdateEvent();
     }
 
     /**
-     * Method sendBalanceUpdateEvent.
+     * Send a BANK_ACCOUNT_CHANGED_EVENT to signal an update of the bank balance.
      */
-    public void sendBalanceUpdateEvent()
+    protected void sendBalanceUpdateEvent()
     {
-        this.fireEvent(new TimedEvent<Time>(BANK_ACCOUNT_CHANGED_EVENT, this.getSourceId(), this.balance,
-                this.owner.getSimulatorTime()));
+        this.fireTimedEvent(BANK_ACCOUNT_CHANGED_EVENT, this.balance, this.owner.getSimulatorTime());
     }
 
     /**
      * Round the balance.
      */
-    private void roundBalance()
+    protected void roundBalance()
     {
         this.balance = new Money(0.01 * Math.round(100.0 * this.balance.getAmount()), this.balance.getMoneyUnit());
     }
@@ -149,24 +113,16 @@ public class BankAccount extends EventProducer
      */
     protected void interest()
     {
-        try
+        if (this.balance.getAmount() < 0)
         {
-            if (this.balance.getAmount() < 0)
-            {
-                addToBalance(this.balance.multiplyBy(this.bank.getAnnualInterestRateNeg() / 365.0));
-            }
-            else
-            {
-                addToBalance(this.balance.multiplyBy(this.bank.getAnnualInterestRatePos() / 365.0));
-            }
-            this.roundBalance();
-            this.simulator.scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "interest", null);
+            addToBalance(this.balance.multiplyBy(this.bank.getAnnualInterestRateNeg() / 365.0));
         }
-        catch (Exception exception)
+        else
         {
-            Logger.error(exception, "interest");
+            addToBalance(this.balance.multiplyBy(this.bank.getAnnualInterestRatePos() / 365.0));
         }
-
+        this.roundBalance();
+        this.owner.getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "interest", null);
     }
 
     /** {@inheritDoc} */

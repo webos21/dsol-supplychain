@@ -41,10 +41,10 @@ public class FixedCost implements Serializable
 
     /**
      * Create a Fixed cost item for an actor.
-     * @param owner the supply chain actor
-     * @param description the description
-     * @param interval the interval for booking fixed cost
-     * @param amount the fixed cost per interval
+     * @param owner SupplyChainActor; the supply chain actor
+     * @param description String; the description
+     * @param interval Duration; the interval for booking fixed cost
+     * @param amount double; the fixed cost per interval
      */
     public FixedCost(final SupplyChainActor owner, final String description, final Duration interval, final Money amount)
     {
@@ -62,7 +62,7 @@ public class FixedCost implements Serializable
     /**
      * Change the interval to book fixed costs. The booking event is immediately rescheduled to the END of the interval; next
      * deduction takes place after 'interval' days.
-     * @param newInterval the new interval
+     * @param newInterval Duration; the new interval
      */
     public void changeInterval(final Duration newInterval)
     {
@@ -80,7 +80,7 @@ public class FixedCost implements Serializable
     /**
      * Change the fixed costs to book each interval. The change is effective on the next scheduled event for deduction of fixed
      * costs.
-     * @param newAmount the new amount
+     * @param newAmount double; the new amount
      */
     public void changeAmount(final Money newAmount)
     {

@@ -1,6 +1,5 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message;
 
-import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
@@ -17,118 +16,73 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class RequestForQuote extends Content
+public class RequestForQuote extends TradeMessage
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the product for which we want a quote */
-    private Product product;
+    /** the InternalDemand for linking purposes. */
+    private final InternalDemand internalDemand;
 
-    /** the amount of the product, in units for that product */
-    private double amount;
-
-    /** the earliest delivery date on the simulation timeline */
-    private Time earliestDeliveryDate;
-
-    /** the latest delivery date on the simulation timeline */
-    private Time latestDeliveryDate;
-
-    /** the date when the RFQ will be cut off */
-    private Time cutoffDate;
+    /** the date when the RFQ will be cut off. */
+    private final Time cutoffDate;
 
     /**
      * Create a new RFQ, based on an internal demand.
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemand internal demand that triggered the process
-     * @param product the product we want
-     * @param amount the amount of products
-     */
-    public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
-            final Product product, final double amount)
-    {
-        this(sender, receiver, internalDemand, product, amount, internalDemand.getEarliestDeliveryDate(),
-                internalDemand.getLatestDeliveryDate());
-    }
-
-    /**
-     * Create a new RFQ, based on an internal demand, with a time window for delivery.
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemand internal demand that triggered the process
-     * @param product the product we want
-     * @param amount the amount of products
-     * @param earliestDeliveryDate the earliest delivery date
-     * @param latestDeliveryDate the latest delivery date
-     */
-    public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
-            final Product product, final double amount, final Time earliestDeliveryDate, final Time latestDeliveryDate)
-    {
-        this(sender, receiver, internalDemand, product, amount, earliestDeliveryDate, latestDeliveryDate,
-                new Duration(7.0, DurationUnit.DAY));
-    }
-
-    /**
-     * Create a new RFQ, based on an internal demand, with a time window for delivery.
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemand internal demand that triggered the process
-     * @param product the product we want
-     * @param amount the amount of products
-     * @param earliestDeliveryDate the earliest delivery date
-     * @param latestDeliveryDate the latest delivery date
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param internalDemand InternalDemand; internal demand that triggered the process
      * @param cutoffDuration after how much time will the RFQ stop collecting quotes?
      */
     public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
-            final Product product, final double amount, final Time earliestDeliveryDate, final Time latestDeliveryDate,
             final Duration cutoffDuration)
     {
-        super(sender, receiver, internalDemand.getInternalDemandID());
-        this.product = product;
-        this.amount = amount;
-        this.earliestDeliveryDate = earliestDeliveryDate;
-        this.latestDeliveryDate = latestDeliveryDate;
+        super(TradeMessageTypes.RFQ, sender, receiver, internalDemand.getInternalDemandId());
+        this.internalDemand = internalDemand;
         this.cutoffDate = sender.getSimulatorTime().plus(cutoffDuration);
-    }
-
-    /**
-     * @return Returns the amount.
-     */
-    public double getAmount()
-    {
-        return this.amount;
-    }
-
-    /**
-     * @return Returns the earliest delivery date.
-     */
-    public Time getEarliestDeliveryDate()
-    {
-        return this.earliestDeliveryDate;
-    }
-
-    /**
-     * @return Returns the latest delivery date.
-     */
-    public Time getLatestDeliveryDate()
-    {
-        return this.latestDeliveryDate;
-    }
-
-    /**
-     * @return Returns the cutoffDate.
-     */
-    public Time getCutoffDate()
-    {
-        return this.cutoffDate;
     }
 
     /** {@inheritDoc} */
     @Override
     public Product getProduct()
     {
-        return this.product;
+        return this.internalDemand.getProduct();
+    }
+
+    /**
+     * Return the amount of products that was demanded.
+     * @return double the amount that was demanded.
+     */
+    public double getAmount()
+    {
+        return this.internalDemand.getAmount();
+    }
+
+    /**
+     * Return the earliest delivery date.
+     * @return double the earliest delivery date for the product.
+     */
+    public Time getEarliestDeliveryDate()
+    {
+        return this.internalDemand.getEarliestDeliveryDate();
+    }
+
+    /**
+     * Return the latest delivery date.
+     * @return double the latest delivery date for the product.
+     */
+    public Time getLatestDeliveryDate()
+    {
+        return this.internalDemand.getLatestDeliveryDate();
+    }
+
+    /**
+     * Return the cutoff date.
+     * @return Time; the cutoff date
+     */
+    public Time getCutoffDate()
+    {
+        return this.cutoffDate;
     }
 
     /** {@inheritDoc} */

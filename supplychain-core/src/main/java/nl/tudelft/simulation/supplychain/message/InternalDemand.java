@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message;
 
 import org.djunits.value.vdouble.scalar.Time;
 
@@ -15,36 +15,39 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class InternalDemand extends Content
+public class InternalDemand extends Message
 {
-    /** the serial version uid */
-    private static final long serialVersionUID = 12L;
+    /** the serial version uid. */
+    private static final long serialVersionUID = 20221127L;
 
-    /** the product to order */
+    /** the internal demand id (copy of uniqueId). */
+    private final long internalDemandId;
+    
+    /** the product to order. */
     private Product product;
 
-    /** the amount to order */
+    /** the amount to order. */
     private double amount;
 
-    /** the earliest delivery date */
+    /** the earliest delivery date. */
     private Time earliestDeliveryDate;
 
-    /** the latest delivery date */
+    /** the latest delivery date. */
     private Time latestDeliveryDate;
 
     /**
      * Constructs a new InternalDemand.
-     * @param sender the sender of the internal demand
-     * @param product the product which is demanded
-     * @param amount the amount of the product
-     * @param earliestDeliveryDate the earliest delivery date
-     * @param latestDeliveryDate the latest delivery date
+     * @param sender SupplyChainActor; the sender of the internal demand
+     * @param product Product; the product which is demanded
+     * @param amount double; the amount of the product
+     * @param earliestDeliveryDate Time; the earliest delivery date
+     * @param latestDeliveryDate Time; the latest delivery date
      */
     public InternalDemand(final SupplyChainActor sender, final Product product, final double amount,
             final Time earliestDeliveryDate, final Time latestDeliveryDate)
     {
-        super(sender, sender, null);
-        this.internalDemandID = getUniqueID();
+        super(TradeMessageTypes.INTERNAL_DEMAND, sender, sender);
+        this.internalDemandId = getUniqueId();
         this.product = product;
         this.amount = amount;
         this.earliestDeliveryDate = earliestDeliveryDate;
@@ -52,7 +55,16 @@ public class InternalDemand extends Content
     }
 
     /**
-     * Returns the amount of products that was demanded.
+     * Return the product for which this internal demand applies.
+     * @return Product; the product for which this internal demand applies
+     */
+    public Product getProduct()
+    {
+        return this.product;
+    }
+
+    /**
+     * Return the amount of products that was demanded.
      * @return double the amount that was demanded.
      */
     public double getAmount()
@@ -61,7 +73,7 @@ public class InternalDemand extends Content
     }
 
     /**
-     * Returns the earliestDeliveryDate.
+     * Return the earliest delivery date.
      * @return double the earliest delivery date for the product.
      */
     public Time getEarliestDeliveryDate()
@@ -70,7 +82,7 @@ public class InternalDemand extends Content
     }
 
     /**
-     * Returns the latestDeliveryDate.
+     * Return the latest delivery date.
      * @return double the latest delivery date for the product.
      */
     public Time getLatestDeliveryDate()
@@ -78,11 +90,13 @@ public class InternalDemand extends Content
         return this.latestDeliveryDate;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Product getProduct()
+    /**
+     * Return the internalDemandId.
+     * @return long; the id of the internal demand that triggered the TtradeMessage chain.
+     */
+    public long getInternalDemandId()
     {
-        return this.product;
+        return this.internalDemandId;
     }
 
     /** {@inheritDoc} */

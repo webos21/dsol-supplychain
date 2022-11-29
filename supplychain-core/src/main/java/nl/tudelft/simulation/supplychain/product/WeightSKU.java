@@ -1,7 +1,10 @@
 package nl.tudelft.simulation.supplychain.product;
 
+import org.djunits.value.vdouble.scalar.Mass;
+
 /**
- * The WeightUnit is a Unit that has a certain weight as limiting / determining factor.
+ * The WeightUnit is a Unit that has a certain weight as limiting / determining factor. Examples are mining materials and
+ * agricultural products.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
@@ -9,29 +12,52 @@ package nl.tudelft.simulation.supplychain.product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class WeightUnit extends Unit
+public class WeightSKU extends SKU
 {
-    /** the serial version uid */
-    private static final long serialVersionUID = 12L;
+    /** the serial version uid. */
+    private static final long serialVersionUID = 20221129L;
 
-    /** weight of the unit in kg */
-    private double weight;
+    /** weight of the unit in kg. */
+    private double weightKg;
 
     /**
-     * @param name the name of the unit
-     * @param weight the weight of the unit
+     * Instantiate a Stock Keeping Unit based on weight in kg.
+     * @param name String; the name of the unit
+     * @param weightKg double; the weight of the unit in kg
      */
-    public WeightUnit(final String name, final double weight)
+    public WeightSKU(final String name, final double weightKg)
     {
         super(name);
-        this.weight = weight;
+        this.weightKg = weightKg;
     }
 
     /**
-     * @return Returns the weight in kg.
+     * Instantiate a Stock Keeping Unit based on weight provided as a Mass.
+     * @param name String; the name of the unit
+     * @param weight Mass; the weight of the unit
      */
-    public double getWeight()
+    public WeightSKU(final String name, final Mass weight)
     {
-        return this.weight;
+        super(name);
+        this.weightKg = weight.si;
     }
+
+    /**
+     * Return the weight in kg.
+     * @return double; the weight in kg.
+     */
+    public double getWeightKg()
+    {
+        return this.weightKg;
+    }
+
+    /**
+     * Return the weight as a Mass.
+     * @return Mass; the weight of one SKU
+     */
+    public Mass getWeight()
+    {
+        return Mass.instantiateSI(this.weightKg);
+    }
+
 }

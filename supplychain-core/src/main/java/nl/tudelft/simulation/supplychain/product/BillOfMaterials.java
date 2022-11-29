@@ -4,12 +4,16 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.djunits.Throw;
+import org.djutils.immutablecollections.ImmutableLinkedHashMap;
+import org.djutils.immutablecollections.ImmutableMap;
+
 /**
- * The BillOfMaterials is a list of products and amounts that are needed to make another product. The BillOfMaterials is used in
- * the simulation of manufacturing processes to be able to pick the right materials in the right quantities to make a new
- * product. The amounts in the BillOfMaterials are related to producing one unit of the product to which it belongs, so if the
- * Unit is a Unit.CONTAINER20FT, the amounts in the BillOfMaterials (in their own units) indicate the quantities needed to
- * produce one 20 ft container load of end products.
+ * The BillOfMaterials is a list of products and amounts that are needed to make one SKU of a given product. The BillOfMaterials
+ * is used in the simulation of manufacturing processes to be able to pick the right materials in the right quantities to make a
+ * new product. The amounts in the BillOfMaterials are related to producing one SKU of the product to which it belongs, so if
+ * the Unit is a Unit.CONTAINER20FT, the amounts in the BillOfMaterials (in their own SKUs) indicate the quantities needed to
+ * produce one 20 ft container load of end product.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
@@ -19,84 +23,55 @@ import java.util.Map;
  */
 public class BillOfMaterials implements Serializable
 {
-    /** the serial version uid */
-    private static final long serialVersionUID = 12L;
+    /** the serial version uid. */
+    private static final long serialVersionUID = 20221129L;
 
-    /** the Product for which this is the BOM */
-    private Product product;
+    /** the Product for which this is the BOM. */
+    private final Product product;
 
-    /** the amount produced */
-    private double amountProduced;
-
-    /** the bill of materials (product, amount) */
-    private Map<Product, Double> materials = new LinkedHashMap<Product, Double>();
+    /** the bill of materials as a map from product to the amount in the product's SKU. */
+    private ImmutableMap<Product, Double> materials = new ImmutableLinkedHashMap<>(new LinkedHashMap<>());
 
     /**
-     * Construct a new Bill of Materials for a product
-     * @param product the product to which this BOM belongs
+     * Construct a new Bill of Materials for a product.
+     * @param product Product; the product to which this BOM belongs
      */
     public BillOfMaterials(final Product product)
     {
-        super();
+        Throw.whenNull(product, "product cannot be null");
         this.product = product;
     }
 
     /**
-     * Adds one product with a certain amount in its own Units to the BOM of this product.
-     * @param _product the product to add to the BOM
-     * @param amount the amount of products needed in its own units
+     * Adds one ingredient with a certain amount of he ingredient's SKUs in its own Units to the BOM of this product.
+     * @param ingredient the product to add to the BOM
+     * @param amount double; the amount of products needed in its own SKU
      */
-    public void add(final Product _product, final double amount)
+    public void add(final Product ingredient, final double amount)
     {
-        this.materials.put(_product, Double.valueOf(amount));
+        Throw.whenNull(ingredient, "ingredient cannot be null");
+        Throw.when(amount <= 0, IllegalArgumentException.class, "amount of ingredient for a BOM cannot be <= 0");
+        Map<Product, Double> newMaterials = this.materials.toMap();
+        newMaterials.put(ingredient, amount);
+        this.materials = new ImmutableLinkedHashMap<>(newMaterials);
     }
 
     /**
-     * Removes one product with its total amount from the BOM of this product.
-     * @param _product the product
+     * Return the bill of materials as a map from product to the amount in the product's SKU.
+     * @return ImmutableMap&lt;Product, Double&gt;; the map of raw materials and amounts in SKUs.
      */
-    public void remove(final Product _product)
-    {
-        this.materials.remove(_product);
-    }
-
-    /**
-     * @return Returns the map of materials and amounts.
-     */
-    public Map<Product, Double> getMaterials()
+    public ImmutableMap<Product, Double> getMaterials()
     {
         return this.materials;
     }
 
     /**
-     * @return Returns the product.
+     * Return the product of which one unit is produced by this BOM.
+     * @return product; the product that is the result of this BOM
      */
     public Product getProduct()
     {
         return this.product;
     }
 
-    /**
-     * @param product The product to set.
-     */
-    public void setProduct(final Product product)
-    {
-        this.product = product;
-    }
-
-    /**
-     * @return Returns the amountProduced.
-     */
-    public double getAmountProduced()
-    {
-        return this.amountProduced;
-    }
-
-    /**
-     * @param amountProduced The amountProduced to set.
-     */
-    public void setAmountProduced(final double amountProduced)
-    {
-        this.amountProduced = amountProduced;
-    }
 }

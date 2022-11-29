@@ -1,8 +1,11 @@
 package nl.tudelft.simulation.supplychain.product;
 
 import java.io.Serializable;
+import java.util.Objects;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Mass;
+import org.djunits.value.vdouble.scalar.Volume;
 
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
@@ -21,44 +24,53 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
  */
 public class Product implements Serializable
 {
-    /** the serial version uid */
-    private static final long serialVersionUID = 12L;
+    /** the serial version uid. */
+    private static final long serialVersionUID = 20221129L;
 
-    /** the bill of materials (product, amount) */
-    protected BillOfMaterials billOfMaterials;
+    /** the bill of materials (product, amount). */
+    private BillOfMaterials billOfMaterials;
 
-    /** the unit in which this product is shipped (boxes, pallets, etc.) */
-    protected Unit unit;
+    /** the unit in which this product is produced, shipped (boxes, pallets, etc.). */
+    private final SKU sku;
 
     /** the descriptive name of the product. */
-    protected String name;
+    private final String name;
 
-    /** the current world market price of the product per unit */
-    protected Money unitMarketPrice = new Money(0.0, MoneyUnit.USD);
+    /** the average volume per unit. */
+    private final Volume averageSKUVolume;
 
-    /** the average weight per unit */
-    protected Mass averageUnitWeight = Mass.ZERO;
+    /** the average weight per unit. */
+    private final Mass averageSKUWeight;
 
-    /** depreciation the depreciation as a percentage per day */
-    protected double depreciation = 0.0;
+    /** depreciation the depreciation as a fraction per day. */
+    private double depreciation = 0.0;
+
+    /** the current world market price of the product per unit. */
+    private Money unitMarketPrice = new Money(0.0, MoneyUnit.USD);
 
     /**
-     * Construct a new product.
-     * @param name the descriptive name of the product.
-     * @param unit the unit in which this product is shipped (boxes, pallets)
-     * @param initialUnitMarketPrice the initial world market price of the product per unit
-     * @param averageUnitWeight the average weight per unit
-     * @param depreciation the depreciation as a percentage per day for the product
+     * Construct a new product with an empty Bill of Materials.
+     * @param name String; the descriptive name of the product.
+     * @param sku SKU; the stock keeping unit in which this product is shipped (boxes, pallets, kilograms, m3, containers)
+     * @param initialUnitMarketPrice Money; the initial world market price of the product per SKU
+     * @param averageSKUWeight Mass; the average weight per SKU
+     * @param averageSKUVolume Volume; the average volume per SKU
+     * @param depreciation double; the depreciation as a factor per day for the product
      */
-    public Product(final String name, final Unit unit, final Money initialUnitMarketPrice, final Mass averageUnitWeight,
-            final double depreciation)
+    public Product(final String name, final SKU sku, final Money initialUnitMarketPrice, final Mass averageSKUWeight,
+            final Volume averageSKUVolume, final double depreciation)
     {
-        super();
+        Throw.whenNull(name, "name cannot be null");
+        Throw.whenNull(sku, "sku cannot be null");
+        Throw.whenNull(initialUnitMarketPrice, "initialUnitMarketPrice cannot be null");
+        Throw.whenNull(averageSKUWeight, "averageUnitWeight cannot be null");
+        Throw.whenNull(averageSKUVolume, "averageUnitVolume cannot be null");
         this.name = name;
-        this.unit = unit;
+        this.sku = sku;
         this.unitMarketPrice = initialUnitMarketPrice;
         this.billOfMaterials = new BillOfMaterials(this);
-        this.averageUnitWeight = averageUnitWeight;
+        this.averageSKUWeight = averageSKUWeight;
+        this.averageSKUVolume = averageSKUVolume;
         this.depreciation = depreciation;
     }
 
@@ -72,27 +84,29 @@ public class Product implements Serializable
     }
 
     /**
-     * Method setBillOfMaterials. Sets the BOM as one Map. The copy of the BOM is a shallow copy, which only copies the pointer
-     * to the map, so changing the parameter of the setBillOfMaterials method may change the BOM of this product!
-     * @param billOfMaterials the Bill of Materials
+     * Method setBillOfMaterials. Sets the new BOM as one Map. The copy of the BOM is a shallow copy, which only copies the
+     * pointer to the map, so changing a parameter within the provided billOfMaterials method may change the BOM of this
+     * product!
+     * @param billOfMaterials BillOfMaterials; the new Bill of Materials
      */
     public void setBillOfMaterials(final BillOfMaterials billOfMaterials)
     {
+        Throw.whenNull(billOfMaterials, "billOfMaterials cannot be null");
         this.billOfMaterials = billOfMaterials;
     }
 
     /**
-     * Method getUnit. Returns the standard unit of this product.
-     * @return Unit
+     * Return the stock keeping unit of this product.
+     * @return SKU; the stock keeping unit of this product
      */
-    public Unit getUnit()
+    public SKU getSKU()
     {
-        return this.unit;
+        return this.sku;
     }
 
     /**
-     * Returns the name.
-     * @return String
+     * Return the product name.
+     * @return String; the product name
      */
     public String getName()
     {
@@ -100,15 +114,26 @@ public class Product implements Serializable
     }
 
     /**
-     * @return Returns the averageUnitWeight.
+     * Return the average sku weight as a Mass.
+     * @return Mass; the averag weight per SKU
      */
-    public Mass getAverageUnitWeight()
+    public Mass getAverageSKUWeight()
     {
-        return this.averageUnitWeight;
+        return this.averageSKUWeight;
     }
 
     /**
-     * @return Returns the depreciation
+     * Return the average sku volume as a Volume.
+     * @return Volume; the averag volume per SKU
+     */
+    public Volume getAverageSKUVolume()
+    {
+        return this.averageSKUVolume;
+    }
+
+    /**
+     * Return the depreciation fraction.
+     * @return double; the depreciation fraction
      */
     public double getDepreciation()
     {
@@ -116,7 +141,8 @@ public class Product implements Serializable
     }
 
     /**
-     * @return Returns the unitMarketPrice.
+     * Return the current average unit market price per SKU.
+     * @return Money; the current average unit market price per SKU.
      */
     public Money getUnitMarketPrice()
     {
@@ -124,7 +150,8 @@ public class Product implements Serializable
     }
 
     /**
-     * @param unitMarketPrice The unitMarketPrice to set.
+     * Set a new the average unit market price per SKU.
+     * @param unitMarketPrice Money; a new value for the current average unit market price per SKU
      */
     public void setUnitMarketPrice(final Money unitMarketPrice)
     {
@@ -137,4 +164,27 @@ public class Product implements Serializable
     {
         return this.name;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(this.name, this.sku);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("checkstyle:needbraces")
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Product other = (Product) obj;
+        return Objects.equals(this.name, other.name) && Objects.equals(this.sku, other.sku);
+    }
+
 }

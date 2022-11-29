@@ -50,7 +50,7 @@ public class RequestForQuote extends TradeMessage
     }
 
     /**
-     * Return the amount of products that was demanded.
+     * Return the amount of products in the product's SKU that was demanded.
      * @return double the amount that was demanded.
      */
     public double getAmount()
@@ -89,6 +89,7 @@ public class RequestForQuote extends TradeMessage
     @Override
     public String toString()
     {
-        return super.toString() + ", for " + this.getAmount() + " units of product " + this.getProduct().getName();
+        return super.toString() + ", for " + this.getAmount() + " " + this.getProduct().getSKU().getName() + " of product "
+                + this.getProduct().getName();
     }
 }

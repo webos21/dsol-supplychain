@@ -22,11 +22,11 @@ public class InternalDemand extends Message
 
     /** the internal demand id (copy of uniqueId). */
     private final long internalDemandId;
-    
+
     /** the product to order. */
     private Product product;
 
-    /** the amount to order. */
+    /** the amount to order in the product's SKU. */
     private double amount;
 
     /** the earliest delivery date. */
@@ -39,7 +39,7 @@ public class InternalDemand extends Message
      * Constructs a new InternalDemand.
      * @param sender SupplyChainActor; the sender of the internal demand
      * @param product Product; the product which is demanded
-     * @param amount double; the amount of the product
+     * @param amount double; the amount of the product in the product's SKU
      * @param earliestDeliveryDate Time; the earliest delivery date
      * @param latestDeliveryDate Time; the latest delivery date
      */
@@ -64,7 +64,7 @@ public class InternalDemand extends Message
     }
 
     /**
-     * Return the amount of products that was demanded.
+     * Return the amount of products that was demanded, in the product's SKU.
      * @return double the amount that was demanded.
      */
     public double getAmount()
@@ -92,7 +92,7 @@ public class InternalDemand extends Message
 
     /**
      * Return the internalDemandId.
-     * @return long; the id of the internal demand that triggered the TtradeMessage chain.
+     * @return long; the id of the internal demand that triggered the TradeMessage chain.
      */
     public long getInternalDemandId()
     {
@@ -103,6 +103,7 @@ public class InternalDemand extends Message
     @Override
     public String toString()
     {
-        return super.toString() + ", for " + this.getAmount() + " units of product " + this.getProduct().getName();
+        return super.toString() + ", for " + this.getAmount() + " " + this.getProduct().getSKU().getName() + " of product "
+                + this.getProduct().getName();
     }
 }

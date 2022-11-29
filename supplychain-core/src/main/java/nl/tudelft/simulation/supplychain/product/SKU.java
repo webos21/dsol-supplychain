@@ -32,16 +32,25 @@ public class SKU implements Serializable
     public static final SKU BOX = new SKU("box");
 
     /** units with volume : 20 FT CONTAINER. */
-    public static final SKU CONTAINER20FT = new VolumeSKU("container 20ft", 33.2);
+    public static final SKU CONTAINER20FT = new VolumeSKU("20ft container", 33.2);
 
     /** units with volume : 40 FT CONTAINER. */
-    public static final SKU CONTAINER40FT = new VolumeSKU("container 40ft", 67.6);
+    public static final SKU CONTAINER40FT = new VolumeSKU("40ft container", 67.6);
+
+    /** units with volume : 45 FT (high-cube) CONTAINER. */
+    public static final SKU CONTAINER45FT = new VolumeSKU("45ft container", 86.06);
+
+    /** units with volume : 53 FT CONTAINER. */
+    public static final SKU CONTAINER53FT = new VolumeSKU("53ft container", 108.5);
 
     /** units with volume : M3 or cubic meter. */
     public static final SKU M3 = new VolumeSKU("m3", 1.0);
 
     /** units with weight : KG. */
     public static final SKU KG = new WeightSKU("kg", 1.0);
+
+    /** units with weight : (metric) TON. */
+    public static final SKU TON = new WeightSKU("ton", 1000.0);
 
     /** the name of the unit for printing and identification purposes. */
     private String name;

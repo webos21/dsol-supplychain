@@ -2,6 +2,8 @@ package nl.tudelft.simulation.supplychain.product;
 
 import java.io.Serializable;
 
+import org.djunits.Throw;
+
 /**
  * SKU stands for Stock Keeping Unit. At this moment, it just is a placeholder for a unit name, providing some standard static
  * Unit types. We could provide extensions of this class allowing to calculate weight or volume of products, based on the
@@ -19,28 +21,28 @@ public class SKU implements Serializable
     /** the serial version uid. */
     private static final long serialVersionUID = 20221129L;
 
-    /** units without weight or volume : PIECE */
+    /** units without weight or volume : PIECE. */
     public static final SKU PIECE = new SKU("piece");
 
-    /** units without weight or volume : PALLET */
+    /** units without weight or volume : PALLET. */
     public static final SKU PALLET = new SKU("pallet");
 
-    /** units without weight or volume : BOX */
+    /** units without weight or volume : BOX. */
     public static final SKU BOX = new SKU("box");
 
-    /** units with volume : 20 FT CONTAINER */
+    /** units with volume : 20 FT CONTAINER. */
     public static final SKU CONTAINER20FT = new VolumeSKU("container 20ft", 33.2);
 
-    /** units with volume : 40 FT CONTAINER */
+    /** units with volume : 40 FT CONTAINER. */
     public static final SKU CONTAINER40FT = new VolumeSKU("container 40ft", 67.6);
 
-    /** units with volume : M3 or cubic meter */
+    /** units with volume : M3 or cubic meter. */
     public static final SKU M3 = new VolumeSKU("m3", 1.0);
 
-    /** units with weight : KG */
+    /** units with weight : KG. */
     public static final SKU KG = new WeightSKU("kg", 1.0);
 
-    /** the name of the unit for printing purposes */
+    /** the name of the unit for printing and identification purposes. */
     protected String name;
 
     /**
@@ -49,6 +51,7 @@ public class SKU implements Serializable
      */
     public SKU(final String name)
     {
+        Throw.whenNull(name, "name cannot be null");
         this.name = name;
     }
 

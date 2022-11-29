@@ -1,5 +1,6 @@
 package nl.tudelft.simulation.supplychain.product;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Volume;
 
 /**
@@ -26,6 +27,7 @@ public class VolumeSKU extends SKU
     public VolumeSKU(final String name, final double volumeM3)
     {
         super(name);
+        Throw.when(volumeM3 <= 0, IllegalArgumentException.class, "SKU volume cannot be <= 0");
         this.volumeM3 = volumeM3;
     }
 
@@ -36,6 +38,8 @@ public class VolumeSKU extends SKU
     public VolumeSKU(final String name, final Volume volume)
     {
         super(name);
+        Throw.whenNull(volume, "volume cannot be null");
+        Throw.when(volume.si <= 0, IllegalArgumentException.class, "SKU volume cannot be <= 0");
         this.volumeM3 = volume.si;
     }
 

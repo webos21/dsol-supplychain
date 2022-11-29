@@ -1,5 +1,6 @@
 package nl.tudelft.simulation.supplychain.product;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Mass;
 
 /**
@@ -28,6 +29,7 @@ public class WeightSKU extends SKU
     public WeightSKU(final String name, final double weightKg)
     {
         super(name);
+        Throw.when(weightKg <= 0, IllegalArgumentException.class, "SKU weight cannot be <= 0");
         this.weightKg = weightKg;
     }
 
@@ -39,6 +41,8 @@ public class WeightSKU extends SKU
     public WeightSKU(final String name, final Mass weight)
     {
         super(name);
+        Throw.whenNull(weight, "weight cannot be null");
+        Throw.when(weight.si <= 0, IllegalArgumentException.class, "SKU weight cannot be <= 0");
         this.weightKg = weight.si;
     }
 

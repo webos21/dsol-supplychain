@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.product;
 
+import java.util.Objects;
+
 import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Mass;
 
@@ -62,6 +64,31 @@ public class WeightSKU extends SKU
     public Mass getWeight()
     {
         return Mass.instantiateSI(this.weightKg);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(this.weightKg);
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("checkstyle:needbraces")
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        WeightSKU other = (WeightSKU) obj;
+        return Double.doubleToLongBits(this.weightKg) == Double.doubleToLongBits(other.weightKg);
     }
 
 }

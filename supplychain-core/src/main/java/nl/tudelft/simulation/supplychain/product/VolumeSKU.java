@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.product;
 
+import java.util.Objects;
+
 import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Volume;
 
@@ -59,6 +61,31 @@ public class VolumeSKU extends SKU
     public Volume getVolume()
     {
         return Volume.instantiateSI(this.volumeM3);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hash(this.volumeM3);
+        return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("checkstyle:needbraces")
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        VolumeSKU other = (VolumeSKU) obj;
+        return Double.doubleToLongBits(this.volumeM3) == Double.doubleToLongBits(other.volumeM3);
     }
     
 }

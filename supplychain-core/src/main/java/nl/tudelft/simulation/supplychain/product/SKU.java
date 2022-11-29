@@ -1,6 +1,7 @@
 package nl.tudelft.simulation.supplychain.product;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import org.djunits.Throw;
 
@@ -43,7 +44,7 @@ public class SKU implements Serializable
     public static final SKU KG = new WeightSKU("kg", 1.0);
 
     /** the name of the unit for printing and identification purposes. */
-    protected String name;
+    private String name;
 
     /**
      * Constructor for Unit.
@@ -55,6 +56,15 @@ public class SKU implements Serializable
         this.name = name;
     }
 
+    /**
+     * Return the name of the SKU.
+     * @return String; the name of the SKU.
+     */
+    public String getName()
+    {
+        return this.name;
+    }
+
     /** {@inheritDoc} */
     @Override
     public String toString()
@@ -62,11 +72,27 @@ public class SKU implements Serializable
         return this.name;
     }
 
-    /**
-     * @return the name.
-     */
-    public String getName()
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode()
     {
-        return this.name;
+        return Objects.hash(this.name);
     }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("checkstyle:needbraces")
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SKU other = (SKU) obj;
+        return Objects.equals(this.name, other.name);
+    }
+    
+    
 }

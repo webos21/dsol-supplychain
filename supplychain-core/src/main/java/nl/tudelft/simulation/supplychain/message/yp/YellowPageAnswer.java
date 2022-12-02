@@ -1,9 +1,10 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.yp;
 
 import java.io.Serializable;
 import java.util.List;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -16,9 +17,9 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class YellowPageAnswer extends Content
+public class YellowPageAnswer extends TradeMessage
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the suppliers of the requested product */
@@ -29,22 +30,22 @@ public class YellowPageAnswer extends Content
 
     /**
      * Constructs a new YellowPageAnswer.
-     * @param sender the sender of the yellow page answer
-     * @param receiver the receiver of the yellow page answer
-     * @param internalDemandID the internal demand that triggered the yellow page process
+     * @param sender SupplyChainActor; the sender of the yellow page answer
+     * @param receiver SupplyChainActor; the receiver of the yellow page answer
+     * @param internalDemandId the internal demand that triggered the yellow page process
      * @param suppliers the suppliers of the requested product
      * @param ypRequest the request that triggered this YP answer
      */
-    public YellowPageAnswer(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID,
+    public YellowPageAnswer(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final List<SupplyChainActor> suppliers, final YellowPageRequest ypRequest)
     {
-        super(sender, receiver, internalDemandID);
+        super(sender, receiver, internalDemandId);
         this.suppliers = suppliers;
         this.ypRequest = ypRequest;
     }
 
     /**
-     * @return Returns the suppliers.
+     * @return the suppliers.
      */
     public List<SupplyChainActor> getSuppliers()
     {
@@ -52,7 +53,7 @@ public class YellowPageAnswer extends Content
     }
 
     /**
-     * @return Returns the request for which this is the answer.
+     * @return the request for which this is the answer.
      */
     public YellowPageRequest getYellowPageRequest()
     {

@@ -1,12 +1,11 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.util.Set;
-
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.transport.TransportRequest;
 
 /**
  * The RequestForQuote is a question to provide the receiver with a certain amount of a certain product at a certain date. It
@@ -29,22 +28,24 @@ public class RequestForQuote extends TradeMessage
     /** the date when the RFQ will be cut off. */
     private final Time cutoffDate;
     
-    /** the transport options to consider for moving the productfrom ender to receiver. */
-    private final Set<TransportOption> transportOptions; 
+    /** the transport request for moving the product from sender to receiver. */
+    private final TransportRequest transportRequest; 
 
     /**
      * Create a new RFQ, based on an internal demand.
      * @param sender SupplyChainActor; the sender actor of the message content
      * @param receiver SupplyChainActor; the receving actor of the message content
      * @param internalDemand InternalDemand; internal demand that triggered the process
+     * @param transportRequest TransportRequest; the transport request for moving the product from sender to receiver
      * @param cutoffDuration after how much time will the RFQ stop collecting quotes?
      */
     public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
-            final Duration cutoffDuration)
+            final TransportRequest transportRequest, final Duration cutoffDuration)
     {
         super(TradeMessageTypes.RFQ, sender, receiver, internalDemand.getInternalDemandId());
         this.internalDemand = internalDemand;
         this.cutoffDate = sender.getSimulatorTime().plus(cutoffDuration);
+        this.transportRequest = transportRequest;
     }
 
     /** {@inheritDoc} */
@@ -79,6 +80,15 @@ public class RequestForQuote extends TradeMessage
     public Time getLatestDeliveryDate()
     {
         return this.internalDemand.getLatestDeliveryDate();
+    }
+
+    /**
+     * Return the transport request for moving the product from sender to receiver.
+     * @return TransportRequest; the transport request for moving the product from sender to receiver
+     */
+    public TransportRequest getTransportRequest()
+    {
+        return this.transportRequest;
     }
 
     /**

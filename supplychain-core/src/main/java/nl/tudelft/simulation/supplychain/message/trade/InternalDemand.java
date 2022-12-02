@@ -1,8 +1,9 @@
-package nl.tudelft.simulation.supplychain.message;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**

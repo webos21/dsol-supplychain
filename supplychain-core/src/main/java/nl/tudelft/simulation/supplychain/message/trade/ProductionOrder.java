@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -19,9 +19,9 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class ProductionOrder extends Content
+public class ProductionOrder extends TradeMessage
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the internal date the product should be ready */
@@ -39,15 +39,15 @@ public class ProductionOrder extends Content
     /**
      * The constructor for the ProductionOrder
      * @param owner the producer of the products
-     * @param internalDemandID the internal demand for this order
+     * @param internalDemandId the internal demand for this order
      * @param dateReady the internal date the product should be ready
-     * @param product the product that has to be produced
-     * @param amount the amount of products to be produced, in the product's units
+     * @param product Product; the product that has to be produced
+     * @param amount double; the amount of products to be produced, in the product's units
      */
-    public ProductionOrder(final StockKeepingActor owner, final Serializable internalDemandID, final Time dateReady,
+    public ProductionOrder(final StockKeepingActor owner, final long internalDemandId, final Time dateReady,
             final Product product, final double amount)
     {
-        super(owner, owner, internalDemandID);
+        super(owner, owner, internalDemandId);
         this.dateReady = dateReady;
         this.product = product;
         this.amount = amount;
@@ -61,7 +61,7 @@ public class ProductionOrder extends Content
     }
 
     /**
-     * @return Returns the amount.
+     * @return the amount.
      */
     public double getAmount()
     {
@@ -69,7 +69,7 @@ public class ProductionOrder extends Content
     }
 
     /**
-     * @return Returns the the internal date the product should be ready.
+     * @return the the internal date the product should be ready.
      */
     public Time getDateReady()
     {
@@ -77,7 +77,7 @@ public class ProductionOrder extends Content
     }
 
     /**
-     * @return Returns the materialCost.
+     * @return the materialCost.
      */
     public Money getMaterialCost()
     {

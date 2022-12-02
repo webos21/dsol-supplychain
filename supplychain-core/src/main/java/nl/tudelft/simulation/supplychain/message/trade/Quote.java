@@ -1,8 +1,5 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.io.Serializable;
-
-import org.djunits.unit.TimeUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
@@ -21,87 +18,59 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Quote extends Content
+public class Quote extends TradeMessage
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the RFQ id to which this quote belongs */
+    /** the RFQ to which this quote belongs. */
     private RequestForQuote requestForQuote;
 
-    /** the product about which we are talking, might be a replacement */
+    /** the product about which we are talking, might be a replacement. */
     private Product product;
 
-    /** the amount of goods promised */
+    /** the amount of goods promised, can be less than the amount asked. */
     private double amount;
 
-    /** the price asked for the amount of products (in number of units) */
+    /** the price asked for the amount of products. */
     private Money price;
 
-    /** the date on which the goods will be sent */
-    protected Time proposedShippingDate;
+    /** the date on which the goods will be sent. */
+    private Time proposedShippingDate;
 
-    /** the time on the simulator until which the quote is valid */
-    private Time validityTime = new Time(1.0E24, TimeUnit.BASE_SECOND);
-
-    /** the transport mode */
-    private TransportMode transportMode;
-
-    /** the calculated transportation time. */
-    private Duration calculatedTransportationTime;
+    /** the time on the simulator clock until which the quote is valid. */
+    private Time validityTime;
 
     /**
-     * The Constructor for a Quote. Note that the Quote contains a product and a price. This sounds superfluous, but it is not.
-     * The quote might contain a replacement product or a product in different units than the original request in the RFQ.
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemandID the internal demand that triggered the order
-     * @param requestForQuote the RFQ for which this is the quote
-     * @param product the product of the quote
-     * @param amount the amount of products
-     * @param price the quotation price
-     * @param proposedShippingDate the intended shipping date of the products
-     * @param transportMode the transport mode
+     * The Constructor for a Quote. Note that the Quote contains a product and a n amount. This sounds superfluous, but it is
+     * not. The quote might contain a replacement product or less amount than the original request in the RFQ.
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param requestForQuote RequestForQuote; the RFQ for which this is the quote
+     * @param product Product; the product of the quote
+     * @param amount double; the amount of products
+     * @param price Money; the quotation price
+     * @param proposedShippingDate Time; the intended shipping date of the products
+     * @param validityTime Time; the time on the simulator clock until which the quote is valid
+     * @param transportMode TransportMode; the transport mode proposed
      */
-    public Quote(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID,
-            final RequestForQuote requestForQuote, final Product product, final double amount, final Money price,
-            final Time proposedShippingDate, final TransportMode transportMode)
+    @SuppressWarnings("checkstyle:parameternumber")
+    public Quote(final SupplyChainActor sender, final SupplyChainActor receiver, final RequestForQuote requestForQuote,
+            final Product product, final double amount, final Money price, final Time proposedShippingDate,
+            final Time validityTime, final TransportMode transportMode)
     {
-        super(sender, receiver, internalDemandID);
+        super(TradeMessageTypes.QUOTE, sender, receiver, requestForQuote.getInternalDemandId());
         this.requestForQuote = requestForQuote;
         this.product = product;
         this.amount = amount;
         this.price = price;
         this.proposedShippingDate = proposedShippingDate;
         this.transportMode = transportMode;
-        this.calculatedTransportationTime = this.transportMode.transportTime(sender, receiver);
+        this.estimatedTransportationTime = this.transportMode.estimateTransportTime(sender, receiver);
     }
 
     /**
-     * The Constructor for a Quote with a 'timeout' for validity. Note that the Quote contains a product and a price. This
-     * sounds superfluous, but it is not. The quote might contain a replacement product or a product in different units than the
-     * original request in the RFQ.
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemandID the internal demand that triggered the order
-     * @param requestForQuote the RFQ for which this is the quote
-     * @param product the product of the quote
-     * @param amount the amount of products
-     * @param price the quotation price
-     * @param proposedShippingDate the intended shipping date of the products
-     * @param validityTime the time when the quote has limited validity
-     * @param transportMode the transport mode
-     */
-    public Quote(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID,
-            final RequestForQuote requestForQuote, final Product product, final double amount, final Money price,
-            final Time proposedShippingDate, final Time validityTime, final TransportMode transportMode)
-    {
-        this(sender, receiver, internalDemandID, requestForQuote, product, amount, price, proposedShippingDate, transportMode);
-        this.validityTime = validityTime;
-    }
-
-    /**
-     * @return Returns the price.
+     * @return the price.
      */
     public Money getPrice()
     {
@@ -109,15 +78,16 @@ public class Quote extends Content
     }
 
     /**
-     * @return Returns the product.
+     * @return the product.
      */
+    @Override
     public Product getProduct()
     {
         return this.product;
     }
 
     /**
-     * @return Returns the proposedDeliveryDate.
+     * @return the proposedDeliveryDate.
      */
     public Time getProposedDeliveryDate()
     {
@@ -127,7 +97,7 @@ public class Quote extends Content
     }
 
     /**
-     * @return Returns the requestForQuote.
+     * @return the requestForQuote.
      */
     public RequestForQuote getRequestForQuote()
     {
@@ -135,7 +105,7 @@ public class Quote extends Content
     }
 
     /**
-     * @return Returns the validityTime.
+     * @return the validityTime.
      */
     public Time getValidityTime()
     {
@@ -143,7 +113,7 @@ public class Quote extends Content
     }
 
     /**
-     * @return Returns the amount.
+     * @return the amount.
      */
     public double getAmount()
     {
@@ -151,7 +121,7 @@ public class Quote extends Content
     }
 
     /**
-     * @return Returns the calculatedTransportationTime.
+     * @return the calculatedTransportationTime.
      */
     public Duration getCalculatedTransportationTime()
     {
@@ -159,7 +129,7 @@ public class Quote extends Content
     }
 
     /**
-     * @return Returns the proposedShippingDate.
+     * @return the proposedShippingDate.
      */
     public Time getProposedShippingDate()
     {
@@ -167,7 +137,7 @@ public class Quote extends Content
     }
 
     /**
-     * @return Returns the transportMode.
+     * @return the transportMode.
      */
     public TransportMode getTransportMode()
     {

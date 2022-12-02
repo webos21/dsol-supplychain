@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -16,9 +16,9 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Shipment extends Content
+public class Shipment extends TradeMessage
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the order for which this shipment is sent */
@@ -40,18 +40,18 @@ public class Shipment extends Content
     private boolean delivered = false;
 
     /**
-     * @param sender the sender actor of the message content
-     * @param receiver the receiving actor of the message content
-     * @param internalDemandID internal demand that triggered the process
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param internalDemandId internal demand that triggered the process
      * @param order the order for which this is the shipment
-     * @param product the product type
-     * @param amount the number of product units
+     * @param product Product; the product type
+     * @param amount double; the number of product units
      * @param totalCargoValue the price of the cargo
      */
-    public Shipment(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID,
+    public Shipment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Order order, final Product product, final double amount, final Money totalCargoValue)
     {
-        super(sender, receiver, internalDemandID);
+        super(sender, receiver, internalDemandId);
         this.order = order;
         this.product = product;
         this.amount = amount;
@@ -59,7 +59,7 @@ public class Shipment extends Content
     }
 
     /**
-     * @return Returns the order.
+     * @return the order.
      */
     public Order getOrder()
     {
@@ -67,7 +67,7 @@ public class Shipment extends Content
     }
 
     /**
-     * @return Returns the delivered.
+     * @return the delivered.
      */
     public boolean isDelivered()
     {
@@ -83,7 +83,7 @@ public class Shipment extends Content
     }
 
     /**
-     * @return Returns the inTransit.
+     * @return the inTransit.
      */
     public boolean isInTransit()
     {
@@ -99,7 +99,7 @@ public class Shipment extends Content
     }
 
     /**
-     * Returns the amount.
+     * Return the amount.
      * @return double
      */
     public double getAmount()
@@ -115,7 +115,7 @@ public class Shipment extends Content
     }
 
     /**
-     * Returns the price per unit.
+     * Return the price per unit.
      * @return double
      */
     public Money getTotalCargoValue()

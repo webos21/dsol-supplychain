@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -19,9 +19,9 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class OrderStandAlone extends Order
+public class OrderStandalone extends Order
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the product we want */
@@ -35,18 +35,18 @@ public class OrderStandAlone extends Order
 
     /**
      * The constructor for the OrderStandAlone
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemandID the internal demand that triggered the order
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param internalDemandId the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
-     * @param product the ordered product
-     * @param amount the amount ordered
-     * @param price the price to pay
+     * @param product Product; the ordered product
+     * @param amount double; the amount ordered
+     * @param price Money; the price to pay
      */
-    public OrderStandAlone(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID,
+    public OrderStandalone(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Time deliveryDate, final Product product, final double amount, final Money price)
     {
-        super(sender, receiver, internalDemandID, deliveryDate);
+        super(sender, receiver, internalDemandId, deliveryDate);
         this.product = product;
         this.amount = amount;
         this.price = price;

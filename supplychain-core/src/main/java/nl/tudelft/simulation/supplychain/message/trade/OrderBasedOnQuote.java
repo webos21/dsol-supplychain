@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  */
 public class OrderBasedOnQuote extends Order
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the Quote the order is based on */
@@ -28,16 +28,16 @@ public class OrderBasedOnQuote extends Order
 
     /**
      * The constructor for the OrderBasedOnQuote
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemandID the internal demand that triggered the order
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param internalDemandId the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      * @param quote the quote on which the order is based
      */
     public OrderBasedOnQuote(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final Serializable internalDemandID, final Time deliveryDate, final Quote quote)
+            final long internalDemandId, final Time deliveryDate, final Quote quote)
     {
-        super(sender, receiver, internalDemandID, deliveryDate);
+        super(sender, receiver, internalDemandId, deliveryDate);
         this.quote = quote;
     }
 
@@ -63,7 +63,7 @@ public class OrderBasedOnQuote extends Order
     }
 
     /**
-     * @return Returns the quote.
+     * @return the quote.
      */
     public Quote getQuote()
     {

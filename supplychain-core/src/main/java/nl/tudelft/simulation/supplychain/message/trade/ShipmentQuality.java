@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -16,22 +16,22 @@ import nl.tudelft.simulation.supplychain.product.Product;
  */
 public class ShipmentQuality extends Shipment
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /**
-     * @param sender the sender actor of the message content
-     * @param receiver the receiving actor of the message content
-     * @param internalDemandID internal demand that triggered the process
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param internalDemandId internal demand that triggered the process
      * @param order the order for which this is the shipment
-     * @param product the product type
-     * @param amount the number of product units
+     * @param product Product; the product type
+     * @param amount double; the number of product units
      * @param totalCargoValue the price of the cargo
      */
-    public ShipmentQuality(SupplyChainActor sender, SupplyChainActor receiver, Serializable internalDemandID, Order order,
+    public ShipmentQuality(SupplyChainActor sender, SupplyChainActor receiver, long internalDemandId, Order order,
             Product product, double amount, Money totalCargoValue)
     {
-        super(sender, receiver, internalDemandID, order, product, amount, totalCargoValue);
+        super(sender, receiver, internalDemandId, order, product, amount, totalCargoValue);
     }
 
 }

@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Order extends Content
+public abstract class Order extends TradeMessage
 {
     /** */
     private static final long serialVersionUID = 1L;
@@ -29,15 +29,15 @@ public abstract class Order extends Content
 
     /**
      * Constructor for an order. This abstract constructor has to be called by every extending class.
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemandID the internal demand that triggered the order
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param internalDemandId the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      */
-    public Order(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID,
+    public Order(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Time deliveryDate)
     {
-        super(sender, receiver, internalDemandID);
+        super(sender, receiver, internalDemandId);
         this.deliveryDate = deliveryDate;
     }
 
@@ -46,17 +46,17 @@ public abstract class Order extends Content
     public abstract Product getProduct();
 
     /**
-     * @return Returns the amount.
+     * @return the amount.
      */
     public abstract double getAmount();
 
     /**
-     * @return Returns the price.
+     * @return the price.
      */
     public abstract Money getPrice();
 
     /**
-     * @return Returns the proposedDeliveryDate.
+     * @return the proposedDeliveryDate.
      */
     public Time getDeliveryDate()
     {

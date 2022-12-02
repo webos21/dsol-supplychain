@@ -1,4 +1,6 @@
-package nl.tudelft.simulation.supplychain.message;
+package nl.tudelft.simulation.supplychain.message.trade;
+
+import java.util.Set;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
@@ -26,6 +28,9 @@ public class RequestForQuote extends TradeMessage
 
     /** the date when the RFQ will be cut off. */
     private final Time cutoffDate;
+    
+    /** the transport options to consider for moving the productfrom ender to receiver. */
+    private final Set<TransportOption> transportOptions; 
 
     /**
      * Create a new RFQ, based on an internal demand.

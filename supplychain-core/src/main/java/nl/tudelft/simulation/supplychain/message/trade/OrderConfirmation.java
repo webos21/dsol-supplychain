@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -18,9 +18,9 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class OrderConfirmation extends Content
+public class OrderConfirmation extends TradeMessage
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** Confirmation status order confirmed */
@@ -39,16 +39,16 @@ public class OrderConfirmation extends Content
     private int status;
 
     /**
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemandID the internal demand that triggered the order
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param internalDemandId the internal demand that triggered the order
      * @param order the order for which this is the confirmation
      * @param status the confirmation status (accepted, not accepted)
      */
     public OrderConfirmation(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final Serializable internalDemandID, final Order order, final int status)
+            final long internalDemandId, final Order order, final int status)
     {
-        super(sender, receiver, internalDemandID);
+        super(sender, receiver, internalDemandId);
         this.order = order;
         this.status = status;
     }
@@ -64,7 +64,7 @@ public class OrderConfirmation extends Content
 
     /**
      * Method isAccepted.
-     * @return Returns whether the order has been accepted or not.
+     * @return whether the order has been accepted or not.
      */
     public boolean isAccepted()
     {
@@ -72,7 +72,7 @@ public class OrderConfirmation extends Content
     }
 
     /**
-     * @return Returns the status.
+     * @return the status.
      */
     public int getStatus()
     {
@@ -80,7 +80,7 @@ public class OrderConfirmation extends Content
     }
 
     /**
-     * @return Returns the status string.
+     * @return the status string.
      */
     public String getStatusString()
     {

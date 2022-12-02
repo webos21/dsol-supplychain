@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -15,9 +15,9 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Payment extends Content
+public class Payment extends TradeMessage
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the bill to which this payment belongs */
@@ -28,22 +28,22 @@ public class Payment extends Content
 
     /**
      * Constructs a new Payment.
-     * @param sender the sender actor of the message content
-     * @param receiver the receving actor of the message content
-     * @param internalDemandID the internal demand that triggered the supply chain
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param internalDemandId the internal demand that triggered the supply chain
      * @param bill the bill for which this is the payment
      * @param payment the payment
      */
-    public Payment(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID,
+    public Payment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Bill bill, final Money payment)
     {
-        super(sender, receiver, internalDemandID);
+        super(sender, receiver, internalDemandId);
         this.bill = bill;
         this.payment = payment;
     }
 
     /**
-     * Returns the payment.
+     * Return the payment.
      * @return double returns the amount reflecting the payment
      */
     public Money getPayment()
@@ -52,7 +52,7 @@ public class Payment extends Content
     }
 
     /**
-     * Returns the bill.
+     * Return the bill.
      * @return Serializable returns the id of the bill this payment belongs to
      */
     public Bill getBill()

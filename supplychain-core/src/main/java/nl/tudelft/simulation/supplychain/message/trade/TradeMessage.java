@@ -1,6 +1,8 @@
-package nl.tudelft.simulation.supplychain.message;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**

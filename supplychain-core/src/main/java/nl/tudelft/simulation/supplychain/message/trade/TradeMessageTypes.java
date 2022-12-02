@@ -1,6 +1,7 @@
-package nl.tudelft.simulation.supplychain.message;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
+import nl.tudelft.simulation.supplychain.message.MessageType;
 
 /**
  * TradeMessageTypes contains the types of trade messages, and a method to register them in the model.

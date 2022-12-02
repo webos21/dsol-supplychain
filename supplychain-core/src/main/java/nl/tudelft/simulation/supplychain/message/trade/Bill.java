@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.content;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -18,9 +18,9 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Bill extends Content
+public class Bill extends TradeMessage
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the simulation time for final payment */
@@ -42,18 +42,18 @@ public class Bill extends Content
 
     /**
      * Constructs a new Bill.
-     * @param sender the sender
-     * @param receiver the receiver
-     * @param internalDemandID the unique internal demand id of this bill
+     * @param sender SupplyChainActor; the sender
+     * @param receiver SupplyChainActor; the receiver
+     * @param internalDemandId the unique internal demand id of this bill
      * @param order the order the bill is sent for
      * @param finalPaymentDate the final payment date of the bill
-     * @param price the amount to be paid
+     * @param price Money; the amount to be paid
      * @param description the description
      */
-    public Bill(final SupplyChainActor sender, final SupplyChainActor receiver, final Serializable internalDemandID,
+    public Bill(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Order order, final Time finalPaymentDate, final Money price, final String description)
     {
-        super(sender, receiver, internalDemandID);
+        super(sender, receiver, internalDemandId);
         this.finalPaymentDate = finalPaymentDate;
         this.order = order;
         this.price = price;
@@ -61,7 +61,7 @@ public class Bill extends Content
     }
 
     /**
-     * Returns the finalPaymentDate.
+     * Return the finalPaymentDate.
      * @return double the final payment date of the bill
      */
     public Time getFinalPaymentDate()
@@ -70,7 +70,7 @@ public class Bill extends Content
     }
 
     /**
-     * Returns the order.
+     * Return the order.
      * @return Order the order to which this bill belongs
      */
     public Order getOrder()
@@ -79,7 +79,7 @@ public class Bill extends Content
     }
 
     /**
-     * Returns the price.
+     * Return the price.
      * @return double the amount of money to pay
      */
     public Money getPrice()
@@ -103,7 +103,7 @@ public class Bill extends Content
     }
 
     /**
-     * @return Returns the description.
+     * @return the description.
      */
     public String getDescription()
     {
@@ -111,7 +111,7 @@ public class Bill extends Content
     }
 
     /**
-     * @return Returns false if the bill has not been paid yet
+     * @return false if the bill has not been paid yet
      */
     public boolean isPaid()
     {

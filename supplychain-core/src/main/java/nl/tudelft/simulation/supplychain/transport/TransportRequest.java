@@ -11,10 +11,10 @@ import org.djutils.immutablecollections.ImmutableArrayList;
 import org.djutils.immutablecollections.ImmutableList;
 
 /**
- * TransportRequest describes a way to get goods from A to B. The class can incicate a singular transport mode that transports
- * the goods from A to B, e.g., trucking, or a multimodal request that involves, e.g., a truck to the Port, a containrship to
- * another port, and trucking to the final destination. Each of the modes has a different speed, and each of the transfers will
- * take time (and possibly cost money),
+ * TransportRequest describes a request to get goods from A to B. The class can incicate a singular transport mode that
+ * transports the goods from A to B, e.g., trucking, or a multimodal request that involves, e.g., a truck to the Port, a
+ * containrship to another port, and trucking to the final destination. Each of the modes has a different speed, and each of the
+ * transfers will take time (and possibly cost money),
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.

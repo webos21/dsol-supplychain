@@ -17,40 +17,40 @@ import org.djunits.Throw;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SKU implements Serializable
+public class Sku implements Serializable
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221129L;
 
     /** units without weight or volume : PIECE. */
-    public static final SKU PIECE = new SKU("piece");
+    public static final Sku PIECE = new Sku("piece");
 
     /** units without weight or volume : PALLET. */
-    public static final SKU PALLET = new SKU("pallet");
+    public static final Sku PALLET = new Sku("pallet");
 
     /** units without weight or volume : BOX. */
-    public static final SKU BOX = new SKU("box");
+    public static final Sku BOX = new Sku("box");
 
     /** units with volume : 20 FT CONTAINER. */
-    public static final SKU CONTAINER20FT = new VolumeSKU("20ft container", 33.2);
+    public static final Sku CONTAINER20FT = new VolumeSku("20ft container", 33.2);
 
     /** units with volume : 40 FT CONTAINER. */
-    public static final SKU CONTAINER40FT = new VolumeSKU("40ft container", 67.6);
+    public static final Sku CONTAINER40FT = new VolumeSku("40ft container", 67.6);
 
     /** units with volume : 45 FT (high-cube) CONTAINER. */
-    public static final SKU CONTAINER45FT = new VolumeSKU("45ft container", 86.06);
+    public static final Sku CONTAINER45FT = new VolumeSku("45ft container", 86.06);
 
     /** units with volume : 53 FT CONTAINER. */
-    public static final SKU CONTAINER53FT = new VolumeSKU("53ft container", 108.5);
+    public static final Sku CONTAINER53FT = new VolumeSku("53ft container", 108.5);
 
     /** units with volume : M3 or cubic meter. */
-    public static final SKU M3 = new VolumeSKU("m3", 1.0);
+    public static final Sku M3 = new VolumeSku("m3", 1.0);
 
     /** units with weight : KG. */
-    public static final SKU KG = new WeightSKU("kg", 1.0);
+    public static final Sku KG = new WeightSku("kg", 1.0);
 
     /** units with weight : (metric) TON. */
-    public static final SKU TON = new WeightSKU("ton", 1000.0);
+    public static final Sku TON = new WeightSku("ton", 1000.0);
 
     /** the name of the unit for printing and identification purposes. */
     private String name;
@@ -59,7 +59,7 @@ public class SKU implements Serializable
      * Constructor for Unit.
      * @param name the name of the unit for printing purposes.
      */
-    public SKU(final String name)
+    public Sku(final String name)
     {
         Throw.whenNull(name, "name cannot be null");
         this.name = name;
@@ -99,7 +99,7 @@ public class SKU implements Serializable
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SKU other = (SKU) obj;
+        Sku other = (Sku) obj;
         return Objects.equals(this.name, other.name);
     }
     

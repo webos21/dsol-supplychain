@@ -31,7 +31,7 @@ public class Product implements Serializable
     private BillOfMaterials billOfMaterials;
 
     /** the unit in which this product is produced, shipped (boxes, pallets, etc.). */
-    private final SKU sku;
+    private final Sku sku;
 
     /** the descriptive name of the product. */
     private final String name;
@@ -57,7 +57,7 @@ public class Product implements Serializable
      * @param averageSKUVolume Volume; the average volume per SKU
      * @param depreciation double; the depreciation as a factor per day for the product
      */
-    public Product(final String name, final SKU sku, final Money initialUnitMarketPrice, final Mass averageSKUWeight,
+    public Product(final String name, final Sku sku, final Money initialUnitMarketPrice, final Mass averageSKUWeight,
             final Volume averageSKUVolume, final double depreciation)
     {
         Throw.whenNull(name, "name cannot be null");
@@ -99,7 +99,7 @@ public class Product implements Serializable
      * Return the stock keeping unit of this product.
      * @return SKU; the stock keeping unit of this product
      */
-    public SKU getSKU()
+    public Sku getSKU()
     {
         return this.sku;
     }

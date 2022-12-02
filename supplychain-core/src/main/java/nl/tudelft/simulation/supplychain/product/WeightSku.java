@@ -15,7 +15,7 @@ import org.djunits.value.vdouble.scalar.Mass;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class WeightSKU extends SKU
+public class WeightSku extends Sku
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221129L;
@@ -28,7 +28,7 @@ public class WeightSKU extends SKU
      * @param name String; the name of the unit
      * @param weightKg double; the weight of the unit in kg
      */
-    public WeightSKU(final String name, final double weightKg)
+    public WeightSku(final String name, final double weightKg)
     {
         super(name);
         Throw.when(weightKg <= 0, IllegalArgumentException.class, "SKU weight cannot be <= 0");
@@ -40,7 +40,7 @@ public class WeightSKU extends SKU
      * @param name String; the name of the unit
      * @param weight Mass; the weight of the unit
      */
-    public WeightSKU(final String name, final Mass weight)
+    public WeightSku(final String name, final Mass weight)
     {
         super(name);
         Throw.whenNull(weight, "weight cannot be null");
@@ -87,7 +87,7 @@ public class WeightSKU extends SKU
             return false;
         if (getClass() != obj.getClass())
             return false;
-        WeightSKU other = (WeightSKU) obj;
+        WeightSku other = (WeightSku) obj;
         return Double.doubleToLongBits(this.weightKg) == Double.doubleToLongBits(other.weightKg);
     }
 

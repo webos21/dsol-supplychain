@@ -14,7 +14,7 @@ import org.djunits.value.vdouble.scalar.Volume;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class VolumeSKU extends SKU
+public class VolumeSku extends Sku
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221129L;
@@ -26,7 +26,7 @@ public class VolumeSKU extends SKU
      * @param name String; the name of the unit
      * @param volumeM3 double; determining volume of the unit, in m3
      */
-    public VolumeSKU(final String name, final double volumeM3)
+    public VolumeSku(final String name, final double volumeM3)
     {
         super(name);
         Throw.when(volumeM3 <= 0, IllegalArgumentException.class, "SKU volume cannot be <= 0");
@@ -37,7 +37,7 @@ public class VolumeSKU extends SKU
      * @param name String; the name of the unit
      * @param volume Volume; determining volume of the unit
      */
-    public VolumeSKU(final String name, final Volume volume)
+    public VolumeSku(final String name, final Volume volume)
     {
         super(name);
         Throw.whenNull(volume, "volume cannot be null");
@@ -84,7 +84,7 @@ public class VolumeSKU extends SKU
             return false;
         if (getClass() != obj.getClass())
             return false;
-        VolumeSKU other = (VolumeSKU) obj;
+        VolumeSku other = (VolumeSku) obj;
         return Double.doubleToLongBits(this.volumeM3) == Double.doubleToLongBits(other.volumeM3);
     }
     

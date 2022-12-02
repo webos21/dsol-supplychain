@@ -1,5 +1,6 @@
 package nl.tudelft.simulation.supplychain.transport;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,8 +23,11 @@ import nl.tudelft.simulation.supplychain.product.Sku;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class TransportStep implements Identifiable
+public class TransportStep implements Identifiable, Serializable
 {
+    /** */
+    private static final long serialVersionUID = 20221202L;
+
     /** the identifier for this TransportStep. */
     private final String id;
 

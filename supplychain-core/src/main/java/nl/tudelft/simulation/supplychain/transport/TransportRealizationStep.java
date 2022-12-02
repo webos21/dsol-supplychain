@@ -12,8 +12,8 @@ import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Sku;
 
 /**
- * TransportStep models one step of a TransportOption. It describes the origin Node and destination Node (as an Actor -- any
- * location where trandsfer takes place, such as a port or terminal, is seen as an actor in the logistics network), estimated
+ * TransportRealizationStep models one step of a TransportRealization. It describes the origin Node and destination Node (as an
+ * Actor -- any location where trandsfer takes place, such as a port or terminal, is seen as an actor in the logistics network),
  * loading time at the origin Node and unloading time at the destination Node, the mode of transport between origin and
  * destination, and the costs associated with loading, unloading (including storage costs), and transport.
  * <p>
@@ -58,6 +58,7 @@ public class TransportRealizationStep implements Identifiable, Serializable
     private final Money transportCostPerKm;
 
     /**
+     * Create a TransportRealizationStep, fixing SKU, durations and costs for one step in a trip.
      * @param id String; the identifier for this TransportStep
      * @param origin Actor; the actor at the origin (company, port, terminal)
      * @param destination Actor; the actor at the destination (company, port, terminal)

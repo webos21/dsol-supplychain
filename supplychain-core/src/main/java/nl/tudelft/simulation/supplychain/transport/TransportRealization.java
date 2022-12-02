@@ -33,7 +33,7 @@ public class TransportRealization implements Identifiable, Serializable
     private ImmutableList<TransportRealizationStep> transportSteps = new ImmutableArrayList<>(new ArrayList<>());
 
     /**
-     * Make a new TransportRealization.
+     * Create a TransportRealization, fixing SKU, durations and costs for an entire trip.
      * @param id String; the id of the TransportRealization
      */
     public TransportRealization(final String id)

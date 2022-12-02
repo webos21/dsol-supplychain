@@ -51,7 +51,7 @@ public class Product implements Serializable
     /**
      * Construct a new product with an empty Bill of Materials.
      * @param name String; the descriptive name of the product.
-     * @param sku SKU; the stock keeping unit in which this product is shipped (boxes, pallets, kilograms, m3, containers)
+     * @param sku Sku; the stock keeping unit in which this product is shipped (boxes, pallets, kilograms, m3, containers)
      * @param initialUnitMarketPrice Money; the initial world market price of the product per SKU
      * @param averageSKUWeight Mass; the average weight per SKU
      * @param averageSKUVolume Volume; the average volume per SKU

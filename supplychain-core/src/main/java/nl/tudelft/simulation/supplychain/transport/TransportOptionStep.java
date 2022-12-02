@@ -3,6 +3,7 @@ package nl.tudelft.simulation.supplychain.transport;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
@@ -222,6 +223,37 @@ public class TransportOptionStep implements Identifiable, Serializable
         Throw.whenNull(sku, "sku cannot be null");
         Throw.whenNull(estimatedTransportCostPerKm, "estimatedTransportCostPerKm cannot be null");
         this.estimatedTransportCostsPerKm.put(sku, estimatedTransportCostPerKm);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(this.destination, this.id, this.origin, this.transportMode);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @SuppressWarnings("checkstyle:needbraces")
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        TransportOptionStep other = (TransportOptionStep) obj;
+        return Objects.equals(this.destination, other.destination) && Objects.equals(this.id, other.id)
+                && Objects.equals(this.origin, other.origin) && Objects.equals(this.transportMode, other.transportMode);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString()
+    {
+        return "TransportOptionStep [id=" + this.id + ", origin=" + this.origin + ", destination=" + this.destination
+                + ", transportMode=" + this.transportMode + "]";
     }
 
 }

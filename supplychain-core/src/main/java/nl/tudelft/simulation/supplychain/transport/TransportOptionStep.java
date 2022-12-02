@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.product.Sku;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class TransportStep implements Identifiable, Serializable
+public class TransportOptionStep implements Identifiable, Serializable
 {
     /** */
     private static final long serialVersionUID = 20221202L;
@@ -52,13 +52,16 @@ public class TransportStep implements Identifiable, Serializable
     /** the estimated costs for unloading and storing SKUs at the destination location. */
     private Map<Sku, Money> estimatedUnloadingCosts = new LinkedHashMap<>();
 
+    /** the estimated costs to transport an SKU per km. */
+    private Map<Sku, Money> estimatedTransportCostsPerKm = new LinkedHashMap<>();
+
     /**
      * @param id String; the identifier for this TransportStep
      * @param origin Actor; the actor at the origin (company, port, terminal)
      * @param destination Actor; the actor at the destination (company, port, terminal)
      * @param transportMode TransportMode; the transport mode between origin and destination
      */
-    public TransportStep(final String id, final Actor origin, final Actor destination, final TransportMode transportMode)
+    public TransportOptionStep(final String id, final Actor origin, final Actor destination, final TransportMode transportMode)
     {
         Throw.whenNull(id, "id cannot be null");
         Throw.whenNull(origin, "origin cannot be null");
@@ -97,7 +100,7 @@ public class TransportStep implements Identifiable, Serializable
 
     /**
      * Return the transport mode between origin and destination.
-     * @return transportMode TransportMode; the transport mode between origin and destination
+     * @return TransportMode; the transport mode between origin and destination
      */
     public TransportMode getTransportMode()
     {
@@ -107,8 +110,8 @@ public class TransportStep implements Identifiable, Serializable
     /**
      * Return the estimated time to load goods at the origin (including typical waiting times) for a given SKU.
      * @param sku Sku; the SKU to find the loading time for
-     * @return estimatedLoadingTime Duration; the estimated time to load goods at the origin (including typical waiting times),
-     *         or null when there is no stored loading time for the provided SKU
+     * @return Duration; the estimated time to load goods at the origin (including typical waiting times), or null when there is
+     *         no stored loading time for the provided SKU
      */
     public Duration getEstimatedLoadingTime(final Sku sku)
     {
@@ -118,8 +121,8 @@ public class TransportStep implements Identifiable, Serializable
     /**
      * Return the estimated time to unload goods at the destination (including typical waiting times) for a given SKU.
      * @param sku Sku; the SKU to find the unloading time for
-     * @return estimatedUnoadingTime Duration; the estimated time to unload goods at the destination (including typical waiting
-     *         times), or null when there is no stored unloading time for the provided SKU
+     * @return Duration; the estimated time to unload goods at the destination (including typical waiting times), or null when
+     *         there is no stored unloading time for the provided SKU
      */
     public Duration getEstimatedUnloadingTime(final Sku sku)
     {
@@ -129,8 +132,8 @@ public class TransportStep implements Identifiable, Serializable
     /**
      * Return the estimated costs for loading and storing the goods at the origin location for a given SKU.
      * @param sku Sku; the SKU to find the loading cost for
-     * @return estimatedLoadingCost Money; the estimated costs for loading and storing the goods at the origin location, or null
-     *         when there is no stored loading cost for the provided SKU
+     * @return Money; the estimated costs for loading and storing the goods at the origin location, or null when there is no
+     *         stored loading cost for the provided SKU
      */
     public Money getEstimatedLoadingCost(final Sku sku)
     {
@@ -140,12 +143,23 @@ public class TransportStep implements Identifiable, Serializable
     /**
      * Return the estimated costs for loading and storing the goods at the destination location for a given SKU.
      * @param sku Sku; the SKU to find the unloading cost for
-     * @return estimatedUnloadingCost Money; the estimated costs for unloading and storing the goods at the destination
-     *         location, or null when there is no stored unloading cost for the provided SKU
+     * @return Money; the estimated costs for unloading and storing the goods at the destination location, or null when there is
+     *         no stored unloading cost for the provided SKU
      */
     public Money getEstimatedUnloadingCost(final Sku sku)
     {
         return this.estimatedUnloadingCosts.get(sku);
+    }
+
+    /**
+     * Return the estimated transport cost for the SKU per km, for the TransportStep's transport mode.
+     * @param sku Sku; the SKU to find the transport cost for
+     * @return Money; the estimated estimated transport cost for the SKU per km, for the TransportStep's transport mode, or null
+     *         when there is no stored cost for the provided SKU
+     */
+    public Money getEstimatedTransportCostPerKm(final Sku sku)
+    {
+        return this.estimatedTransportCostsPerKm.get(sku);
     }
 
     /**
@@ -195,6 +209,19 @@ public class TransportStep implements Identifiable, Serializable
         Throw.whenNull(sku, "sku cannot be null");
         Throw.whenNull(estimatedUnloadingCost, "estimatedUnloadingCost cannot be null");
         this.estimatedUnloadingCosts.put(sku, estimatedUnloadingCost);
+    }
+
+    /**
+     * Set a new estimated transport cost for the SKU per km, for the TransportStep's transport mode.
+     * @param sku Sku; the SKU to find the transport cost for
+     * @param estimatedTransportCostPerKm Money; the estimated estimated transport cost for the SKU per km, for the
+     *            TransportStep's transport mode
+     */
+    public void setEstimatedTransportCostPerKm(final Sku sku, final Money estimatedTransportCostPerKm)
+    {
+        Throw.whenNull(sku, "sku cannot be null");
+        Throw.whenNull(estimatedTransportCostPerKm, "estimatedTransportCostPerKm cannot be null");
+        this.estimatedTransportCostsPerKm.put(sku, estimatedTransportCostPerKm);
     }
 
 }

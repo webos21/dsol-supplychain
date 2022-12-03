@@ -55,7 +55,7 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy
     @Override
     public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(message))
+        if (!isValidMessage(message))
         {
             return false;
         }

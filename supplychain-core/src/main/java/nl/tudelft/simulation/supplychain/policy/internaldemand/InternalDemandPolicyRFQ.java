@@ -83,7 +83,7 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
     @Override
     public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(message))
+        if (!isValidMessage(message))
         {
             Logger.warn("handleContent",
                     "InternalDemand " + message.toString() + " for actor " + getOwner() + " not considered valid.");

@@ -1,21 +1,20 @@
 package nl.tudelft.simulation.supplychain.policy.payment;
 
-import java.io.Serializable;
-
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.banking.BankAccount;
-import nl.tudelft.simulation.supplychain.content.Payment;
+import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.Payment;
 
 /**
  * A payment handler where a check is performed whether the payment was paid on time. If not, a fine is imposed.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -23,20 +22,20 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
  */
 public class PaymentPolicyFine extends PaymentPolicy
 {
-    /** true for debug */
+    /** true for debug. */
     private static final boolean DEBUG = false;
 
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 11L;
 
-    /** the margin for the fine */
+    /** the margin for the fine. */
     private double fineMarginPerDay = 0.0;
 
-    /** the fixed fine */
+    /** the fixed fine. */
     private Money fixedFinePerDay = new Money(0.0, MoneyUnit.USD);
 
     /**
-     * constructs a new PaymentFineHandler
+     * constructs a new PaymentFineHandler.
      * @param owner the owner
      * @param bankAccount the bank account
      * @param fineMarginPerDay the fine margin per day
@@ -52,13 +51,13 @@ public class PaymentPolicyFine extends PaymentPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
         try
         {
-            if (super.handleContent(content))
+            if (super.handleMessage(message))
             {
-                Payment payment = (Payment) content;
+                Payment payment = (Payment) message;
                 Time time = payment.getSender().getSimulatorTime();
                 if (time.gt(payment.getBill().getFinalPaymentDate()))
                 {
@@ -70,8 +69,8 @@ public class PaymentPolicyFine extends PaymentPolicy
                       // send the bill for the fine
                       Bill bill = new Bill(getOwner(), payment.getSender(), payment.getInternalDemandID(), payment.getBill()
                           .getOrder(), getOwner().getSimulatorTime().plus(new Duration(14.0, DurationUnit.DAY), fine, "FINE");
-                      getOwner().sendContent(payment, Duration.ZERO);
-                      getOwner().sendContent(bill, Duration.ZERO);
+                      getOwner().sendMessage(payment, Duration.ZERO);
+                      getOwner().sendMessage(bill, Duration.ZERO);
                      */
                     // do a forced payment
                     payment.getSender().getBankAccount().withdrawFromBalance(fine);

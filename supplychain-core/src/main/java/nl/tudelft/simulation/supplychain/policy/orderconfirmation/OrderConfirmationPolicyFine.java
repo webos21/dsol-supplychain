@@ -6,24 +6,25 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.OrderConfirmation;
-import nl.tudelft.simulation.supplychain.content.Shipment;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 
 /**
  * An OrderConfirmationFineHandler checks whether a promised delivery is on time or even delivered at all. If too late, a fine
  * will be imposed.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 11L;
 
     /** the maximum time out for a shipment */
@@ -53,11 +54,11 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (super.handleContent(content))
+        if (super.handleMessage(message))
         {
-            OrderConfirmation orderConfirmation = (OrderConfirmation) content;
+            OrderConfirmation orderConfirmation = (OrderConfirmation) message;
             if (orderConfirmation.isAccepted())
             {
                 try
@@ -83,7 +84,8 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
      */
     protected void checkShipment(final OrderConfirmation orderConfirmation)
     {
-        if (getOwner().getContentStore().getContentList(orderConfirmation.getInternalDemandID(), Shipment.class).isEmpty())
+        if (getOwner().getMessageStore().getMessageList(orderConfirmation.getInternalDemandId(), TradeMessageTypes.SHIPMENT)
+                .isEmpty())
         {
 
             // there is still an order, but no shipment... we fine!
@@ -96,7 +98,7 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
             Bill bill = new Bill(getOwner(), orderConfirmation.getSender(), orderConfirmation.getInternalDemandID(),
                     orderConfirmation.getOrder(), getOwner().getSimulatorTime().plus(new Duration(14.0, DurationUnit.DAY)),
                     fine, "FINE - LATE PAYMENT");
-            getOwner().sendContent(bill, Duration.ZERO);
+            getOwner().sendMessage(bill, Duration.ZERO);
             */
 
             orderConfirmation.getSender().getBankAccount().withdrawFromBalance(fine);

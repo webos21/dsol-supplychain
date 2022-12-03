@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.policy.shipment;
 /**
  * ShipmentPaymentSequence.java.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -11,12 +11,12 @@ package nl.tudelft.simulation.supplychain.policy.shipment;
  */
 public enum ShipmentPaymentSequenceEnum
 {
-    /** Mode of operation for an shipping and paying: paying at delivery */
+    /** Mode of operation for an shipping and paying: paying at delivery. */
     SHIPMENT_WITH_PAYMENT,
 
-    /** Mode of operation for an shipping and paying: paying before delivery */
+    /** Mode of operation for an shipping and paying: paying before delivery. */
     SHIPMENT_AFTER_PAYMENT,
 
-    /** Mode of operation for an shipping and paying: paying after delivery */
+    /** Mode of operation for an shipping and paying: paying after delivery. */
     SHIPMENT_BEFORE_PAYMENT;
 }

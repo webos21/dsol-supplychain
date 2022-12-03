@@ -1,41 +1,39 @@
 package nl.tudelft.simulation.supplychain.policy.productionorder;
 
-import java.io.Serializable;
-
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.ProductionOrder;
-import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
+import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.production.Production;
 
 /**
  * Handles ProductionOrders.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class ProductionOrderPolicy extends SupplyChainHandler
+public class ProductionOrderPolicy extends SupplyChainPolicy
 {
-    /** Serial version ID */
+    /** Serial version ID. */
     private static final long serialVersionUID = 1L;
 
-    /** for debugging */
+    /** for debugging. */
     private static final boolean DEBUG = false;
 
-    /** the production facility of this handler */
+    /** the production facility of this handler. */
     private Production production = null;
 
     /**
-     * constructs a new ProductionOrderHandler
+     * constructs a new ProductionOrderHandler.
      * @param owner the owner of the production order handler
      * @param production the production facility
      */
     public ProductionOrderPolicy(final SupplyChainActor owner, final Production production)
     {
-        super(owner);
+        super("ProductionOrderPolicy", owner, TradeMessageTypes.PRODUCTION_ORDER);
         this.production = production;
         if (ProductionOrderPolicy.DEBUG)
         {
@@ -45,25 +43,18 @@ public class ProductionOrderPolicy extends SupplyChainHandler
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        return this.production.acceptProductionOrder((ProductionOrder) content);
+        return this.production.acceptProductionOrder((ProductionOrder) message);
     }
 
     /**
-     * Method getProduction
+     * Method getProduction.
      * @return returns the production
      */
     public Production getProduction()
     {
         return this.production;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Class<? extends Content> getContentClass()
-    {
-        return ProductionOrder.class;
     }
 
 }

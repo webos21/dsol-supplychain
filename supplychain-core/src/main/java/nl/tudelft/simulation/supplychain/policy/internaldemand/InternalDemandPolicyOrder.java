@@ -1,43 +1,40 @@
 package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
-import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.supplychain.content.InternalDemand;
-import nl.tudelft.simulation.supplychain.content.Order;
-import nl.tudelft.simulation.supplychain.content.OrderStandAlone;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
+import nl.tudelft.simulation.supplychain.message.trade.Order;
+import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
- * The InternalDemandHandlerOrder is a simple implementation of the business logic to handle a request for new products through
+ * The InternalDemandPolicyOrder is a simple implementation of the business logic to handle a request for new products through
  * direct ordering at a known supplier. When receiving the internal demand, it just creates an Order based on a table that maps
  * Products onto Actors, and sends it after a given time delay.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class InternalDemandPolicyOrder extends InternalDemandPolicy
+public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** a table to map the products onto a unique supplier */
+    /** a table to map the products onto a unique supplier. */
     private Map<Product, SupplierRecord> suppliers = new LinkedHashMap<Product, SupplierRecord>();
 
     /**
-     * Constructs a new InternalDemandHandlerOrder
+     * Constructs a new InternalDemandPolicyOrder.
      * @param owner the owner of the internal demand
      * @param handlingTime the handling time distribution
      * @param stock the stock for being able to change the ordered amount
@@ -45,22 +42,11 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
     public InternalDemandPolicyOrder(final SupplyChainActor owner, final DistContinuousDuration handlingTime,
             final StockInterface stock)
     {
-        super(owner, handlingTime, stock);
+        super("InternalDemandPolicyOrder", owner, handlingTime, stock);
     }
 
     /**
-     * Constructs a new InternalDemandHandlerOrder
-     * @param owner the owner of the internal demand
-     * @param handlingTime the constant handling time
-     * @param stock the stock for being able to change the ordered amount
-     */
-    public InternalDemandPolicyOrder(final SupplyChainActor owner, final Duration handlingTime, final StockInterface stock)
-    {
-        this(owner, new DistConstantDuration(handlingTime), stock);
-    }
-
-    /**
-     * @param product the product that has a fixed supplier.
+     * @param product Product; the product that has a fixed supplier.
      * @param supplier the supplier for that product.
      * @param unitPrice the price per unit to ask for.
      */
@@ -71,13 +57,13 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(content))
+        if (!isValidContent(message))
         {
             return false;
         }
-        InternalDemand internalDemand = (InternalDemand) content;
+        InternalDemand internalDemand = (InternalDemand) message;
         // resolve the suplier
         SupplierRecord supplierRecord = this.suppliers.get(internalDemand.getProduct());
         if (supplierRecord == null)
@@ -93,32 +79,31 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
         }
         SupplyChainActor supplier = supplierRecord.getSupplier();
         Money price = supplierRecord.getUnitPrice().multiplyBy(internalDemand.getAmount());
-        Order order = new OrderStandAlone(getOwner(), supplier, internalDemand.getInternalDemandID(),
-                internalDemand.getLatestDeliveryDate(), internalDemand.getProduct(), internalDemand.getAmount(), price);
+        Order order = new OrderStandalone(getOwner(), supplier, internalDemand, internalDemand.getLatestDeliveryDate(),
+                internalDemand.getProduct(), internalDemand.getAmount(), price);
         // and send it out after the handling time
-        getOwner().sendContent(order, this.handlingTime.draw());
+        getOwner().sendMessage(order, this.handlingTime.draw());
         return true;
     }
 
     /**
      * INNER CLASS FOR STORING RECORDS OF SUPPLIERS AND PRICE
      * <p>
-     * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
-     * <br>
+     * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
      * The supply chain Java library uses a BSD-3 style license.
      * </p>
      * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
      */
     protected class SupplierRecord
     {
-        /** the supplier */
+        /** the supplier. */
         private SupplyChainActor supplier;
 
-        /** the agreed price to pay per unit of product */
+        /** the agreed price to pay per unit of product. */
         private Money unitPrice;
 
         /**
-         * Construct a new SupplierRecord
+         * Construct a new SupplierRecord.
          * @param supplier the supplier
          * @param unitPrice the price per unit
          */
@@ -130,7 +115,7 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
         }
 
         /**
-         * @return Returns the supplier.
+         * @return the supplier.
          */
         public SupplyChainActor getSupplier()
         {
@@ -138,7 +123,7 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
         }
 
         /**
-         * @return Returns the unitPrice.
+         * @return the unitPrice.
          */
         public Money getUnitPrice()
         {

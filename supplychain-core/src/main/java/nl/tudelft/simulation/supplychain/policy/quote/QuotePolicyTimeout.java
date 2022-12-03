@@ -12,33 +12,35 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Order;
-import nl.tudelft.simulation.supplychain.content.OrderBasedOnQuote;
-import nl.tudelft.simulation.supplychain.content.Quote;
-import nl.tudelft.simulation.supplychain.content.RequestForQuote;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
+import nl.tudelft.simulation.supplychain.message.trade.Order;
+import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
+import nl.tudelft.simulation.supplychain.message.trade.Quote;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 
 /**
  * The QuoteHandlerTimeout handles quotes until a certain timeout is reached. When all Quotes are in, it reacts. It schedules
  * the timeout date when the FIRST Quote comes in, because it makes no sense to cut off the negotiation process without any
  * received Quote.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class QuotePolicyTimeout extends QuotePolicy
+public class QuotePolicyTimeout extends AbstractQuotePolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** a set of internal demand IDs for which we did not yet answer */
+    /** a set of internal demand IDs for which we did not yet answer. */
     private Set<Serializable> unansweredIDs = new LinkedHashSet<Serializable>();
 
     /**
-     * Constructor of the QuoteHandlerTimeout with a user defined comparator for quotes
+     * Constructor of the QuoteHandlerTimeout with a user defined comparator for quotes.
      * @param owner the actor for this QuoteHandler.
      * @param comparator the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
@@ -52,21 +54,7 @@ public class QuotePolicyTimeout extends QuotePolicy
     }
 
     /**
-     * Constructor of the QuoteHandlerTimeout with a user defined comparator for quotes
-     * @param owner the actor for this QuoteHandler.
-     * @param comparator the predefined sorting comparator type.
-     * @param handlingTime the time to handle the quotes
-     * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
-     * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
-     */
-    public QuotePolicyTimeout(final SupplyChainActor owner, final Comparator<Quote> comparator, final Duration handlingTime,
-            final double maximumPriceMargin, final double minimumAmountMargin)
-    {
-        super(owner, comparator, handlingTime, maximumPriceMargin, minimumAmountMargin);
-    }
-
-    /**
-     * Constructor of the QuoteHandlerTimeout with a predefined comparator for quotes
+     * Constructor of the QuoteHandlerTimeout with a predefined comparator for quotes.
      * @param owner the actor for this QuoteHandler.
      * @param comparatorType the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
@@ -79,40 +67,26 @@ public class QuotePolicyTimeout extends QuotePolicy
         super(owner, comparatorType, handlingTime, maximumPriceMargin, minimumAmountMargin);
     }
 
-    /**
-     * Constructor of the QuoteHandlerTimeout with a predefined comparator for quotes
-     * @param owner the actor for this QuoteHandler.
-     * @param comparatorType the predefined sorting comparator type.
-     * @param handlingTime the time to handle the quotes
-     * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
-     * @param minimumAmountMargin the minimal amount margin
-     */
-    public QuotePolicyTimeout(final SupplyChainActor owner, final QuoteComparatorEnum comparatorType,
-            final Duration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
-    {
-        super(owner, comparatorType, handlingTime, maximumPriceMargin, minimumAmountMargin);
-    }
-
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(content))
+        if (!isValidContent(message))
         {
             return false;
         }
-        Quote quote = (Quote) content;
-        Serializable internalDemandID = quote.getInternalDemandID();
-        ContentStoreInterface contentStore = getOwner().getContentStore();
-        int numberQuotes = contentStore.getContentList(internalDemandID, Quote.class).size();
-        int numberRFQs = contentStore.getContentList(internalDemandID, RequestForQuote.class).size();
+        Quote quote = (Quote) message;
+        long internalDemandId = quote.getInternalDemandId();
+        TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
+        int numberQuotes = contentStore.getMessageList(internalDemandId, TradeMessageTypes.QUOTE).size();
+        int numberRFQs = contentStore.getMessageList(internalDemandId, TradeMessageTypes.RFQ).size();
         // when the first quote comes in, schedule the timeout
         if (numberQuotes == 1)
         {
             try
             {
-                this.unansweredIDs.add(internalDemandID);
-                Serializable[] args = new Serializable[] {internalDemandID};
+                this.unansweredIDs.add(internalDemandId);
+                Serializable[] args = new Serializable[] {internalDemandId};
 
                 // calculate the actual time out
                 Time time = Time.max(getOwner().getSimulatorTime(), quote.getRequestForQuote().getCutoffDate());
@@ -127,7 +101,7 @@ public class QuotePolicyTimeout extends QuotePolicy
         // look if all quotes are there for the RFQs that we sent out
         if (numberQuotes == numberRFQs)
         {
-            createOrder(internalDemandID);
+            createOrder(internalDemandId);
         }
         return true;
     }
@@ -136,15 +110,15 @@ public class QuotePolicyTimeout extends QuotePolicy
      * All quotes are in, or time is over. Select the best quote, and place an order. The set of unansweredIDs is used to
      * determine if we already answered with an Order -- in many cases, the createOrder method is scheduled twice: once when all
      * the quotes are in, and once when the timeout is there.
-     * @param internalDemandID the original demand linked to the quotes
+     * @param internalDemandId the original demand linked to the quotes
      */
-    protected void createOrder(final Serializable internalDemandID)
+    protected void createOrder(final long internalDemandId)
     {
-        if (this.unansweredIDs.contains(internalDemandID))
+        if (this.unansweredIDs.contains(internalDemandId))
         {
-            this.unansweredIDs.remove(internalDemandID);
-            ContentStoreInterface contentStore = getOwner().getContentStore();
-            List<Quote> quotes = contentStore.getContentList(internalDemandID, Quote.class);
+            this.unansweredIDs.remove(internalDemandId);
+            TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
+            List<TradeMessage> quotes = contentStore.getMessageList(internalDemandId, TradeMessageTypes.QUOTE);
 
             // the size of the quotes is at least one
             // since the invocation of this method is scheduled after a first
@@ -152,9 +126,9 @@ public class QuotePolicyTimeout extends QuotePolicy
             Quote bestQuote = this.selectBestQuote(quotes);
             if (bestQuote != null)
             {
-                Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), internalDemandID,
+                Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), internalDemandId,
                         bestQuote.getProposedDeliveryDate(), bestQuote);
-                getOwner().sendContent(order, this.handlingTime.draw());
+                getOwner().sendMessage(order, this.handlingTime.draw());
             }
         }
     }

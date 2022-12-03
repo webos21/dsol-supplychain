@@ -1,6 +1,5 @@
 package nl.tudelft.simulation.supplychain.policy.yp;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,70 +8,59 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.djunits.unit.LengthUnit;
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.point.Point3d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.YellowPageAnswer;
-import nl.tudelft.simulation.supplychain.content.YellowPageRequest;
-import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
-import nl.tudelft.simulation.supplychain.yellowpage.SupplyChainYellowPage;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
+import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
+import nl.tudelft.simulation.supplychain.yellowpage.YellowPage;
 
 /**
  * The YellowPageRequestHandler implements the business logic for a yellow page actor who receives a YellowPageRequest and has
  * to look up supply chain actors within the boundaries of the request For the moment, these are max number, max distance, and
  * product.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class YellowPageRequestPolicy extends SupplyChainHandler
+public class YellowPageRequestPolicy extends SupplyChainPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the handling time of the handler in simulation time units */
+    /** the handling time of the handler in simulation time units. */
     private DistContinuousDuration handlingTime;
 
     /**
      * Constructs a new YellowPageRequestHandler.
-     * @param owner the owner of the handler
+     * @param owner SupplyChainActor; the owner of the policy
      * @param handlingTime the distribution of the time to react on the YP request
      */
-    public YellowPageRequestPolicy(final SupplyChainYellowPage owner, final DistContinuousDuration handlingTime)
+    public YellowPageRequestPolicy(final YellowPage owner, final DistContinuousDuration handlingTime)
     {
-        super(owner);
+        super("YellowPageRequestPolicy", owner, TradeMessageTypes.YP_REQUEST);
         this.handlingTime = handlingTime;
-    }
-
-    /**
-     * Constructs a new YellowPageRequestHandler.
-     * @param owner the owner of the handler
-     * @param handlingTime the constant time to react on the YP request
-     */
-    public YellowPageRequestPolicy(final SupplyChainYellowPage owner, final Duration handlingTime)
-    {
-        this(owner, new DistConstantDuration(handlingTime));
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(content))
+        if (!isValidContent(message))
         {
             return false;
         }
-        YellowPageRequest ypRequest = (YellowPageRequest) content;
-        Set<SupplyChainActor> supplierSet = ((SupplyChainYellowPage) getOwner()).getSuppliers(ypRequest.getProduct());
+        YellowPageRequest ypRequest = (YellowPageRequest) message;
+        Set<SupplyChainActor> supplierSet = ((YellowPage) getOwner()).getSuppliers(ypRequest.getProduct());
         if (supplierSet == null)
         {
             Logger.warn("YellowPage '{}' has no supplier map for product {}", getOwner().getName(),
@@ -83,9 +71,9 @@ public class YellowPageRequestPolicy extends SupplyChainHandler
                 pruneDistance(supplierSet, ypRequest.getMaximumDistance(), ypRequest.getSender().getLocation());
         pruneNumber(suppliers, ypRequest.getMaximumNumber());
         List<SupplyChainActor> potentialSuppliers = new ArrayList<>(suppliers.values());
-        YellowPageAnswer ypAnswer = new YellowPageAnswer(getOwner(), ypRequest.getSender(), ypRequest.getInternalDemandID(),
+        YellowPageAnswer ypAnswer = new YellowPageAnswer(getOwner(), ypRequest.getSender(), ypRequest.getInternalDemandId(),
                 potentialSuppliers, ypRequest);
-        getOwner().sendContent(ypAnswer, this.handlingTime.draw());
+        getOwner().sendMessage(ypAnswer, this.handlingTime.draw());
         return true;
     }
 
@@ -131,13 +119,6 @@ public class YellowPageRequestPolicy extends SupplyChainHandler
                 supplierIterator.remove();
             }
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Class<? extends Content> getContentClass()
-    {
-        return YellowPageRequest.class;
     }
 
 }

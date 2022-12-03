@@ -8,46 +8,48 @@ import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Order;
-import nl.tudelft.simulation.supplychain.content.OrderBasedOnQuote;
-import nl.tudelft.simulation.supplychain.content.OrderConfirmation;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.Order;
+import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
+import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
 
 /**
- * An OrderHandler that purchases the goods when receiving an order (no stock). <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * An OrderHandler that purchases the goods when receiving an order (no stock).
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class OrderPolicyNoStock extends OrderPolicy
+public class OrderPolicyNoStock extends AbstractOrderPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /**
      * Construct a new OrderHandler that purchases the goods when ordered.
-     * @param owner the owner of the handler
+     * @param owner SupplyChainActor; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
     public OrderPolicyNoStock(final SupplyChainActor owner, final StockInterface stock)
     {
-        super(owner, stock);
+        super("OrderPolicyNoStock", owner, stock, TradeMessageTypes.ORDER);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
         // get the order
-        Order order = (Order) content;
+        Order order = (Order) message;
 
         // send out the confirmation
-        OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandID(),
+        OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandId(),
                 order, OrderConfirmation.CONFIRMED);
-        getOwner().sendContent(orderConfirmation, Duration.ZERO);
+        getOwner().sendMessage(orderConfirmation, Duration.ZERO);
 
         Logger.trace("t={} - NOSTOCK ORDER CONFIRMATION of actor '{}': sent '{}'", getOwner().getSimulatorTime(),
                 getOwner().getName(), orderConfirmation);

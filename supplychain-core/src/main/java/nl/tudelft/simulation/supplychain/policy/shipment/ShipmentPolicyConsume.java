@@ -1,31 +1,30 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
-import java.io.Serializable;
-
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Shipment;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 
 /**
  * When a Shipment comes in, consume it. In other words and in terms of the supply chain simulation: do nothing...
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class ShipmentPolicyConsume extends ShipmentPolicy
+public class ShipmentPolicyConsume extends AbstractShipmentPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /**
      * Construct a new ShipmentHandlerConsume handler.
-     * @param owner the owner of the handler
+     * @param owner SupplyChainActor; the owner of the policy
      */
     public ShipmentPolicyConsume(final SupplyChainActor owner)
     {
-        super(owner);
+        super("ShipmentPolicyConsume", owner);
     }
 
     /**
@@ -33,13 +32,13 @@ public class ShipmentPolicyConsume extends ShipmentPolicy
      * {@inheritDoc}
      */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(content))
+        if (!isValidContent(message))
         {
             return false;
         }
-        Shipment shipment = (Shipment) content;
+        Shipment shipment = (Shipment) message;
         shipment.setInTransit(false);
         shipment.setDelivered(true);
         // do nothing

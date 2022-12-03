@@ -1,61 +1,56 @@
 package nl.tudelft.simulation.supplychain.policy.quote;
 
-import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.djunits.value.vdouble.scalar.Duration;
-
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.Quote;
-import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.Quote;
+import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
 /**
  * The abstract QuoteHandler can be extended into several ways how to deal with Quotes. One is the QuoteHandlerAll that waits
  * till every RequestForQuote has been answered with a Quote. Another one is the QuoteHandlerTime, that waits either till every
  * RequestForQuote is in within the timeout time, or just takes the list that is available at the timeout time.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class QuotePolicy extends SupplyChainHandler
+public abstract class AbstractQuotePolicy extends SupplyChainPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** for debugging */
+    /** for debugging. */
     private static final boolean DEBUG = false;
 
-    /** the time to handle quotes when they are in and to place an order */
+    /** the time to handle quotes when they are in and to place an order. */
     protected DistContinuousDuration handlingTime;
 
-    /** the comparator to sort the quotes */
+    /** the comparator to sort the quotes. */
     private Comparator<Quote> quoteComparator = null;
 
-    /** the maximum price margin */
+    /** the maximum price margin. */
     private double maximumPriceMargin = 0.0;
 
-    /** the minimal amount margin */
+    /** the minimal amount margin. */
     private double minimumAmountMargin = 0.0;
 
     /**
-     * Constructor of the QuoteHandler with a one of the predefined comparators for quotes
+     * Constructor of the QuoteHandler with a one of the predefined comparators for quotes.
      * @param owner the actor for this QuoteHandler.
      * @param comparatorType the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
      */
-    public QuotePolicy(final SupplyChainActor owner, final QuoteComparatorEnum comparatorType,
+    public AbstractQuotePolicy(final SupplyChainActor owner, final QuoteComparatorEnum comparatorType,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
         super(owner);
@@ -66,28 +61,14 @@ public abstract class QuotePolicy extends SupplyChainHandler
     }
 
     /**
-     * Constructor of the QuoteHandler with a one of the predefined comparators for quotes
-     * @param owner the actor for this QuoteHandler.
-     * @param comparatorType the predefined sorting comparator type.
-     * @param handlingTime the time to handle the quotes
-     * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
-     * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
-     */
-    public QuotePolicy(final SupplyChainActor owner, final QuoteComparatorEnum comparatorType, final Duration handlingTime,
-            final double maximumPriceMargin, final double minimumAmountMargin)
-    {
-        this(owner, comparatorType, new DistConstantDuration(handlingTime), maximumPriceMargin, minimumAmountMargin);
-    }
-
-    /**
-     * Constructor of the QuoteHandler with a user defined comparator for quotes
+     * Constructor of the QuoteHandler with a user defined comparator for quotes.
      * @param owner the actor for this QuoteHandler.
      * @param comparator the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
      */
-    public QuotePolicy(final SupplyChainActor owner, final Comparator<Quote> comparator,
+    public AbstractQuotePolicy(final SupplyChainActor owner, final Comparator<Quote> comparator,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
         super(owner);
@@ -97,26 +78,12 @@ public abstract class QuotePolicy extends SupplyChainHandler
         this.minimumAmountMargin = minimumAmountMargin;
     }
 
-    /**
-     * Constructor of the QuoteHandler with a user defined comparator for quotes
-     * @param owner the actor for this QuoteHandler.
-     * @param comparator the predefined sorting comparator type.
-     * @param handlingTime the time to handle the quotes
-     * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
-     * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
-     */
-    public QuotePolicy(final SupplyChainActor owner, final Comparator<Quote> comparator, final Duration handlingTime,
-            final double maximumPriceMargin, final double minimumAmountMargin)
-    {
-        this(owner, comparator, new DistConstantDuration(handlingTime), maximumPriceMargin, minimumAmountMargin);
-    }
-
     /** {@inheritDoc} */
     @Override
-    public abstract boolean handleContent(final Serializable content);
+    public abstract boolean handleMessage(Message message);
 
     /**
-     * Method getQuoteComparator
+     * Method getQuoteComparator.
      * @return returns the quote comparator
      */
     protected Comparator<Quote> getQuoteComparator()
@@ -125,19 +92,12 @@ public abstract class QuotePolicy extends SupplyChainHandler
     }
 
     /**
-     * Method setQuoteComparator
+     * Method setQuoteComparator.
      * @param quoteComparator the comparator to set
      */
-    protected void setQuoteComparator(Comparator<Quote> quoteComparator)
+    protected void setQuoteComparator(final Comparator<Quote> quoteComparator)
     {
         this.quoteComparator = quoteComparator;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Class<? extends Content> getContentClass()
-    {
-        return Quote.class;
     }
 
     /**
@@ -171,7 +131,7 @@ public abstract class QuotePolicy extends SupplyChainHandler
                         }
                         else
                         {
-                            if (QuotePolicy.DEBUG)
+                            if (AbstractQuotePolicy.DEBUG)
                             {
                                 System.err.println("QuoteHandler: quote: + prop delivery date: "
                                         + quote.getProposedDeliveryDate() + " earliest delivery date: "
@@ -185,7 +145,7 @@ public abstract class QuotePolicy extends SupplyChainHandler
                     }
                     else
                     {
-                        if (QuotePolicy.DEBUG)
+                        if (AbstractQuotePolicy.DEBUG)
                         {
                             {
                                 System.err.println("DEBUG -- QuoteHandler: " + " Quote: " + quote + " has invalid amount : "
@@ -196,7 +156,7 @@ public abstract class QuotePolicy extends SupplyChainHandler
                 }
                 else
                 {
-                    if (QuotePolicy.DEBUG)
+                    if (AbstractQuotePolicy.DEBUG)
                     {
                         {
                             System.err.println("DEBUG -- QuoteHandler: " + " Price of quote: " + quote + " is too high: "
@@ -209,7 +169,7 @@ public abstract class QuotePolicy extends SupplyChainHandler
             }
             else
             {
-                if (QuotePolicy.DEBUG)
+                if (AbstractQuotePolicy.DEBUG)
                 {
                     {
                         System.err.println("DEBUG -- QuoteHandler: " + " Quote: " + quote + " is invalid (before simtime) : "

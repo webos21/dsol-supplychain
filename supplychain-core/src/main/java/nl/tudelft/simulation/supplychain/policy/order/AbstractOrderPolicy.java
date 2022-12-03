@@ -7,12 +7,12 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Bill;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.Order;
-import nl.tudelft.simulation.supplychain.content.Shipment;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
+import nl.tudelft.simulation.supplychain.message.MessageType;
+import nl.tudelft.simulation.supplychain.message.trade.Bill;
+import nl.tudelft.simulation.supplychain.message.trade.Order;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
+import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
@@ -33,36 +33,32 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * A bill is sent out before, with, or after the shipment, and in some cases, the shipment has to wait for the payment to
  * arrive.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class OrderPolicy extends SupplyChainHandler
+public abstract class AbstractOrderPolicy extends SupplyChainPolicy
 {
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** access to the owner's stock to look at availability of products */
+    /** access to the owner's stock to look at availability of products. */
+    @SuppressWarnings("checkstyle:visibilitymodifier")
     protected StockInterface stock;
 
     /**
      * Construct a new OrderHandler. The OrderHandler is abstract, so this constructor can not be called directly.
-     * @param owner the owner of the handler
-     * @param stock the stock to use to handle the incoming order
+     * @param id String; the id of the policy
+     * @param owner SupplyChainActor; the owner of the handler
+     * @param stock StockInterface; the stock to use to handle the incoming order
+     * @param messageType MessageType; the specific order message type
      */
-    public OrderPolicy(final SupplyChainActor owner, final StockInterface stock)
+    public AbstractOrderPolicy(final String id, final SupplyChainActor owner, final StockInterface stock, final MessageType messageType)
     {
-        super(owner);
+        super(id, owner, messageType);
         this.stock = stock;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Class<? extends Content> getContentClass()
-    {
-        return Order.class;
     }
 
     // ========================================
@@ -92,17 +88,17 @@ public abstract class OrderPolicy extends SupplyChainHandler
                 // available: make shipment and ship to customer
                 Money unitPrice = this.stock.getUnitPrice(product);
                 double actualAmount = this.stock.removeStock(product, amount);
-                Shipment shipment = new Shipment(getOwner(), order.getSender(), order.getInternalDemandID(), order, product,
+                Shipment shipment = new Shipment(getOwner(), order.getSender(), order.getInternalDemandId(), order, product,
                         actualAmount, unitPrice.multiplyBy(actualAmount));
                 shipment.setInTransit(true);
 
                 // TODO: get the transportation mode from the shipment?
                 Duration transportTime = TransportMode.PLANE.transportTime(shipment.getSender(), shipment.getReceiver());
                 Logger.trace("OrderHandlerStock: transportation delay for order: {} is: {}", order, transportTime);
-                getOwner().sendContent(shipment, transportTime);
+                getOwner().sendMessage(shipment, transportTime);
 
                 // send a bill when the shipment leaves...
-                Bill bill = new Bill(getOwner(), order.getSender(), order.getInternalDemandID(), order,
+                Bill bill = new Bill(getOwner(), order.getSender(), order.getInternalDemandId(), order,
                         getOwner().getSimulatorTime().plus(new Duration(14.0, DurationUnit.DAY)), shipment.getTotalCargoValue(),
                         "SALE");
 
@@ -121,12 +117,12 @@ public abstract class OrderPolicy extends SupplyChainHandler
     }
 
     /**
-     * Method sendBill
+     * Method sendBill.
      * @param bill the bill to send
      */
     protected void sendBill(final Bill bill)
     {
         // send after accepting the order.
-        getOwner().sendContent(bill, new Duration(1.0, DurationUnit.MINUTE));
+        getOwner().sendMessage(bill, new Duration(1.0, DurationUnit.MINUTE));
     }
 }

@@ -1,42 +1,40 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
-import java.io.Serializable;
-
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Shipment;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * A stocking Shipment handler where a check is performed whether the shipment was delivered on time. If not, a fine is imposed.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class ShipmentPolicyFineStock extends ShipmentPolicyStock
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 11L;
 
-    /** the maximum time out for a shipment */
+    /** the maximum time out for a shipment. */
     private Duration maximumTimeOut = Duration.ZERO;
 
-    /** the margin for the fine */
+    /** the margin for the fine. */
     private double fineMarginPerDay = 0.0;
 
-    /** the fixed fine */
+    /** the fixed fine. */
     private Money fixedFinePerDay = new Money(0.0, MoneyUnit.USD);
 
     /**
-     * constructs a new ShipmentFineHandlerStock
+     * constructs a new ShipmentFineHandlerStock.
      * @param owner the owner
      * @param stock the stock
      * @param maximumTimeOut the time out
@@ -54,11 +52,11 @@ public class ShipmentPolicyFineStock extends ShipmentPolicyStock
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (super.handleContent(content))
+        if (super.handleMessage(message))
         {
-            Shipment shipment = (Shipment) content;
+            Shipment shipment = (Shipment) message;
             Time time = shipment.getSender().getSimulatorTime();
             if ((time.gt(shipment.getOrder().getDeliveryDate()))
                     && (time.lt(shipment.getOrder().getDeliveryDate().plus(this.maximumTimeOut))))
@@ -71,7 +69,7 @@ public class ShipmentPolicyFineStock extends ShipmentPolicyStock
                  * TODO: send the bill for the fine
                  * Bill bill = new Bill(getOwner(), shipment.getSender(), shipment.getInternalDemandID(), shipment.getOrder(),
                  * getOwner().getSimulatorTime() + (14.0 * day), fine, "FINE");
-                 * getOwner().sendContent(bill, Duration.ZERO);
+                 * getOwner().sendMessage(bill, Duration.ZERO);
                  */
 
                 // we are pragmatic -- just book it through the bank...

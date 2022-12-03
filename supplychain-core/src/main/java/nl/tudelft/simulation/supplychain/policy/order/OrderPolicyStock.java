@@ -8,9 +8,11 @@ import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Order;
-import nl.tudelft.simulation.supplychain.content.OrderBasedOnQuote;
-import nl.tudelft.simulation.supplychain.content.OrderConfirmation;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.Order;
+import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
+import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
 
@@ -19,38 +21,38 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * away, and waits till the delivery date (should be minus the expected transportation time), picks the order, and ships it out
  * as a Shipment. When the order is not available: wait one day and try again till it is available.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class OrderPolicyStock extends OrderPolicy
+public class OrderPolicyStock extends AbstractOrderPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /**
      * Construct a new OrderHandler that takes the goods from stock when ordered.
-     * @param owner the owner of the handler
+     * @param owner SupplyChainActor; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
     public OrderPolicyStock(final SupplyChainActor owner, final StockInterface stock)
     {
-        super(owner, stock);
+        super("OrderPolicyStock", owner, stock, TradeMessageTypes.ORDER);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
         // get the order
-        Order order = (Order) content;
+        Order order = (Order) message;
 
         // send out the confirmation
-        OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandID(),
+        OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandId(),
                 order, OrderConfirmation.CONFIRMED);
-        getOwner().sendContent(orderConfirmation, Duration.ZERO);
+        getOwner().sendMessage(orderConfirmation, Duration.ZERO);
 
         Logger.trace("t={} - MTS ORDER CONFIRMATION of actor '{}': sent '{}'", getOwner().getSimulatorTime(),
                 getOwner().getName(), orderConfirmation);

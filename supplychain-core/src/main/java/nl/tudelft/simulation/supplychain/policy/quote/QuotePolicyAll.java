@@ -1,6 +1,5 @@
 package nl.tudelft.simulation.supplychain.policy.quote;
 
-import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
@@ -9,32 +8,33 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Order;
-import nl.tudelft.simulation.supplychain.content.OrderBasedOnQuote;
-import nl.tudelft.simulation.supplychain.content.Quote;
-import nl.tudelft.simulation.supplychain.content.RequestForQuote;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
+import nl.tudelft.simulation.supplychain.message.trade.Order;
+import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
+import nl.tudelft.simulation.supplychain.message.trade.Quote;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 
 /**
  * The QuoteHandlerAll just waits patiently till all the Quotes are in for each RequestForQuote that has been sent out. When
  * that happens, it chooses the best offer, based on price and distance.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class QuotePolicyAll extends QuotePolicy
+public class QuotePolicyAll extends AbstractQuotePolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** for debugging */
+    /** for debugging. */
     private static final boolean DEBUG = false;
 
     /**
-     * Constructor of the QuoteHandlerAll with a user defined comparator for quotes
+     * Constructor of the QuoteHandlerAll with a user defined comparator for quotes.
      * @param owner the actor for this QuoteHandler.
      * @param comparator the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
@@ -48,7 +48,7 @@ public class QuotePolicyAll extends QuotePolicy
     }
 
     /**
-     * Constructor of the QuoteHandlerAll with a user defined comparators for quotes
+     * Constructor of the QuoteHandlerAll with a user defined comparators for quotes.
      * @param owner the actor for this QuoteHandler.
      * @param comparator the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
@@ -62,7 +62,7 @@ public class QuotePolicyAll extends QuotePolicy
     }
 
     /**
-     * Constructor of the QuoteHandlerAll with a one of the predefined comparators for quotes
+     * Constructor of the QuoteHandlerAll with a one of the predefined comparators for quotes.
      * @param owner the actor for this QuoteHandler.
      * @param comparatorType the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
@@ -76,7 +76,7 @@ public class QuotePolicyAll extends QuotePolicy
     }
 
     /**
-     * Constructor of the QuoteHandlerAll with a one of the predefined comparators for quotes
+     * Constructor of the QuoteHandlerAll with a one of the predefined comparators for quotes.
      * @param owner the actor for this QuoteHandler.
      * @param comparatorType the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
@@ -91,28 +91,28 @@ public class QuotePolicyAll extends QuotePolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(content))
+        if (!isValidContent(message))
         {
             return false;
         }
-        Quote quote = (Quote) content;
+        Quote quote = (Quote) message;
         // look if all quotes are there for the RFQs that we sent out
-        Serializable id = quote.getInternalDemandID();
-        ContentStoreInterface contentStore = getOwner().getContentStore();
-        if (contentStore.getContentList(id, Quote.class).size() == contentStore.getContentList(id, RequestForQuote.class)
-                .size())
+        long id = quote.getInternalDemandId();
+        TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
+        if (contentStore.getMessageList(id, TradeMessageTypes.QUOTE).size() == contentStore
+                .getMessageList(id, TradeMessageTypes.RFQ).size())
         {
             // All quotes are in. Select the best and place an order
 
             if (QuotePolicyAll.DEBUG)
             {
                 System.err.println("t=" + getOwner().getSimulatorTime() + " DEBUG -- QuoteHandlerAll of actor " + getOwner()
-                        + ", size=" + contentStore.getContentList(id, Quote.class).size());
+                        + ", size=" + contentStore.getMessageList(id, TradeMessageTypes.QUOTE).size());
             }
 
-            List<Quote> quotes = contentStore.getContentList(id, Quote.class);
+            List<TradeMessage> quotes = contentStore.getMessageList(id, TradeMessageTypes.QUOTE);
             Quote bestQuote = selectBestQuote(quotes);
             if (bestQuote == null)
             {
@@ -129,7 +129,7 @@ public class QuotePolicyAll extends QuotePolicy
 
             Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), id, bestQuote.getProposedDeliveryDate(),
                     bestQuote);
-            getOwner().sendContent(order, this.handlingTime.draw());
+            getOwner().sendMessage(order, this.handlingTime.draw());
         }
         return true;
     }

@@ -1,43 +1,39 @@
 package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
-import java.io.Serializable;
-
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.supplychain.content.InternalDemand;
-import nl.tudelft.simulation.supplychain.content.YellowPageRequest;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
- * The InternalDemandHandlerYP is a simple implementation of the business logic to handle a request for new products through a
+ * The InternalDemandPolicyYP is a simple implementation of the business logic to handle a request for new products through a
  * yellow page request. When receiving the internal demand, it just creates an YP request, without a given time delay.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class InternalDemandPolicyYP extends InternalDemandPolicy
+public class InternalDemandPolicyYP extends AbstractInternalDemandPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the yellow page actor to use */
+    /** the yellow page actor to use. */
     private SupplyChainActor yp;
 
-    /** maximum distance to use in the search */
+    /** maximum distance to use in the search. */
     private Length maximumDistance;
 
-    /** maximum number of actors to return */
+    /** maximum number of actors to return. */
     private int maximumNumber;
 
     /**
-     * Constructs a new InternalDemandHandlerYP
+     * Constructs a new InternalDemandPolicyYP.
      * @param owner the owner of the internal demand
      * @param handlingTime the handling time distribution delay to use
      * @param yp the SupplyChainActor that provides the yp service
@@ -48,45 +44,30 @@ public class InternalDemandPolicyYP extends InternalDemandPolicy
     public InternalDemandPolicyYP(final SupplyChainActor owner, final DistContinuousDuration handlingTime,
             final SupplyChainActor yp, final Length maximumDistance, final int maximumNumber, final StockInterface stock)
     {
-        super(owner, handlingTime, stock);
+        super("InternalDemandPolicyYP", owner, handlingTime, stock);
         this.yp = yp;
         this.maximumDistance = maximumDistance;
         this.maximumNumber = maximumNumber;
     }
 
-    /**
-     * Constructs a new InternalDemandHandlerYP
-     * @param owner the owner of the internal demand
-     * @param handlingTime the constant handling time delay to use
-     * @param yp the SupplyChainActor that provides the yp service
-     * @param maximumDistance the search distance to use for all products
-     * @param maximumNumber the max number of suppliers to return
-     * @param stock the stock for being able to change the ordered amount
-     */
-    public InternalDemandPolicyYP(final SupplyChainActor owner, final Duration handlingTime, final SupplyChainActor yp,
-            final Length maximumDistance, final int maximumNumber, final StockInterface stock)
-    {
-        this(owner, new DistConstantDuration(handlingTime), yp, maximumDistance, maximumNumber, stock);
-    }
-
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(content))
+        if (!isValidContent(message))
         {
             return false;
         }
-        InternalDemand internalDemand = (InternalDemand) content;
+        InternalDemand internalDemand = (InternalDemand) message;
         if (super.stock != null)
         {
             super.stock.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
         }
         // create a YellowPageRequest
-        YellowPageRequest ypRequest = new YellowPageRequest(getOwner(), this.yp, internalDemand.getUniqueID(),
+        YellowPageRequest ypRequest = new YellowPageRequest(getOwner(), this.yp, internalDemand.getUniqueId(),
                 internalDemand.getProduct(), this.maximumDistance, this.maximumNumber);
         // and send it out immediately
-        getOwner().sendContent(ypRequest, this.handlingTime.draw());
+        getOwner().sendMessage(ypRequest, this.handlingTime.draw());
         return true;
     }
 }

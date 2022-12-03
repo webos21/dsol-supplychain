@@ -1,15 +1,15 @@
 package nl.tudelft.simulation.supplychain.policy.orderconfirmation;
 
-import java.io.Serializable;
-
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.InternalDemand;
-import nl.tudelft.simulation.supplychain.content.OrderConfirmation;
-import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
+import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
+import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
 /**
  * The OrderConfirmationHandler is a simple implementation of the business logic for a OrderConfirmation that comes in. When the
@@ -17,15 +17,15 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
  * option, e.g. to the next Quote when there were quotes. It is also possible to redo the entire ordering process from scratch.
  * The latter strategy is implemented in this version of the handler.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class OrderConfirmationPolicy extends SupplyChainHandler
+public class OrderConfirmationPolicy extends SupplyChainPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** for debugging */
@@ -33,7 +33,7 @@ public class OrderConfirmationPolicy extends SupplyChainHandler
 
     /**
      * Constructs a new OrderConfirmationHandler.
-     * @param owner the owner of the handler.
+     * @param owner SupplyChainActor; the owner of the policy.
      */
     public OrderConfirmationPolicy(final SupplyChainActor owner)
     {
@@ -45,13 +45,13 @@ public class OrderConfirmationPolicy extends SupplyChainHandler
      * negative. {@inheritDoc}
      */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (!isValidContent(content))
+        if (!isValidContent(message))
         {
             return false;
         }
-        OrderConfirmation orderConfirmation = (OrderConfirmation) content;
+        OrderConfirmation orderConfirmation = (OrderConfirmation) message;
         if (!orderConfirmation.isAccepted())
         {
             if (OrderConfirmationPolicy.DEBUG)
@@ -59,12 +59,12 @@ public class OrderConfirmationPolicy extends SupplyChainHandler
                 System.out.println("OrderConfirmationHandler: handleContent: !orderConfirmation.isAccepted()");
             }
 
-            InternalDemand oldID = null;
+            TradeMessage oldID = null;
             try
             {
                 // TODO: place some business logic here to handle the problem
-                oldID = getOwner().getContentStore()
-                        .getContentList(orderConfirmation.getInternalDemandID(), InternalDemand.class).get(0);
+                oldID = getOwner().getMessageStore()
+                        .getMessageList(orderConfirmation.getInternalDemandId(), TradeMessageTypes.INTERNAL_DEMAND).get(0);
 
                 if (oldID == null)
                 {
@@ -82,17 +82,17 @@ public class OrderConfirmationPolicy extends SupplyChainHandler
 
             InternalDemand newID = new InternalDemand(oldID.getSender(), oldID.getProduct(), oldID.getAmount(),
                     oldID.getEarliestDeliveryDate(), oldID.getLatestDeliveryDate());
-            getOwner().sendContent(newID, Duration.ZERO);
+            getOwner().sendMessage(newID, Duration.ZERO);
 
             // also clean the contentStore for the old internal demand
-            getOwner().getContentStore().removeAllContent(orderConfirmation.getInternalDemandID());
+            getOwner().getMessageStore().removeAllMessages(orderConfirmation.getInternalDemandId());
         }
         return true;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Class<? extends Content> getContentClass()
+    public Class<? extends TradeMessage> getContentClass()
     {
         return OrderConfirmation.class;
     }

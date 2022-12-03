@@ -60,4 +60,11 @@ public class SCAnimator extends DEVSRealTimeAnimator.TimeDoubleUnit implements S
         return this.uniqueMessageId++;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SCModelInterface getModel()
+    {
+        return (SCModelInterface) super.getModel();
+    }
+
 }

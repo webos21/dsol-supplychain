@@ -41,6 +41,10 @@ public interface SCSimulatorInterface extends DEVSSimulatorInterface<Duration>, 
         return getAbsStartTime().plus(getSimulatorTime());
     }
 
+    /** {@inheritDoc} */
+    @Override
+    SCModelInterface getModel();
+
     /**
      * Schedules a methodCall at an absolute time.
      * @param absoluteTime Time; the exact time to schedule the method on the simulator.

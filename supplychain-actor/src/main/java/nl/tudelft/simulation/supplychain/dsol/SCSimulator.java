@@ -60,4 +60,11 @@ public class SCSimulator extends DEVSSimulator<Duration> implements SCSimulatorI
         return this.uniqueMessageId++;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SCModelInterface getModel()
+    {
+        return (SCModelInterface) super.getModel();
+    }
+
 }

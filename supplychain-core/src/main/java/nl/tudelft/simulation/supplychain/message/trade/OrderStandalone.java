@@ -13,7 +13,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * <i>might be </i> based on a Quote, but the order is not explicitly saying so. It can also be an order to a well-known supply
  * chain partner, with whom long-term price arrangements have been made.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

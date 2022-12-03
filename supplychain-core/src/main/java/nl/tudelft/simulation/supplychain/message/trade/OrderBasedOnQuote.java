@@ -12,7 +12,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * This implementation of an Order contains a link to a Quote on which the order is based. The Order contains a link to the
  * Quote on which it was based.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

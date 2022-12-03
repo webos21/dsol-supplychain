@@ -17,7 +17,7 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
  * account. No investments or loans are possible through this implementation. The BankAccount itself does not contain logic to
  * prevent it from going negative.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

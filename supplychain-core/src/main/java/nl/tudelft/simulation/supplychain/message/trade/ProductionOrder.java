@@ -13,7 +13,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * An ProductionOrder indicates: I want to produce a certain amount of products on a certain date. The attributes "product",
  * "amount", and "date" make up the production order. <br>
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

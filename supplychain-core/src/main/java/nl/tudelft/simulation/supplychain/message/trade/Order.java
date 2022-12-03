@@ -1,11 +1,10 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.io.Serializable;
-
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -13,7 +12,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * "amount", "date" and "price" make up the order. Several implementations of the order can be made, i.e. a version that is
  * based on a Quote, or a version where the Order is the start of the entire chain.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -24,20 +23,20 @@ public abstract class Order extends TradeMessage
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** the delivery date as ordered */
+    /** the delivery date as ordered. */
     private Time deliveryDate;
 
     /**
      * Constructor for an order. This abstract constructor has to be called by every extending class.
      * @param sender SupplyChainActor; the sender actor of the message content
      * @param receiver SupplyChainActor; the receving actor of the message content
-     * @param internalDemandId the internal demand that triggered the order
+     * @param internalDemand the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      */
-    public Order(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+    public Order(final MessageType type, final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
             final Time deliveryDate)
     {
-        super(sender, receiver, internalDemandId);
+        super(type, sender, receiver, internalDemand.getInternalDemandId());
         this.deliveryDate = deliveryDate;
     }
 

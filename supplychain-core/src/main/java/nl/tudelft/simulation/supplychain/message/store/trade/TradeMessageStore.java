@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.contentstore.memory;
+package nl.tudelft.simulation.supplychain.message.store.trade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,114 +13,93 @@ import org.djutils.exceptions.Throw;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Bill;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.InternalDemand;
-import nl.tudelft.simulation.supplychain.content.Order;
-import nl.tudelft.simulation.supplychain.content.OrderBasedOnQuote;
-import nl.tudelft.simulation.supplychain.content.OrderConfirmation;
-import nl.tudelft.simulation.supplychain.content.OrderStandAlone;
-import nl.tudelft.simulation.supplychain.content.Payment;
-import nl.tudelft.simulation.supplychain.content.Quote;
-import nl.tudelft.simulation.supplychain.content.RequestForQuote;
-import nl.tudelft.simulation.supplychain.content.Shipment;
-import nl.tudelft.simulation.supplychain.content.ShipmentQuality;
-import nl.tudelft.simulation.supplychain.content.YellowPageAnswer;
-import nl.tudelft.simulation.supplychain.content.YellowPageRequest;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.MessageType;
+import nl.tudelft.simulation.supplychain.message.trade.Bill;
+import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
+import nl.tudelft.simulation.supplychain.message.trade.Order;
+import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
+import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
+import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
+import nl.tudelft.simulation.supplychain.message.trade.Payment;
+import nl.tudelft.simulation.supplychain.message.trade.Quote;
+import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
+import nl.tudelft.simulation.supplychain.message.trade.ShipmentQuality;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 
 /**
- * The ContentStore is taking care of storing content for later use, for instance for matching purposes. It acts as a kind of
- * primitive database system. In this implementation, all the messages are linked to an InternalDemand, as this sets off the
- * whole chain of messages, no matter whether it is a purchase, internal production, or stock replenishment: in all cases the
- * InternalDemand triggers all the other messages. <br>
+ * The TradeMessageStore is taking care of storing messages for later use, for instance for matching purposes. It acts as a kind
+ * of primitive database system. In this implementation, all the trade messages are linked to an InternalDemand, as this sets
+ * off the whole chain of messages, no matter whether it is a purchase, internal production, or stock replenishment: in all
+ * cases the InternalDemand triggers all the other messages. <br>
  * <br>
- * The ContentStore has a HashMap called internalDemandMap that maps the internal demand's uniqueID onto the so-called
- * contentClassMap. This map has the Content's class as key, and maps that onto an ArrayList called 'contentList', which
- * contains all the contents sent or received in order of arrival or sending.
+ * The MessageStore has a HashMap called internalDemandMap that maps the internal demand's internaldemandId onto the message
+ * type map. This map has the Content's class as key, and maps that onto an ArrayList called 'messageList', which contains all
+ * the contents sent or received in order of arrival or sending.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class ContentStore extends EventProducer implements ContentStoreInterface
+public class TradeMessageStore extends EventProducer implements TradeMessageStoreInterface
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the received content */
-    private Map<Serializable, Map<Class<?>, List<Content>>> internalDemandMap =
-            Collections.synchronizedMap(new LinkedHashMap<Serializable, Map<Class<?>, List<Content>>>());
+    /** the received content. */
+    private Map<Long, Map<MessageType, List<Message>>> internalDemandMap = Collections.synchronizedMap(new LinkedHashMap<>());
 
-    /** the received content, latest state */
-    private Map<Class<?>, List<Content>> receivedStateMap =
-            Collections.synchronizedMap(new LinkedHashMap<Class<?>, List<Content>>());
+    /** the received content, latest state. */
+    private Map<MessageType, List<Message>> receivedStateMap = Collections.synchronizedMap(new LinkedHashMap<>());
 
-    /** the sent content, latest state */
-    private Map<Class<?>, List<Content>> sentStateMap =
-            Collections.synchronizedMap(new LinkedHashMap<Class<?>, List<Content>>());
+    /** the sent content, latest state. */
+    private Map<MessageType, List<Message>> sentStateMap = Collections.synchronizedMap(new LinkedHashMap<>());
 
-    /** the owner */
+    /** the owner. */
     private SupplyChainActor owner;
-
-    /** true for debug */
-    private static final boolean DEBUG = false;
-
-    /**
-     * Constructs a new ContentStore
-     */
-    public ContentStore()
-    {
-        super();
-    }
 
     /** {@inheritDoc} */
     @Override
     public void setOwner(final SupplyChainActor owner)
     {
+        Throw.whenNull(owner, "owner cannot be null");
         Throw.when(this.owner != null, RuntimeException.class,
-                "ContentStore - setting owner for %s while it has been set before", owner.toString());
+                "MessageStore - setting owner for %s while it has been set before", owner.toString());
         this.owner = owner;
     }
 
-    /**
-     * Method addContent stores a new Content object into the store.
-     * @param content the content to add
-     * @param sent sent or not
-     */
-    public synchronized void addContent(final Content content, final boolean sent)
+    /** {@inheritDoc} */
+    @Override
+    public synchronized void addMessage(final TradeMessage message, final boolean sent)
     {
-        Throw.whenNull(this.owner, "ContentStore - owner has not been initialized");
-        if (ContentStore.DEBUG)
-        {
-            System.err.println("t=" + this.owner.getSimulatorTime() + " DEBUG -- CONTENTSTORE of actor " + this.owner
-                    + " -- ADD uniqueId=" + content.getUniqueID() + ", IDid=" + content.getInternalDemandID() + " (" + sent
-                    + "): " + content);
-        }
+        Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
 
-        Serializable identifier = content.getInternalDemandID();
+        long identifier = message.getInternalDemandId();
         // look if the internal demand already exists
-        Map<Class<?>, List<Content>> contentMap = this.internalDemandMap.get(identifier);
-        if (contentMap == null)
+        Map<MessageType, List<TradeMessage>> messageMap = this.internalDemandMap.get(identifier);
+        if (messageMap == null)
         {
-            contentMap = new LinkedHashMap<Class<?>, List<Content>>();
-            this.internalDemandMap.put(identifier, contentMap);
+            messageMap = new LinkedHashMap<MessageType, List<TradeMessage>>();
+            this.internalDemandMap.put(identifier, messageMap);
         }
-        // look if the content class already exists in the contentMap
-        List<Content> contentList = contentMap.get(content.getClass());
-        if (contentList == null)
+        // look if the content class already exists in the messageMap
+        List<TradeMessage> messageList = messageMap.get(message.getType());
+        if (messageList == null)
         {
-            contentList = new ArrayList<Content>();
-            contentMap.put(content.getClass(), contentList);
+            messageList = new ArrayList<TradeMessage>();
+            messageMap.put(message.getType(), messageList);
         }
         // add the new content to the end of the list
-        contentList.add(content);
+        messageList.add(message);
         //
-        Class<?> contentClass = foldExtendedContentClass(content);
+        MessageType contentClass = foldExtendedContentClass(message);
         // look if the content class already exists
-        Map<Class<?>, List<Content>> srMap;
+        Map<MessageType, List<TradeMessage>> srMap;
         if (sent)
         {
             srMap = this.sentStateMap;
@@ -129,57 +108,45 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
         {
             srMap = this.receivedStateMap;
         }
-        List<Content> srList = srMap.get(contentClass);
+        List<TradeMessage> srList = srMap.get(contentClass);
         if (srList == null)
         {
-            srList = new ArrayList<Content>();
+            srList = new ArrayList<TradeMessage>();
             srMap.put(contentClass, srList);
         }
         // add the new content to the end of the list
-        srList.add(content);
+        srList.add(message);
         // old content...
-        removeOldStateContent(content, sent, identifier);
+        removeOldStateContent(message, sent, identifier);
     }
 
-    /**
-     * Method removeContent removes a Content object from the store.
-     * @param content the content to remove
-     * @param sent indicates whether the content was sent or received
-     */
-    public synchronized void removeContent(final Content content, final boolean sent)
+    /** {@inheritDoc} */
+    @Override
+    public synchronized void removeMessage(final TradeMessage message, final boolean sent)
     {
-        Throw.whenNull(this.owner, "ContentStore - owner has not been initialized");
-        if (ContentStore.DEBUG)
-        {
-            System.err.println("t=" + this.owner.getSimulatorTime() + " DEBUG -- CONTENTSTORE of actor " + this.owner
-                    + " -- REMOVE uniqueId=" + content.getUniqueID() + ", IDid=" + content.getInternalDemandID() + " (" + sent
-                    + "): " + content);
-        }
+        Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
 
-        Serializable identifier = content.getInternalDemandID();
+        Serializable identifier = message.getInternalDemandId();
         // remove from InternalDemand map
-        Map<Class<?>, List<Content>> contentMap = this.internalDemandMap.get(identifier);
-        if (contentMap != null)
+        Map<MessageType, List<TradeMessage>> messageMap = this.internalDemandMap.get(identifier);
+        if (messageMap != null)
         {
-            List<Content> contentList = contentMap.get(content.getClass());
-            if (contentList != null)
+            List<TradeMessage> messageList = messageMap.get(message.getType());
+            if (messageList != null)
             {
-                contentList.remove(content);
+                messageList.remove(message);
             }
         }
-        this.removeSentReceivedContent(content, sent);
+        this.removeSentReceivedMessage(message, sent);
     }
 
-    /**
-     * Method removeSentReceivedContent removes a Content object from the sent / received store.
-     * @param content the content to remove
-     * @param sent indicates whether the content was sent or received
-     */
-    public synchronized void removeSentReceivedContent(final Content content, final boolean sent)
+    /** {@inheritDoc} */
+    @Override
+    public synchronized void removeSentReceivedMessage(final Message message, final boolean sent)
     {
-        Throw.whenNull(this.owner, "ContentStore - owner has not been initialized");
-        Class<?> contentClass = foldExtendedContentClass(content);
-        Map<Class<?>, List<Content>> srMap;
+        Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
+        MessageType contentClass = foldExtendedContentClass(message);
+        Map<MessageType, List<TradeMessage>> srMap;
         if (sent)
         {
             srMap = this.sentStateMap;
@@ -191,60 +158,58 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
         List<?> srList = srMap.get(contentClass);
         if (srList != null)
         {
-            srList.remove(content);
+            srList.remove(message);
         }
     }
 
-    /**
-     * Method removeAllContent removes an exisiting Content object from the store. No error message is given when the content
-     * was not there; this is just ignored.
-     * @param internalDemandID the identifier of the internal demand
-     */
-    public void removeAllContent(final Serializable internalDemandID)
+    /** {@inheritDoc} */
+    @Override
+    public void removeAllMessages(final long internalDemandId)
     {
-        Throw.whenNull(this.owner, "ContentStore - owner has not been initialized");
-        Map<?, ?> contentMap = this.internalDemandMap.get(internalDemandID);
-        if (contentMap != null)
+        Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
+        Map<MessageType, List<TradeMessage>> messageMap = this.internalDemandMap.get(internalDemandId);
+        if (messageMap != null)
         {
-            removeContentList(contentMap, YellowPageRequest.class);
-            removeContentList(contentMap, YellowPageAnswer.class);
-            removeContentList(contentMap, RequestForQuote.class);
-            removeContentList(contentMap, Quote.class);
-            removeContentList(contentMap, Order.class);
-            removeContentList(contentMap, OrderStandAlone.class);
-            removeContentList(contentMap, OrderBasedOnQuote.class);
-            removeContentList(contentMap, OrderConfirmation.class);
-            removeContentList(contentMap, Shipment.class);
-            removeContentList(contentMap, Bill.class);
-            removeContentList(contentMap, Payment.class);
-            removeContentList(contentMap, InternalDemand.class);
+            removeMessageList(messageMap, YellowPageRequest.class);
+            removeMessageList(messageMap, YellowPageAnswer.class);
+            removeMessageList(messageMap, RequestForQuote.class);
+            removeMessageList(messageMap, Quote.class);
+            removeMessageList(messageMap, Order.class);
+            removeMessageList(messageMap, OrderStandalone.class);
+            removeMessageList(messageMap, OrderBasedOnQuote.class);
+            removeMessageList(messageMap, OrderConfirmation.class);
+            removeMessageList(messageMap, Shipment.class);
+            removeMessageList(messageMap, Bill.class);
+            removeMessageList(messageMap, Payment.class);
+            removeMessageList(messageMap, InternalDemand.class);
         }
-        removeInternalDemand(internalDemandID);
+        removeInternalDemand(internalDemandId);
     }
 
     /**
      * Private, local method to remove all the content from one of the lists in the internalDemandMap for a certain
-     * internalDemandID for a certain class.
-     * @param contentMap the Map for one internal demand ID to clean
-     * @param clazz the class to search for
+     * internalDemandId for a certain message type.
+     * @param messageMap Map; the Map for one internal demand ID to clean
+     * @param messageType MessageType; the message type to search for
      */
-    private synchronized void removeContentList(final Map<?, ?> contentMap, final Class<?> clazz)
+    private synchronized void removeMessageList(final Map<MessageType, List<TradeMessage>> messageMap,
+            final MessageType messageType)
     {
-        List<?> contentList = (List<?>) contentMap.get(clazz);
-        if (contentList != null)
+        List<TradeMessage> messageList = messageMap.get(messageType);
+        if (messageList != null)
         {
-            int oldSize = contentList.size();
-            while (contentList.size() > 0)
+            int oldSize = messageList.size();
+            while (messageList.size() > 0)
             {
-                Content content = (Content) contentList.remove(0);
-                this.removeContent(content, true);
-                this.removeContent(content, false);
-                if (oldSize == contentList.size())
+                TradeMessage message = messageList.remove(0);
+                this.removeMessage(message, true);
+                this.removeMessage(message, false);
+                if (oldSize == messageList.size())
                 {
-                    Logger.error("removeAllContent - object not removed from list for {}", clazz);
+                    Logger.error("removeAllContent - object not removed from list for {}", messageType);
                     break;
                 }
-                oldSize = contentList.size();
+                oldSize = messageList.size();
             }
         }
     }
@@ -252,82 +217,81 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
     /**
      * As we seldomly have a pointer to the InternalDemand object, deleting an InternalDemand object is carried out through its
      * ID.
-     * @param internalDemandID the identifier of the internal demand
+     * @param internalDemandId the identifier of the internal demand
      */
-    protected void removeInternalDemand(final Serializable internalDemandID)
+    protected void removeInternalDemand(final long internalDemandId)
     {
-        Throw.whenNull(this.owner, "ContentStore - owner has not been initialized");
-        Map<?, ?> idMap = null;
-        idMap = this.internalDemandMap.remove(internalDemandID);
+        Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
+        Map<Long, TradeMessage idMap = null;
+        idMap = this.internalDemandMap.remove(internalDemandId);
 
         if (idMap != null)
         {
-            List<?> contentList = (List<?>) idMap.get(InternalDemand.class);
-            if (contentList != null)
+            List<?> messageList = (List<?>) idMap.get(InternalDemand.class);
+            if (messageList != null)
             {
-                for (int i = 0; i < contentList.size(); i++)
+                for (int i = 0; i < messageList.size(); i++)
                 {
-                    Content content = (Content) contentList.get(i);
-                    this.removeContent(content, true);
-                    this.removeContent(content, false);
+                    Message message = (Message) messageList.get(i);
+                    this.removeMessage(message, true);
+                    this.removeMessage(message, false);
                 }
             }
         }
     }
 
     /**
-     * Method getContentList returns a list of Content objects of type clazz based on the internalDemandID.
-     * @param internalDemandID the identifier of the content
+     * Method getContentList returns a list of Content objects of type clazz based on the internalDemandId.
+     * @param internalDemandId the identifier of the content
      * @param clazz the content class to look for
-     * @return returns a list of content of type class based on the internalDemandID
+     * @return returns a list of content of type class based on the internalDemandId
      */
     @SuppressWarnings("unchecked")
-    public <C extends Content> List<C> getContentList(final Serializable internalDemandID, final Class<C> clazz)
+    public <C extends Message> List<C> getContentList(final long internalDemandId, final Class<C> clazz)
     {
-        List<C> contentList = new ArrayList<>();
-        for (Content content : this.internalDemandMap.get(internalDemandID).get(clazz))
+        List<C> messageList = new ArrayList<>();
+        for (Message content : this.internalDemandMap.get(internalDemandId).get(clazz))
         {
-            contentList.add((C) content);
+            messageList.add((C) content);
         }
-        return contentList;
+        return messageList;
     }
 
     /**
-     * Method getContentList returns the Content object of type clazz based on the internalDemandID, for either sent or received
+     * Method getContentList returns the Content object of type clazz based on the internalDemandId, for either sent or received
      * items.
-     * @param internalDemandID the identifier of the content
+     * @param internalDemandId the identifier of the content
      * @param clazz the content class to look for
      * @param sent indicates whether the content was sent or received
-     * @return returns a list of content of type class based on the internalDemandID
+     * @return returns a list of content of type class based on the internalDemandId
      */
     @SuppressWarnings("unchecked")
-    public <C extends Content> List<C> getContentList(final Serializable internalDemandID, final Class<C> clazz,
-            final boolean sent)
+    public <C extends Message> List<C> getContentList(final long internalDemandId, final Class<C> clazz, final boolean sent)
     {
-        Class<?> contentClass = clazz;
-        if (clazz.equals(OrderBasedOnQuote.class) || clazz.equals(OrderStandAlone.class))
+        MessageType contentClass = clazz;
+        if (clazz.equals(OrderBasedOnQuote.class) || clazz.equals(OrderStandalone.class))
         {
             contentClass = Order.class;
         }
 
-        Map<Class<?>, List<Content>> contentMap;
+        Map<MessageType, List<TradeMessage>> messageMap;
         if (sent)
         {
-            contentMap = this.sentStateMap;
+            messageMap = this.sentStateMap;
         }
         else
         {
-            contentMap = this.receivedStateMap;
+            messageMap = this.receivedStateMap;
         }
-        List<Content> contentList = contentMap.get(contentClass);
+        List<TradeMessage> messageList = messageMap.get(contentClass);
         List<C> result = new ArrayList<>();
-        if (contentList != null)
+        if (messageList != null)
         {
-            Iterator<Content> it = contentList.iterator();
+            Iterator<TradeMessage> it = messageList.iterator();
             while (it.hasNext())
             {
-                Content itContent = it.next();
-                if (itContent.getInternalDemandID().equals(internalDemandID))
+                Message itContent = it.next();
+                if (itContent.getInternalDemandId() == internalDemandId)
                 {
                     result.add((C) itContent);
                 }
@@ -341,7 +305,7 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
      * @param sent indicates whether the content is sent or received
      * @param internalDemandId the internal demand id
      */
-    private void removeOldStateContent(final Content content, final boolean sent, final Serializable internalDemandId)
+    private void removeOldStateContent(final Message content, final boolean sent, final long internalDemandId)
     {
         // remove "old" data
         if (!sent && content instanceof Quote)
@@ -350,13 +314,13 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             if (rfqList.size() == 0)
             {
                 // TODO is this needed?
-                if (ContentStore.DEBUG)
+                if (TradeMessageStore.DEBUG)
                 {
                     // only do this when debugging, otherwise during
                     // testing the error files grow extremely large
                     Logger.warn("t=" + this.owner.getSimulatorTime()
-                            + " removeOldStateContent - could not find RFQ for quote uniqueId=" + content.getUniqueID()
-                            + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                            + " removeOldStateContent - could not find RFQ for quote uniqueId=" + content.getUniqueId()
+                            + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
                 }
             }
             else
@@ -364,7 +328,7 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
                 for (int i = 0; i < rfqList.size(); i++)
                 {
                     RequestForQuote rfq = (RequestForQuote) rfqList.get(i);
-                    removeSentReceivedContent(rfq, true);
+                    removeSentReceivedMessage(rfq, true);
                 }
             }
         }
@@ -374,15 +338,15 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             if (quoteList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
-                        + " removeOldStateContent - could not find quote for order uniqueId=" + content.getUniqueID()
-                        + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                        + " removeOldStateContent - could not find quote for order uniqueId=" + content.getUniqueId()
+                        + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
                 for (int i = 0; i < quoteList.size(); i++)
                 {
                     Quote quote = (Quote) quoteList.get(i);
-                    removeSentReceivedContent(quote, false);
+                    removeSentReceivedMessage(quote, false);
                 }
             }
         }
@@ -393,14 +357,14 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
                         + " removeOldStateContent - could not find order for order confirmation uniqueId="
-                        + content.getUniqueID() + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                        + content.getUniqueId() + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
                 for (int i = 0; i < orderList.size(); i++)
                 {
                     Order order = (Order) orderList.get(i);
-                    removeSentReceivedContent(order, true);
+                    removeSentReceivedMessage(order, true);
                 }
             }
         }
@@ -411,14 +375,14 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
                         + " removeOldStateContent - could not find order confirmation for shipment uniqueId="
-                        + content.getUniqueID() + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                        + content.getUniqueId() + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
                 for (int i = 0; i < orderConfirmationList.size(); i++)
                 {
                     OrderConfirmation orderConfirmation = (OrderConfirmation) orderConfirmationList.get(i);
-                    removeSentReceivedContent(orderConfirmation, false);
+                    removeSentReceivedMessage(orderConfirmation, false);
                 }
             }
         }
@@ -434,15 +398,15 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             if (billList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
-                        + " removeOldStateContent - could not find bill for payment uniqueId=" + content.getUniqueID()
-                        + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                        + " removeOldStateContent - could not find bill for payment uniqueId=" + content.getUniqueId()
+                        + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
                 for (int i = 0; i < billList.size(); i++)
                 {
                     Bill bill = (Bill) billList.get(i);
-                    removeSentReceivedContent(bill, false);
+                    removeSentReceivedMessage(bill, false);
                 }
             }
         }
@@ -453,14 +417,14 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             List<?> rfqList = getContentList(internalDemandId, RequestForQuote.class, false);
             if (rfqList.size() == 0)
             {
-                if (ContentStore.DEBUG)
+                if (TradeMessageStore.DEBUG)
                 {
                     // only do this when debugging, otherwise during
                     // testing the error files grow extremely large
 
                     Logger.warn("t=" + this.owner.getSimulatorTime()
-                            + " removeOldStateContent2 - could not find RFQ for quote uniqueId=" + content.getUniqueID()
-                            + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                            + " removeOldStateContent2 - could not find RFQ for quote uniqueId=" + content.getUniqueId()
+                            + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
                 }
             }
             else
@@ -468,7 +432,7 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
                 for (int i = 0; i < rfqList.size(); i++)
                 {
                     RequestForQuote rfq = (RequestForQuote) rfqList.get(i);
-                    removeSentReceivedContent(rfq, false);
+                    removeSentReceivedMessage(rfq, false);
                 }
             }
         }
@@ -478,15 +442,15 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             if (quoteList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
-                        + " removeOldStateContent2 - could not find quote for order uniqueId=" + content.getUniqueID()
-                        + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                        + " removeOldStateContent2 - could not find quote for order uniqueId=" + content.getUniqueId()
+                        + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
                 for (int i = 0; i < quoteList.size(); i++)
                 {
                     Quote quote = (Quote) quoteList.get(i);
-                    removeSentReceivedContent(quote, true);
+                    removeSentReceivedMessage(quote, true);
                 }
             }
         }
@@ -497,14 +461,14 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
                         + " removeOldStateContent2 - could not find order for order confirmation uniqueId="
-                        + content.getUniqueID() + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                        + content.getUniqueId() + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
                 for (int i = 0; i < orderList.size(); i++)
                 {
                     Order order = (Order) orderList.get(i);
-                    removeSentReceivedContent(order, false);
+                    removeSentReceivedMessage(order, false);
                 }
             }
         }
@@ -515,14 +479,14 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
                         + " removeOldStateContent2 - could not find order confirmation for shipment uniqueId="
-                        + content.getUniqueID() + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                        + content.getUniqueId() + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
                 for (int i = 0; i < orderConfirmationList.size(); i++)
                 {
                     OrderConfirmation orderConfirmation = (OrderConfirmation) orderConfirmationList.get(i);
-                    removeSentReceivedContent(orderConfirmation, true);
+                    removeSentReceivedMessage(orderConfirmation, true);
                 }
             }
         }
@@ -538,15 +502,15 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
             if (billList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
-                        + " removeOldStateContent - could not find bill for payment uniqueId=" + content.getUniqueID()
-                        + ", IDid=" + content.getInternalDemandID() + " " + content.toString());
+                        + " removeOldStateContent - could not find bill for payment uniqueId=" + content.getUniqueId()
+                        + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
                 for (int i = 0; i < billList.size(); i++)
                 {
                     Bill bill = (Bill) billList.get(i);
-                    removeSentReceivedContent(bill, true);
+                    removeSentReceivedMessage(bill, true);
                 }
             }
         }
@@ -556,14 +520,14 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
     /**
      * This method folds back extended content classes onto their basic class. Examples are OrderBasedOnQuote and
      * OrderStandAlone that are mapped back onto 'Order' to simplify the business logic, acause the business logic now only has
-     * to deal with an 'Order' in the ContentStore, and not with each of the separate extensions.
+     * to deal with an 'Order' in the MessageStore, and not with each of the separate extensions.
      * @param content the content of which to fold the class
      * @return returns the class of the fold extended content class
      */
-    protected Class<?> foldExtendedContentClass(final Content content)
+    protected MessageType foldExtendedContentClass(final Message content)
     {
-        Class<?> contentClass = content.getClass();
-        if (contentClass.equals(OrderBasedOnQuote.class) || contentClass.equals(OrderStandAlone.class))
+        MessageType contentClass = content.getClass();
+        if (contentClass.equals(OrderBasedOnQuote.class) || contentClass.equals(OrderStandalone.class))
         {
             contentClass = Order.class;
         }
@@ -575,8 +539,9 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
     }
 
     /**
-     * @return Returns the owner.
+     * @return the owner.
      */
+    @Override
     public SupplyChainActor getOwner()
     {
         return this.owner;
@@ -586,7 +551,7 @@ public class ContentStore extends EventProducer implements ContentStoreInterface
     @Override
     public Serializable getSourceId()
     {
-        return this.owner.getName() + ".ContentStore";
+        return this.owner.getName() + ".MessageStore";
     }
 
 }

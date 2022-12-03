@@ -13,7 +13,7 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
  * buildings, other resources on an interval (e.g. monthly) basis. When the interval or amount is changed, the scheduling
  * changes immediately and the amount is effective in the next scheduled fixed cost event.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

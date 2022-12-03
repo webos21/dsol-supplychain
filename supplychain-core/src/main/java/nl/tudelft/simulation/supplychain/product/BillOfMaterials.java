@@ -15,7 +15,7 @@ import org.djutils.immutablecollections.ImmutableMap;
  * the Unit is a Unit.CONTAINER20FT, the amounts in the BillOfMaterials (in their own SKUs) indicate the quantities needed to
  * produce one 20 ft container load of end product.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

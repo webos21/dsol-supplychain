@@ -6,7 +6,7 @@ import nl.tudelft.simulation.supplychain.message.Message;
 /**
  * The EmptyMessageStore does not store anything. E.g., for the YellowPage that does not need to keep track of messages.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

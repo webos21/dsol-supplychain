@@ -11,7 +11,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * is provided by te central SupplyChainModel. Furthermore, it knows nothing more than a sender and a receiver. Content is
  * abstract, as it should be subclassed to give it a sensible 'payload'.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

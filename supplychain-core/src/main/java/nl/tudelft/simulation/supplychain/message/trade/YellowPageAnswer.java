@@ -1,17 +1,16 @@
-package nl.tudelft.simulation.supplychain.message.yp;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 import java.util.List;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
  * The YellowPageAnswer is the answer from a Yellow Page actor to a YellowPageRequest. It contains a list of actors that might
  * sell a product or service that was asked for in the YellowPageRequest.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

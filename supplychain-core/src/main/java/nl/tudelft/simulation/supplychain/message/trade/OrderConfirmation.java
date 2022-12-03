@@ -12,7 +12,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * This would mean: we cannot get the products to you it at the requested date, nor do we have the amount you asked for in
  * stock. Helper methods are available to find out the reason(s) for failing when the confirmation is negative.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

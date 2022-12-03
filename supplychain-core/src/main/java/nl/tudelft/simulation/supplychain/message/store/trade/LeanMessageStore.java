@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.contentstore.memory;
+package nl.tudelft.simulation.supplychain.message.store.trade;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -10,45 +10,46 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.content.Bill;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.InternalDemand;
-import nl.tudelft.simulation.supplychain.content.OrderBasedOnQuote;
-import nl.tudelft.simulation.supplychain.content.OrderConfirmation;
-import nl.tudelft.simulation.supplychain.content.OrderStandAlone;
-import nl.tudelft.simulation.supplychain.content.Payment;
-import nl.tudelft.simulation.supplychain.content.ProductionOrder;
-import nl.tudelft.simulation.supplychain.content.Quote;
-import nl.tudelft.simulation.supplychain.content.RequestForQuote;
-import nl.tudelft.simulation.supplychain.content.Shipment;
-import nl.tudelft.simulation.supplychain.content.YellowPageAnswer;
-import nl.tudelft.simulation.supplychain.content.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.Bill;
+import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
+import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
+import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
+import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
+import nl.tudelft.simulation.supplychain.message.trade.Payment;
+import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
+import nl.tudelft.simulation.supplychain.message.trade.Quote;
+import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 
 /**
- * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * <p>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class LeanContentStore extends ContentStore
+public class LeanMessageStore extends TradeMessageStore
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the simulator to schedule time-out events */
     protected SCSimulatorInterface simulator;
 
     /** the map of unanswered content */
-    private Map<Serializable, Content> unansweredContentMap =
-            Collections.synchronizedMap(new LinkedHashMap<Serializable, Content>());
+    private Map<Serializable, TradeMessage> unansweredContentMap =
+            Collections.synchronizedMap(new LinkedHashMap<Serializable, TradeMessage>());
 
     /**
      * @param simulator the simulator
      */
-    public LeanContentStore(final SCSimulatorInterface simulator)
+    public LeanMessageStore(final SCSimulatorInterface simulator)
     {
         super();
         this.simulator = simulator;
@@ -56,7 +57,7 @@ public class LeanContentStore extends ContentStore
 
     /** {@inheritDoc} */
     @Override
-    public synchronized void addContent(final Content content, final boolean sent)
+    public synchronized void addContent(final Message content, final boolean sent)
     {
         super.addContent(content, sent);
         Class<?> contentClass = content.getClass();
@@ -66,7 +67,7 @@ public class LeanContentStore extends ContentStore
             if (InternalDemand.class.isAssignableFrom(contentClass))
             {
                 InternalDemand internalDemand = (InternalDemand) content;
-                this.unansweredContentMap.put(content.getUniqueID(), content);
+                this.unansweredContentMap.put(content.getUniqueId(), content);
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), internalDemand.getLatestDeliveryDate());
                 this.simulator.scheduleEventAbs(date, this, this, "internalDemandTimeout",
                         new Serializable[] {internalDemand, Boolean.valueOf(sent)});
@@ -74,8 +75,8 @@ public class LeanContentStore extends ContentStore
             else if (RequestForQuote.class.isAssignableFrom(contentClass) && !sent)
             {
                 RequestForQuote rfq = (RequestForQuote) content;
-                this.unansweredContentMap.put(content.getUniqueID(), content);
-                this.unansweredContentMap.remove(rfq.getInternalDemandID());
+                this.unansweredContentMap.put(content.getUniqueId(), content);
+                this.unansweredContentMap.remove(rfq.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), rfq.getCutoffDate());
                 this.simulator.scheduleEventAbs(date, this, this, "requestForQuoteTimeout",
                         new Serializable[] {rfq, Boolean.valueOf(sent)});
@@ -83,8 +84,8 @@ public class LeanContentStore extends ContentStore
             else if (RequestForQuote.class.isAssignableFrom(contentClass) && sent)
             {
                 RequestForQuote rfq = (RequestForQuote) content;
-                this.unansweredContentMap.put(content.getUniqueID(), content);
-                this.unansweredContentMap.remove(rfq.getInternalDemandID());
+                this.unansweredContentMap.put(content.getUniqueId(), content);
+                this.unansweredContentMap.remove(rfq.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(),
                         rfq.getCutoffDate().plus(new Duration(1.0, DurationUnit.DAY)));
                 this.simulator.scheduleEventAbs(date, this, this, "requestForQuoteTimeout",
@@ -93,8 +94,8 @@ public class LeanContentStore extends ContentStore
             else if (Quote.class.isAssignableFrom(contentClass))
             {
                 Quote quote = (Quote) content;
-                this.unansweredContentMap.put(content.getUniqueID(), content);
-                this.unansweredContentMap.remove(quote.getRequestForQuote().getUniqueID());
+                this.unansweredContentMap.put(content.getUniqueId(), content);
+                this.unansweredContentMap.remove(quote.getRequestForQuote().getUniqueId());
                 Time date = Time.max(quote.getProposedDeliveryDate(),
                         quote.getRequestForQuote().getCutoffDate().plus(new Duration(1.0, DurationUnit.DAY)));
                 date = Time.max(date, quote.getRequestForQuote().getLatestDeliveryDate());
@@ -105,19 +106,19 @@ public class LeanContentStore extends ContentStore
             else if (OrderBasedOnQuote.class.isAssignableFrom(contentClass))
             {
                 OrderBasedOnQuote order = (OrderBasedOnQuote) content;
-                this.unansweredContentMap.put(content.getUniqueID(), content);
-                this.unansweredContentMap.remove(order.getQuote().getUniqueID());
+                this.unansweredContentMap.put(content.getUniqueId(), content);
+                this.unansweredContentMap.remove(order.getQuote().getUniqueId());
                 Time date = Time.max(order.getDeliveryDate(), order.getQuote().getProposedDeliveryDate());
                 date = Time.max(date, order.getQuote().getRequestForQuote().getLatestDeliveryDate());
                 date = Time.max(this.simulator.getAbsSimulatorTime(), date);
                 this.simulator.scheduleEventAbs(date, this, this, "orderBasedOnQuoteTimeout",
                         new Serializable[] {order, Boolean.valueOf(sent)});
             }
-            else if (OrderStandAlone.class.isAssignableFrom(contentClass))
+            else if (OrderStandalone.class.isAssignableFrom(contentClass))
             {
-                OrderStandAlone order = (OrderStandAlone) content;
-                this.unansweredContentMap.put(content.getUniqueID(), content);
-                this.unansweredContentMap.remove(order.getInternalDemandID());
+                OrderStandalone order = (OrderStandalone) content;
+                this.unansweredContentMap.put(content.getUniqueId(), content);
+                this.unansweredContentMap.remove(order.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), order.getDeliveryDate());
                 this.simulator.scheduleEventAbs(date, this, this, "orderStandAloneTimeout",
                         new Serializable[] {order, Boolean.valueOf(sent)});
@@ -125,7 +126,7 @@ public class LeanContentStore extends ContentStore
             else if (OrderConfirmation.class.isAssignableFrom(contentClass))
             {
                 OrderConfirmation orderConfirmation = (OrderConfirmation) content;
-                this.unansweredContentMap.remove(orderConfirmation.getOrder().getUniqueID());
+                this.unansweredContentMap.remove(orderConfirmation.getOrder().getUniqueId());
             }
             else if (ProductionOrder.class.isAssignableFrom(contentClass) || Shipment.class.isAssignableFrom(contentClass)
                     || Bill.class.isAssignableFrom(contentClass) || Payment.class.isAssignableFrom(contentClass)
@@ -147,10 +148,10 @@ public class LeanContentStore extends ContentStore
 
     /** {@inheritDoc} */
     @Override
-    public synchronized void removeContent(final Content content, final boolean sent)
+    public synchronized void removeContent(final TradeMessage content, final boolean sent)
     {
         super.removeContent(content, sent);
-        this.unansweredContentMap.remove(content.getUniqueID());
+        this.unansweredContentMap.remove(content.getUniqueId());
     }
 
     /**
@@ -159,7 +160,7 @@ public class LeanContentStore extends ContentStore
      */
     protected void internalDemandTimeout(final InternalDemand internalDemand, final boolean sent)
     {
-        if (this.unansweredContentMap.containsKey(internalDemand.getUniqueID()))
+        if (this.unansweredContentMap.containsKey(internalDemand.getUniqueId()))
         {
             this.removeContent(internalDemand, sent);
         }
@@ -171,10 +172,10 @@ public class LeanContentStore extends ContentStore
      */
     protected void requestForQuoteTimeout(final RequestForQuote rfq, final boolean sent)
     {
-        if (this.unansweredContentMap.containsKey(rfq.getUniqueID()))
+        if (this.unansweredContentMap.containsKey(rfq.getUniqueId()))
         {
             this.removeContent(rfq, sent);
-            super.removeInternalDemand(rfq.getInternalDemandID());
+            super.removeInternalDemand(rfq.getInternalDemandId());
         }
     }
 
@@ -184,11 +185,11 @@ public class LeanContentStore extends ContentStore
      */
     protected void quoteTimeout(final Quote quote, final boolean sent)
     {
-        if (this.unansweredContentMap.containsKey(quote.getUniqueID()))
+        if (this.unansweredContentMap.containsKey(quote.getUniqueId()))
         {
             this.removeContent(quote, sent);
             this.removeContent(quote.getRequestForQuote(), !sent);
-            super.removeInternalDemand(quote.getInternalDemandID());
+            super.removeInternalDemand(quote.getInternalDemandId());
         }
     }
 
@@ -198,12 +199,12 @@ public class LeanContentStore extends ContentStore
      */
     protected void orderBasedOnQuoteTimeout(final OrderBasedOnQuote order, final boolean sent)
     {
-        if (this.unansweredContentMap.containsKey(order.getUniqueID()))
+        if (this.unansweredContentMap.containsKey(order.getUniqueId()))
         {
             this.removeContent(order, sent);
             this.removeContent(order.getQuote(), !sent);
             this.removeContent(order.getQuote().getRequestForQuote(), sent);
-            super.removeInternalDemand(order.getInternalDemandID());
+            super.removeInternalDemand(order.getInternalDemandId());
         }
     }
 
@@ -211,12 +212,12 @@ public class LeanContentStore extends ContentStore
      * @param order the stand alone order content
      * @param sent sent or received
      */
-    protected void orderStandAloneTimeout(final OrderStandAlone order, final boolean sent)
+    protected void orderStandAloneTimeout(final OrderStandalone order, final boolean sent)
     {
-        if (this.unansweredContentMap.containsKey(order.getUniqueID()))
+        if (this.unansweredContentMap.containsKey(order.getUniqueId()))
         {
             this.removeContent(order, sent);
-            super.removeInternalDemand(order.getInternalDemandID());
+            super.removeInternalDemand(order.getInternalDemandId());
         }
     }
 }

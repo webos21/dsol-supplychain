@@ -12,7 +12,7 @@ import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface
  * Messages, but this is of course possible ti implement, e.g. to simulate risks of banks handling international transactions
  * slowly, or to simulate cyber attacks on the financial infrastructure.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

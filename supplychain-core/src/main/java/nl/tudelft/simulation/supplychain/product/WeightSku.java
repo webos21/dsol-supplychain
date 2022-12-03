@@ -9,7 +9,7 @@ import org.djunits.value.vdouble.scalar.Mass;
  * The WeightUnit is a Unit that has a certain weight as limiting / determining factor. Examples are mining materials and
  * agricultural products.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

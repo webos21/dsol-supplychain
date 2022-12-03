@@ -10,7 +10,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * A Shipment is the information for an amount of products that can be transferred from the Stock of one actor to the Stock of
  * another actor.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

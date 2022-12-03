@@ -11,7 +11,7 @@ import org.djunits.Throw;
  * density of the product. It could also provide some basic measures to translate the number of units from one Unit class to the
  * other.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

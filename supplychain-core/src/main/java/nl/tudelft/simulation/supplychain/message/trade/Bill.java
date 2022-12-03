@@ -12,7 +12,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * The bill represents a document that asks for payment for a product or service. It contains a pointer to an Order to see for
  * which exact order the actor is invoiced.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

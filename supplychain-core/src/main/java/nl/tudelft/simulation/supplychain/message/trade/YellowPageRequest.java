@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.message.yp;
+package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.io.Serializable;
 
@@ -6,14 +6,13 @@ import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Length;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
  * The YellowPageRequest is a request to a YellowPageActor to provide a list, based on some contraints, of actors who could
  * provide a certain service or sell a certain product.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

@@ -11,8 +11,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * is provided by te central SupplyChainModel. Furthermore, it knows nothing more than a sender and a receiver. Content is
  * abstract, as it should be subclassed to give it a sensible 'payload'.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -26,7 +25,7 @@ public abstract class TradeMessage extends Message
     private long internalDemandId;
 
     /**
-     * Constructs a new Content object.
+     * Constructs a new TradeMessage object.
      * @param type MessageType; the type of the message
      * @param sender SupplyChainActor; the sending actor of the message content
      * @param receiver SupplyChainActor; the receiving actor of the message content
@@ -37,6 +36,19 @@ public abstract class TradeMessage extends Message
     {
         super(type, sender, receiver);
         this.internalDemandId = internalDemandId;
+    }
+
+    /**
+     * Constructs a new TradeMessage object, specifically an InternalDemand object, where the internalDemandId is set to the
+     * value of the uniqueId.
+     * @param type MessageType; the type of the message
+     * @param sender SupplyChainActor; the sending actor of the message content
+     * @param receiver SupplyChainActor; the receiving actor of the message content
+     */
+    public TradeMessage(final MessageType type, final SupplyChainActor sender, final SupplyChainActor receiver)
+    {
+        super(type, sender, receiver);
+        this.internalDemandId = getUniqueId();
     }
 
     /**

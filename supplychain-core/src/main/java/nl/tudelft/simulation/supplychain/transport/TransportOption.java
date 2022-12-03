@@ -6,9 +6,14 @@ import java.util.List;
 import java.util.Objects;
 
 import org.djunits.Throw;
+import org.djunits.value.vdouble.scalar.Duration;
+import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.base.Identifiable;
 import org.djutils.immutablecollections.ImmutableArrayList;
 import org.djutils.immutablecollections.ImmutableList;
+
+import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
+import nl.tudelft.simulation.supplychain.product.Sku;
 
 /**
  * TransportOption describes a way to get goods from A to B. The class can incicate a singular transport mode that transports
@@ -81,6 +86,24 @@ public class TransportOption implements Identifiable, Serializable
         {
             addTransportStep(transportOptionStep);
         }
+    }
+
+    /**
+     * Return the estimated total transport duration from sender to receiver.
+     * @param sku Sku; the sku that needs to be transported
+     * @return Duration; the total transport duration including transport and transloading
+     */
+    public Duration estimatedTotalTransportDuration(final Sku sku)
+    {
+        Duration result = Duration.ZERO;
+        for (TransportOptionStep step : this.transportSteps)
+        {
+            result = result.plus(step.getEstimatedLoadingTime(sku)).plus(step.getEstimatedUnloadingTime(sku));
+            SCModelInterface model = step.getOrigin().getSimulator().getModel();
+            Length distance = model.calculateDistance(step.getOrigin().getLocation(), step.getDestination().getLocation());
+            result = result.plus(distance.divide(step.getTransportMode().getAverageSpeed()));
+        }
+        return result;
     }
 
     /** {@inheritDoc} */

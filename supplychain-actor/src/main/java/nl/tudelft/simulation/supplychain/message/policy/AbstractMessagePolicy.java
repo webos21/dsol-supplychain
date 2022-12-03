@@ -6,7 +6,7 @@ import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.MessageType;
 
 /**
- * An abstract definition of a handler with an owner.
+ * An abstract definition of a message policy with an owner.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -18,20 +18,20 @@ public abstract class AbstractMessagePolicy implements MessagePolicyInterface
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
 
-    /** the id of the handler. */
+    /** the id of the policy. */
     private final String id;
 
-    /** the owner of this handler. */
+    /** the owner of this policy. */
     private final Actor owner;
 
-    /** the message type that this handler can handle. */
+    /** the message type that this policy can handle. */
     private final MessageType messageType;
 
     /**
-     * constructs a new Handler.
-     * @param id String; the id of the handler
-     * @param owner Actor; the owner of this handler
-     * @param messageType MessageType; the message type that this handler can handle
+     * constructs a new message policy.
+     * @param id String; the id of the policy
+     * @param owner Actor; the owner of this policy
+     * @param messageType MessageType; the message type that this policy can process
      */
     public AbstractMessagePolicy(final String id, final Actor owner, final MessageType messageType)
     {

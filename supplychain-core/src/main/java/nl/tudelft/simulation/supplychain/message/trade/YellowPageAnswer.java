@@ -1,6 +1,5 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.io.Serializable;
 import java.util.List;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
@@ -10,8 +9,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * The YellowPageAnswer is the answer from a Yellow Page actor to a YellowPageRequest. It contains a list of actors that might
  * sell a product or service that was asked for in the YellowPageRequest.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -21,10 +19,10 @@ public class YellowPageAnswer extends TradeMessage
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the suppliers of the requested product */
+    /** the suppliers of the requested product. */
     private final List<SupplyChainActor> suppliers;
 
-    /** the request that triggered this yellow page anawer */
+    /** the request that triggered this yellow page anawer. */
     private final YellowPageRequest ypRequest;
 
     /**
@@ -38,7 +36,7 @@ public class YellowPageAnswer extends TradeMessage
     public YellowPageAnswer(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final List<SupplyChainActor> suppliers, final YellowPageRequest ypRequest)
     {
-        super(sender, receiver, internalDemandId);
+        super(TradeMessageTypes.YP_ANSWER, sender, receiver, internalDemandId);
         this.suppliers = suppliers;
         this.ypRequest = ypRequest;
     }

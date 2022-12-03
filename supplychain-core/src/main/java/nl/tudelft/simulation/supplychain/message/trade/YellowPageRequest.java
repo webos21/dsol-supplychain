@@ -1,7 +1,5 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.io.Serializable;
-
 import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Length;
 
@@ -12,8 +10,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * The YellowPageRequest is a request to a YellowPageActor to provide a list, based on some contraints, of actors who could
  * provide a certain service or sell a certain product.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -23,13 +20,13 @@ public class YellowPageRequest extends TradeMessage
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** maximum distance to use in the search */
+    /** maximum distance to use in the search. */
     private Length maximumDistance;
 
-    /** maximum number to return */
+    /** maximum number to return. */
     private int maximumNumber;
 
-    /** product to look for */
+    /** product to look for. */
     private Product product;
 
     /**
@@ -40,8 +37,8 @@ public class YellowPageRequest extends TradeMessage
      * @param product Product; the product we are interested in
      * @param maximumDistance the maximum distance around the 'sender' to search for suppliers
      */
-    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final Product product, final Length maximumDistance)
+    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+            final Product product, final Length maximumDistance)
     {
         this(sender, receiver, internalDemandId, product, maximumDistance, Integer.MAX_VALUE);
     }
@@ -54,8 +51,8 @@ public class YellowPageRequest extends TradeMessage
      * @param product Product; the product we are interested in
      * @param maximumNumber the maximum number of supplier to return
      */
-    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final Product product, final int maximumNumber)
+    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+            final Product product, final int maximumNumber)
     {
         this(sender, receiver, internalDemandId, product, new Length(Double.MAX_VALUE, LengthUnit.SI), maximumNumber);
     }
@@ -67,8 +64,8 @@ public class YellowPageRequest extends TradeMessage
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      */
-    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final Product product)
+    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+            final Product product)
     {
         this(sender, receiver, internalDemandId, product, new Length(Double.MAX_VALUE, LengthUnit.SI), Integer.MAX_VALUE);
     }
@@ -83,10 +80,10 @@ public class YellowPageRequest extends TradeMessage
      * @param maximumDistance the maximum distance around the 'sender' to search for suppliers
      * @param maximumNumber the maximum number of supplier to return
      */
-    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final Product product, final Length maximumDistance, final int maximumNumber)
+    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+            final Product product, final Length maximumDistance, final int maximumNumber)
     {
-        super(sender, receiver, internalDemandId);
+        super(TradeMessageTypes.YP_REQUEST, sender, receiver, internalDemandId);
         this.maximumDistance = maximumDistance;
         this.maximumNumber = maximumNumber;
         this.product = product;

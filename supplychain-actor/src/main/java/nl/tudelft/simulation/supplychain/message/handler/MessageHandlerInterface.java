@@ -28,14 +28,14 @@ public interface MessageHandlerInterface extends Identifiable, Serializable
 
     /**
      * Add a message handling policy to the handler.
-     * @param policy MessagePolicyInterface; the policy to add
+     * @param policy MessagePolicyInterface&lt;M&gt;; the policy to add
      * @param <M> the message type
      */
     <M extends Message> void addMessagePolicy(MessagePolicyInterface<M> policy);
 
     /**
      * Remove a message handling policy from the handler.
-     * @param messageClass Class&lt;? extends message&gt;; the message class of the policy to remove
+     * @param messageClass Class&lt;M&gt;; the message class of the policy to remove
      * @param policyId String; the id of the policy to remove
      * @param <M> the message type
      */

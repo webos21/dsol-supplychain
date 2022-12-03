@@ -104,7 +104,7 @@ public class InternalDemand extends TradeMessage
     @Override
     public String toString()
     {
-        return super.toString() + ", for " + this.getAmount() + " " + this.getProduct().getSKU().getName() + " of product "
+        return super.toString() + ", for " + this.getAmount() + " " + this.getProduct().getSku().getName() + " of product "
                 + this.getProduct().getName();
     }
 }

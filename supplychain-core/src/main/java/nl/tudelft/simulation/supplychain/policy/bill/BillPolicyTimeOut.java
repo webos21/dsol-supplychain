@@ -7,15 +7,16 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.banking.BankAccount;
-import nl.tudelft.simulation.supplychain.content.Bill;
-import nl.tudelft.simulation.supplychain.content.Payment;
+import nl.tudelft.simulation.supplychain.finance.BankAccount;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.trade.Bill;
+import nl.tudelft.simulation.supplychain.message.trade.Payment;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 
 /**
  * A Bill handler which has a restriction that after a time out the bill is paid automatically if not paid yet.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -23,17 +24,17 @@ import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
  */
 public class BillPolicyTimeOut extends BillPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 11L;
 
-    /** the maximum time out for a shipment */
+    /** the maximum time out for a shipment. */
     private Duration maximumTimeOut = Duration.ZERO;
 
-    /** true for debug */
+    /** true for debug. */
     private boolean debug = true;
 
     /**
-     * constructs a new BillTimeOutHandler
+     * constructs a new BillTimeOutHandler.
      * @param owner the owner
      * @param bankAccount the bank account
      * @param paymentPolicy the payment policy
@@ -48,8 +49,8 @@ public class BillPolicyTimeOut extends BillPolicy
     }
 
     /**
-     * Constructs a new BillHandler that takes care of paying exactly on time
-     * @param owner the owner of the handler.
+     * Constructs a new BillHandler that takes care of paying exactly on time.
+     * @param owner SupplyChainActor; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      * @param maximumTimeOut the maximum time out for a bill
      */
@@ -60,11 +61,11 @@ public class BillPolicyTimeOut extends BillPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public boolean handleMessage(final Message message)
     {
-        if (super.handleContent(content))
+        if (super.handleMessage(message))
         {
-            Bill bill = (Bill) content;
+            Bill bill = (Bill) message;
             try
             {
                 bill.getSender().getSimulator().scheduleEventAbs(bill.getFinalPaymentDate().plus(this.maximumTimeOut), this,
@@ -99,8 +100,8 @@ public class BillPolicyTimeOut extends BillPolicy
     {
         // make a payment to send out
         super.bankAccount.withdrawFromBalance(bill.getPrice());
-        Payment payment = new Payment(getOwner(), bill.getSender(), bill.getInternalDemandID(), bill, bill.getPrice());
-        getOwner().sendContent(payment, Duration.ZERO);
+        Payment payment = new Payment(getOwner(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
+        getOwner().sendMessage(payment, Duration.ZERO);
         if (this.debug)
         {
             System.out.println("DEBUG -- BILLTIMEOUTHANDLER: FORCED PAYMENT IMPOSED: ");

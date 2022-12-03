@@ -121,6 +121,15 @@ public class Quote extends TradeMessage
     }
 
     /**
+     * Return the proposed delivery date, based on the shipping date and the calculated shipping time.
+     * @return Time; the proposed delivery date, based on the shipping date and the calculated shipping time.
+     */
+    public Time getProposedDeliveryDate()
+    {
+        return this.proposedShippingDate.plus(this.transportOption.totalTransportDuration());
+    }
+    
+    /**
      * @return transportOption
      */
     public TransportOption getTransportOption()

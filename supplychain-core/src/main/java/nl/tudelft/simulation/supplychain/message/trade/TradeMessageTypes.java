@@ -52,9 +52,6 @@ public final class TradeMessageTypes
     /** Shipment. */
     public static final MessageType SHIPMENT = new MessageType("Shipment");
 
-    /** ShipmentQuality. */
-    public static final MessageType SHIPMENT_QUALITY = new MessageType("ShipmentQuality");
-
     /** YellowPageAnswer. */
     public static final MessageType YP_ANSWER = new MessageType("YPAnswer");
 
@@ -78,7 +75,6 @@ public final class TradeMessageTypes
         model.registerMessageType(QUOTE);
         model.registerMessageType(RFQ);
         model.registerMessageType(SHIPMENT);
-        model.registerMessageType(SHIPMENT_QUALITY);
         model.registerMessageType(YP_ANSWER);
         model.registerMessageType(YP_REQUEST);
     }

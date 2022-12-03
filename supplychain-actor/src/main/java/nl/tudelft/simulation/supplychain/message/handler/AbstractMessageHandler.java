@@ -10,11 +10,12 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
- * AbstractMessageHandler contains the base implementation of a message handler.
+ * AbstractMessageHandler contains the base implementation of a message handler. A message handler delegates the messages to one
+ * or more policies that are able to handle the message. This can be done immediately, after a delay, periodically, or after the
+ * appropriate resources are available.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -33,7 +34,8 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
     private final Actor owner;
 
     /** the message handling policies. */
-    private final Map<MessageType, List<MessagePolicyInterface>> messagePolicies = new LinkedHashMap<>();
+    private final Map<Class<? extends Message>, List<MessagePolicyInterface<? extends Message>>> messagePolicies =
+            new LinkedHashMap<>();
 
     /**
      * Create a new message queue for an actor.
@@ -50,29 +52,29 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
 
     /** {@inheritDoc} */
     @Override
-    public void addMessagePolicy(final MessagePolicyInterface policy)
+    public <M extends Message> void addMessagePolicy(final MessagePolicyInterface<M> policy)
     {
         Throw.whenNull(policy, "policy cannot be null");
-        MessageType messageType = policy.getMessageType();
-        List<MessagePolicyInterface> policyList = this.messagePolicies.get(messageType);
+        Class<M> messageClass = policy.getMessageClass();
+        List<MessagePolicyInterface<? extends Message>> policyList = this.messagePolicies.get(messageClass);
         if (policyList == null)
         {
             policyList = new ArrayList<>();
-            this.messagePolicies.put(messageType, policyList);
+            this.messagePolicies.put(messageClass, policyList);
         }
         policyList.add(policy);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void removeMessagePolicy(final MessageType messageType, final String policyId)
+    public <M extends Message> void removeMessagePolicy(final Class<M> messageClass, final String policyId)
     {
-        Throw.whenNull(messageType, "messageType cannot be null");
+        Throw.whenNull(messageClass, "messageClass cannot be null");
         Throw.whenNull(policyId, "policyId cannot be null");
-        List<MessagePolicyInterface> policyList = this.messagePolicies.get(messageType);
+        List<MessagePolicyInterface<? extends Message>> policyList = this.messagePolicies.get(messageClass);
         if (policyList != null)
         {
-            for (MessagePolicyInterface policy : policyList)
+            for (MessagePolicyInterface<? extends Message> policy : policyList)
             {
                 if (policy.getId().equals(policyId))
                 {
@@ -84,18 +86,20 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
 
     /**
      * This is the core processing of a message that was received. All appropriate actor policies are executed.
-     * @param message
+     * @param message M; the message to process
+     * @param <M> The message class to ensure that the message and policy align
      */
-    protected void processMessage(final Message message)
+    @SuppressWarnings("unchecked")
+    protected <M extends Message> void processMessage(final M message)
     {
-        List<MessagePolicyInterface> policyList = this.messagePolicies.get(message.getType());
+        List<MessagePolicyInterface<? extends Message>> policyList = this.messagePolicies.get(message.getClass());
         if (policyList == null)
         {
-            Logger.info(this.owner + " does not have a handler for " + message.getType());
+            Logger.info(this.owner + " does not have a handler for " + message.getClass().getSimpleName());
         }
-        for (MessagePolicyInterface policy : policyList)
+        for (MessagePolicyInterface<? extends Message> policy : policyList)
         {
-            policy.handleMessage(message);
+            ((MessagePolicyInterface<M>) policy).handleMessage(message);
         }
     }
 

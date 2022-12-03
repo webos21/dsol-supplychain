@@ -6,11 +6,12 @@ import org.djutils.base.Identifiable;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
- * MessageHandlerInterface priovides the contract for a message (mailbox) handler.
+ * MessageHandlerInterface priovides the contract for a message (mailbox) handler. A message handler delegates the messages to
+ * one or more policies that are able to handle the message. This can be done immediately, after a delay, periodically, or after
+ * the appropriate resources are available.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -28,15 +29,17 @@ public interface MessageHandlerInterface extends Identifiable, Serializable
     /**
      * Add a message handling policy to the handler.
      * @param policy MessagePolicyInterface; the policy to add
+     * @param <M> the message type
      */
-    void addMessagePolicy(MessagePolicyInterface policy);
+    <M extends Message> void addMessagePolicy(MessagePolicyInterface<M> policy);
 
     /**
      * Remove a message handling policy from the handler.
-     * @param messageType MessageType; the message type of the policy to remove
+     * @param messageClass Class&lt;? extends message&gt;; the message class of the policy to remove
      * @param policyId String; the id of the policy to remove
+     * @param <M> the message type
      */
-    void removeMessagePolicy(MessageType messageType, String policyId);
+    <M extends Message> void removeMessagePolicy(Class<M> messageClass, String policyId);
 
     /**
      * Handle an incoming message. This can be storing the message, handling it with a delay, or immediately handling it.

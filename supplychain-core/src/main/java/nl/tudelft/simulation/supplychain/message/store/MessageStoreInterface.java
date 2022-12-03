@@ -1,11 +1,9 @@
 package nl.tudelft.simulation.supplychain.message.store;
 
 import java.io.Serializable;
-import java.util.List;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 
 /**
  * A MessageStore is taking care of storing messages for later use, for instance for matching purposes. It acts as an ERP or
@@ -49,31 +47,6 @@ public interface MessageStoreInterface extends Serializable
      * @param sent indicates whether the message was sent or received
      */
     void removeSentReceivedMessage(Message message, boolean sent);
-
-    /**
-     * Method removeAllMessages removes an exisiting Message object from the store. No error message is given when the message
-     * was not there; this is just ignored.
-     * @param internalDemandId long; the identifier of the internal demand
-     */
-    void removeAllMessages(long internalDemandId);
-
-    /**
-     * Method getMessageList returns a list of Message objects of type 'type' based on the internalDemandId.
-     * @param internalDemandId the identifier of the message
-     * @param type the message type to look for
-     * @return returns a list of message of type 'type' based on the internalDemandId
-     */
-    List<Message> getMessageList(long internalDemandId, MessageType type);
-
-    /**
-     * Method getMessageList returns the Message object of type 'type' based on the internalDemandId, for either sent or
-     * received items.
-     * @param internalDemandId the identifier of the message
-     * @param type the message type to look for
-     * @param sent indicates whether the message was sent or received
-     * @return returns a list of message of type 'type' based on the internalDemandId
-     */
-    List<Message> getMessageList(long internalDemandId, MessageType type, boolean sent);
 
     /**
      * Return the owner.

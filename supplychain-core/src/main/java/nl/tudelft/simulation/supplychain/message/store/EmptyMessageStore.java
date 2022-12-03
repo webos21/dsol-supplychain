@@ -1,10 +1,7 @@
 package nl.tudelft.simulation.supplychain.message.store;
 
-import java.util.List;
-
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 
 /**
  * The EmptyMessageStore does not store anything. E.g., for the YellowPage that does not need to keep track of messages.
@@ -65,27 +62,6 @@ public class EmptyMessageStore implements MessageStoreInterface
     public void removeSentReceivedMessage(final Message message, final boolean sent)
     {
         // do nothing
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void removeAllMessages(final long internalDemandId)
-    {
-        // do nothing
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<Message> getMessageList(final long internalDemandId, final MessageType type)
-    {
-        return List.of();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<Message> getMessageList(final long internalDemandId, final MessageType type, final boolean sent)
-    {
-        return List.of();
     }
 
 }

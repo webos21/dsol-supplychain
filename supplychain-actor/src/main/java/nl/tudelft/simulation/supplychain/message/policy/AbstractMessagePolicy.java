@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.message.policy;
 import org.djutils.exceptions.Throw;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.message.MessageType;
+import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
  * An abstract definition of a message policy with an owner.
@@ -12,8 +12,9 @@ import nl.tudelft.simulation.supplychain.message.MessageType;
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
+ * @param <M> the message class for which this policy applies
  */
-public abstract class AbstractMessagePolicy implements MessagePolicyInterface
+public abstract class AbstractMessagePolicy<M extends Message> implements MessagePolicyInterface<M>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
@@ -24,23 +25,23 @@ public abstract class AbstractMessagePolicy implements MessagePolicyInterface
     /** the owner of this policy. */
     private final Actor owner;
 
-    /** the message type that this policy can handle. */
-    private final MessageType messageType;
+    /** the class of messages for which this policy applies. */
+    private final Class<? extends M> messageClass;
 
     /**
      * constructs a new message policy.
      * @param id String; the id of the policy
      * @param owner Actor; the owner of this policy
-     * @param messageType MessageType; the message type that this policy can process
+     * @param messageClass MessageType; the message type that this policy can process
      */
-    public AbstractMessagePolicy(final String id, final Actor owner, final MessageType messageType)
+    public AbstractMessagePolicy(final String id, final Actor owner, final Class<? extends M> messageClass)
     {
         Throw.whenNull(id, "id cannot be null");
         Throw.whenNull(owner, "owner cannot be null");
-        Throw.whenNull(messageType, "messageType cannot be null");
+        Throw.whenNull(messageClass, "messageType cannot be null");
         this.id = id;
         this.owner = owner;
-        this.messageType = messageType;
+        this.messageClass = messageClass;
     }
 
     /** {@inheritDoc} */
@@ -59,9 +60,9 @@ public abstract class AbstractMessagePolicy implements MessagePolicyInterface
 
     /** {@inheritDoc} */
     @Override
-    public MessageType getMessageType()
+    public Class<? extends M> getMessageClass()
     {
-        return this.messageType;
+        return this.messageClass;
     }
 
 }

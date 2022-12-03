@@ -2,7 +2,6 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -26,28 +25,25 @@ public abstract class TradeMessage extends Message
 
     /**
      * Constructs a new TradeMessage object.
-     * @param type MessageType; the type of the message
      * @param sender SupplyChainActor; the sending actor of the message content
      * @param receiver SupplyChainActor; the receiving actor of the message content
      * @param internalDemandId long; the InternalDemandId that triggered the chain
      */
-    public TradeMessage(final MessageType type, final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId)
+    public TradeMessage(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId)
     {
-        super(type, sender, receiver);
+        super(sender, receiver);
         this.internalDemandId = internalDemandId;
     }
 
     /**
      * Constructs a new TradeMessage object, specifically an InternalDemand object, where the internalDemandId is set to the
      * value of the uniqueId.
-     * @param type MessageType; the type of the message
      * @param sender SupplyChainActor; the sending actor of the message content
      * @param receiver SupplyChainActor; the receiving actor of the message content
      */
-    public TradeMessage(final MessageType type, final SupplyChainActor sender, final SupplyChainActor receiver)
+    public TradeMessage(final SupplyChainActor sender, final SupplyChainActor receiver)
     {
-        super(type, sender, receiver);
+        super(sender, receiver);
         this.internalDemandId = getUniqueId();
     }
 
@@ -84,7 +80,7 @@ public abstract class TradeMessage extends Message
     @Override
     public String toString()
     {
-        return this.getType().getId() + " from " + this.getSender().getName() + " to " + this.getReceiver().getName();
+        return getClass().getSimpleName() + " from " + this.getSender().getName() + " to " + this.getReceiver().getName();
     }
 
 }

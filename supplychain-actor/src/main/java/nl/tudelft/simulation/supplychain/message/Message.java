@@ -17,10 +17,7 @@ import nl.tudelft.simulation.supplychain.actor.Actor;
 public abstract class Message implements Serializable
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
-
-    /** the message type. */
-    private final MessageType type;
+    private static final long serialVersionUID = 20221203L;
 
     /** sender of the message (necessary for a possible reply). */
     private final Actor sender;
@@ -36,26 +33,15 @@ public abstract class Message implements Serializable
 
     /**
      * Construct a new message.
-     * @param type MessageType; the type of message
      * @param sender Actor; the sender
      * @param receiver Actor; the receiver
      */
-    public Message(final MessageType type, final Actor sender, final Actor receiver)
+    public Message(final Actor sender, final Actor receiver)
     {
-        this.type = type;
         this.sender = sender;
         this.receiver = receiver;
         this.timestamp = sender.getSimulatorTime();
         this.uniqueId = sender.getSimulator().getUniqueMessageId();
-    }
-
-    /**
-     * Return the type of message.
-     * @return MessageType; the message type
-     */
-    public MessageType getType()
-    {
-        return this.type;
     }
 
     /**

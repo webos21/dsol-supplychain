@@ -16,11 +16,11 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * SupplyChainHandler is the SupplyChainActor specific abstract Handler class. It has a SupplyChainActor as owner, making it
+ * SupplyChainPolicy is the SupplyChainActor specific MessagePolicy class. It has a SupplyChainActor as owner, making it
  * unnecessary to cast the Actor all the time to a SupplyChainActor. <br>
- * The generic SupplyChainHandler already has the methods to check whether the content is of the right type, and methods to do
+ * The abstract SupplyChainPolicy has the methods to check whether the content is of the right type, and methods to do
  * basic filtering on product and on the partner with whom the owner is dealing. This makes it very easy to have different
- * handlers for e.g. production orders and for purchase orders; it can be done on the basis of the message sender (in case of
+ * policies for e.g. production orders and for purchase orders; it can be done on the basis of the message sender (in case of
  * production orders the owner itself), or on the basis of the product type.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
@@ -33,11 +33,11 @@ public abstract class SupplyChainPolicy extends AbstractMessagePolicy
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** the products for which this handler is valid. */
+    /** the products for which this policy is valid. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
     protected Set<Product> validProducts = new LinkedHashSet<Product>();
 
-    /** the partner actors for which this handler is valid. */
+    /** the partner actors for which this policy is valid. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
     protected Set<SupplyChainActor> validPartners = new LinkedHashSet<SupplyChainActor>();
 
@@ -52,15 +52,15 @@ public abstract class SupplyChainPolicy extends AbstractMessagePolicy
     }
 
     /**
-     * Check Content in terms of class and owner.
-     * @param message the content to check
-     * @return returns whether the content is okay, and we are the one supposed to handle it
+     * Check Message in terms of class and owner.
+     * @param message the message to check
+     * @return returns whether the message is okay, and we are the one supposed to handle it
      */
     protected boolean checkMessage(final TradeMessage message)
     {
         if (!getMessageType().equals(message.getType()))
         {
-            Logger.warn("checkContent - Wrong content type for actor " + getOwner() + ", handler " + this.getClass() + ": "
+            Logger.warn("checkContent - Wrong content type for actor " + getOwner() + ", policy " + this.getClass() + ": "
                     + message.getClass());
             return false;
         }
@@ -73,7 +73,7 @@ public abstract class SupplyChainPolicy extends AbstractMessagePolicy
     }
 
     /**
-     * Add a valid product to the list of products to handle with this handler.
+     * Add a valid product to the list of products to handle with this policy.
      * @param product a new valid product to use
      */
     public void addValidProduct(final Product product)
@@ -99,7 +99,7 @@ public abstract class SupplyChainPolicy extends AbstractMessagePolicy
     }
 
     /**
-     * Check whether the product is of the right type for this handler.
+     * Check whether the product is of the right type for this policy.
      * @param message the content to check
      * @return whether type is right or not
      */
@@ -136,7 +136,7 @@ public abstract class SupplyChainPolicy extends AbstractMessagePolicy
     }
 
     /**
-     * Add a valid partner to the list of supply chain partners to handle with this handler.
+     * Add a valid partner to the list of supply chain partners to handle with this policy.
      * @param partner a new valid partner to use
      */
     public void addValidPartner(final SupplyChainActor partner)
@@ -162,7 +162,7 @@ public abstract class SupplyChainPolicy extends AbstractMessagePolicy
     }
 
     /**
-     * Check whether the partner actor is one that this handler can handle.
+     * Check whether the partner actor is one that this policy can handle.
      * @param content the content to check
      * @return whether partner is right or not
      */
@@ -180,19 +180,13 @@ public abstract class SupplyChainPolicy extends AbstractMessagePolicy
     }
 
     /**
-     * Check partner and content for validity for this handler.
-     * @param serContent the content to check
-     * @return boolean indicating whether the content can be handled by this handler
+     * Check partner and content for validity for this policy.
+     * @param message TradeMessage; the messageto check
+     * @return boolean; indicating whether the content can be handled by this policy
      */
-    protected boolean isValidContent(final Serializable serContent)
+    protected boolean isValidMessage(final TradeMessage message)
     {
-        if (serContent == null || !(serContent instanceof TradeMessage))
-        {
-            Logger.warn("isValidContent", "Serializable content = null, or not of type Content");
-            return false;
-        }
-        TradeMessage content = (TradeMessage) serContent;
-        return checkMessage(content) && checkValidProduct(content) && checkValidPartner(content);
+        return checkMessage(message) && checkValidProduct(message) && checkValidPartner(message);
     }
 
 }

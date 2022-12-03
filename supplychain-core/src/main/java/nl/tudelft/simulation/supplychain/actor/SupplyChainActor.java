@@ -74,7 +74,7 @@ public abstract class SupplyChainActor extends Actor
 
     /** {@inheritDoc} */
     @Override
-    protected void sendMessage(final Message message, final Duration delay)
+    public void sendMessage(final Message message, final Duration delay)
     {
         super.sendMessage(message, delay);
         if (message instanceof TradeMessage)
@@ -86,7 +86,7 @@ public abstract class SupplyChainActor extends Actor
 
     /** {@inheritDoc} */
     @Override
-    protected void sendMessage(final Message message)
+    public void sendMessage(final Message message)
     {
         super.sendMessage(message);
         if (message instanceof TradeMessage)

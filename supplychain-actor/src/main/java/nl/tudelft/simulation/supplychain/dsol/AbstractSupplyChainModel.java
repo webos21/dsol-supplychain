@@ -12,7 +12,6 @@ import nl.tudelft.simulation.dsol.experiment.StreamInformation;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.supplychain.actor.ActorType;
 import nl.tudelft.simulation.supplychain.actor.RoleType;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 
 /**
  * AbstractSupplyChainModel is the base model for supply chain models as it contains a registry of actor types and role types.
@@ -33,9 +32,6 @@ public abstract class AbstractSupplyChainModel extends AbstractDSOLModel<Duratio
 
     /** the role types. */
     private ImmutableMap<String, RoleType> roleTypes = new ImmutableLinkedHashMap<>(new LinkedHashMap<>());
-
-    /** the message types. */
-    private ImmutableMap<String, MessageType> messageTypes = new ImmutableLinkedHashMap<>(new LinkedHashMap<>());
 
     /**
      * Construct a new supply chain model with a default stream information object.
@@ -82,17 +78,6 @@ public abstract class AbstractSupplyChainModel extends AbstractDSOLModel<Duratio
 
     /** {@inheritDoc} */
     @Override
-    public void registerMessageType(final MessageType messageType)
-    {
-        Throw.when(getMessageTypes().containsKey(messageType.getId()), IllegalArgumentException.class,
-                "Duplicate registration of message type " + messageType.getId());
-        Map<String, MessageType> newMap = this.messageTypes.toMap();
-        newMap.put(messageType.getId(), messageType);
-        this.messageTypes = new ImmutableLinkedHashMap<>(newMap);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public ImmutableMap<String, ActorType> getActorTypes()
     {
         return this.actorTypes;
@@ -103,13 +88,6 @@ public abstract class AbstractSupplyChainModel extends AbstractDSOLModel<Duratio
     public ImmutableMap<String, RoleType> getRoleTypes()
     {
         return this.roleTypes;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ImmutableMap<String, MessageType> getMessageTypes()
-    {
-        return this.messageTypes;
     }
 
 }

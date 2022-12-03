@@ -8,9 +8,11 @@ import java.util.Set;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.InternalDemand;
+import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.message.policy.AbstractMessagePolicy;
+import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -21,54 +23,50 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * handlers for e.g. production orders and for purchase orders; it can be done on the basis of the message sender (in case of
  * production orders the owner itself), or on the basis of the product type.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class SupplyChainHandler extends AbstractMessagePolicy
+public abstract class SupplyChainPolicy extends AbstractMessagePolicy
 {
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** the products for which this handler is valid */
+    /** the products for which this handler is valid. */
+    @SuppressWarnings("checkstyle:visibilitymodifier")
     protected Set<Product> validProducts = new LinkedHashSet<Product>();
 
-    /** the partner actors for which this handler is valid */
+    /** the partner actors for which this handler is valid. */
+    @SuppressWarnings("checkstyle:visibilitymodifier")
     protected Set<SupplyChainActor> validPartners = new LinkedHashSet<SupplyChainActor>();
 
     /**
-     * @param owner the a that 'owns' the handler
+     * @param id String; the id of the policy
+     * @param owner Actor; the owner of this policy
+     * @param messageType MessageType; the message type that this policy can process
      */
-    public SupplyChainHandler(final SupplyChainActor owner)
+    public SupplyChainPolicy(final String id, final SupplyChainActor owner, final MessageType messageType)
     {
-        super(owner);
+        super(id, owner, messageType);
     }
 
     /**
-     * Get the content class that this handler is able to handle.
-     * @return the content class that this
-     */
-    public abstract Class<? extends Content> getContentClass();
-
-    /**
      * Check Content in terms of class and owner.
-     * @param content the content to check
+     * @param message the content to check
      * @return returns whether the content is okay, and we are the one supposed to handle it
      */
-    protected boolean checkContent(final Content content)
+    protected boolean checkMessage(final TradeMessage message)
     {
-        // e.g., PaymentHandler is assignable from PaymentFineHandler
-        if (!getContentClass().isAssignableFrom(content.getClass()))
+        if (!getMessageType().equals(message.getType()))
         {
             Logger.warn("checkContent - Wrong content type for actor " + getOwner() + ", handler " + this.getClass() + ": "
-                    + content.getClass());
+                    + message.getClass());
             return false;
         }
-        if (!content.getReceiver().equals(getOwner()))
+        if (!message.getReceiver().equals(getOwner()))
         {
-            Logger.warn("checkContent - Wrong receiver for content " + content.toString() + " sent to actor " + getOwner());
+            Logger.warn("checkContent - Wrong receiver for content " + message.toString() + " sent to actor " + getOwner());
             return false;
         }
         return true;
@@ -84,7 +82,7 @@ public abstract class SupplyChainHandler extends AbstractMessagePolicy
     }
 
     /**
-     * @return Returns the valid products.
+     * @return the valid products.
      */
     public Set<Product> getValidProducts()
     {
@@ -101,11 +99,11 @@ public abstract class SupplyChainHandler extends AbstractMessagePolicy
     }
 
     /**
-     * Check whether the product is of the right type for this handler
-     * @param content the content to check
+     * Check whether the product is of the right type for this handler.
+     * @param message the content to check
      * @return whether type is right or not
      */
-    private boolean checkValidProduct(final Content content)
+    private boolean checkValidProduct(final TradeMessage message)
     {
         if (this.validProducts == null)
         {
@@ -115,18 +113,18 @@ public abstract class SupplyChainHandler extends AbstractMessagePolicy
         {
             return true;
         }
-        if (content instanceof InternalDemand)
+        if (message instanceof InternalDemand)
         {
-            return (this.validProducts.contains(((InternalDemand) (content)).getProduct()));
+            return (this.validProducts.contains(((InternalDemand) (message)).getProduct()));
         }
-        Serializable id = content.getInternalDemandID();
+        long id = message.getInternalDemandId();
         // get the internal demand to retrieve the product
-        List<InternalDemand> storedIDs = getOwner().getContentStore().getContentList(id, InternalDemand.class);
+        List<TradeMessage> storedIDs = getOwner().getMessageStore().getMessageList(id, TradeMessageTypes.INTERNAL_DEMAND);
         if (storedIDs.size() == 0)
         {
             return false;
         }
-        InternalDemand internalDemand = storedIDs.get(0);
+        InternalDemand internalDemand = (InternalDemand) storedIDs.get(0);
         return (this.validProducts.contains(internalDemand.getProduct()));
     }
 
@@ -147,7 +145,7 @@ public abstract class SupplyChainHandler extends AbstractMessagePolicy
     }
 
     /**
-     * @return Returns the valid partners.
+     * @return the valid partners.
      */
     public Set<SupplyChainActor> getValidPartners()
     {
@@ -164,11 +162,11 @@ public abstract class SupplyChainHandler extends AbstractMessagePolicy
     }
 
     /**
-     * Check whether the partner actor is one that this handler can handle
+     * Check whether the partner actor is one that this handler can handle.
      * @param content the content to check
      * @return whether partner is right or not
      */
-    private boolean checkValidPartner(final Content content)
+    private boolean checkValidPartner(final TradeMessage content)
     {
         if (this.validPartners == null)
         {
@@ -188,12 +186,13 @@ public abstract class SupplyChainHandler extends AbstractMessagePolicy
      */
     protected boolean isValidContent(final Serializable serContent)
     {
-        if (serContent == null || !(serContent instanceof Content))
+        if (serContent == null || !(serContent instanceof TradeMessage))
         {
             Logger.warn("isValidContent", "Serializable content = null, or not of type Content");
             return false;
         }
-        Content content = (Content) serContent;
-        return checkContent(content) && checkValidProduct(content) && checkValidPartner(content);
+        TradeMessage content = (TradeMessage) serContent;
+        return checkMessage(content) && checkValidProduct(content) && checkValidPartner(content);
     }
+
 }

@@ -1,40 +1,30 @@
 package nl.tudelft.simulation.supplychain.actor;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.djunits.unit.DurationUnit;
-import org.djunits.unit.LengthUnit;
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.event.EventType;
-import org.pmw.tinylog.Logger;
+import org.djutils.metadata.MetaData;
+import org.djutils.metadata.ObjectDescriptor;
 
-import nl.tudelft.simulation.supplychain.actor.messaging.devices.components.SendingDeviceInterface;
-import nl.tudelft.simulation.supplychain.actor.messaging.devices.components.SendingReceivingDevice;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.banking.BankAccount;
-import nl.tudelft.simulation.supplychain.banking.FixedCost;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.Shipment;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
+import nl.tudelft.simulation.supplychain.finance.BankAccount;
+import nl.tudelft.simulation.supplychain.finance.FixedCost;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
-import nl.tudelft.simulation.supplychain.roles.Role;
+import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
 /**
  * A SupplyChainActor is an Actor from the Actor package with a bank account, and a way to keep track of its messages. It can
  * play certain roles, to which it can delegate the handling of its messages. It can also choose to handle messages itself.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -45,203 +35,88 @@ public abstract class SupplyChainActor extends Actor
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** the bank account of the actor. */
-    protected final BankAccount bankAccount;
-
     /** the store for the content to use. */
-    private final ContentStoreInterface contentStore;
+    private final TradeMessageStoreInterface messageStore;
 
-    /** the roles for this actor; avoid roles to be registered multiple times (Set). */
-    private Set<Role> roles = new LinkedHashSet<Role>();
+    /** the bank account of the actor. */
+    private final BankAccount bankAccount;
 
     /** the fixed costs for this supply chain actor. */
     private List<FixedCost> fixedCosts = new ArrayList<FixedCost>();
 
     /** the event to indicate that information has been sent. E.g., for animation. */
-    public static EventType SEND_CONTENT_EVENT = new EventType("SEND_CONTENT_EVENT");
+    public static final EventType SEND_MESSAGE_EVENT = new EventType("SEND_CONTENT_EVENT",
+            new MetaData("sent message", "sent message", new ObjectDescriptor("message", "message", Message.class)));
 
     /**
-     * Constructs a new SupplyChainActor.
-     * @param name the name to display for this supply chain actor
-     * @param simulator the simulator on which to schedule
-     * @param position the location for transportation calculations, which can also be used for animation purposes
-     * @param bank the bank
-     * @param contentStore the contentStore for the messages
+     * Build the SupplyChainActor with a Builder.
+     * @param builder Builder; the Builder to use
      */
-    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final ContentStoreInterface contentStore)
+    protected SupplyChainActor(final Builder builder)
     {
-        super(name, simulator, position);
-        this.bankAccount = new BankAccount(this, bank);
-        this.contentStore = contentStore;
-        this.contentStore.setOwner(this);
-    }
-
-    /**
-     * Constructs a new SupplyChainActor.
-     * @param name the name to display for this supply chain actor
-     * @param simulator the simulator on which to schedule
-     * @param position the location for transportation calculations, which can also be used for animation purposes
-     * @param bank the bank
-     * @param initialBankBalance the initial bank balance
-     * @param contentStore the contentStore for the messages
-     */
-    public SupplyChainActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
-    {
-        this(name, simulator, position, bank, contentStore);
-        this.bankAccount.addToBalance(initialBankBalance);
-    }
-
-    /**
-     * A Role wraps a set of handlers within a SupplyChainActor. A SupplyChainActor can have several roles. When handling
-     * messages, all handlers of all Roles and of the SupplyChainActor itself will be checked to see which ones can handle the
-     * content of the received message.
-     * @param role the role to add
-     */
-    public void addRole(final Role role)
-    {
-        this.roles.add(role);
-    }
-
-    /**
-     * Remove an existing role.
-     * @param role the role to remove
-     */
-    public void removeRole(final Role role)
-    {
-        this.roles.remove(role);
+        super(builder.actorType, builder.name, builder.messageHandler, builder.simulator, builder.location,
+                builder.locationDescription);
+        this.bankAccount = new BankAccount(this, builder.bank, builder.initialBalance);
+        this.messageStore = builder.contentStore;
+        this.messageStore.setOwner(this);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public void receiveMessage(final Message message)
     {
-        Logger.info(getName() + ".handleContent. id=" + ((Content) content).getInternalDemandID() + ": " + content.toString());
-        // save content in the content store
-        this.contentStore.addContent((Content) content, false);
-        boolean success = false;
-        for (Role role : this.roles)
+        super.receiveMessage(message);
+        if (message instanceof TradeMessage)
         {
-            success |= role.handleContent(content, false);
+            this.messageStore.addMessage((TradeMessage) message, false);
         }
-        for (MessagePolicyInterface handler : this.resolveContentHandlers(content.getClass()))
-        {
-            success |= handler.handleContent(content);
-        }
-        if (!success)
-        {
-            Logger.warn(
-                    "handleContent - No supply chain content handler of '{}', or one of its roles successfully handled content type {}",
-                    this.getName(), content.getClass().getSimpleName());
-        }
-        return success;
     }
 
-    /**
-     * Basic implementation of the sending of a message using the fastest device available at both the sender's and the
-     * receiver's side. The delay used here is the delay BEFORE sending will take place; in other words it is the processing
-     * time, preparation time, etc. The transfer of the message from the sending supply chain actor to the receiving supply
-     * chain actor is fully determined by the properties and state of the devices, and it will use the standard transmission
-     * delay as indicated by the device.
-     * @param content the content to pack in a Message and send
-     * @param administrativeDelay the time it will take to transmit the message
-     */
-    public void sendContent(final Content content, final Duration administrativeDelay)
+    /** {@inheritDoc} */
+    @Override
+    protected void sendMessage(final Message message, final Duration delay)
     {
-        Message message = new Message(this, content.getReceiver(), content);
-        SendingDeviceInterface sendingDevice = resolveFastestDevice(this, content.getReceiver());
-        if (sendingDevice != null)
+        super.sendMessage(message, delay);
+        if (message instanceof TradeMessage)
         {
-            try
-            {
-                if (content.getReceiver().equals(content.getSender()) && (sendingDevice instanceof SendingReceivingDevice))
-                {
-                    Serializable[] args = {message};
-                    this.simulator.scheduleEventRel(administrativeDelay, this, sendingDevice, "receive", args);
-                }
-                else
-                {
-                    if (content instanceof Shipment)
-                    {
-                        Serializable[] args = {message, sendingDevice, administrativeDelay};
-                        this.simulator.scheduleEventRel(new Duration(0.0001, DurationUnit.SECOND), this, this,
-                                "scheduledSendContent", args);
-                    }
-                    else
-                    {
-                        Serializable[] args = {message, sendingDevice};
-                        this.simulator.scheduleEventRel(new Duration(administrativeDelay.si + 0.0001, DurationUnit.SI), this,
-                                this, "scheduledSendContent", args);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.error(e, "sendContent");
-            }
+            this.messageStore.addMessage((TradeMessage) message, true);
         }
-        // save content
-        this.contentStore.addContent(content, true);
+        fireEvent(SEND_MESSAGE_EVENT, new Object[] {message});
     }
 
-    /**
-     * Delayed sending of the content, wrapped in a message. This method is scheduled by sendContent.
-     * @param message the message to send
-     * @param sendingDevice the device to use for sending.
-     */
-    protected void scheduledSendContent(final Message message, final SendingDeviceInterface sendingDevice)
+    /** {@inheritDoc} */
+    @Override
+    protected void sendMessage(final Message message)
     {
-        sendingDevice.send(message); // ignore success or failure
-        fireEvent(SEND_CONTENT_EVENT, new Object[] {message.getBody(), new Duration(1.0, DurationUnit.HOUR)});
-    }
-
-    /**
-     * Delayed sending of the content, wrapped in a message. This method is scheduled by sendContent.
-     * @param message the message to send
-     * @param sendingDevice the device to use for sending.
-     * @param delay the delay
-     */
-    protected void scheduledSendContent(final Message message, final SendingDeviceInterface sendingDevice, final Duration delay)
-    {
-        fireEvent(SEND_CONTENT_EVENT, new Object[] {message.getBody(), delay});
-        Logger.trace("SupplyChainActor: scheduledSendContent: delay in days for content: '{}', delay: {}", message.getBody(),
-                delay);
-
-        // we schedule the delayed invocation of the send content
-        try
+        super.sendMessage(message);
+        if (message instanceof TradeMessage)
         {
-            Serializable[] args = {message};
-            this.simulator.scheduleEventRel(delay, this, sendingDevice, "send", args);
-        }
-        catch (Exception exception)
-        {
-            Logger.error(exception, "scheduledSendContent");
+            this.messageStore.addMessage((TradeMessage) message, true);
         }
     }
 
     /**
-     * Add a fixed cost for this actor.
-     * @param description the description of the fixed cost
-     * @param interval the interval
-     * @param amount the amount
+     * Add a fixed cost item for this actor.
+     * @param description String; the description of the fixed cost item
+     * @param interval Duration; the interval at which the amount will be deduced from the bank account
+     * @param amount Money; the amount to deduce at each interval
      */
     public void addFixedCost(final String description, final Duration interval, final Money amount)
     {
-        FixedCost fixedCost = new FixedCost(this, this.bankAccount, description, interval, amount);
+        FixedCost fixedCost = new FixedCost(this, description, interval, amount);
         this.fixedCosts.add(fixedCost);
     }
 
     /**
-     * @return Returns the contentStore.
+     * @return the contentStore.
      */
-    public ContentStoreInterface getContentStore()
+    public TradeMessageStoreInterface getMessageStore()
     {
-        return this.contentStore;
+        return this.messageStore;
     }
 
     /**
-     * @return Returns the bankAccount.
+     * @return the bankAccount.
      */
     public BankAccount getBankAccount()
     {
@@ -249,7 +124,7 @@ public abstract class SupplyChainActor extends Actor
     }
 
     /**
-     * @return Returns the fixed costs.
+     * @return the fixed costs.
      */
     public List<FixedCost> getFixedCosts()
     {
@@ -257,23 +132,156 @@ public abstract class SupplyChainActor extends Actor
     }
 
     /**
-     * Calculates the distance to another actor.
-     * @param actor the other actor
-     * @return the distance (might be overridden if the geography is known)
+     * SupplyChainActor.Builder builds a SupplyChainActor. This class can be extended.
+     * <p>
+     * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
+     * The supply chain Java library uses a BSD-3 style license.
+     * </p>
+     * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
      */
-    public Length calculateDistance(final SupplyChainActor actor)
+    @SuppressWarnings({"checkstyle:visibilitymodifier", "checkstyle:hiddenfield"})
+    public abstract static class Builder
     {
-        // TODO: Assume kilometers for now.
-        return new Length(getLocation().distance(actor.getLocation()), LengthUnit.KILOMETER);
-    }
+        /** actorType. */
+        protected ActorType actorType;
 
-    /**
-     * Method getContentHandlers.
-     * @return returns the map with content handlers
-     */
-    public Map<Class<?>, Set<MessagePolicyInterface>> getContentHandlers()
-    {
-        return super.contentHandlers;
-    }
+        /** name. */
+        protected String name;
 
+        /** messsageHandler. */
+        protected MessageHandlerInterface messageHandler;
+
+        /** simulator. */
+        protected SCSimulatorInterface simulator;
+
+        /** location. */
+        protected OrientedPoint3d location;
+
+        /** locationDescription. */
+        protected String locationDescription;
+
+        /** bank. */
+        protected Bank bank;
+
+        /** initialbankBalance. */
+        protected Money initialBalance;
+
+        /** contentStore. */
+        protected TradeMessageStoreInterface contentStore;
+
+        /**
+         * Check that all fields are filled and valid.
+         * @return boolean; whether all fields are filled and valid
+         */
+        public Builder check()
+        {
+            Throw.whenNull(this.actorType, "actorType cannot be null");
+            Throw.whenNull(this.name, "name cannot be null");
+            Throw.whenNull(this.messageHandler, "messagehandler cannot be null");
+            Throw.whenNull(this.simulator, "simulator cannot be null");
+            Throw.whenNull(this.location, "location cannot be null");
+            Throw.whenNull(this.locationDescription, "locationDescription cannot be null");
+            Throw.whenNull(this.bank, "bank cannot be null");
+            Throw.whenNull(this.initialBalance, "initialBalance cannot be null");
+            Throw.whenNull(this.contentStore, "contentStore cannot be null");
+            return this;
+        }
+
+        /**
+         * Override this method to build the correct actor.
+         * @return the constructed SupplyChainActor.
+         */
+        public abstract SupplyChainActor build();
+
+        /**
+         * @param actorType ActorType; the actor type for the actor
+         * @return Builder for chaining
+         */
+        public Builder setActorType(final ActorType actorType)
+        {
+            this.actorType = actorType;
+            return this;
+        }
+
+        /**
+         * @param name String; the name of the actor
+         * @return Builder for chaining
+         */
+        public Builder setName(final String name)
+        {
+            this.name = name;
+            return this;
+        }
+
+        /**
+         * @param messageHandler MessageHandlerInterface; the handler for messages
+         * @return Builder for chaining
+         */
+        public Builder setMessageHandler(final MessageHandlerInterface messageHandler)
+        {
+            this.messageHandler = messageHandler;
+            return this;
+        }
+
+        /**
+         * @param simulator SCSimulatorInterface; the simulator
+         * @return Builder for chaining
+         */
+        public Builder setSimulator(final SCSimulatorInterface simulator)
+        {
+            this.simulator = simulator;
+            return this;
+        }
+
+        /**
+         * @param location OrientedPoint3d; the location of the actor on the map
+         * @return Builder for chaining
+         */
+        public Builder setLocation(final OrientedPoint3d location)
+        {
+            this.location = location;
+            return this;
+        }
+
+        /**
+         * @param locationDescription String; a description of the location (e.g., "Amsterdam")
+         * @return Builder for chaining
+         */
+        public Builder setLocationDescription(final String locationDescription)
+        {
+            this.locationDescription = locationDescription;
+            return this;
+        }
+
+        /**
+         * @param bank Bank; the bank of this actor
+         * @return Builder for chaining
+         */
+        public Builder setBank(final Bank bank)
+        {
+            this.bank = bank;
+            return this;
+        }
+
+        /**
+         * @param initialBalance Money; the initial balance of the bank account
+         * @return Builder for chaining
+         */
+        public Builder setIinitialBalance(final Money initialBalance)
+        {
+            this.initialBalance = initialBalance;
+            return this;
+        }
+
+        /**
+         * @param contentStore MessageStoreInterface; the contentStore for the messages
+         * @return Builder for chaining
+         */
+        public Builder setMessageStore(final TradeMessageStoreInterface contentStore)
+        {
+            this.contentStore = contentStore;
+            return this;
+        }
+
+    }
 }

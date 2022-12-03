@@ -35,5 +35,5 @@ public interface MessagePolicyInterface<M extends Message> extends Serializable,
      * Return the class of messages for which this policy applies.
      * @return Class&lt;? extends M&gt;; the class of messages for which this policy applies
      */
-    Class<? extends M> getMessageClass();
+    Class<M> getMessageClass();
 }

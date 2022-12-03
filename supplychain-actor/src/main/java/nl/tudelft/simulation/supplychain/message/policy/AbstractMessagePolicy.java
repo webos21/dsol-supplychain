@@ -26,7 +26,7 @@ public abstract class AbstractMessagePolicy<M extends Message> implements Messag
     private final Actor owner;
 
     /** the class of messages for which this policy applies. */
-    private final Class<? extends M> messageClass;
+    private final Class<M> messageClass;
 
     /**
      * constructs a new message policy.
@@ -34,7 +34,7 @@ public abstract class AbstractMessagePolicy<M extends Message> implements Messag
      * @param owner Actor; the owner of this policy
      * @param messageClass MessageType; the message type that this policy can process
      */
-    public AbstractMessagePolicy(final String id, final Actor owner, final Class<? extends M> messageClass)
+    public AbstractMessagePolicy(final String id, final Actor owner, final Class<M> messageClass)
     {
         Throw.whenNull(id, "id cannot be null");
         Throw.whenNull(owner, "owner cannot be null");
@@ -60,7 +60,7 @@ public abstract class AbstractMessagePolicy<M extends Message> implements Messag
 
     /** {@inheritDoc} */
     @Override
-    public Class<? extends M> getMessageClass()
+    public Class<M> getMessageClass()
     {
         return this.messageClass;
     }

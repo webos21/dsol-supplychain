@@ -3,7 +3,6 @@ package nl.tudelft.simulation.supplychain.message.store.trade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,22 +12,17 @@ import org.djutils.exceptions.Throw;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
-import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
-import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
-import nl.tudelft.simulation.supplychain.message.trade.ShipmentQuality;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
-import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
-import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 
 /**
  * The TradeMessageStore is taking care of storing messages for later use, for instance for matching purposes. It acts as a kind
@@ -40,8 +34,7 @@ import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
  * type map. This map has the Content's class as key, and maps that onto an ArrayList called 'messageList', which contains all
  * the contents sent or received in order of arrival or sending.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -49,16 +42,17 @@ import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 public class TradeMessageStore extends EventProducer implements TradeMessageStoreInterface
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221203L;
 
     /** the received content. */
-    private Map<Long, Map<MessageType, List<Message>>> internalDemandMap = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<Long, Map<MessageType, List<TradeMessage>>> internalDemandMap =
+            Collections.synchronizedMap(new LinkedHashMap<>());
 
     /** the received content, latest state. */
-    private Map<MessageType, List<Message>> receivedStateMap = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<MessageType, List<TradeMessage>> receivedStateMap = Collections.synchronizedMap(new LinkedHashMap<>());
 
     /** the sent content, latest state. */
-    private Map<MessageType, List<Message>> sentStateMap = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<MessageType, List<TradeMessage>> sentStateMap = Collections.synchronizedMap(new LinkedHashMap<>());
 
     /** the owner. */
     private SupplyChainActor owner;
@@ -78,46 +72,30 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
     public synchronized void addMessage(final TradeMessage message, final boolean sent)
     {
         Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
-
-        long identifier = message.getInternalDemandId();
-        // look if the internal demand already exists
-        Map<MessageType, List<TradeMessage>> messageMap = this.internalDemandMap.get(identifier);
+        long internalDemandId = message.getInternalDemandId();
+        Map<MessageType, List<TradeMessage>> messageMap = this.internalDemandMap.get(internalDemandId);
         if (messageMap == null)
         {
             messageMap = new LinkedHashMap<MessageType, List<TradeMessage>>();
-            this.internalDemandMap.put(identifier, messageMap);
+            this.internalDemandMap.put(internalDemandId, messageMap);
         }
-        // look if the content class already exists in the messageMap
         List<TradeMessage> messageList = messageMap.get(message.getType());
         if (messageList == null)
         {
             messageList = new ArrayList<TradeMessage>();
             messageMap.put(message.getType(), messageList);
         }
-        // add the new content to the end of the list
         messageList.add(message);
-        //
-        MessageType contentClass = foldExtendedContentClass(message);
-        // look if the content class already exists
-        Map<MessageType, List<TradeMessage>> srMap;
-        if (sent)
-        {
-            srMap = this.sentStateMap;
-        }
-        else
-        {
-            srMap = this.receivedStateMap;
-        }
-        List<TradeMessage> srList = srMap.get(contentClass);
+        MessageType messageType = foldExtendedMessageType(message.getType());
+        Map<MessageType, List<TradeMessage>> srMap = sent ? this.sentStateMap : this.receivedStateMap;
+        List<TradeMessage> srList = srMap.get(messageType);
         if (srList == null)
         {
             srList = new ArrayList<TradeMessage>();
-            srMap.put(contentClass, srList);
+            srMap.put(messageType, srList);
         }
-        // add the new content to the end of the list
         srList.add(message);
-        // old content...
-        removeOldStateContent(message, sent, identifier);
+        removeOldStateContent(message, sent, internalDemandId);
     }
 
     /** {@inheritDoc} */
@@ -125,9 +103,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
     public synchronized void removeMessage(final TradeMessage message, final boolean sent)
     {
         Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
-
-        Serializable identifier = message.getInternalDemandId();
-        // remove from InternalDemand map
+        long identifier = message.getInternalDemandId();
         Map<MessageType, List<TradeMessage>> messageMap = this.internalDemandMap.get(identifier);
         if (messageMap != null)
         {
@@ -142,20 +118,12 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
 
     /** {@inheritDoc} */
     @Override
-    public synchronized void removeSentReceivedMessage(final Message message, final boolean sent)
+    public synchronized void removeSentReceivedMessage(final TradeMessage message, final boolean sent)
     {
         Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
-        MessageType contentClass = foldExtendedContentClass(message);
-        Map<MessageType, List<TradeMessage>> srMap;
-        if (sent)
-        {
-            srMap = this.sentStateMap;
-        }
-        else
-        {
-            srMap = this.receivedStateMap;
-        }
-        List<?> srList = srMap.get(contentClass);
+        MessageType contentClass = foldExtendedMessageType(message.getType());
+        Map<MessageType, List<TradeMessage>> srMap = sent ? this.sentStateMap : this.receivedStateMap;
+        List<TradeMessage> srList = srMap.get(contentClass);
         if (srList != null)
         {
             srList.remove(message);
@@ -170,18 +138,18 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         Map<MessageType, List<TradeMessage>> messageMap = this.internalDemandMap.get(internalDemandId);
         if (messageMap != null)
         {
-            removeMessageList(messageMap, YellowPageRequest.class);
-            removeMessageList(messageMap, YellowPageAnswer.class);
-            removeMessageList(messageMap, RequestForQuote.class);
-            removeMessageList(messageMap, Quote.class);
-            removeMessageList(messageMap, Order.class);
-            removeMessageList(messageMap, OrderStandalone.class);
-            removeMessageList(messageMap, OrderBasedOnQuote.class);
-            removeMessageList(messageMap, OrderConfirmation.class);
-            removeMessageList(messageMap, Shipment.class);
-            removeMessageList(messageMap, Bill.class);
-            removeMessageList(messageMap, Payment.class);
-            removeMessageList(messageMap, InternalDemand.class);
+            removeMessageList(messageMap, TradeMessageTypes.YP_REQUEST);
+            removeMessageList(messageMap, TradeMessageTypes.YP_ANSWER);
+            removeMessageList(messageMap, TradeMessageTypes.RFQ);
+            removeMessageList(messageMap, TradeMessageTypes.QUOTE);
+            removeMessageList(messageMap, TradeMessageTypes.ORDER);
+            removeMessageList(messageMap, TradeMessageTypes.ORDER_STANDALONE);
+            removeMessageList(messageMap, TradeMessageTypes.ORDER_BASED_ON_QUOTE);
+            removeMessageList(messageMap, TradeMessageTypes.ORDER_CONFIRMATION);
+            removeMessageList(messageMap, TradeMessageTypes.SHIPMENT);
+            removeMessageList(messageMap, TradeMessageTypes.BILL);
+            removeMessageList(messageMap, TradeMessageTypes.PAYMENT);
+            removeMessageList(messageMap, TradeMessageTypes.INTERNAL_DEMAND);
         }
         removeInternalDemand(internalDemandId);
     }
@@ -198,41 +166,33 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         List<TradeMessage> messageList = messageMap.get(messageType);
         if (messageList != null)
         {
-            int oldSize = messageList.size();
             while (messageList.size() > 0)
             {
                 TradeMessage message = messageList.remove(0);
                 this.removeMessage(message, true);
                 this.removeMessage(message, false);
-                if (oldSize == messageList.size())
-                {
-                    Logger.error("removeAllContent - object not removed from list for {}", messageType);
-                    break;
-                }
-                oldSize = messageList.size();
             }
         }
     }
 
     /**
-     * As we seldomly have a pointer to the InternalDemand object, deleting an InternalDemand object is carried out through its
-     * ID.
+     * When we do not have a pointer to the InternalDemand object, deleting an InternalDemand object is carried out through its
+     * internalDemandId.
      * @param internalDemandId the identifier of the internal demand
      */
     protected void removeInternalDemand(final long internalDemandId)
     {
         Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
-        Map<Long, TradeMessage idMap = null;
+        Map<MessageType, List<TradeMessage>> idMap = null;
         idMap = this.internalDemandMap.remove(internalDemandId);
 
         if (idMap != null)
         {
-            List<?> messageList = (List<?>) idMap.get(InternalDemand.class);
+            List<TradeMessage> messageList = idMap.get(TradeMessageTypes.INTERNAL_DEMAND);
             if (messageList != null)
             {
-                for (int i = 0; i < messageList.size(); i++)
+                for (TradeMessage message : messageList)
                 {
-                    Message message = (Message) messageList.get(i);
                     this.removeMessage(message, true);
                     this.removeMessage(message, false);
                 }
@@ -243,57 +203,35 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
     /**
      * Method getContentList returns a list of Content objects of type clazz based on the internalDemandId.
      * @param internalDemandId the identifier of the content
-     * @param clazz the content class to look for
+     * @param messageType the message type to look for
      * @return returns a list of content of type class based on the internalDemandId
      */
-    @SuppressWarnings("unchecked")
-    public <C extends Message> List<C> getContentList(final long internalDemandId, final Class<C> clazz)
+    @Override
+    public List<TradeMessage> getMessageList(final long internalDemandId, final MessageType messageType)
     {
-        List<C> messageList = new ArrayList<>();
-        for (Message content : this.internalDemandMap.get(internalDemandId).get(clazz))
+        List<TradeMessage> messageList = new ArrayList<>();
+        for (TradeMessage message : this.internalDemandMap.get(internalDemandId).get(messageType))
         {
-            messageList.add((C) content);
+            messageList.add(message);
         }
         return messageList;
     }
 
-    /**
-     * Method getContentList returns the Content object of type clazz based on the internalDemandId, for either sent or received
-     * items.
-     * @param internalDemandId the identifier of the content
-     * @param clazz the content class to look for
-     * @param sent indicates whether the content was sent or received
-     * @return returns a list of content of type class based on the internalDemandId
-     */
-    @SuppressWarnings("unchecked")
-    public <C extends Message> List<C> getContentList(final long internalDemandId, final Class<C> clazz, final boolean sent)
+    /** {@inheritDoc} */
+    @Override
+    public List<TradeMessage> getMessageList(final long internalDemandId, final MessageType messageType, final boolean sent)
     {
-        MessageType contentClass = clazz;
-        if (clazz.equals(OrderBasedOnQuote.class) || clazz.equals(OrderStandalone.class))
-        {
-            contentClass = Order.class;
-        }
-
-        Map<MessageType, List<TradeMessage>> messageMap;
-        if (sent)
-        {
-            messageMap = this.sentStateMap;
-        }
-        else
-        {
-            messageMap = this.receivedStateMap;
-        }
-        List<TradeMessage> messageList = messageMap.get(contentClass);
-        List<C> result = new ArrayList<>();
+        MessageType type = foldExtendedMessageType(messageType);
+        Map<MessageType, List<TradeMessage>> messageMap = sent ? this.sentStateMap : this.receivedStateMap;
+        List<TradeMessage> messageList = messageMap.get(type);
+        List<TradeMessage> result = new ArrayList<>();
         if (messageList != null)
         {
-            Iterator<TradeMessage> it = messageList.iterator();
-            while (it.hasNext())
+            for (TradeMessage m : messageList)
             {
-                Message itContent = it.next();
-                if (itContent.getInternalDemandId() == internalDemandId)
+                if (m.getInternalDemandId() == internalDemandId)
                 {
-                    result.add((C) itContent);
+                    result.add(m);
                 }
             }
         }
@@ -305,23 +243,18 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
      * @param sent indicates whether the content is sent or received
      * @param internalDemandId the internal demand id
      */
-    private void removeOldStateContent(final Message content, final boolean sent, final long internalDemandId)
+    @SuppressWarnings("checkstyle:methodlength")
+    private void removeOldStateContent(final TradeMessage content, final boolean sent, final long internalDemandId)
     {
         // remove "old" data
         if (!sent && content instanceof Quote)
         {
-            List<?> rfqList = getContentList(internalDemandId, RequestForQuote.class, true);
+            List<?> rfqList = getMessageList(internalDemandId, TradeMessageTypes.RFQ, true);
             if (rfqList.size() == 0)
             {
-                // TODO is this needed?
-                if (TradeMessageStore.DEBUG)
-                {
-                    // only do this when debugging, otherwise during
-                    // testing the error files grow extremely large
-                    Logger.warn("t=" + this.owner.getSimulatorTime()
-                            + " removeOldStateContent - could not find RFQ for quote uniqueId=" + content.getUniqueId()
-                            + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
-                }
+                Logger.warn(
+                        "t=" + this.owner.getSimulatorTime() + " removeOldStateContent - could not find RFQ for quote uniqueId="
+                                + content.getUniqueId() + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
@@ -334,7 +267,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         }
         else if (sent && content instanceof OrderBasedOnQuote)
         {
-            List<?> quoteList = getContentList(internalDemandId, Quote.class, false);
+            List<?> quoteList = getMessageList(internalDemandId, TradeMessageTypes.QUOTE, false);
             if (quoteList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
@@ -352,7 +285,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         }
         else if (!sent && content instanceof OrderConfirmation)
         {
-            List<?> orderList = getContentList(internalDemandId, Order.class, true);
+            List<?> orderList = getMessageList(internalDemandId, TradeMessageTypes.ORDER, true);
             if (orderList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
@@ -370,7 +303,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         }
         else if (!sent && content instanceof Shipment)
         {
-            List<?> orderConfirmationList = getContentList(internalDemandId, OrderConfirmation.class, false);
+            List<?> orderConfirmationList = getMessageList(internalDemandId, TradeMessageTypes.ORDER_CONFIRMATION, false);
             if (orderConfirmationList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
@@ -394,7 +327,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         else if (sent && content instanceof Payment)
         {
             // remove the bill
-            List<?> billList = getContentList(internalDemandId, Bill.class, false);
+            List<?> billList = getMessageList(internalDemandId, TradeMessageTypes.BILL, false);
             if (billList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
@@ -414,18 +347,12 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         // remove "old" data
         if (sent && content instanceof Quote)
         {
-            List<?> rfqList = getContentList(internalDemandId, RequestForQuote.class, false);
+            List<?> rfqList = getMessageList(internalDemandId, TradeMessageTypes.RFQ, false);
             if (rfqList.size() == 0)
             {
-                if (TradeMessageStore.DEBUG)
-                {
-                    // only do this when debugging, otherwise during
-                    // testing the error files grow extremely large
-
-                    Logger.warn("t=" + this.owner.getSimulatorTime()
-                            + " removeOldStateContent2 - could not find RFQ for quote uniqueId=" + content.getUniqueId()
-                            + ", IDid=" + content.getInternalDemandId() + " " + content.toString());
-                }
+                Logger.warn("t=" + this.owner.getSimulatorTime()
+                        + " removeOldStateContent2 - could not find RFQ for quote uniqueId=" + content.getUniqueId() + ", IDid="
+                        + content.getInternalDemandId() + " " + content.toString());
             }
             else
             {
@@ -438,7 +365,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         }
         else if (!sent && content instanceof OrderBasedOnQuote)
         {
-            List<?> quoteList = getContentList(internalDemandId, Quote.class, true);
+            List<?> quoteList = getMessageList(internalDemandId, TradeMessageTypes.QUOTE, true);
             if (quoteList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
@@ -456,7 +383,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         }
         else if (sent && content instanceof OrderConfirmation)
         {
-            List<?> orderList = getContentList(internalDemandId, Order.class, false);
+            List<?> orderList = getMessageList(internalDemandId, TradeMessageTypes.ORDER, false);
             if (orderList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
@@ -474,7 +401,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         }
         else if (sent && content instanceof Shipment)
         {
-            List<?> orderConfirmationList = getContentList(internalDemandId, OrderConfirmation.class, true);
+            List<?> orderConfirmationList = getMessageList(internalDemandId, TradeMessageTypes.ORDER_CONFIRMATION, true);
             if (orderConfirmationList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
@@ -498,7 +425,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         else if (!sent && content instanceof Payment)
         {
             // remove the bill
-            List<?> billList = getContentList(internalDemandId, Bill.class, true);
+            List<?> billList = getMessageList(internalDemandId, TradeMessageTypes.BILL, true);
             if (billList.size() == 0)
             {
                 Logger.warn("t=" + this.owner.getSimulatorTime()
@@ -518,24 +445,19 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
     }
 
     /**
-     * This method folds back extended content classes onto their basic class. Examples are OrderBasedOnQuote and
-     * OrderStandAlone that are mapped back onto 'Order' to simplify the business logic, acause the business logic now only has
+     * This method folds back extended message types onto their basic message type. Examples are OrderBasedOnQuote and
+     * OrderStandAlone that are mapped back onto 'Order' to simplify the business logic, because the business logic now only has
      * to deal with an 'Order' in the MessageStore, and not with each of the separate extensions.
-     * @param content the content of which to fold the class
-     * @return returns the class of the fold extended content class
+     * @param type MessageType; the message type of which to fold the message type
+     * @return MessageType; the folded extended message type
      */
-    protected MessageType foldExtendedContentClass(final Message content)
+    protected MessageType foldExtendedMessageType(final MessageType type)
     {
-        MessageType contentClass = content.getClass();
-        if (contentClass.equals(OrderBasedOnQuote.class) || contentClass.equals(OrderStandalone.class))
+        if (type.equals(TradeMessageTypes.ORDER_BASED_ON_QUOTE) || type.equals(TradeMessageTypes.ORDER_STANDALONE))
         {
-            contentClass = Order.class;
+            return TradeMessageTypes.ORDER;
         }
-        if (contentClass.equals(ShipmentQuality.class))
-        {
-            contentClass = Shipment.class;
-        }
-        return contentClass;
+        return type;
     }
 
     /**
@@ -551,7 +473,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
     @Override
     public Serializable getSourceId()
     {
-        return this.owner.getName() + ".MessageStore";
+        return this.owner.getName() + ".TradeMessageStore";
     }
 
 }

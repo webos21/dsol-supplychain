@@ -137,7 +137,7 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
      * @param message message; the message to send
      * @param delay Duration; the time it takes between sending and receiving
      */
-    protected void sendMessage(final Message message, final Duration delay)
+    public void sendMessage(final Message message, final Duration delay)
     {
         this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
     }
@@ -146,7 +146,7 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
      * Send a message to another actor without a delay.
      * @param message message; the message to send
      */
-    protected void sendMessage(final Message message)
+    public void sendMessage(final Message message)
     {
         sendMessage(message, Duration.ZERO);
     }

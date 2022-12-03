@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.djutils.base.Identifiable;
 import org.djutils.exceptions.Throw;
 
-import nl.tudelft.simulation.supplychain.message.MessageType;
+import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
@@ -49,21 +49,23 @@ public abstract class Role implements Serializable, Identifiable
 
     /**
      * Add a message handling policy to the Role.
-     * @param policy MessagePolicyInterface; the policy to add
+     * @param policy MessagePolicyInterface&lt;M&gt;; the policy to add
+     * @param <M> the message type
      */
-    public void addMessagePolicy(final MessagePolicyInterface policy)
+    public <M extends Message> void addMessagePolicy(final MessagePolicyInterface<M> policy)
     {
         this.owner.addMessagePolicy(policy);
     }
 
     /**
      * Remove a message handling policy from the Role.
-     * @param messageType MessageType; the message type of the policy to remove
+     * @param messageClass Class&lt;M&gt;; the message class of the policy to remove
      * @param policyId String; the id of the policy to remove
+     * @param <M> the message type
      */
-    public void removeMessagePolicy(final MessageType messageType, final String policyId)
+    public <M extends Message> void removeMessagePolicy(final Class<M> messageClass, final String policyId)
     {
-        this.owner.removeMessagePolicy(messageType, policyId);
+        this.owner.removeMessagePolicy(messageClass, policyId);
     }
 
     /** {@inheritDoc} */

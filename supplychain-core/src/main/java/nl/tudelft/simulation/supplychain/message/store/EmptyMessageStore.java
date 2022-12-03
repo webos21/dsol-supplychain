@@ -1,15 +1,13 @@
-package nl.tudelft.simulation.supplychain.contentstore.memory;
+package nl.tudelft.simulation.supplychain.message.store;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.MessageType;
 
 /**
- * The EmptyContentStore does not store anything. E.g., for the YellowPage that does not need to keep track of messages.
+ * The EmptyMessageStore does not store anything. E.g., for the YellowPage that does not need to keep track of messages.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
  * <br>
@@ -17,70 +15,28 @@ import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class EmptyContentStore implements ContentStoreInterface
+public class EmptyMessageStore implements MessageStoreInterface
 {
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** the owner */
+    /** the owner. */
     private SupplyChainActor owner;
 
     /**
      * Create a content store that does not store anything. E.g., for the YellowPage that does not need to keep track of
      * messages.
      */
-    public EmptyContentStore()
+    public EmptyMessageStore()
     {
         // nothing to do.
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setOwner(SupplyChainActor owner)
+    public void setOwner(final SupplyChainActor owner)
     {
         this.owner = owner;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void addContent(Content content, boolean sent)
-    {
-        // do nothing
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void removeContent(Content content, boolean sent)
-    {
-        // do nothing
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void removeSentReceivedContent(Content content, boolean sent)
-    {
-        // do nothing
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void removeAllContent(Serializable internalDemandID)
-    {
-        // do nothing
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public <C extends Content> List<C> getContentList(Serializable internalDemandID, Class<C> clazz)
-    {
-        return new ArrayList<C>();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public <C extends Content> List<C> getContentList(Serializable internalDemandID, Class<C> clazz, boolean sent)
-    {
-        return new ArrayList<C>();
     }
 
     /** {@inheritDoc} */
@@ -88,6 +44,48 @@ public class EmptyContentStore implements ContentStoreInterface
     public SupplyChainActor getOwner()
     {
         return this.owner;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void addMessage(final Message message, final boolean sent)
+    {
+        // do nothing
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void removeMessage(final Message message, final boolean sent)
+    {
+        // do nothing
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void removeSentReceivedMessage(final Message message, final boolean sent)
+    {
+        // do nothing
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void removeAllMessages(final long internalDemandId)
+    {
+        // do nothing
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Message> getMessageList(final long internalDemandId, final MessageType type)
+    {
+        return List.of();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Message> getMessageList(final long internalDemandId, final MessageType type, final boolean sent)
+    {
+        return List.of();
     }
 
 }

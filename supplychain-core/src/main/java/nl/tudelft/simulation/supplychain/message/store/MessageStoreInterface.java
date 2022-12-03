@@ -51,11 +51,11 @@ public interface MessageStoreInterface extends Serializable
     void removeSentReceivedMessage(Message message, boolean sent);
 
     /**
-     * Method removeAllMessage removes an exisiting Message object from the store. No error message is given when the message
+     * Method removeAllMessages removes an exisiting Message object from the store. No error message is given when the message
      * was not there; this is just ignored.
      * @param internalDemandId long; the identifier of the internal demand
      */
-    void removeAllMessage(long internalDemandId);
+    void removeAllMessages(long internalDemandId);
 
     /**
      * Method getMessageList returns a list of Message objects of type 'type' based on the internalDemandId.

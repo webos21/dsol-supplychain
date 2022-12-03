@@ -24,7 +24,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
  * The actor is the basic class in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'
  * object, that is able to exchange messages with other actors and process the incoming messages.<br>
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>

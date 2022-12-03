@@ -12,7 +12,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
  * Role is a template for a consistent set of policies for handling messages, representing a certain part of the organization,
  * such as sales, inventory, finance, or purchasing.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -72,7 +72,7 @@ public abstract class Role implements Serializable, Identifiable
     {
         return this.id;
     }
-    
+
     /**
      * Return the role type (e.g., for yellow page requests).
      * @return roleType RoleType; the roletype

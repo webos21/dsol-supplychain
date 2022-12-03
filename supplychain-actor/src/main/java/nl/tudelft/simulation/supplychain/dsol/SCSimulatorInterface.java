@@ -13,7 +13,7 @@ import nl.tudelft.simulation.naming.context.Contextualized;
  * SCSimulatorInterface extends the DEVSSimulatorInterface to work with absolute Time for the simulation time and for the
  * scheduling of simulation events.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -31,7 +31,7 @@ public interface SCSimulatorInterface extends DEVSSimulatorInterface<Duration>, 
      * @return long; a unique message id
      */
     long getUniqueMessageId();
-    
+
     /**
      * Return the absolute simulation time.
      * @return Time; the absolute simulation time

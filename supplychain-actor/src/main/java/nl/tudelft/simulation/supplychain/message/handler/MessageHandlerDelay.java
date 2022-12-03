@@ -9,7 +9,7 @@ import nl.tudelft.simulation.supplychain.message.Message;
 /**
  * MessageHandlerDelay implements a message handler for an actor that handles messages after a (stochastic) delay time.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -45,7 +45,7 @@ public class MessageHandlerDelay extends AbstractMessageHandler
 
     /**
      * Return the delay distribution for handling messages.
-     * @return DistContinuousDuration; the delay distribution 
+     * @return DistContinuousDuration; the delay distribution
      */
     public DistContinuousDuration getDelayDistribution()
     {

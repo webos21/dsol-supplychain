@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 /**
  * AbstractMessageHandler contains the base implementation of a message handler.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -62,7 +62,7 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
         }
         policyList.add(policy);
     }
-    
+
     /** {@inheritDoc} */
     @Override
     public void removeMessagePolicy(final MessageType messageType, final String policyId)
@@ -81,10 +81,10 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
             }
         }
     }
-    
+
     /**
      * This is the core processing of a message that was received. All appropriate actor policies are executed.
-     * @param message 
+     * @param message
      */
     protected void processMessage(final Message message)
     {

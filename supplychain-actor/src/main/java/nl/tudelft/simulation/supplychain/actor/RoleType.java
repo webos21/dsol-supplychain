@@ -10,7 +10,7 @@ import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
 /**
  * RoleType denotes a type of role, especially for the yellow page searches.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -19,7 +19,7 @@ public class RoleType implements Identifiable, Serializable
 {
     /** */
     private static final long serialVersionUID = 20221127L;
-    
+
     /** the id of the role type. */
     private final String id;
 

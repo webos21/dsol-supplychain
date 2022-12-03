@@ -16,7 +16,6 @@ import org.djutils.immutablecollections.ImmutableSet;
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
@@ -85,21 +84,23 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
 
     /**
      * Add a message handling policy to the Actor.
-     * @param policy MessagePolicyInterface; the policy to add
+     * @param policy MessagePolicyInterface&lt;M&gt;; the policy to add
+     * @param <M> the message type
      */
-    public void addMessagePolicy(final MessagePolicyInterface policy)
+    public <M extends Message> void addMessagePolicy(final MessagePolicyInterface<M> policy)
     {
         this.messageHandler.addMessagePolicy(policy);
     }
 
     /**
      * Remove a message handling policy from the Actor.
-     * @param messageType MessageType; the message type of the policy to remove
+     * @param messageClass Class&lt;M&gt;; the message class of the policy to remove
      * @param policyId String; the id of the policy to remove
+     * @param <M> the message type
      */
-    public void removeMessagePolicy(final MessageType messageType, final String policyId)
+    public <M extends Message> void removeMessagePolicy(final Class<M> messageClass, final String policyId)
     {
-        this.messageHandler.removeMessagePolicy(messageType, policyId);
+        this.messageHandler.removeMessagePolicy(messageClass, policyId);
     }
 
     /**

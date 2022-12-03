@@ -2,42 +2,43 @@ package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.InternalDemand;
-import nl.tudelft.simulation.supplychain.policy.SupplyChainHandler;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
+import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
- * The abstract InternalDemandHandler class provides the general methods that all InternalDemandHandler classes need, such as
+ * The abstract InternalDemandPolicy class provides the general methods that all InternalDemandPolicy classes need, such as
  * checking whether the message is really an InternalDemand.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class InternalDemandPolicy extends SupplyChainHandler
+public abstract class AbstractInternalDemandPolicy extends SupplyChainPolicy
 {
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** the handling time distribution to handle internal demand */
+    /** the handling time distribution to handle internal demand. */
+    @SuppressWarnings("checkstyle:visibilitymodifier")
     protected DistContinuousDuration handlingTime;
 
-    /** the stock for changing 'ordered amount' */
+    /** the stock for changing 'ordered amount. */
+    @SuppressWarnings("checkstyle:visibilitymodifier")
     protected StockInterface stock;
 
     /**
-     * Construct a new InternalDemandHandler.
+     * Construct a new InternalDemandPolicy.
+     * @param id String; the id of the policy
      * @param owner the SupplyChainActor that has this policy.
      * @param handlingTime the distribution of the time to handle an internal demand
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicy(final SupplyChainActor owner, final DistContinuousDuration handlingTime,
-            final StockInterface stock)
+    public AbstractInternalDemandPolicy(final String id, final SupplyChainActor owner,
+            final DistContinuousDuration handlingTime, final StockInterface stock)
     {
-        super(owner);
+        super(id, owner, TradeMessageTypes.INTERNAL_DEMAND);
         this.handlingTime = handlingTime;
         this.stock = stock;
     }
@@ -50,10 +51,4 @@ public abstract class InternalDemandPolicy extends SupplyChainHandler
         this.handlingTime = handlingTime;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Class<? extends Content> getContentClass()
-    {
-        return InternalDemand.class;
-    }
 }

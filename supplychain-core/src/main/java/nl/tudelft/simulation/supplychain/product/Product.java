@@ -37,10 +37,10 @@ public class Product implements Serializable
     private final String name;
 
     /** the average volume per unit. */
-    private final Volume averageSKUVolume;
+    private final Volume averageSkuVolume;
 
     /** the average weight per unit. */
-    private final Mass averageSKUWeight;
+    private final Mass averageSkuWeight;
 
     /** depreciation the depreciation as a fraction per day. */
     private double depreciation = 0.0;
@@ -53,24 +53,24 @@ public class Product implements Serializable
      * @param name String; the descriptive name of the product.
      * @param sku Sku; the stock keeping unit in which this product is shipped (boxes, pallets, kilograms, m3, containers)
      * @param initialUnitMarketPrice Money; the initial world market price of the product per SKU
-     * @param averageSKUWeight Mass; the average weight per SKU
-     * @param averageSKUVolume Volume; the average volume per SKU
+     * @param averageSkuWeight Mass; the average weight per SKU
+     * @param averageSkuVolume Volume; the average volume per SKU
      * @param depreciation double; the depreciation as a factor per day for the product
      */
-    public Product(final String name, final Sku sku, final Money initialUnitMarketPrice, final Mass averageSKUWeight,
-            final Volume averageSKUVolume, final double depreciation)
+    public Product(final String name, final Sku sku, final Money initialUnitMarketPrice, final Mass averageSkuWeight,
+            final Volume averageSkuVolume, final double depreciation)
     {
         Throw.whenNull(name, "name cannot be null");
         Throw.whenNull(sku, "sku cannot be null");
         Throw.whenNull(initialUnitMarketPrice, "initialUnitMarketPrice cannot be null");
-        Throw.whenNull(averageSKUWeight, "averageUnitWeight cannot be null");
-        Throw.whenNull(averageSKUVolume, "averageUnitVolume cannot be null");
+        Throw.whenNull(averageSkuWeight, "averageSkuWeight cannot be null");
+        Throw.whenNull(averageSkuVolume, "averageSkuVolume cannot be null");
         this.name = name;
         this.sku = sku;
         this.unitMarketPrice = initialUnitMarketPrice;
         this.billOfMaterials = new BillOfMaterials(this);
-        this.averageSKUWeight = averageSKUWeight;
-        this.averageSKUVolume = averageSKUVolume;
+        this.averageSkuWeight = averageSkuWeight;
+        this.averageSkuVolume = averageSkuVolume;
         this.depreciation = depreciation;
     }
 
@@ -99,7 +99,7 @@ public class Product implements Serializable
      * Return the stock keeping unit of this product.
      * @return SKU; the stock keeping unit of this product
      */
-    public Sku getSKU()
+    public Sku getSku()
     {
         return this.sku;
     }
@@ -117,18 +117,18 @@ public class Product implements Serializable
      * Return the average sku weight as a Mass.
      * @return Mass; the averag weight per SKU
      */
-    public Mass getAverageSKUWeight()
+    public Mass getAverageSkuWeight()
     {
-        return this.averageSKUWeight;
+        return this.averageSkuWeight;
     }
 
     /**
      * Return the average sku volume as a Volume.
      * @return Volume; the averag volume per SKU
      */
-    public Volume getAverageSKUVolume()
+    public Volume getAverageSkuVolume()
     {
-        return this.averageSKUVolume;
+        return this.averageSkuVolume;
     }
 
     /**

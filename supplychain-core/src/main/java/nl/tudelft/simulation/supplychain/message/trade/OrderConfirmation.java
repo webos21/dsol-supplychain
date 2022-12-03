@@ -1,7 +1,5 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.io.Serializable;
-
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -12,8 +10,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * This would mean: we cannot get the products to you it at the requested date, nor do we have the amount you asked for in
  * stock. Helper methods are available to find out the reason(s) for failing when the confirmation is negative.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -23,19 +20,19 @@ public class OrderConfirmation extends TradeMessage
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** Confirmation status order confirmed */
+    /** Confirmation status order confirmed. */
     public static final int CONFIRMED = 0;
 
-    /** Confirmation status order not confirmed: date not possible */
+    /** Confirmation status order not confirmed: date not possible. */
     public static final int NO_CONFIRM = 1;
 
-    /** textual representation of the confirmation options */
+    /** textual representation of the confirmation options. */
     public static final String[] CONFIRMATION_OPTIONS = {"confirm the order", "I don't confirm the order"};
 
-    /** the order for which this was the confirmation */
+    /** the order for which this was the confirmation. */
     private Order order;
 
-    /** indicating whether the order was accepted or not */
+    /** indicating whether the order was accepted or not. */
     private int status;
 
     /**
@@ -45,10 +42,10 @@ public class OrderConfirmation extends TradeMessage
      * @param order the order for which this is the confirmation
      * @param status the confirmation status (accepted, not accepted)
      */
-    public OrderConfirmation(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final Order order, final int status)
+    public OrderConfirmation(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+            final Order order, final int status)
     {
-        super(sender, receiver, internalDemandId);
+        super(TradeMessageTypes.ORDER_CONFIRMATION, sender, receiver, internalDemandId);
         this.order = order;
         this.status = status;
     }

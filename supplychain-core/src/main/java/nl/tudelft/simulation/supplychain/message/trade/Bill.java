@@ -1,7 +1,5 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.io.Serializable;
-
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
@@ -12,8 +10,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * The bill represents a document that asks for payment for a product or service. It contains a pointer to an Order to see for
  * which exact order the actor is invoiced.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -23,22 +20,20 @@ public class Bill extends TradeMessage
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the simulation time for final payment */
+    /** the simulation time for final payment. */
     private Time finalPaymentDate;
 
-    /** the price that has to be paid */
+    /** the price that has to be paid. */
     private Money price;
 
-    /** the order to which this bill belongs */
+    /** the order to which this bill belongs. */
     private Order order;
 
-    /** the description */
+    /** the description. */
     private String description;
 
-    /** whether the bill is paid or not */
+    /** whether the bill is paid or not. */
     private boolean isPaid = false;
-
-    // TODO implement description of bill (e.g. normal, fine, tax, etc)
 
     /**
      * Constructs a new Bill.
@@ -50,10 +45,10 @@ public class Bill extends TradeMessage
      * @param price Money; the amount to be paid
      * @param description the description
      */
-    public Bill(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
-            final Order order, final Time finalPaymentDate, final Money price, final String description)
+    public Bill(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Order order,
+            final Time finalPaymentDate, final Money price, final String description)
     {
-        super(sender, receiver, internalDemandId);
+        super(TradeMessageTypes.BILL, sender, receiver, internalDemandId);
         this.finalPaymentDate = finalPaymentDate;
         this.order = order;
         this.price = price;
@@ -119,10 +114,10 @@ public class Bill extends TradeMessage
     }
 
     /**
-     * @param isPaid true if paid
+     * @param paid true if paid
      */
-    public void setPaid(final boolean isPaid)
+    public void setPaid(final boolean paid)
     {
-        this.isPaid = isPaid;
+        this.isPaid = paid;
     }
 }

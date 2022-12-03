@@ -12,8 +12,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * "amount", "date" and "price" make up the order. Several implementations of the order can be made, i.e. a version that is
  * based on a Quote, or a version where the Order is the start of the entire chain.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -28,13 +27,14 @@ public abstract class Order extends TradeMessage
 
     /**
      * Constructor for an order. This abstract constructor has to be called by every extending class.
+     * @param type MessageType; the specific type of order
      * @param sender SupplyChainActor; the sender actor of the message content
      * @param receiver SupplyChainActor; the receving actor of the message content
      * @param internalDemand the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      */
-    public Order(final MessageType type, final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
-            final Time deliveryDate)
+    public Order(final MessageType type, final SupplyChainActor sender, final SupplyChainActor receiver,
+            final InternalDemand internalDemand, final Time deliveryDate)
     {
         super(type, sender, receiver, internalDemand.getInternalDemandId());
         this.deliveryDate = deliveryDate;

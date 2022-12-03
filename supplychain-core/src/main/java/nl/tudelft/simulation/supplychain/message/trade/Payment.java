@@ -1,7 +1,5 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.io.Serializable;
-
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -9,8 +7,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 /**
  * The Payment follows on a Bill, and it contains a pointer to the Bill for which it is the payment.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -20,10 +17,10 @@ public class Payment extends TradeMessage
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the bill to which this payment belongs */
+    /** the bill to which this payment belongs. */
     private Bill bill;
 
-    /** the amount reflecting the payment */
+    /** the amount reflecting the payment. */
     private Money payment;
 
     /**
@@ -34,10 +31,10 @@ public class Payment extends TradeMessage
      * @param bill the bill for which this is the payment
      * @param payment the payment
      */
-    public Payment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
-            final Bill bill, final Money payment)
+    public Payment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Bill bill,
+            final Money payment)
     {
-        super(sender, receiver, internalDemandId);
+        super(TradeMessageTypes.PAYMENT, sender, receiver, internalDemandId);
         this.bill = bill;
         this.payment = payment;
     }

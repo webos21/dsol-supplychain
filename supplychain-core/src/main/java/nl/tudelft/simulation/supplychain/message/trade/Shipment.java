@@ -1,7 +1,5 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import java.io.Serializable;
-
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -10,8 +8,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * A Shipment is the information for an amount of products that can be transferred from the Stock of one actor to the Stock of
  * another actor.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -21,16 +18,16 @@ public class Shipment extends TradeMessage
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the order for which this shipment is sent */
+    /** the order for which this shipment is sent. */
     private Order order;
 
-    /** the product type */
+    /** the product type. */
     private Product product;
 
-    /** the number of units of products in this cargo */
+    /** the number of units of products in this cargo. */
     private double amount;
 
-    /** the total value of the cargo */
+    /** the total value of the cargo. */
     private Money totalCargoValue;
 
     /** is the shipment in transit? */
@@ -51,7 +48,7 @@ public class Shipment extends TradeMessage
     public Shipment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Order order, final Product product, final double amount, final Money totalCargoValue)
     {
-        super(sender, receiver, internalDemandId);
+        super(TradeMessageTypes.SHIPMENT, sender, receiver, internalDemandId);
         this.order = order;
         this.product = product;
         this.amount = amount;

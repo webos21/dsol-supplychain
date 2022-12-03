@@ -32,13 +32,13 @@ public abstract class AbstractMessagePolicy<M extends Message> implements Messag
      * constructs a new message policy.
      * @param id String; the id of the policy
      * @param owner Actor; the owner of this policy
-     * @param messageClass MessageType; the message type that this policy can process
+     * @param messageClass Class&lt;M&gt;; the message type that this policy can process
      */
     public AbstractMessagePolicy(final String id, final Actor owner, final Class<M> messageClass)
     {
         Throw.whenNull(id, "id cannot be null");
         Throw.whenNull(owner, "owner cannot be null");
-        Throw.whenNull(messageClass, "messageType cannot be null");
+        Throw.whenNull(messageClass, "messageClass cannot be null");
         this.id = id;
         this.owner = owner;
         this.messageClass = messageClass;

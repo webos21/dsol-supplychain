@@ -3,20 +3,18 @@ package nl.tudelft.simulation.supplychain.message.trade;
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
  * The InternalDemand object represents content for an internal demand of a supply chain actor. The InternalDemand triggers
  * buying or manufacturing of products, and is usually the first in a long chain of messages that are exchanged between actors.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class InternalDemand extends Message
+public class InternalDemand extends TradeMessage
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221127L;
@@ -59,6 +57,7 @@ public class InternalDemand extends Message
      * Return the product for which this internal demand applies.
      * @return Product; the product for which this internal demand applies
      */
+    @Override
     public Product getProduct()
     {
         return this.product;
@@ -95,6 +94,7 @@ public class InternalDemand extends Message
      * Return the internalDemandId.
      * @return long; the id of the internal demand that triggered the TradeMessage chain.
      */
+    @Override
     public long getInternalDemandId()
     {
         return this.internalDemandId;

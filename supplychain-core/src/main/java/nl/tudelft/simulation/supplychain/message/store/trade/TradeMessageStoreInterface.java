@@ -1,9 +1,10 @@
 package nl.tudelft.simulation.supplychain.message.store.trade;
 
+import java.io.Serializable;
 import java.util.List;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.MessageType;
-import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
 /**
@@ -12,14 +13,48 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
  * as this sets off the whole chain of messages, no matter whether it is a purchase, internal production, or stock
  * replenishment: in all cases the InternalDemand triggers all the other messages.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface TradeMessageStoreInterface extends MessageStoreInterface
+public interface TradeMessageStoreInterface extends Serializable
 {
+    /**
+     * Set the owner for the message store after is has been created. The reason for explicitly having to set the owner and not
+     * include the owner in the constructor is that the SupplyChainActor needs a MessageStore in its constructor, so the
+     * MessageStore cannot be constructed with the owner.
+     * @param owner the owner
+     */
+    void setOwner(SupplyChainActor owner);
+
+    /**
+     * Method addMessage stores a new message object into the store.
+     * @param message the message to add
+     * @param sent sent or not
+     */
+    void addMessage(TradeMessage message, boolean sent);
+
+    /**
+     * Method removeMessage removes a Message object from the store.
+     * @param message the message to remove
+     * @param sent indicates whether the message was sent or received
+     */
+    void removeMessage(TradeMessage message, boolean sent);
+
+    /**
+     * Method removeSentReceivedMessage removes a Message object from the sent / received store.
+     * @param message the message to remove
+     * @param sent indicates whether the message was sent or received
+     */
+    void removeSentReceivedMessage(TradeMessage message, boolean sent);
+
+    /**
+     * Return the owner.
+     * @return SupplyChainActor; the owner
+     */
+    SupplyChainActor getOwner();
+
     /**
      * Method removeAllMessages removes an exisiting Message object from the store. No error message is given when the message
      * was not there; this is just ignored.

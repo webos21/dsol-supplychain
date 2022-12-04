@@ -11,7 +11,7 @@ package nl.tudelft.simulation.supplychain.policy.payment;
  */
 public enum PaymentPolicyEnum
 {
-    /** The payment policy to for payment at the exact right date */
+    /** The payment policy to for payment at the exact right date. */
     PAYMENT_ON_TIME,
 
     /** The payment policy to indicate the payment will be done late. */

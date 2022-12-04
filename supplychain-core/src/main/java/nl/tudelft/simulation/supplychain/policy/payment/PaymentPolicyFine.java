@@ -8,14 +8,12 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
 
 /**
  * A payment handler where a check is performed whether the payment was paid on time. If not, a fine is imposed.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -51,13 +49,19 @@ public class PaymentPolicyFine extends PaymentPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public String getId()
+    {
+        return "PaymentPolicyFine";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean handleMessage(final Payment payment)
     {
         try
         {
-            if (super.handleMessage(message))
+            if (super.handleMessage(payment))
             {
-                Payment payment = (Payment) message;
                 Time time = payment.getSender().getSimulatorTime();
                 if (time.gt(payment.getBill().getFinalPaymentDate()))
                 {

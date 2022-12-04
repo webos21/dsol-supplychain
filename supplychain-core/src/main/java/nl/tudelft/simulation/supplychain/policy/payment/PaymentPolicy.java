@@ -2,10 +2,7 @@ package nl.tudelft.simulation.supplychain.policy.payment;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
 /**
@@ -17,7 +14,7 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class PaymentPolicy extends SupplyChainPolicy
+public class PaymentPolicy extends SupplyChainPolicy<Payment>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -32,19 +29,18 @@ public class PaymentPolicy extends SupplyChainPolicy
      */
     public PaymentPolicy(final SupplyChainActor owner, final BankAccount bankAccount)
     {
-        super("PaymentPolicy", owner, TradeMessageTypes.PAYMENT);
+        super("PaymentPolicy", owner, Payment.class);
         this.bankAccount = bankAccount;
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final Payment payment)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(payment))
         {
             return false;
         }
-        Payment payment = (Payment) message;
         // TODO: later, a check for the exact amount could be built in.
         this.bankAccount.addToBalance(payment.getPayment());
         payment.getBill().setPaid(true);

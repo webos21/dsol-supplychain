@@ -7,7 +7,6 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
@@ -26,13 +25,13 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class YellowPageAnswerPolicy extends SupplyChainPolicy
+public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the handling time of the handler in simulation time units. */
-    protected DistContinuousDuration handlingTime;
+    private DistContinuousDuration handlingTime;
 
     /**
      * Constructs a new YellowPageAnswerHandler.
@@ -41,23 +40,22 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy
      */
     public YellowPageAnswerPolicy(final SupplyChainActor owner, final DistContinuousDuration handlingTime)
     {
-        super("YellowPageAnswerPolicy", owner, TradeMessageTypes.YP_ANSWER);
+        super("YellowPageAnswerPolicy", owner, YellowPageAnswer.class);
         this.handlingTime = handlingTime;
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final YellowPageAnswer ypAnswer)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(ypAnswer))
         {
             return false;
         }
-        YellowPageAnswer ypAnswer = (YellowPageAnswer) message;
         TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
         YellowPageRequest ypRequest = ypAnswer.getYellowPageRequest();
         List<InternalDemand> internalDemandList =
-                contentStore.getMessageList(ypRequest.getInternalDemandId(), TradeMessageTypes.INTERNAL_DEMAND);
+                contentStore.getMessageList(ypRequest.getInternalDemandId(), InternalDemand.class);
         if (internalDemandList.size() == 0) // we send it to ourselves, so it is 2x in the content store
         {
             Logger.warn("YPAnswerHandler - Actor '{}' could not find InternalDemandID '{}' for YPAnswer '{}'",

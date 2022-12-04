@@ -14,8 +14,6 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
@@ -32,7 +30,7 @@ import nl.tudelft.simulation.supplychain.yellowpage.YellowPage;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class YellowPageRequestPolicy extends SupplyChainPolicy
+public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -47,19 +45,18 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy
      */
     public YellowPageRequestPolicy(final YellowPage owner, final DistContinuousDuration handlingTime)
     {
-        super("YellowPageRequestPolicy", owner, TradeMessageTypes.YP_REQUEST);
+        super("YellowPageRequestPolicy", owner, YellowPageRequest.class);
         this.handlingTime = handlingTime;
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final YellowPageRequest ypRequest)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(ypRequest))
         {
             return false;
         }
-        YellowPageRequest ypRequest = (YellowPageRequest) message;
         Set<SupplyChainActor> supplierSet = ((YellowPage) getOwner()).getSuppliers(ypRequest.getProduct());
         if (supplierSet == null)
         {

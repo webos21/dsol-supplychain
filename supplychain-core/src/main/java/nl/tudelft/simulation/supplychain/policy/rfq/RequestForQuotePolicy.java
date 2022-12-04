@@ -7,13 +7,10 @@ import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
@@ -30,22 +27,22 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class RequestForQuotePolicy extends SupplyChainPolicy
+public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the stock on which checks can take place. */
-    protected StockInterface stock;
+    private StockInterface stock;
 
     /** the reaction time of the handler in simulation time units. */
-    protected DistContinuousDuration handlingTime;
+    private DistContinuousDuration handlingTime;
 
     /** the profit margin to use in the quotes, 1.0 is no profit. */
-    protected double profitMargin;
+    private double profitMargin;
 
     /** the transport mode. */
-    protected TransportMode transportMode;
+    private TransportMode transportMode;
 
     /**
      * Construct a new RFQ handler.
@@ -58,7 +55,7 @@ public class RequestForQuotePolicy extends SupplyChainPolicy
     public RequestForQuotePolicy(final StockKeepingActor owner, final StockInterface stock, final double profitMargin,
             final DistContinuousDuration handlingTime, final TransportMode transportMode)
     {
-        super("RequestForQuotePolicy", owner, TradeMessageTypes.RFQ);
+        super("RequestForQuotePolicy", owner, RequestForQuote.class);
         this.stock = stock;
         this.handlingTime = handlingTime;
         this.profitMargin = profitMargin;
@@ -72,13 +69,12 @@ public class RequestForQuotePolicy extends SupplyChainPolicy
      * {@inheritDoc}
      */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final RequestForQuote rfq)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(rfq))
         {
             return false;
         }
-        RequestForQuote rfq = (RequestForQuote) message;
         Product product = rfq.getProduct();
         // calculate the expected transportation time (in hours)
         // add half a day for handling to be sure it arrives on time

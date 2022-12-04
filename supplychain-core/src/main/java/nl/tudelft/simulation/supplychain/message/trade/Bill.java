@@ -48,7 +48,7 @@ public class Bill extends TradeMessage
     public Bill(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Order order,
             final Time finalPaymentDate, final Money price, final String description)
     {
-        super(TradeMessageTypes.BILL, sender, receiver, internalDemandId);
+        super(sender, receiver, internalDemandId);
         this.finalPaymentDate = finalPaymentDate;
         this.order = order;
         this.price = price;

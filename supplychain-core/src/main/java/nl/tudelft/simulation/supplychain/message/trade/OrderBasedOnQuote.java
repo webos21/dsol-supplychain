@@ -34,7 +34,7 @@ public class OrderBasedOnQuote extends Order
     public OrderBasedOnQuote(final SupplyChainActor sender, final SupplyChainActor receiver,
             final InternalDemand internalDemand, final Time deliveryDate, final Quote quote)
     {
-        super(TradeMessageTypes.ORDER_BASED_ON_QUOTE, sender, receiver, internalDemand, deliveryDate);
+        super(sender, receiver, internalDemand, deliveryDate);
         this.quote = quote;
     }
 

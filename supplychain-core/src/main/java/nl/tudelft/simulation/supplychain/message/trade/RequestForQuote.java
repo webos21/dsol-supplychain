@@ -42,7 +42,7 @@ public class RequestForQuote extends TradeMessage
     public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
             final TransportRequest transportRequest, final Duration cutoffDuration)
     {
-        super(TradeMessageTypes.RFQ, sender, receiver, internalDemand.getInternalDemandId());
+        super(sender, receiver, internalDemand.getInternalDemandId());
         this.internalDemand = internalDemand;
         this.cutoffDate = sender.getSimulatorTime().plus(cutoffDuration);
         this.transportRequest = transportRequest;

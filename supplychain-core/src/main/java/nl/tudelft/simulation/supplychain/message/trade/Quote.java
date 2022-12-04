@@ -60,7 +60,7 @@ public class Quote extends TradeMessage
             final Product product, final double amount, final Money price, final Time proposedShippingDate,
             final TransportOption transportOption, final Time validityTime)
     {
-        super(TradeMessageTypes.QUOTE, sender, receiver, requestForQuote.getInternalDemandId());
+        super(sender, receiver, requestForQuote.getInternalDemandId());
         this.requestForQuote = requestForQuote;
         this.product = product;
         this.amount = amount;

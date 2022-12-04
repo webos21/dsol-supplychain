@@ -48,7 +48,7 @@ public class Shipment extends TradeMessage
     public Shipment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Order order, final Product product, final double amount, final Money totalCargoValue)
     {
-        super(TradeMessageTypes.SHIPMENT, sender, receiver, internalDemandId);
+        super(sender, receiver, internalDemandId);
         this.order = order;
         this.product = product;
         this.amount = amount;

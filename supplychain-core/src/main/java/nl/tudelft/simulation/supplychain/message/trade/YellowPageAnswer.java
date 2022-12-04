@@ -36,7 +36,7 @@ public class YellowPageAnswer extends TradeMessage
     public YellowPageAnswer(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final List<SupplyChainActor> suppliers, final YellowPageRequest ypRequest)
     {
-        super(TradeMessageTypes.YP_ANSWER, sender, receiver, internalDemandId);
+        super(sender, receiver, internalDemandId);
         this.suppliers = suppliers;
         this.ypRequest = ypRequest;
     }

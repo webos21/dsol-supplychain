@@ -34,7 +34,7 @@ public class Payment extends TradeMessage
     public Payment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Bill bill,
             final Money payment)
     {
-        super(TradeMessageTypes.PAYMENT, sender, receiver, internalDemandId);
+        super(sender, receiver, internalDemandId);
         this.bill = bill;
         this.payment = payment;
     }

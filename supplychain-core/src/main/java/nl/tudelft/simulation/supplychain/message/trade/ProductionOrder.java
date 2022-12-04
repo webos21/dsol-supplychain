@@ -44,7 +44,7 @@ public class ProductionOrder extends TradeMessage
     public ProductionOrder(final StockKeepingActor owner, final long internalDemandId, final Time dateReady,
             final Product product, final double amount)
     {
-        super(TradeMessageTypes.PRODUCTION_ORDER, owner, owner, internalDemandId);
+        super(owner, owner, internalDemandId);
         this.dateReady = dateReady;
         this.product = product;
         this.amount = amount;

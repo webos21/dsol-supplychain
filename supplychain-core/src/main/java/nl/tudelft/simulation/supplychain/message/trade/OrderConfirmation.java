@@ -45,7 +45,7 @@ public class OrderConfirmation extends TradeMessage
     public OrderConfirmation(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Order order, final int status)
     {
-        super(TradeMessageTypes.ORDER_CONFIRMATION, sender, receiver, internalDemandId);
+        super(sender, receiver, internalDemandId);
         this.order = order;
         this.status = status;
     }

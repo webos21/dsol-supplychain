@@ -45,7 +45,7 @@ public class InternalDemand extends TradeMessage
     public InternalDemand(final SupplyChainActor sender, final Product product, final double amount,
             final Time earliestDeliveryDate, final Time latestDeliveryDate)
     {
-        super(TradeMessageTypes.INTERNAL_DEMAND, sender, sender);
+        super(sender, sender);
         this.internalDemandId = getUniqueId();
         this.product = product;
         this.amount = amount;

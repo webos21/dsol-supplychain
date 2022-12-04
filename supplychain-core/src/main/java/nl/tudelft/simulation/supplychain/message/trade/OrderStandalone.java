@@ -43,7 +43,7 @@ public class OrderStandalone extends Order
     public OrderStandalone(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
             final Time deliveryDate, final Product product, final double amount, final Money price)
     {
-        super(TradeMessageTypes.ORDER_STANDALONE, sender, receiver, internalDemand, deliveryDate);
+        super(sender, receiver, internalDemand, deliveryDate);
         this.product = product;
         this.amount = amount;
         this.price = price;

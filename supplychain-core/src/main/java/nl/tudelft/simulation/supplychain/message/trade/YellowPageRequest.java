@@ -83,7 +83,7 @@ public class YellowPageRequest extends TradeMessage
     public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
             final Product product, final Length maximumDistance, final int maximumNumber)
     {
-        super(TradeMessageTypes.YP_REQUEST, sender, receiver, internalDemandId);
+        super(sender, receiver, internalDemandId);
         this.maximumDistance = maximumDistance;
         this.maximumNumber = maximumNumber;
         this.product = product;

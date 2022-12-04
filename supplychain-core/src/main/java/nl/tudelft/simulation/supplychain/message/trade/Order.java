@@ -4,7 +4,6 @@ import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -27,16 +26,15 @@ public abstract class Order extends TradeMessage
 
     /**
      * Constructor for an order. This abstract constructor has to be called by every extending class.
-     * @param type MessageType; the specific type of order
      * @param sender SupplyChainActor; the sender actor of the message content
      * @param receiver SupplyChainActor; the receving actor of the message content
      * @param internalDemand the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      */
-    public Order(final MessageType type, final SupplyChainActor sender, final SupplyChainActor receiver,
+    public Order(final SupplyChainActor sender, final SupplyChainActor receiver,
             final InternalDemand internalDemand, final Time deliveryDate)
     {
-        super(type, sender, receiver, internalDemand.getInternalDemandId());
+        super(sender, receiver, internalDemand.getInternalDemandId());
         this.deliveryDate = deliveryDate;
     }
 

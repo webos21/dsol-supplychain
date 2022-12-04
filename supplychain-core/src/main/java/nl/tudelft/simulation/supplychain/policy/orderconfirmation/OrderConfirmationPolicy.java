@@ -6,8 +6,6 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
 /**
@@ -57,12 +55,12 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation
                 System.out.println("OrderConfirmationHandler: handleContent: !orderConfirmation.isAccepted()");
             }
 
-            TradeMessage oldID = null;
+            InternalDemand oldID = null;
             try
             {
                 // TODO: place some business logic here to handle the problem
                 oldID = getOwner().getMessageStore()
-                        .getMessageList(orderConfirmation.getInternalDemandId(), TradeMessageTypes.INTERNAL_DEMAND).get(0);
+                        .getMessageList(orderConfirmation.getInternalDemandId(), InternalDemand.class).get(0);
 
                 if (oldID == null)
                 {

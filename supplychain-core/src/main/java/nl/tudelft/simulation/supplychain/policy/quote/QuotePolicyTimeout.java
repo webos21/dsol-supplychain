@@ -6,19 +6,17 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
+import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 
 /**
  * The QuoteHandlerTimeout handles quotes until a certain timeout is reached. When all Quotes are in, it reacts. It schedules
@@ -50,7 +48,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
     public QuotePolicyTimeout(final SupplyChainActor owner, final Comparator<Quote> comparator,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
-        super(owner, comparator, handlingTime, maximumPriceMargin, minimumAmountMargin);
+        super("QuotePolicyTimeout", owner, comparator, handlingTime, maximumPriceMargin, minimumAmountMargin);
     }
 
     /**
@@ -64,22 +62,21 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
     public QuotePolicyTimeout(final SupplyChainActor owner, final QuoteComparatorEnum comparatorType,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
-        super(owner, comparatorType, handlingTime, maximumPriceMargin, minimumAmountMargin);
+        super("QuotePolicyTimeout", owner, comparatorType, handlingTime, maximumPriceMargin, minimumAmountMargin);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final Quote quote)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(quote))
         {
             return false;
         }
-        Quote quote = (Quote) message;
         long internalDemandId = quote.getInternalDemandId();
         TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
-        int numberQuotes = contentStore.getMessageList(internalDemandId, TradeMessageTypes.QUOTE).size();
-        int numberRFQs = contentStore.getMessageList(internalDemandId, TradeMessageTypes.RFQ).size();
+        int numberQuotes = contentStore.getMessageList(internalDemandId, Quote.class).size();
+        int numberRFQs = contentStore.getMessageList(internalDemandId, RequestForQuote.class).size();
         // when the first quote comes in, schedule the timeout
         if (numberQuotes == 1)
         {
@@ -118,7 +115,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
         {
             this.unansweredIDs.remove(internalDemandId);
             TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
-            List<TradeMessage> quotes = contentStore.getMessageList(internalDemandId, TradeMessageTypes.QUOTE);
+            List<Quote> quotes = contentStore.getMessageList(internalDemandId, Quote.class);
 
             // the size of the quotes is at least one
             // since the invocation of this method is scheduled after a first
@@ -128,7 +125,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
             {
                 Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), internalDemandId,
                         bestQuote.getProposedDeliveryDate(), bestQuote);
-                getOwner().sendMessage(order, this.handlingTime.draw());
+                getOwner().sendMessage(order, this.getHandlingTime().draw());
             }
         }
     }

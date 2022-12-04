@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
@@ -22,7 +21,7 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class AbstractQuotePolicy extends SupplyChainPolicy
+public abstract class AbstractQuotePolicy extends SupplyChainPolicy<Quote>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -31,7 +30,7 @@ public abstract class AbstractQuotePolicy extends SupplyChainPolicy
     private static final boolean DEBUG = false;
 
     /** the time to handle quotes when they are in and to place an order. */
-    protected DistContinuousDuration handlingTime;
+    private DistContinuousDuration handlingTime;
 
     /** the comparator to sort the quotes. */
     private Comparator<Quote> quoteComparator = null;
@@ -44,16 +43,17 @@ public abstract class AbstractQuotePolicy extends SupplyChainPolicy
 
     /**
      * Constructor of the QuoteHandler with a one of the predefined comparators for quotes.
+     * @param id String; the id of the policy
      * @param owner the actor for this QuoteHandler.
      * @param comparatorType the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
      */
-    public AbstractQuotePolicy(final SupplyChainActor owner, final QuoteComparatorEnum comparatorType,
+    public AbstractQuotePolicy(final String id, final SupplyChainActor owner, final QuoteComparatorEnum comparatorType,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
-        super(owner);
+        super(id, owner, Quote.class);
         this.quoteComparator = new QuoteComparator(owner, comparatorType);
         this.handlingTime = handlingTime;
         this.maximumPriceMargin = maximumPriceMargin;
@@ -62,25 +62,22 @@ public abstract class AbstractQuotePolicy extends SupplyChainPolicy
 
     /**
      * Constructor of the QuoteHandler with a user defined comparator for quotes.
-     * @param owner the actor for this QuoteHandler.
+     * @param id String; the id of the policy
+     * @param owner SupplyChainActor; the actor for this QuoteHandler.
      * @param comparator the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
      */
-    public AbstractQuotePolicy(final SupplyChainActor owner, final Comparator<Quote> comparator,
+    public AbstractQuotePolicy(final String id, final SupplyChainActor owner, final Comparator<Quote> comparator,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
-        super(owner);
+        super(id, owner, Quote.class);
         this.quoteComparator = comparator;
         this.handlingTime = handlingTime;
         this.maximumPriceMargin = maximumPriceMargin;
         this.minimumAmountMargin = minimumAmountMargin;
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public abstract boolean handleMessage(Message message);
 
     /**
      * Method getQuoteComparator.
@@ -147,10 +144,8 @@ public abstract class AbstractQuotePolicy extends SupplyChainPolicy
                     {
                         if (AbstractQuotePolicy.DEBUG)
                         {
-                            {
-                                System.err.println("DEBUG -- QuoteHandler: " + " Quote: " + quote + " has invalid amount : "
-                                        + quote.getAmount() + ">" + quote.getRequestForQuote().getAmount());
-                            }
+                            System.err.println("DEBUG -- QuoteHandler: " + " Quote: " + quote + " has invalid amount : "
+                                    + quote.getAmount() + ">" + quote.getRequestForQuote().getAmount());
                         }
                     }
                 }
@@ -158,12 +153,10 @@ public abstract class AbstractQuotePolicy extends SupplyChainPolicy
                 {
                     if (AbstractQuotePolicy.DEBUG)
                     {
-                        {
-                            System.err.println("DEBUG -- QuoteHandler: " + " Price of quote: " + quote + " is too high: "
-                                    + (((quote.getPrice().getAmount() / quote.getAmount()))
-                                            / quote.getProduct().getUnitMarketPrice().getAmount() + "> "
-                                            + (1.0 + this.maximumPriceMargin)));
-                        }
+                        System.err.println("DEBUG -- QuoteHandler: " + " Price of quote: " + quote + " is too high: "
+                                + (((quote.getPrice().getAmount() / quote.getAmount()))
+                                        / quote.getProduct().getUnitMarketPrice().getAmount() + "> "
+                                        + (1.0 + this.maximumPriceMargin)));
                     }
                 }
             }
@@ -171,10 +164,8 @@ public abstract class AbstractQuotePolicy extends SupplyChainPolicy
             {
                 if (AbstractQuotePolicy.DEBUG)
                 {
-                    {
-                        System.err.println("DEBUG -- QuoteHandler: " + " Quote: " + quote + " is invalid (before simtime) : "
-                                + quote.getValidityTime() + " < " + getOwner().getSimulatorTime());
-                    }
+                    System.err.println("DEBUG -- QuoteHandler: " + " Quote: " + quote + " is invalid (before simtime) : "
+                            + quote.getValidityTime() + " < " + getOwner().getSimulatorTime());
                 }
             }
         }
@@ -183,6 +174,30 @@ public abstract class AbstractQuotePolicy extends SupplyChainPolicy
             return null;
         }
         return sortedQuotes.first();
+    }
+
+    /**
+     * @return handlingTime
+     */
+    protected DistContinuousDuration getHandlingTime()
+    {
+        return this.handlingTime;
+    }
+
+    /**
+     * @return maximumPriceMargin
+     */
+    protected double getMaximumPriceMargin()
+    {
+        return this.maximumPriceMargin;
+    }
+
+    /**
+     * @return minimumAmountMargin
+     */
+    protected double getMinimumAmountMargin()
+    {
+        return this.minimumAmountMargin;
     }
 
     /**

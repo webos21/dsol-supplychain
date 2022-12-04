@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public class StockUpdateData implements Serializable
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the product name */
@@ -43,7 +43,7 @@ public class StockUpdateData implements Serializable
     }
 
     /**
-     * @return Returns the actualAmount.
+     * @return the actualAmount.
      */
     public double getActualAmount()
     {
@@ -51,7 +51,7 @@ public class StockUpdateData implements Serializable
     }
 
     /**
-     * @return Returns the claimedAmount.
+     * @return the claimedAmount.
      */
     public double getClaimedAmount()
     {
@@ -59,7 +59,7 @@ public class StockUpdateData implements Serializable
     }
 
     /**
-     * @return Returns the orderedAmount.
+     * @return the orderedAmount.
      */
     public double getOrderedAmount()
     {
@@ -67,7 +67,7 @@ public class StockUpdateData implements Serializable
     }
 
     /**
-     * @return Returns the productName.
+     * @return the productName.
      */
     public String getProductName()
     {

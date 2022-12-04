@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * A StockRecord keeps the information about products, such as actual, ordered and claimed amounts of products. It assists the
  * Stock object and the restocking policies to assess the needed order amounts.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -24,7 +24,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  */
 public class StockRecord implements Serializable
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the owner */
@@ -54,7 +54,7 @@ public class StockRecord implements Serializable
     /**
      * @param owner the trader
      * @param simulator the simulator
-     * @param product the product
+     * @param product Product; the product
      */
     public StockRecord(final StockKeepingActor owner, final SCSimulatorInterface simulator, final Product product)
     {
@@ -75,7 +75,7 @@ public class StockRecord implements Serializable
     }
 
     /**
-     * Returns the actualAmount.
+     * Return the actualAmount.
      * @return double
      */
     public double getActualAmount()
@@ -84,7 +84,7 @@ public class StockRecord implements Serializable
     }
 
     /**
-     * Returns the claimedAmount.
+     * Return the claimedAmount.
      * @return double
      */
     public double getClaimedAmount()
@@ -93,7 +93,7 @@ public class StockRecord implements Serializable
     }
 
     /**
-     * Returns the orderedAmount.
+     * Return the orderedAmount.
      * @return double
      */
     public double getOrderedAmount()
@@ -102,7 +102,7 @@ public class StockRecord implements Serializable
     }
 
     /**
-     * Returns the product.
+     * Return the product.
      * @return Product
      */
     public Product getProduct()
@@ -179,7 +179,7 @@ public class StockRecord implements Serializable
     }
 
     /**
-     * Returns the costprice.
+     * Return the costprice.
      * @return double
      */
     public Money getCostprice()
@@ -188,7 +188,7 @@ public class StockRecord implements Serializable
     }
 
     /**
-     * Returns the costprice per product unit.
+     * Return the costprice per product unit.
      * @return double Returns the costprice per unit
      */
     public Money getUnitPrice()

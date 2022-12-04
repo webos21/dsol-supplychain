@@ -13,8 +13,8 @@ import org.djutils.event.TimedEvent;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
-import nl.tudelft.simulation.supplychain.content.Shipment;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -22,7 +22,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * Events on stock changes are fired by Stock, so subscribers who are interested in the stock amounts can see what is going on
  * in the Stock.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -355,7 +355,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
 
     /**
      * Method sendStockUpdateEvent.
-     * @param product the product for which the stock is updated
+     * @param product Product; the product for which the stock is updated
      */
     @Override
     public void sendStockUpdateEvent(final Product product)

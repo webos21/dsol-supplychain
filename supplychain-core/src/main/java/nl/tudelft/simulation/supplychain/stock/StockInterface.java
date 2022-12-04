@@ -7,8 +7,8 @@ import org.djutils.event.EventProducerInterface;
 import org.djutils.event.TimedEventType;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
-import nl.tudelft.simulation.supplychain.content.Shipment;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -17,7 +17,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * amount (really in the warehouse), the ordered amount (how many units did we order), and the claimed amount (how many units
  * are claimed for committed orders, as far as we know).
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -35,8 +35,8 @@ public interface StockInterface extends Serializable, EventProducerInterface
 
     /**
      * Method addStock.
-     * @param product the product
-     * @param amount the amount
+     * @param product Product; the product
+     * @param amount double; the amount
      * @param totalPrice the value of this amount of product
      */
     void addStock(Product product, double amount, Money totalPrice);
@@ -49,36 +49,36 @@ public interface StockInterface extends Serializable, EventProducerInterface
 
     /**
      * Method removeStock.
-     * @param product the product
-     * @param amount the amount
+     * @param product Product; the product
+     * @param amount double; the amount
      * @return double the actual amount of the product taken out of stock
      */
     public double removeStock(final Product product, final double amount);
 
     /**
      * Method getActualAmount.
-     * @param product the product
+     * @param product Product; the product
      * @return double the actual amount
      */
     double getActualAmount(Product product);
 
     /**
      * Method getClaimedAmount.
-     * @param product the product
+     * @param product Product; the product
      * @return double the claimed amount
      */
     double getClaimedAmount(Product product);
 
     /**
      * Method getOrderedAmount.
-     * @param product the product
+     * @param product Product; the product
      * @return double the ordered amount
      */
     double getOrderedAmount(Product product);
 
     /**
      * Method changeClaimedAmount.
-     * @param product the product
+     * @param product Product; the product
      * @param delta the delta (positive or negative)
      * @return boolean success or not
      */
@@ -86,7 +86,7 @@ public interface StockInterface extends Serializable, EventProducerInterface
 
     /**
      * Method changeOrderedAmount.
-     * @param product the product
+     * @param product Product; the product
      * @param delta the delta (positive or negative)
      * @return boolean success or not
      */
@@ -94,7 +94,7 @@ public interface StockInterface extends Serializable, EventProducerInterface
 
     /**
      * Method getUnitPrice.
-     * @param product the product
+     * @param product Product; the product
      * @return double the price per unit
      */
     Money getUnitPrice(Product product);
@@ -113,7 +113,7 @@ public interface StockInterface extends Serializable, EventProducerInterface
 
     /**
      * fires an update event on the current status of the stock for the specific product
-     * @param product the product to fire the update for
+     * @param product Product; the product to fire the update for
      */
     void sendStockUpdateEvent(Product product);
 }

@@ -8,7 +8,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 /**
  * Defines the methods that are needed to calculate stock forecasts.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -22,7 +22,7 @@ public interface StockForecastInterface extends StockInterface
 
     /**
      * Method changeFutureClaimedAmount.
-     * @param product the product
+     * @param product Product; the product
      * @param delta the delta (positive or negative)
      * @param time the time the change is scheduled to take place
      * @return boolean success or not
@@ -31,7 +31,7 @@ public interface StockForecastInterface extends StockInterface
 
     /**
      * Method changeFutureOrderedAmount.
-     * @param product the product
+     * @param product Product; the product
      * @param delta the delta (positive or negative)
      * @param time the time the change is scheduled to take place
      * @return boolean success or not

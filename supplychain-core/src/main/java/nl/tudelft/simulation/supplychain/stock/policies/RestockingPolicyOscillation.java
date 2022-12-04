@@ -11,7 +11,7 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * other hand. If we committed more than we ordered and have on hand, we overreact and order more products than strictly
  * necessary. This reaction tends to lead in an oscillation of order sizes upstream the supply chain.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -19,19 +19,19 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  */
 public class RestockingPolicyOscillation extends RestockingPolicyFixed
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** The oscillation margin */
+    /** The oscillation margin. */
     protected double oscillationMargin = 0.0;
 
     /**
      * Construct a new restocking policy based on a safety stock level.
      * @param stock the stock for which the policy holds
-     * @param product the product that has to be restocked
+     * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking
      * @param ceiling fixed ceiling (true) or fixed amount (false)
-     * @param amount the amount with which or to which stock is supplemented
+     * @param amount double; the amount with which or to which stock is supplemented
      * @param includeClaims whether to include the claims in the stock or not
      * @param overReactionMargin the over reaction margin
      * @param maxDeliveryTime the maximum delivery time to use
@@ -39,25 +39,6 @@ public class RestockingPolicyOscillation extends RestockingPolicyFixed
     public RestockingPolicyOscillation(final StockInterface stock, final Product product,
             final DistContinuousDuration frequency, final boolean ceiling, final double amount, final boolean includeClaims,
             final double overReactionMargin, final Duration maxDeliveryTime)
-    {
-        super(stock, product, frequency, ceiling, amount, includeClaims, maxDeliveryTime);
-        this.oscillationMargin = overReactionMargin;
-    }
-
-    /**
-     * Construct a new restocking policy based on a safety stock level.
-     * @param stock the stock for which the policy holds
-     * @param product the product that has to be restocked
-     * @param frequency the fixed frequency for restocking
-     * @param ceiling fixed ceiling (true) or fixed amount (false)
-     * @param amount the amount with which or to which stock is supplemented
-     * @param includeClaims whether to include the claims in the stock or not
-     * @param overReactionMargin the over reaction margin
-     * @param maxDeliveryTime the maximum delivery time to use
-     */
-    public RestockingPolicyOscillation(final StockInterface stock, final Product product, final Duration frequency,
-            final boolean ceiling, final double amount, final boolean includeClaims, final double overReactionMargin,
-            final Duration maxDeliveryTime)
     {
         super(stock, product, frequency, ceiling, amount, includeClaims, maxDeliveryTime);
         this.oscillationMargin = overReactionMargin;
@@ -91,7 +72,7 @@ public class RestockingPolicyOscillation extends RestockingPolicyFixed
     }
 
     /**
-     * @return Returns the overReactionMargin.
+     * @return the overReactionMargin.
      */
     public double getOscillationMargin()
     {
@@ -101,7 +82,7 @@ public class RestockingPolicyOscillation extends RestockingPolicyFixed
     /**
      * @param overReactionMargin The overReactionMargin to set.
      */
-    public void setOscillationMargin(double overReactionMargin)
+    public void setOscillationMargin(final double overReactionMargin)
     {
         this.oscillationMargin = overReactionMargin;
     }

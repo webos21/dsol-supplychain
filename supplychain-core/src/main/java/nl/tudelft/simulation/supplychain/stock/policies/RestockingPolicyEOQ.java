@@ -11,7 +11,7 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * Restocking according to economic order quantity. Needs fixed and variable costs when it has to be implemented. For that
  * reason: still abstract...
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -19,28 +19,16 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  */
 public abstract class RestockingPolicyEOQ extends RestockingPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /**
      * @param stock the stock for which the policy holds
-     * @param product the product that has to be restocked
+     * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking or checking
      * @param maxDeliveryTime the maximum delivery time to use
      */
     public RestockingPolicyEOQ(final StockInterface stock, final Product product, final DistContinuousDuration frequency,
-            final Duration maxDeliveryTime)
-    {
-        super(stock, product, frequency, maxDeliveryTime);
-    }
-
-    /**
-     * @param stock the stock for which the policy holds
-     * @param product the product that has to be restocked
-     * @param frequency the constant frequency for restocking or checking
-     * @param maxDeliveryTime the maximum delivery time to use
-     */
-    public RestockingPolicyEOQ(final StockInterface stock, final Product product, final Duration frequency,
             final Duration maxDeliveryTime)
     {
         super(stock, product, frequency, maxDeliveryTime);

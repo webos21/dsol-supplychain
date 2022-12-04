@@ -10,56 +10,36 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * This RestockingPolicy either orders fixed amounts of goods at the times indicated by the 'frequency', or supplements the
  * number of products till a fixed amount is reached.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class RestockingPolicyFixed extends RestockingPolicy
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** fixed ceiling (true) or fixed amount (false) */
+    /** fixed ceiling (true) or fixed amount (false). */
     protected boolean ceiling;
 
-    /** whether to include the claims in the stock or not */
+    /** whether to include the claims in the stock or not. */
     protected boolean includeClaims;
 
-    /** the amount in the policy */
+    /** the amount in the policy. */
     protected double amount;
 
     /**
      * Construct a new restocking policy, which works with fixed amounts.
      * @param stock the stock for which the policy holds
-     * @param product the product that has to be restocked
+     * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking
      * @param ceiling fixed ceiling (true) or fixed amount (false)
-     * @param amount the amount with which or to which stock is supplemented
+     * @param amount double; the amount with which or to which stock is supplemented
      * @param includeClaims whether to include the claims in the stock or not
      * @param maxDeliveryTime the maximum delivery time to use
      */
     public RestockingPolicyFixed(final StockInterface stock, final Product product, final DistContinuousDuration frequency,
-            final boolean ceiling, final double amount, final boolean includeClaims, final Duration maxDeliveryTime)
-    {
-        super(stock, product, frequency, maxDeliveryTime);
-        this.ceiling = ceiling;
-        this.amount = amount;
-        this.includeClaims = includeClaims;
-    }
-
-    /**
-     * Construct a new restocking policy, which works with fixed amounts.
-     * @param stock the stock for which the policy holds
-     * @param product the product that has to be restocked
-     * @param frequency the fixed frequency for restocking
-     * @param ceiling fixed ceiling (true) or fixed amount (false)
-     * @param amount the amount with which or to which stock is supplemented
-     * @param includeClaims whether to include the claims in the stock or not
-     * @param maxDeliveryTime the maximum delivery time to use
-     */
-    public RestockingPolicyFixed(final StockInterface stock, final Product product, final Duration frequency,
             final boolean ceiling, final double amount, final boolean includeClaims, final Duration maxDeliveryTime)
     {
         super(stock, product, frequency, maxDeliveryTime);
@@ -94,7 +74,7 @@ public class RestockingPolicyFixed extends RestockingPolicy
     }
 
     /**
-     * @return Returns the amount (ceiling or amount).
+     * @return the amount (ceiling or amount).
      */
     public double getAmount()
     {
@@ -110,7 +90,7 @@ public class RestockingPolicyFixed extends RestockingPolicy
     }
 
     /**
-     * @return Returns whether we work with a ceiling or fixed amount.
+     * @return whether we work with a ceiling or fixed amount.
      */
     public boolean isCeiling()
     {
@@ -126,7 +106,7 @@ public class RestockingPolicyFixed extends RestockingPolicy
     }
 
     /**
-     * @return Returns whether we include claims in the stock level or not.
+     * @return whether we include claims in the stock level or not.
      */
     public boolean isIncludeClaims()
     {

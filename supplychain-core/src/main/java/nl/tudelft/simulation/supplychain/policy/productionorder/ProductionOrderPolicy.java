@@ -1,9 +1,7 @@
 package nl.tudelft.simulation.supplychain.policy.productionorder;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.production.Production;
 
@@ -15,7 +13,7 @@ import nl.tudelft.simulation.supplychain.production.Production;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class ProductionOrderPolicy extends SupplyChainPolicy
+public class ProductionOrderPolicy extends SupplyChainPolicy<ProductionOrder>
 {
     /** Serial version ID. */
     private static final long serialVersionUID = 1L;
@@ -33,7 +31,7 @@ public class ProductionOrderPolicy extends SupplyChainPolicy
      */
     public ProductionOrderPolicy(final SupplyChainActor owner, final Production production)
     {
-        super("ProductionOrderPolicy", owner, TradeMessageTypes.PRODUCTION_ORDER);
+        super("ProductionOrderPolicy", owner, ProductionOrder.class);
         this.production = production;
         if (ProductionOrderPolicy.DEBUG)
         {
@@ -43,9 +41,9 @@ public class ProductionOrderPolicy extends SupplyChainPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final ProductionOrder productionOrder)
     {
-        return this.production.acceptProductionOrder((ProductionOrder) message);
+        return this.production.acceptProductionOrder(productionOrder);
     }
 
     /**

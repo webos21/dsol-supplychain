@@ -8,7 +8,6 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
@@ -33,13 +32,13 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  * A bill is sent out before, with, or after the shipment, and in some cases, the shipment has to wait for the payment to
  * arrive.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
+ * @param <O> The specific order type (if any) for which this policy applies
  */
-public abstract class AbstractOrderPolicy extends SupplyChainPolicy
+public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPolicy<O>
 {
     /** */
     private static final long serialVersionUID = 1L;
@@ -53,11 +52,12 @@ public abstract class AbstractOrderPolicy extends SupplyChainPolicy
      * @param id String; the id of the policy
      * @param owner SupplyChainActor; the owner of the handler
      * @param stock StockInterface; the stock to use to handle the incoming order
-     * @param messageType MessageType; the specific order message type
+     * @param messageClass MessageClass; the specific order message class
      */
-    public AbstractOrderPolicy(final String id, final SupplyChainActor owner, final StockInterface stock, final MessageType messageType)
+    public AbstractOrderPolicy(final String id, final SupplyChainActor owner, final StockInterface stock,
+            final Class<O> messageClass)
     {
-        super(id, owner, messageType);
+        super(id, owner, messageClass);
         this.stock = stock;
     }
 

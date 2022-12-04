@@ -9,8 +9,6 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.capabilities.ProducerInterface;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
@@ -22,13 +20,12 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 
 /**
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class OrderPolicyMake extends AbstractOrderPolicy
+public class OrderPolicyMake extends AbstractOrderPolicy<Order>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -40,16 +37,13 @@ public class OrderPolicyMake extends AbstractOrderPolicy
      */
     public OrderPolicyMake(final SupplyChainActor owner, final StockInterface stock)
     {
-        super(owner, stock);
+        super("OrderPolicyMake", owner, stock, Order.class);
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final Order order)
     {
-        // get the order
-        Order order = (Order) message;
-
         // send out the confirmation
         OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandId(),
                 order, OrderConfirmation.CONFIRMED);

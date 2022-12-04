@@ -12,15 +12,19 @@ import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.message.MessageType;
+import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
+import nl.tudelft.simulation.supplychain.message.trade.Payment;
+import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
+import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 
 /**
  * <p>
@@ -55,11 +59,11 @@ public class LeanTradeMessageStore extends TradeMessageStore
     public synchronized void addMessage(final TradeMessage message, final boolean sent)
     {
         super.addMessage(message, sent);
-        MessageType type = message.getType();
+        Class<? extends TradeMessage> messageClass = message.getClass();
         try
         {
             // schedule the removal after the 'lifetime' of the content is unanswered
-            if (type.equals(TradeMessageTypes.INTERNAL_DEMAND))
+            if (messageClass.equals(InternalDemand.class))
             {
                 InternalDemand internalDemand = (InternalDemand) message;
                 this.unansweredContentMap.put(message.getUniqueId(), message);
@@ -67,7 +71,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.simulator.scheduleEventAbs(date, this, this, "internalDemandTimeout",
                         new Serializable[] {internalDemand, Boolean.valueOf(sent)});
             }
-            else if (type.equals(TradeMessageTypes.RFQ) && !sent)
+            else if (messageClass.equals(RequestForQuote.class) && !sent)
             {
                 RequestForQuote rfq = (RequestForQuote) message;
                 this.unansweredContentMap.put(message.getUniqueId(), message);
@@ -76,7 +80,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.simulator.scheduleEventAbs(date, this, this, "requestForQuoteTimeout",
                         new Serializable[] {rfq, Boolean.valueOf(sent)});
             }
-            else if (type.equals(TradeMessageTypes.RFQ) && sent)
+            else if (messageClass.equals(RequestForQuote.class) && sent)
             {
                 RequestForQuote rfq = (RequestForQuote) message;
                 this.unansweredContentMap.put(message.getUniqueId(), message);
@@ -86,7 +90,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.simulator.scheduleEventAbs(date, this, this, "requestForQuoteTimeout",
                         new Serializable[] {rfq, Boolean.valueOf(sent)});
             }
-            else if (type.equals(TradeMessageTypes.QUOTE))
+            else if (messageClass.equals(Quote.class))
             {
                 Quote quote = (Quote) message;
                 this.unansweredContentMap.put(message.getUniqueId(), message);
@@ -98,7 +102,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.simulator.scheduleEventAbs(date, this, this, "quoteTimeout",
                         new Serializable[] {quote, Boolean.valueOf(sent)});
             }
-            else if (type.equals(TradeMessageTypes.ORDER_BASED_ON_QUOTE))
+            else if (messageClass.equals(OrderBasedOnQuote.class))
             {
                 OrderBasedOnQuote order = (OrderBasedOnQuote) message;
                 this.unansweredContentMap.put(message.getUniqueId(), message);
@@ -109,7 +113,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.simulator.scheduleEventAbs(date, this, this, "orderBasedOnQuoteTimeout",
                         new Serializable[] {order, Boolean.valueOf(sent)});
             }
-            else if (type.equals(TradeMessageTypes.ORDER_STANDALONE))
+            else if (messageClass.equals(OrderStandalone.class))
             {
                 OrderStandalone order = (OrderStandalone) message;
                 this.unansweredContentMap.put(message.getUniqueId(), message);
@@ -118,21 +122,20 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.simulator.scheduleEventAbs(date, this, this, "orderStandAloneTimeout",
                         new Serializable[] {order, Boolean.valueOf(sent)});
             }
-            else if (type.equals(TradeMessageTypes.ORDER_CONFIRMATION))
+            else if (messageClass.equals(OrderConfirmation.class))
             {
                 OrderConfirmation orderConfirmation = (OrderConfirmation) message;
                 this.unansweredContentMap.remove(orderConfirmation.getOrder().getUniqueId());
             }
-            else if (type.equals(TradeMessageTypes.PRODUCTION_ORDER) || type.equals(TradeMessageTypes.SHIPMENT)
-                    || type.equals(TradeMessageTypes.BILL) || type.equals(TradeMessageTypes.PAYMENT)
-                    || type.equals(TradeMessageTypes.YP_REQUEST)
-                    || type.equals(TradeMessageTypes.YP_ANSWER))
+            else if (messageClass.equals(ProductionOrder.class) || messageClass.equals(Shipment.class)
+                    || messageClass.equals(Bill.class) || messageClass.equals(Payment.class)
+                    || messageClass.equals(YellowPageRequest.class) || messageClass.equals(YellowPageAnswer.class))
             {
                 // nothing to do
             }
             else
             {
-                Logger.warn("addContent - could not find content class {}", type);
+                Logger.warn("addContent - could not find content class {}", messageClass);
             }
         }
         catch (Exception e)

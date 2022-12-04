@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.MessageType;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
 /**
@@ -24,28 +23,29 @@ public interface TradeMessageStoreInterface extends Serializable
      * Set the owner for the message store after is has been created. The reason for explicitly having to set the owner and not
      * include the owner in the constructor is that the SupplyChainActor needs a MessageStore in its constructor, so the
      * MessageStore cannot be constructed with the owner.
-     * @param owner the owner
+     * @param owner SupplyChainActor; the owner
      */
     void setOwner(SupplyChainActor owner);
 
     /**
-     * Method addMessage stores a new message object into the store.
-     * @param message the message to add
-     * @param sent sent or not
+     * Add a new message object to the store.
+     * @param message TradeMessage; the message to add
+     * @param sent boolean; indicates whether the message was sent or received
      */
     void addMessage(TradeMessage message, boolean sent);
 
     /**
-     * Method removeMessage removes a Message object from the store.
-     * @param message the message to remove
-     * @param sent indicates whether the message was sent or received
+     * Remove a Message object from the store. No error message is given when the message was not found in the store
+     * @param message TradeMessage; the message to remove
+     * @param sent boolean; indicates whether the message was sent or received
      */
     void removeMessage(TradeMessage message, boolean sent);
 
     /**
-     * Method removeSentReceivedMessage removes a Message object from the sent / received store.
-     * @param message the message to remove
-     * @param sent indicates whether the message was sent or received
+     * Remove a Message object from the sent / received store. No error message is given when the message was not found in the
+     * store.
+     * @param message TradeMessage; the message to remove
+     * @param sent boolean; indicates whether the message was sent or received
      */
     void removeSentReceivedMessage(TradeMessage message, boolean sent);
 
@@ -56,28 +56,30 @@ public interface TradeMessageStoreInterface extends Serializable
     SupplyChainActor getOwner();
 
     /**
-     * Method removeAllMessages removes an exisiting Message object from the store. No error message is given when the message
-     * was not there; this is just ignored.
+     * Remove all messages belonging to an internalDemandId from the store. No error message is given when no messages belonging
+     * to the internalDemandId were found.
      * @param internalDemandId long; the identifier of the internal demand
      */
     void removeAllMessages(long internalDemandId);
 
     /**
-     * Method getMessageList returns a list of Message objects of type 'type' based on the internalDemandId.
-     * @param internalDemandId the identifier of the message
-     * @param type the message type to look for
-     * @return returns a list of message of type 'type' based on the internalDemandId
+     * Method getMessageList returns a list of Message objects of class 'messageClass' based on the internalDemandId.
+     * @param internalDemandId long; the identifier of the message
+     * @param messageClass Class&lt;T&gt;; the class of the message to look for
+     * @return List&ltT&gt;; a list of messages of class 'messageClass' belonging to the internalDemandId
+     * @param <T> the type of message we are looking for
      */
-    List<TradeMessage> getMessageList(long internalDemandId, MessageType type);
+    <T extends TradeMessage> List<T> getMessageList(long internalDemandId, Class<T> messageClass);
 
     /**
-     * Method getMessageList returns the Message object of type 'type' based on the internalDemandId, for either sent or
-     * received items.
-     * @param internalDemandId the identifier of the message
-     * @param type the message type to look for
-     * @param sent indicates whether the message was sent or received
-     * @return returns a list of message of type 'type' based on the internalDemandId
+     * Method getMessageList returns the Message object of class 'messageClass' based on the internalDemandId, for either sent
+     * or received items.
+     * @param internalDemandId long; the identifier of the internalDemand for which the messages need to be retrieved
+     * @param messageClass Class&lt;T&gt;; the class of the message to look for
+     * @param sent boolean; indicates whether the message was sent or received
+     * @return List&ltT&gt;; a list of messages of class 'messageClass' belonging to the internalDemandId
+     * @param <T> the type of message we are looking for
      */
-    List<TradeMessage> getMessageList(long internalDemandId, MessageType type, boolean sent);
+    <T extends TradeMessage> List<T> getMessageList(long internalDemandId, Class<T> messageClass, boolean sent);
 
 }

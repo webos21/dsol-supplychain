@@ -11,10 +11,8 @@ import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 
@@ -22,13 +20,12 @@ import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
  * The BillHandler is a simple implementation of the business logic to pay a bill. Four different policies are available in this
  * version -- which can be extended, of course: paying immediately, paying on time, paying early, and paying late.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class BillPolicy extends SupplyChainPolicy
+public class BillPolicy extends SupplyChainPolicy<Bill>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -53,7 +50,7 @@ public class BillPolicy extends SupplyChainPolicy
     public BillPolicy(final SupplyChainActor owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
             final DistContinuousDuration paymentDelay)
     {
-        super("BillPolicy", owner, TradeMessageTypes.BILL);
+        super("BillPolicy", owner, Bill.class);
         this.bankAccount = bankAccount;
         this.paymentPolicy = paymentPolicy;
         this.paymentDelay = paymentDelay;
@@ -71,13 +68,12 @@ public class BillPolicy extends SupplyChainPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final Bill bill)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(bill))
         {
             return false;
         }
-        Bill bill = (Bill) message;
         // schedule the payment
         Time currentTime = Time.ZERO;
         currentTime = getOwner().getSimulator().getAbsSimulatorTime();

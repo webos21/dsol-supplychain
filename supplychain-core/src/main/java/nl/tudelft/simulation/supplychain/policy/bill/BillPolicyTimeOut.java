@@ -8,7 +8,6 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
@@ -61,11 +60,10 @@ public class BillPolicyTimeOut extends BillPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final Bill bill)
     {
-        if (super.handleMessage(message))
+        if (super.handleMessage(bill))
         {
-            Bill bill = (Bill) message;
             try
             {
                 bill.getSender().getSimulator().scheduleEventAbs(bill.getFinalPaymentDate().plus(this.maximumTimeOut), this,

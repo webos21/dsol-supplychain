@@ -4,7 +4,6 @@ import org.djunits.value.vdouble.scalar.Length;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
@@ -52,13 +51,12 @@ public class InternalDemandPolicyYP extends AbstractInternalDemandPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final InternalDemand internalDemand)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(internalDemand))
         {
             return false;
         }
-        InternalDemand internalDemand = (InternalDemand) message;
         if (super.stock != null)
         {
             super.stock.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());

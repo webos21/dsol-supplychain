@@ -8,7 +8,6 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
@@ -57,13 +56,12 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final InternalDemand internalDemand)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(internalDemand))
         {
             return false;
         }
-        InternalDemand internalDemand = (InternalDemand) message;
         // resolve the suplier
         SupplierRecord supplierRecord = this.suppliers.get(internalDemand.getProduct());
         if (supplierRecord == null)

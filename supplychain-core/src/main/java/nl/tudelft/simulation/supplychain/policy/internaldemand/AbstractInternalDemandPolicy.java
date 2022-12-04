@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
+import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
@@ -15,7 +15,7 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class AbstractInternalDemandPolicy extends SupplyChainPolicy
+public abstract class AbstractInternalDemandPolicy extends SupplyChainPolicy<InternalDemand>
 {
     /** */
     private static final long serialVersionUID = 1L;
@@ -38,7 +38,7 @@ public abstract class AbstractInternalDemandPolicy extends SupplyChainPolicy
     public AbstractInternalDemandPolicy(final String id, final SupplyChainActor owner,
             final DistContinuousDuration handlingTime, final StockInterface stock)
     {
-        super(id, owner, TradeMessageTypes.INTERNAL_DEMAND);
+        super(id, owner, InternalDemand.class);
         this.handlingTime = handlingTime;
         this.stock = stock;
     }

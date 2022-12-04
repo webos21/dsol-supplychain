@@ -11,8 +11,6 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -81,15 +79,14 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final InternalDemand internalDemand)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(internalDemand))
         {
             Logger.warn("handleContent",
-                    "InternalDemand " + message.toString() + " for actor " + getOwner() + " not considered valid.");
+                    "InternalDemand " + internalDemand.toString() + " for actor " + getOwner() + " not considered valid.");
             return false;
         }
-        InternalDemand internalDemand = (InternalDemand) message;
         // resolve the suplier
         HashSet<SupplyChainActor> supplierSet = this.suppliers.get(internalDemand.getProduct());
         if (supplierSet == null)

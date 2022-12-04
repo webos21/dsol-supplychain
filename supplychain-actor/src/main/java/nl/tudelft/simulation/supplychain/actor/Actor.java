@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
-import org.djutils.event.EventProducer;
 import org.djutils.exceptions.Throw;
 import org.djutils.immutablecollections.ImmutableLinkedHashSet;
 import org.djutils.immutablecollections.ImmutableSet;
@@ -17,7 +15,6 @@ import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
-import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
  * The actor is the basic class in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'
@@ -28,7 +25,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Actor extends EventProducer implements Serializable, Locatable
+public abstract class Actor extends AbstractPolicyHandler implements Locatable
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
@@ -41,9 +38,6 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
 
     /** the location description of the actor (e.g., a city, country). */
     private final String locationDescription;
-
-    /** the simulator to schedule simulation events on. */
-    private final SCSimulatorInterface simulator;
 
     /** the roles. */
     private ImmutableSet<Role> roles = new ImmutableLinkedHashSet<>(new LinkedHashSet<Role>());
@@ -69,38 +63,16 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     public Actor(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
             final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription)
     {
+        super(simulator);
         Throw.whenNull(actorType, "actorType cannot be null");
         Throw.whenNull(name, "name cannot be null");
-        Throw.whenNull(simulator, "simulator cannot be null");
         Throw.whenNull(location, "location cannot be null");
         Throw.whenNull(locationDescription, "locationDescription cannot be null");
         this.actorType = actorType;
         this.name = name;
         this.locationDescription = locationDescription;
-        this.simulator = simulator;
         this.location = location;
         this.messageHandler = messageHandler;
-    }
-
-    /**
-     * Add a message handling policy to the Actor.
-     * @param policy MessagePolicyInterface&lt;M&gt;; the policy to add
-     * @param <M> the message type
-     */
-    public <M extends Message> void addMessagePolicy(final MessagePolicyInterface<M> policy)
-    {
-        this.messageHandler.addMessagePolicy(policy);
-    }
-
-    /**
-     * Remove a message handling policy from the Actor.
-     * @param messageClass Class&lt;M&gt;; the message class of the policy to remove
-     * @param policyId String; the id of the policy to remove
-     * @param <M> the message type
-     */
-    public <M extends Message> void removeMessagePolicy(final Class<M> messageClass, final String policyId)
-    {
-        this.messageHandler.removeMessagePolicy(messageClass, policyId);
     }
 
     /**
@@ -131,25 +103,6 @@ public abstract class Actor extends EventProducer implements Serializable, Locat
     public void receiveMessage(final Message message)
     {
         this.messageHandler.handleMessageReceipt(message);
-    }
-
-    /**
-     * Send a message to another actor with a delay.
-     * @param message message; the message to send
-     * @param delay Duration; the time it takes between sending and receiving
-     */
-    public void sendMessage(final Message message, final Duration delay)
-    {
-        this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
-    }
-
-    /**
-     * Send a message to another actor without a delay.
-     * @param message message; the message to send
-     */
-    public void sendMessage(final Message message)
-    {
-        sendMessage(message, Duration.ZERO);
     }
 
     /**

@@ -8,10 +8,8 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 
 /**
  * An OrderConfirmationFineHandler checks whether a promised delivery is on time or even delivered at all. If too late, a fine
@@ -27,17 +25,17 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
     /** the serial version uid. */
     private static final long serialVersionUID = 11L;
 
-    /** the maximum time out for a shipment */
+    /** the maximum time out for a shipment. */
     private Duration maximumTimeOut = Duration.ZERO;
 
-    /** the margin for the fine */
+    /** the margin for the fine. */
     private double fineMargin = 0.0;
 
-    /** the fixed fine */
+    /** the fixed fine. */
     private Money fixedFine = new Money(0.0, MoneyUnit.USD);
 
     /**
-     * constructs a new OrderConfirmationFineHandler
+     * constructs a new OrderConfirmationFineHandler.
      * @param owner the owner
      * @param maximumTimeOut the time out
      * @param fineMargin the margin
@@ -54,11 +52,17 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public String getId()
     {
-        if (super.handleMessage(message))
+        return "OrderConfirmationPolicyFine";
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean handleMessage(final OrderConfirmation orderConfirmation)
+    {
+        if (super.handleMessage(orderConfirmation))
         {
-            OrderConfirmation orderConfirmation = (OrderConfirmation) message;
             if (orderConfirmation.isAccepted())
             {
                 try
@@ -84,8 +88,7 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
      */
     protected void checkShipment(final OrderConfirmation orderConfirmation)
     {
-        if (getOwner().getMessageStore().getMessageList(orderConfirmation.getInternalDemandId(), TradeMessageTypes.SHIPMENT)
-                .isEmpty())
+        if (getOwner().getMessageStore().getMessageList(orderConfirmation.getInternalDemandId(), Shipment.class).isEmpty())
         {
 
             // there is still an order, but no shipment... we fine!
@@ -104,6 +107,5 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
             orderConfirmation.getSender().getBankAccount().withdrawFromBalance(fine);
             orderConfirmation.getReceiver().getBankAccount().addToBalance(fine);
         }
-
     }
 }

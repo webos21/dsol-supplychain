@@ -4,7 +4,6 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
@@ -17,18 +16,17 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
  * option, e.g. to the next Quote when there were quotes. It is also possible to redo the entire ordering process from scratch.
  * The latter strategy is implemented in this version of the handler.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class OrderConfirmationPolicy extends SupplyChainPolicy
+public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** for debugging */
+    /** for debugging. */
     private static final boolean DEBUG = false;
 
     /**
@@ -37,21 +35,21 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy
      */
     public OrderConfirmationPolicy(final SupplyChainActor owner)
     {
-        super(owner);
+        super("OrderConfirmationPolicy", owner, OrderConfirmation.class);
     }
 
     /**
      * For the moment, the handler will just reorder the products from the start of the process, in case the confirmation is
-     * negative. {@inheritDoc}
+     * negative.<br>
+     * {@inheritDoc}
      */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final OrderConfirmation orderConfirmation)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(orderConfirmation))
         {
             return false;
         }
-        OrderConfirmation orderConfirmation = (OrderConfirmation) message;
         if (!orderConfirmation.isAccepted())
         {
             if (OrderConfirmationPolicy.DEBUG)
@@ -88,13 +86,6 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy
             getOwner().getMessageStore().removeAllMessages(orderConfirmation.getInternalDemandId());
         }
         return true;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Class<? extends TradeMessage> getContentClass()
-    {
-        return OrderConfirmation.class;
     }
 
 }

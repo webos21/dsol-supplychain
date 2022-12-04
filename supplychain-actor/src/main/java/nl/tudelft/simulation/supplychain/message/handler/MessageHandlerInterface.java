@@ -24,7 +24,7 @@ public interface MessageHandlerInterface extends Identifiable, Serializable
      * Return the Actor to which this message handler belongs.
      * @return Actor; the Actor to which this message handler belongs
      */
-    Actor getOwner();
+    Actor getActor();
 
     /**
      * Add a message handling policy to the handler.

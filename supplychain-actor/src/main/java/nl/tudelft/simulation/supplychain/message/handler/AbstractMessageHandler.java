@@ -112,7 +112,7 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
 
     /** {@inheritDoc} */
     @Override
-    public Actor getOwner()
+    public Actor getActor()
     {
         return this.owner;
     }

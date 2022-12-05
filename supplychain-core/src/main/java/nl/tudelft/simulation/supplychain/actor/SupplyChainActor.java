@@ -30,7 +30,7 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 
-public abstract class SupplyChainActor extends Actor
+public abstract class SupplyChainActor extends Actor implements SupplyChainActorInterface
 {
     /** */
     private static final long serialVersionUID = 1L;
@@ -119,37 +119,30 @@ public abstract class SupplyChainActor extends Actor
         }
     }
 
-    /**
-     * Add a fixed cost item for this actor.
-     * @param description String; the description of the fixed cost item
-     * @param interval Duration; the interval at which the amount will be deduced from the bank account
-     * @param amount Money; the amount to deduce at each interval
-     */
+    /** {@inheritDoc} */
+    @Override
     public void addFixedCost(final String description, final Duration interval, final Money amount)
     {
         FixedCost fixedCost = new FixedCost(this, description, interval, amount);
         this.fixedCosts.add(fixedCost);
     }
 
-    /**
-     * @return the messageStore.
-     */
+    /** {@inheritDoc} */
+    @Override
     public TradeMessageStoreInterface getMessageStore()
     {
         return this.messageStore;
     }
 
-    /**
-     * @return the bankAccount.
-     */
+    /** {@inheritDoc} */
+    @Override
     public BankAccount getBankAccount()
     {
         return this.bankAccount;
     }
 
-    /**
-     * @return the fixed costs.
-     */
+    /** {@inheritDoc} */
+    @Override
     public List<FixedCost> getFixedCosts()
     {
         return this.fixedCosts;

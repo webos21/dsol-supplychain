@@ -17,46 +17,18 @@ public abstract class Role extends AbstractPolicyHandler implements Identifiable
     /** */
     private static final long serialVersionUID = 20221121L;
 
-    /** the type of role (e.g., for yellow page requests). */
-    private final RoleType roleType;
-
-    /** the role id. */
-    private final String id;
-
     /** the actor to which this role belongs. */
     private final Actor owner;
 
     /**
      * Create a new Role.
-     * @param roleType RoleType; the type of role
-     * @param id String; the id of the role
      * @param owner Actor; the actor to which this role belongs
      */
-    public Role(final RoleType roleType, final String id, final Actor owner)
+    public Role(final Actor owner)
     {
         super(owner.getSimulator());
-        Throw.whenNull(roleType, "roleType cannot be null");
-        Throw.whenNull(id, "id cannot be null");
         Throw.whenNull(owner, "owner cannot be null");
-        this.roleType = roleType;
-        this.id = id;
         this.owner = owner;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getId()
-    {
-        return this.id;
-    }
-
-    /**
-     * Return the role type (e.g., for yellow page requests).
-     * @return roleType RoleType; the roletype
-     */
-    public RoleType getRoleType()
-    {
-        return this.roleType;
     }
 
     /**

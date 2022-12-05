@@ -11,7 +11,7 @@ import org.djutils.event.EventProducer;
 import org.djutils.exceptions.Throw;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
@@ -60,11 +60,11 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
             Collections.synchronizedMap(new LinkedHashMap<>());
 
     /** the owner. */
-    private SupplyChainActor owner;
+    private SupplyChainActorInterface owner;
 
     /** {@inheritDoc} */
     @Override
-    public void setOwner(final SupplyChainActor owner)
+    public void setOwner(final SupplyChainActorInterface owner)
     {
         Throw.whenNull(owner, "owner cannot be null");
         Throw.when(this.owner != null, RuntimeException.class,
@@ -93,8 +93,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
         }
         messageList.add(message);
         Class<? extends TradeMessage> messageType = foldExtendedMessageClass(message.getClass());
-        Map<Class<? extends TradeMessage>, List<? super TradeMessage>> srMap =
-                sent ? this.sentStateMap : this.receivedStateMap;
+        Map<Class<? extends TradeMessage>, List<? super TradeMessage>> srMap = sent ? this.sentStateMap : this.receivedStateMap;
         List<? super TradeMessage> srList = srMap.get(messageType);
         if (srList == null)
         {
@@ -129,8 +128,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
     {
         Throw.whenNull(this.owner, "MessageStore - owner has not been initialized");
         Class<? extends TradeMessage> contentClass = foldExtendedMessageClass(message.getClass());
-        Map<Class<? extends TradeMessage>, List<? super TradeMessage>> srMap =
-                sent ? this.sentStateMap : this.receivedStateMap;
+        Map<Class<? extends TradeMessage>, List<? super TradeMessage>> srMap = sent ? this.sentStateMap : this.receivedStateMap;
         List<? super TradeMessage> srList = srMap.get(contentClass);
         if (srList != null)
         {
@@ -170,8 +168,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
      * @param messageMap Map; the Map for one internal demand ID to clean
      * @param messageType MessageType; the message type to search for
      */
-    private synchronized void removeMessageList(
-            final Map<Class<? extends TradeMessage>, List<? super TradeMessage>> messageMap,
+    private synchronized void removeMessageList(final Map<Class<? extends TradeMessage>, List<? super TradeMessage>> messageMap,
             final Class<? extends TradeMessage> messageType)
     {
         List<? super TradeMessage> messageList = messageMap.get(messageType);
@@ -472,7 +469,7 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
      * @return the owner.
      */
     @Override
-    public SupplyChainActor getOwner()
+    public SupplyChainActorInterface getOwner()
     {
         return this.owner;
     }

@@ -6,7 +6,6 @@ import org.djutils.base.Identifiable;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
  * MessageHandlerInterface priovides the contract for a message (mailbox) handler. A message handler delegates the messages to
@@ -25,21 +24,6 @@ public interface MessageHandlerInterface extends Identifiable, Serializable
      * @return Actor; the Actor to which this message handler belongs
      */
     Actor getActor();
-
-    /**
-     * Add a message handling policy to the handler.
-     * @param policy MessagePolicyInterface&lt;M&gt;; the policy to add
-     * @param <M> the message type
-     */
-    <M extends Message> void addMessagePolicy(MessagePolicyInterface<M> policy);
-
-    /**
-     * Remove a message handling policy from the handler.
-     * @param messageClass Class&lt;M&gt;; the message class of the policy to remove
-     * @param policyId String; the id of the policy to remove
-     * @param <M> the message type
-     */
-    <M extends Message> void removeMessagePolicy(Class<M> messageClass, String policyId);
 
     /**
      * Handle an incoming message. This can be storing the message, handling it with a delay, or immediately handling it.

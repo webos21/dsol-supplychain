@@ -1,16 +1,11 @@
 package nl.tudelft.simulation.supplychain.message.handler;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.djunits.Throw;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
 /**
  * AbstractMessageHandler contains the base implementation of a message handler. A message handler delegates the messages to one
@@ -33,10 +28,6 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
     /** The Actor to which this message handler belongs. */
     private final Actor owner;
 
-    /** the message handling policies. */
-    private final Map<Class<? extends Message>, List<MessagePolicyInterface<? extends Message>>> messagePolicies =
-            new LinkedHashMap<>();
-
     /**
      * Create a new message queue for an actor.
      * @param id String; an id for the message handler
@@ -50,56 +41,23 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
         this.owner = owner;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public <M extends Message> void addMessagePolicy(final MessagePolicyInterface<M> policy)
-    {
-        Throw.whenNull(policy, "policy cannot be null");
-        Class<M> messageClass = policy.getMessageClass();
-        List<MessagePolicyInterface<? extends Message>> policyList = this.messagePolicies.get(messageClass);
-        if (policyList == null)
-        {
-            policyList = new ArrayList<>();
-            this.messagePolicies.put(messageClass, policyList);
-        }
-        policyList.add(policy);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public <M extends Message> void removeMessagePolicy(final Class<M> messageClass, final String policyId)
-    {
-        Throw.whenNull(messageClass, "messageClass cannot be null");
-        Throw.whenNull(policyId, "policyId cannot be null");
-        List<MessagePolicyInterface<? extends Message>> policyList = this.messagePolicies.get(messageClass);
-        if (policyList != null)
-        {
-            for (MessagePolicyInterface<? extends Message> policy : policyList)
-            {
-                if (policy.getId().equals(policyId))
-                {
-                    policyList.remove(policy);
-                }
-            }
-        }
-    }
-
     /**
-     * This is the core processing of a message that was received. All appropriate actor policies are executed.
+     * This is the core dispatching method for the processing of a message that was received. All appropriate actor policies and
+     * role policies are executed.
      * @param message M; the message to process
      * @param <M> The message class to ensure that the message and policy align
      */
-    @SuppressWarnings("unchecked")
-    protected <M extends Message> void processMessage(final M message)
+    protected <M extends Message> void dispatchMessageProcessing(final M message)
     {
-        List<MessagePolicyInterface<? extends Message>> policyList = this.messagePolicies.get(message.getClass());
-        if (policyList == null)
+        boolean processed = false;
+        processed |= this.owner.processMessage(message);
+        for (Role role : this.owner.getRoles())
         {
-            Logger.info(this.owner + " does not have a handler for " + message.getClass().getSimpleName());
+            processed |= role.processMessage(message);
         }
-        for (MessagePolicyInterface<? extends Message> policy : policyList)
+        if (!processed)
         {
-            ((MessagePolicyInterface<M>) policy).handleMessage(message);
+            Logger.info(this.toString() + " does not have a handler for " + message.getClass().getSimpleName());
         }
     }
 

@@ -29,7 +29,7 @@ public class DirectMessageHandler extends AbstractMessageHandler
     @Override
     public void handleMessageReceipt(final Message message)
     {
-        processMessage(message);
+        dispatchMessageProcessing(message);
     }
 
 }

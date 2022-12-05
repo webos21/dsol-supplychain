@@ -39,8 +39,8 @@ public class MessageHandlerDelay extends AbstractMessageHandler
     @Override
     public void handleMessageReceipt(final Message message)
     {
-        message.getSender().getSimulator().scheduleEventRel(this.delayDistribution.draw(), getActor(), this, "processMessage",
-                new Object[] {message});
+        message.getSender().getSimulator().scheduleEventRel(this.delayDistribution.draw(), getActor(), this,
+                "dispatchMessageProcessing", new Object[] {message});
     }
 
     /**

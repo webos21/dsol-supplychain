@@ -30,9 +30,6 @@ public abstract class Actor extends AbstractPolicyHandler implements Locatable
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
 
-    /** the type of the actor (e.g., for yellow page requests). */
-    private final ActorType actorType;
-
     /** the name of the actor. */
     private final String name;
 
@@ -53,22 +50,19 @@ public abstract class Actor extends AbstractPolicyHandler implements Locatable
 
     /**
      * Construct a new Actor.
-     * @param actorType ActorType; the type of the actor
      * @param name String; the name of the actor
      * @param messageHandler MessageHandlerInterface; the message handler to use
      * @param simulator SCSimulatorInterface; the simulator to use
      * @param location OrientedPoint3d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
      */
-    public Actor(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
-            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription)
+    public Actor(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
+            final OrientedPoint3d location, final String locationDescription)
     {
         super(simulator);
-        Throw.whenNull(actorType, "actorType cannot be null");
         Throw.whenNull(name, "name cannot be null");
         Throw.whenNull(location, "location cannot be null");
         Throw.whenNull(locationDescription, "locationDescription cannot be null");
-        this.actorType = actorType;
         this.name = name;
         this.locationDescription = locationDescription;
         this.location = location;
@@ -103,15 +97,6 @@ public abstract class Actor extends AbstractPolicyHandler implements Locatable
     public void receiveMessage(final Message message)
     {
         this.messageHandler.handleMessageReceipt(message);
-    }
-
-    /**
-     * Return the actor type (e.g., for yellow page requests).
-     * @return actorType ActorType; the actor type
-     */
-    public ActorType getActorType()
-    {
-        return this.actorType;
     }
 
     /**

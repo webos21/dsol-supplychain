@@ -1,5 +1,6 @@
 package nl.tudelft.simulation.supplychain.actor;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -117,6 +118,13 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
     public OrientedPoint3d getLocation()
     {
         return this.location;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Serializable getSourceId()
+    {
+        return getName();
     }
 
     /** {@inheritDoc} */

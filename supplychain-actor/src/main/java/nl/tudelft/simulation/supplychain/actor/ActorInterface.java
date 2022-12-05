@@ -1,7 +1,5 @@
 package nl.tudelft.simulation.supplychain.actor;
 
-import java.io.Serializable;
-
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.immutablecollections.ImmutableSet;
@@ -65,13 +63,6 @@ public interface ActorInterface extends PolicyHandlerInterface, Locatable
     default Time getSimulatorTime()
     {
         return getSimulator().getAbsSimulatorTime();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    default Serializable getSourceId()
-    {
-        return getName();
     }
 
     /**

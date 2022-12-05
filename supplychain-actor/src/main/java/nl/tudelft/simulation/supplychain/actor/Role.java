@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.actor;
 
+import java.io.Serializable;
+
 import org.djutils.exceptions.Throw;
 
 /**
@@ -38,6 +40,13 @@ public abstract class Role extends AbstractPolicyHandler implements RoleInterfac
     public Actor getOwner()
     {
         return this.owner;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Serializable getSourceId()
+    {
+        return getId();
     }
 
 }

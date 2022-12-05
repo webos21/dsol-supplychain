@@ -1,6 +1,5 @@
 package nl.tudelft.simulation.supplychain.message.handler;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
@@ -18,11 +17,10 @@ public class DirectMessageHandler extends AbstractMessageHandler
 
     /**
      * Create a message handler for an actor that immediately handles the message upon receipt.
-     * @param owner Actor; the Actor to which this message handler belongs
      */
-    public DirectMessageHandler(final Actor owner)
+    public DirectMessageHandler()
     {
-        super("DirectMessageHandler", owner);
+        super("DirectMessageHandler");
     }
 
     /** {@inheritDoc} */

@@ -26,18 +26,26 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
     private final String id;
 
     /** The Actor to which this message handler belongs. */
-    private final Actor owner;
+    private Actor owner;
 
     /**
-     * Create a new message queue for an actor.
+     * Create a new message handler for an actor.
      * @param id String; an id for the message handler
-     * @param owner Actor; the Actor to which this message handler belongs
      */
-    public AbstractMessageHandler(final String id, final Actor owner)
+    public AbstractMessageHandler(final String id)
     {
         Throw.whenNull(id, "id cannot be null");
-        Throw.whenNull(owner, "owner cannot be null");
         this.id = id;
+    }
+
+    /**
+     * Set the owner; can only be called once, preferably in the constructor of the Actor.
+     * @param owner Actor; the Actor to which this message handler belongs
+     */
+    public void setOwner(final Actor owner)
+    {
+        Throw.whenNull(owner, "owner cannot be null");
+        Throw.when(this.owner != null, IllegalStateException.class, "MessageHandler.owner already initialized");
         this.owner = owner;
     }
 

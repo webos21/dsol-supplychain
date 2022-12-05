@@ -1,5 +1,6 @@
 package nl.tudelft.simulation.supplychain.yellowpage;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -11,87 +12,68 @@ import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.capabilities.YPInterface;
-import nl.tudelft.simulation.supplychain.actor.yellowpage.Topic;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.finance.Bank;
+import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
  * YellowPage.java.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SupplyChainYellowPage extends SupplyChainActor implements YPInterface
+public class YellowPageActor extends SupplyChainActor implements YellowPageInterface
 {
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** the wrapped YP from the actor package. */
-    private nl.tudelft.simulation.actor.yellowpage.YellowPage yp;
+    /** the dictionary of topic-actor combinations. */
+    private Map<Topic, List<Actor>> topicDictionary = new LinkedHashMap<Topic, List<Actor>>();
 
-    /** the dictionary of product-actor combinations */
-    private Map<Product, HashSet<SupplyChainActor>> dictionary = new LinkedHashMap<>();
+    /** the dictionary of product-actor combinations. */
+    private Map<Product, HashSet<SupplyChainActor>> productDictionary = new LinkedHashMap<>();
 
     /**
-     * @param name
-     * @param simulator
-     * @param position
-     * @param bank
-     * @param contentStore
+     * Create a new YellowPage organization.
+     * @param name String; 
+     * @param simulator SCSimulatorInterface;
+     * @param position OrientedPoint3d;
+     * @param bank Bank;
+     * @param contentStore MessageStoreInterface;
      */
-    public SupplyChainYellowPage(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final ContentStoreInterface contentStore)
+    public YellowPageActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+            final Bank bank, final MessageStoreInterface contentStore)
     {
         super(name, simulator, position, bank, contentStore);
-        this.yp = new nl.tudelft.simulation.actor.yellowpage.YellowPage();
     }
 
     /**
-     * @param name
-     * @param simulator
-     * @param position
-     * @param bank
-     * @param initialBankBalance
-     * @param contentStore
-     */
-    public SupplyChainYellowPage(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
-    {
-        super(name, simulator, position, bank, initialBankBalance, contentStore);
-        this.yp = new nl.tudelft.simulation.actor.yellowpage.YellowPage();
-    }
-
-    /**
-     * Add a supplier to for a certain product
-     * @param product the product with a set of suppliers.
+     * Add a supplier to for a certain product.
+     * @param product Product; the product with a set of suppliers.
      * @param supplier a supplier for that product.
      */
     public void addSupplier(final Product product, final SupplyChainActor supplier)
     {
-        HashSet<SupplyChainActor> supplierSet = this.dictionary.get(product);
+        HashSet<SupplyChainActor> supplierSet = this.productDictionary.get(product);
         if (supplierSet == null)
         {
             supplierSet = new LinkedHashSet<SupplyChainActor>();
-            this.dictionary.put(product, supplierSet);
+            this.productDictionary.put(product, supplierSet);
         }
         supplierSet.add(supplier);
     }
 
     /**
-     * Remove a supplier for a certain product
-     * @param product the product.
+     * Remove a supplier for a certain product.
+     * @param product Product; the product.
      * @param supplier the supplier for that product to be removed.
      */
     public void removeSupplier(final Product product, final SupplyChainActor supplier)
     {
-        HashSet<SupplyChainActor> supplierSet = this.dictionary.get(product);
+        HashSet<SupplyChainActor> supplierSet = this.productDictionary.get(product);
         if (supplierSet != null)
         {
             supplierSet.remove(supplier);
@@ -99,15 +81,15 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
     }
 
     /**
-     * @param product the product for which to search for suppliers
+     * @param product Product; the product for which to search for suppliers
      * @return the list of suppliers of the product (or an empty list)
      */
     public Set<SupplyChainActor> getSuppliers(final Product product)
     {
         Set<SupplyChainActor> supplierSet = new LinkedHashSet<>();
-        if (this.dictionary.get(product) != null)
+        if (this.productDictionary.get(product) != null)
         {
-            supplierSet.addAll(this.dictionary.get(product));
+            supplierSet.addAll(this.productDictionary.get(product));
         }
         return supplierSet;
     }
@@ -116,28 +98,68 @@ public class SupplyChainYellowPage extends SupplyChainActor implements YPInterfa
     @Override
     public List<Actor> findActor(final String regex)
     {
-        return this.yp.findActor(regex);
+        List<Actor> result = new ArrayList<Actor>();
+        for (List<Actor> actors : this.topicDictionary.values())
+        {
+            for (Actor actor : actors)
+            {
+                if (actor.getName().matches(regex))
+                {
+                    result.add(actor);
+                }
+            }
+        }
+        return result;
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<Actor> findActor(final String regex, final Topic category)
+    public List<Actor> findActor(final String regex, final Topic topic)
     {
-        return this.yp.findActor(regex, category);
+        List<Actor> result = new ArrayList<Actor>();
+        for (Topic cat : this.topicDictionary.keySet())
+        {
+            if (Topic.specializationOf(topic, cat))
+            {
+                List<Actor> actors = this.topicDictionary.get(cat);
+                for (Actor actor : actors)
+                {
+                    if (actor.getName().matches(regex))
+                    {
+                        result.add(actor);
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<Actor> findActor(final Topic category)
+    public List<Actor> findActor(final Topic topic)
     {
-        return this.yp.findActor(category);
+        List<Actor> actors = new ArrayList<Actor>();
+        for (Topic t : this.topicDictionary.keySet())
+        {
+            if (Topic.specializationOf(topic, t))
+            {
+                actors = this.topicDictionary.get(t);
+            }
+        }
+        return actors;
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean register(final Actor actor, final Topic category)
+    public boolean register(final Actor actor, final Topic topic)
     {
-        return this.yp.register(actor, category);
+        List<Actor> actors = this.topicDictionary.get(topic);
+        if (actors == null)
+        {
+            actors = new ArrayList<Actor>();
+            this.topicDictionary.put(topic, actors);
+        }
+        return actors.add(actor);
     }
 
 }

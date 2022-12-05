@@ -3,7 +3,6 @@ package nl.tudelft.simulation.supplychain.finance;
 import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.ActorType;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 
@@ -12,8 +11,7 @@ import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface
  * Messages, but this is of course possible ti implement, e.g. to simulate risks of banks handling international transactions
  * slowly, or to simulate cyber attacks on the financial infrastructure.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -31,17 +29,16 @@ public class Bank extends Actor
 
     /**
      * Create a new Bank.
-     * @param actorType ActorType; the actor type for the bank, as registered in the model
      * @param name String; the name of the bank
      * @param messageHandler MessageHandlerInterface; the handler for messages
      * @param simulator SCSimulatorInterface; the simulator
      * @param location OrientedPoint3d; the location on the map
      * @param locationDescription String; a description of the location (e.g., "Frankfurt")
      */
-    public Bank(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
-            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription)
+    public Bank(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
+            final OrientedPoint3d location, final String locationDescription)
     {
-        super(actorType, name, messageHandler, simulator, location, locationDescription);
+        super(name, messageHandler, simulator, location, locationDescription);
     }
 
     /**

@@ -1,10 +1,15 @@
 package nl.tudelft.simulation.supplychain.finance;
 
+import java.util.List;
+
+import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 
 /**
  * The Bank to store the interest rates for the Bank accounts. In this case, we have chosen to not make the Bank work with
@@ -16,7 +21,7 @@ import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Bank extends Actor
+public class Bank extends Actor implements SupplyChainActorInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221127L;
@@ -75,5 +80,32 @@ public class Bank extends Actor
     public void setAnnualInterestRatePos(final double annualInterestRatePos)
     {
         this.annualInterestRatePos = annualInterestRatePos;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void addFixedCost(final String description, final Duration interval, final Money amount)
+    {
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<FixedCost> getFixedCosts()
+    {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TradeMessageStoreInterface getMessageStore()
+    {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BankAccount getBankAccount()
+    {
+        return null;
     }
 }

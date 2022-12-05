@@ -7,7 +7,6 @@ import org.djutils.immutablecollections.ImmutableMap;
 
 import nl.tudelft.simulation.dsol.model.DSOLModel;
 import nl.tudelft.simulation.supplychain.actor.ActorType;
-import nl.tudelft.simulation.supplychain.actor.RoleType;
 
 /**
  * SCModelInterface defines the extra methods of a supply chain model.
@@ -26,22 +25,10 @@ public interface SCModelInterface extends DSOLModel<Duration, SCSimulatorInterfa
     void registerActorType(ActorType actorType);
 
     /**
-     * Register a new role type.
-     * @param roleType RoleType; the role type to register
-     */
-    void registerRoleType(RoleType roleType);
-
-    /**
      * Return the actor types registered in the model.
      * @return Map&lt;String, ActorType&gt;; the registred actor types
      */
     ImmutableMap<String, ActorType> getActorTypes();
-
-    /**
-     * Return the role types registered in the model.
-     * @return Map&lt;String, RoleType&gt;; the registred role types
-     */
-    ImmutableMap<String, RoleType> getRoleTypes();
 
     /**
      * Calculate the distance between two points as a Length. The point could be in lat/lon, on an orthogonal grid, or based on

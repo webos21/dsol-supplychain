@@ -11,7 +11,6 @@ import org.djutils.immutablecollections.ImmutableMap;
 import nl.tudelft.simulation.dsol.experiment.StreamInformation;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.supplychain.actor.ActorType;
-import nl.tudelft.simulation.supplychain.actor.RoleType;
 
 /**
  * AbstractSupplyChainModel is the base model for supply chain models as it contains a registry of actor types and role types.
@@ -29,9 +28,6 @@ public abstract class AbstractSupplyChainModel extends AbstractDSOLModel<Duratio
 
     /** the actor types. */
     private ImmutableMap<String, ActorType> actorTypes = new ImmutableLinkedHashMap<>(new LinkedHashMap<>());
-
-    /** the role types. */
-    private ImmutableMap<String, RoleType> roleTypes = new ImmutableLinkedHashMap<>(new LinkedHashMap<>());
 
     /**
      * Construct a new supply chain model with a default stream information object.
@@ -67,27 +63,9 @@ public abstract class AbstractSupplyChainModel extends AbstractDSOLModel<Duratio
 
     /** {@inheritDoc} */
     @Override
-    public void registerRoleType(final RoleType roleType)
-    {
-        Throw.when(getRoleTypes().containsKey(roleType.getId()), IllegalArgumentException.class,
-                "Duplicate registration of role type " + roleType.getId());
-        Map<String, RoleType> newMap = this.roleTypes.toMap();
-        newMap.put(roleType.getId(), roleType);
-        this.roleTypes = new ImmutableLinkedHashMap<>(newMap);
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public ImmutableMap<String, ActorType> getActorTypes()
     {
         return this.actorTypes;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ImmutableMap<String, RoleType> getRoleTypes()
-    {
-        return this.roleTypes;
     }
 
 }

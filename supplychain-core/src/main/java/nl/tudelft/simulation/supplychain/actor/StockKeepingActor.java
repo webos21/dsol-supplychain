@@ -7,11 +7,11 @@ import java.util.List;
 import org.djutils.draw.point.OrientedPoint3d;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.capabilities.StockKeeperInterface;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
@@ -19,61 +19,59 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * A Trader is a SupplyChainActor that maintains a Stock of products. The stock is not implemented with the Role, because
  * several roles might want to share the same stock, e.g. a product might be bought and then sold again from the same stock.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class StockKeepingActor extends SupplyChainActor implements StockKeeperInterface
+public abstract class StockKeepingActor extends SupplyChainActor
 {
     /** */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * the stock of the trader.
-     */
+    /** the stock of the trader. */
+    @SuppressWarnings("checkstyle:visibilitymodifier")
     protected StockInterface stock = null;
 
     /**
-     * Constructs a new Trader.
-     * @param name the name to display for this supply chain actor
-     * @param simulator the simulator on which to schedule
-     * @param position the location for transportation calculations, which can also be used for animation purposes
-     * @param bank the bank
-     * @param contentStore the contentStore for the messages
+     * Build the StockKeepingActor with a Builder.
+     * @param builder Builder; the Builder to use
      */
-    public StockKeepingActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final ContentStoreInterface contentStore)
+    public StockKeepingActor(final SupplyChainActor.Builder builder)
     {
-        super(name, simulator, position, bank, contentStore);
+        super(builder);
     }
 
     /**
-     * Constructs a new Trader with a certain bank balance.
-     * @param name the name to display for this supply chain actor
-     * @param simulator the simulator on which to schedule
-     * @param position the location for transportation calculations, which can also be used for animation purposes
-     * @param bank the bank
-     * @param initialBankBalance the initial bank balance
-     * @param contentStore the contentStore for the messages
+     * Construct a new Actor.
+     * @param actorType ActorType; the type of the actor
+     * @param name String; the name of the actor
+     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param simulator SCSimulatorInterface; the simulator to use
+     * @param location OrientedPoint3d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @param bank Bank; the bank for the BankAccount
+     * @param initialBalance Money; the initial balance for the actor
+     * @param messageStore TradeMessageStoreInterface; the message store for messages
      */
-    public StockKeepingActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final Money initialBankBalance, final ContentStoreInterface contentStore)
+    @SuppressWarnings("checkstyle:parameternumber")
+    public StockKeepingActor(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
+            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
+            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
     {
-        super(name, simulator, position, bank, initialBankBalance, contentStore);
+        super(actorType, name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
     }
 
     /**
      * Give the Trader some initial stock. Note: no clone, so make sure different stocks for different actors are truly
      * different. The method ONLY works when the stock object is still null
-     * @param stock the initial stock to set
+     * @param initialStock the initial stock to set
      */
-    public void setInitialStock(final StockInterface stock)
+    public void setInitialStock(final StockInterface initialStock)
     {
         if (this.stock == null)
         {
-            this.stock = stock;
+            this.stock = initialStock;
         }
         else
         {
@@ -83,9 +81,9 @@ public abstract class StockKeepingActor extends SupplyChainActor implements Stoc
 
     /**
      * Implement to check whether the stock is below some level, might trigger ordering of extra amount of the product.
-     * @param product the product to check the stock for.
+     * @param product Product; the product to check the stock for.
      */
-    public abstract void checkStock(final Product product);
+    public abstract void checkStock(Product product);
 
     /**
      * @return the raw materials
@@ -102,8 +100,10 @@ public abstract class StockKeepingActor extends SupplyChainActor implements Stoc
         return products;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Return the stock of this Actor.
+     * @return StockInterface; the stock of this Actor
+     */
     public StockInterface getStock()
     {
         return this.stock;

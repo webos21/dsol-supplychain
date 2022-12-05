@@ -1,6 +1,5 @@
 package nl.tudelft.simulation.supplychain.actor;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,7 +22,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class AbstractPolicyHandler extends EventProducer implements Serializable
+public abstract class AbstractPolicyHandler extends EventProducer implements PolicyHandlerInterface
 {
     /** */
     private static final long serialVersionUID = 20221205L;
@@ -47,11 +46,8 @@ public abstract class AbstractPolicyHandler extends EventProducer implements Ser
         this.simulator = simulator;
     }
 
-    /**
-     * Add a message handling policy to the PolicyHandler.
-     * @param policy MessagePolicyInterface&lt;M&gt;; the policy to add
-     * @param <M> the message type
-     */
+    /** {@inheritDoc} */
+    @Override
     public <M extends Message> void addMessagePolicy(final MessagePolicyInterface<M> policy)
     {
         Throw.whenNull(policy, "policy cannot be null");
@@ -65,12 +61,8 @@ public abstract class AbstractPolicyHandler extends EventProducer implements Ser
         policyList.add(policy);
     }
 
-    /**
-     * Remove a message handling policy from the PolicyHandler.
-     * @param messageClass Class&lt;M&gt;; the message class of the policy to remove
-     * @param policyId String; the id of the policy to remove
-     * @param <M> the message type
-     */
+    /** {@inheritDoc} */
+    @Override
     public <M extends Message> void removeMessagePolicy(final Class<M> messageClass, final String policyId)
     {
         Throw.whenNull(messageClass, "messageClass cannot be null");
@@ -88,12 +80,8 @@ public abstract class AbstractPolicyHandler extends EventProducer implements Ser
         }
     }
 
-    /**
-     * This is the core processing of a message that was received. All appropriate policies of the actor or role are executed.
-     * @param message M; the message to process
-     * @param <M> The message class to ensure that the message and policy align
-     * @return boolean; whether the PolicyHandler processed the message or not
-     */
+    /** {@inheritDoc} */
+    @Override
     @SuppressWarnings("unchecked")
     public <M extends Message> boolean processMessage(final M message)
     {

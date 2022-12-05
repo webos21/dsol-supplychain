@@ -1,17 +1,14 @@
 package nl.tudelft.simulation.supplychain.actor;
 
-import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.exceptions.Throw;
 import org.djutils.immutablecollections.ImmutableLinkedHashSet;
 import org.djutils.immutablecollections.ImmutableSet;
 
-import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
@@ -25,7 +22,7 @@ import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Actor extends AbstractPolicyHandler implements Locatable
+public abstract class Actor extends AbstractPolicyHandler implements ActorInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
@@ -70,10 +67,8 @@ public abstract class Actor extends AbstractPolicyHandler implements Locatable
         messageHandler.setOwner(this);
     }
 
-    /**
-     * Add a role to the actor.
-     * @param role Role; the role to add to the actor
-     */
+    /** {@inheritDoc} */
+    @Override
     public void addRole(final Role role)
     {
         Throw.whenNull(role, "role cannot be null");
@@ -82,65 +77,39 @@ public abstract class Actor extends AbstractPolicyHandler implements Locatable
         this.roles = new ImmutableLinkedHashSet<>(newRoles);
     }
 
-    /**
-     * Return the set of roles for this actor.
-     * @return Set&lt;roles&gt;; the roles of this actor
-     */
+    /** {@inheritDoc} */
+    @Override
     public ImmutableSet<Role> getRoles()
     {
         return this.roles;
     }
 
-    /**
-     * Receive a message from another actor, and handle it (storing or handling, depending on the MessageHandler).
-     * @param message message; the message to receive
-     */
+    /** {@inheritDoc} */
+    @Override
     public void receiveMessage(final Message message)
     {
         this.messageHandler.handleMessageReceipt(message);
     }
 
-    /**
-     * Return the name of the actor.
-     * @return String; the name of the actor
-     */
+    /** {@inheritDoc} */
+    @Override
     public String getName()
     {
         return this.name;
     }
 
-    /**
-     * Return the location description of the actor (e.g., a city, country).
-     * @return String; the location description of the actor
-     */
+    /** {@inheritDoc} */
+    @Override
     public String getLocationDescription()
     {
         return this.locationDescription;
     }
 
-    /**
-     * Return the simulator to schedule simulation events on.
-     * @return simulator SCSimulatorInterface the simulator
-     */
+    /** {@inheritDoc} */
+    @Override
     public SCSimulatorInterface getSimulator()
     {
         return this.simulator;
-    }
-
-    /**
-     * Return the current simulation time.
-     * @return Time; the current simulation time
-     */
-    public Time getSimulatorTime()
-    {
-        return this.simulator.getAbsSimulatorTime();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Serializable getSourceId()
-    {
-        return getName();
     }
 
     /** {@inheritDoc} */
@@ -150,10 +119,8 @@ public abstract class Actor extends AbstractPolicyHandler implements Locatable
         return this.location;
     }
 
-    /**
-     * Set the bounds of the object (size and relative height in the animation).
-     * @param bounds the bounds for the (animation) object
-     */
+    /** {@inheritDoc} */
+    @Override
     public void setBounds(final Bounds3d bounds)
     {
         this.bounds = bounds;

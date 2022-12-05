@@ -1,6 +1,8 @@
 package nl.tudelft.simulation.supplychain.actor;
 
-import org.djutils.exceptions.Throw;
+import java.io.Serializable;
+
+import org.djutils.base.Identifiable;
 
 /**
  * Role is a template for a consistent set of policies for handling messages, representing a certain part of the organization,
@@ -11,33 +13,19 @@ import org.djutils.exceptions.Throw;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Role extends AbstractPolicyHandler implements RoleInterface
+public interface RoleInterface extends PolicyHandlerInterface, Identifiable
 {
-    /** */
-    private static final long serialVersionUID = 20221121L;
-
-    /** the actor to which this role belongs. */
-    private final Actor owner;
-
-    /**
-     * Create a new Role.
-     * @param owner Actor; the actor to which this role belongs
-     */
-    public Role(final Actor owner)
-    {
-        super(owner.getSimulator());
-        Throw.whenNull(owner, "owner cannot be null");
-        this.owner = owner;
-    }
-
     /**
      * Return the actor to which this role belongs.
      * @return owner Actor; the actor to which this role belongs
      */
+    Actor getOwner();
+
+    /** {@inheritDoc} */
     @Override
-    public Actor getOwner()
+    default Serializable getSourceId()
     {
-        return this.owner;
+        return getId();
     }
 
 }

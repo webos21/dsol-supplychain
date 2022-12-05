@@ -13,12 +13,15 @@ import org.djutils.draw.point.OrientedPoint3d;
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.finance.Bank;
-import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
+import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.finance.NoBank;
+import nl.tudelft.simulation.supplychain.message.handler.DirectMessageHandler;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * YellowPage.java.
+ * YellowPageActor is a base implementation of an organization that provides information about other actors in the model.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -38,16 +41,16 @@ public class YellowPageActor extends SupplyChainActor implements YellowPageInter
 
     /**
      * Create a new YellowPage organization.
-     * @param name String; 
+     * @param name String;
      * @param simulator SCSimulatorInterface;
      * @param position OrientedPoint3d;
-     * @param bank Bank;
-     * @param contentStore MessageStoreInterface;
+     * @param messageStore TradeMessageStoreInterface;
      */
     public YellowPageActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final MessageStoreInterface contentStore)
+            final TradeMessageStoreInterface messageStore)
     {
-        super(name, simulator, position, bank, contentStore);
+        super(name, new DirectMessageHandler(), simulator, position, name, new NoBank(simulator), new Money(0.0, MoneyUnit.USD),
+                messageStore);
     }
 
     /**

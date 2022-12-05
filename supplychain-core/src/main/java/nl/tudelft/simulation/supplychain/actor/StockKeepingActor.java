@@ -44,7 +44,6 @@ public abstract class StockKeepingActor extends SupplyChainActor
 
     /**
      * Construct a new Actor.
-     * @param actorType ActorType; the type of the actor
      * @param name String; the name of the actor
      * @param messageHandler MessageHandlerInterface; the message handler to use
      * @param simulator SCSimulatorInterface; the simulator to use
@@ -55,11 +54,11 @@ public abstract class StockKeepingActor extends SupplyChainActor
      * @param messageStore TradeMessageStoreInterface; the message store for messages
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public StockKeepingActor(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
+    public StockKeepingActor(final String name, final MessageHandlerInterface messageHandler,
             final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
             final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
     {
-        super(actorType, name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
+        super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
     }
 
     /**

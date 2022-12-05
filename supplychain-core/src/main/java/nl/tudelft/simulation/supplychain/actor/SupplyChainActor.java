@@ -45,19 +45,45 @@ public abstract class SupplyChainActor extends Actor
     private List<FixedCost> fixedCosts = new ArrayList<FixedCost>();
 
     /** the event to indicate that information has been sent. E.g., for animation. */
-    public static final EventType SEND_MESSAGE_EVENT = new EventType("SEND_CONTENT_EVENT",
+    public static final EventType SEND_MESSAGE_EVENT = new EventType("SEND_MESSAGE_EVENT",
             new MetaData("sent message", "sent message", new ObjectDescriptor("message", "message", Message.class)));
 
     /**
      * Build the SupplyChainActor with a Builder.
      * @param builder Builder; the Builder to use
      */
-    protected SupplyChainActor(final Builder builder)
+    public SupplyChainActor(final Builder builder)
     {
         super(builder.actorType, builder.name, builder.messageHandler, builder.simulator, builder.location,
                 builder.locationDescription);
         this.bankAccount = new BankAccount(this, builder.bank, builder.initialBalance);
-        this.messageStore = builder.contentStore;
+        this.messageStore = builder.messageStore;
+        this.messageStore.setOwner(this);
+    }
+
+    /**
+     * Construct a new Actor.
+     * @param actorType ActorType; the type of the actor
+     * @param name String; the name of the actor
+     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param simulator SCSimulatorInterface; the simulator to use
+     * @param location OrientedPoint3d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @param bank Bank; the bank for the BankAccount
+     * @param initialBalance Money; the initial balance for the actor
+     * @param messageStore TradeMessageStoreInterface; the message store for messages
+     */
+    @SuppressWarnings("checkstyle:parameternumber")
+    public SupplyChainActor(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
+            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
+            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
+    {
+        super(actorType, name, messageHandler, simulator, location, locationDescription);
+        Throw.whenNull(bank, "bank cannot be null");
+        Throw.whenNull(initialBalance, "initialBalance cannot be null");
+        Throw.whenNull(messageStore, "messageStore cannot be null");
+        this.bankAccount = new BankAccount(this, bank, initialBalance);
+        this.messageStore = messageStore;
         this.messageStore.setOwner(this);
     }
 
@@ -108,7 +134,7 @@ public abstract class SupplyChainActor extends Actor
     }
 
     /**
-     * @return the contentStore.
+     * @return the messageStore.
      */
     public TradeMessageStoreInterface getMessageStore()
     {
@@ -166,8 +192,8 @@ public abstract class SupplyChainActor extends Actor
         /** initialbankBalance. */
         protected Money initialBalance;
 
-        /** contentStore. */
-        protected TradeMessageStoreInterface contentStore;
+        /** messageStore. */
+        protected TradeMessageStoreInterface messageStore;
 
         /**
          * Check that all fields are filled and valid.
@@ -183,7 +209,7 @@ public abstract class SupplyChainActor extends Actor
             Throw.whenNull(this.locationDescription, "locationDescription cannot be null");
             Throw.whenNull(this.bank, "bank cannot be null");
             Throw.whenNull(this.initialBalance, "initialBalance cannot be null");
-            Throw.whenNull(this.contentStore, "contentStore cannot be null");
+            Throw.whenNull(this.messageStore, "messageStore cannot be null");
             return this;
         }
 
@@ -274,12 +300,12 @@ public abstract class SupplyChainActor extends Actor
         }
 
         /**
-         * @param contentStore MessageStoreInterface; the contentStore for the messages
+         * @param messageStore MessageStoreInterface; the messageStore for the messages
          * @return Builder for chaining
          */
-        public Builder setMessageStore(final TradeMessageStoreInterface contentStore)
+        public Builder setMessageStore(final TradeMessageStoreInterface messageStore)
         {
-            this.contentStore = contentStore;
+            this.messageStore = messageStore;
             return this;
         }
 

@@ -3,10 +3,8 @@ package nl.tudelft.simulation.supplychain.dsol;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.point.Point;
-import org.djutils.immutablecollections.ImmutableMap;
 
 import nl.tudelft.simulation.dsol.model.DSOLModel;
-import nl.tudelft.simulation.supplychain.actor.ActorType;
 
 /**
  * SCModelInterface defines the extra methods of a supply chain model.
@@ -18,18 +16,6 @@ import nl.tudelft.simulation.supplychain.actor.ActorType;
  */
 public interface SCModelInterface extends DSOLModel<Duration, SCSimulatorInterface>
 {
-    /**
-     * Register a new actor type.
-     * @param actorType ActorType; the actor type to register
-     */
-    void registerActorType(ActorType actorType);
-
-    /**
-     * Return the actor types registered in the model.
-     * @return Map&lt;String, ActorType&gt;; the registred actor types
-     */
-    ImmutableMap<String, ActorType> getActorTypes();
-
     /**
      * Calculate the distance between two points as a Length. The point could be in lat/lon, on an orthogonal grid, or based on
      * a GIS projection.

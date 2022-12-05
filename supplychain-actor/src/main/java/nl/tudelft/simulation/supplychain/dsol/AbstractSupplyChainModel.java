@@ -1,16 +1,9 @@
 package nl.tudelft.simulation.supplychain.dsol;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.immutablecollections.ImmutableLinkedHashMap;
-import org.djutils.immutablecollections.ImmutableMap;
 
 import nl.tudelft.simulation.dsol.experiment.StreamInformation;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
-import nl.tudelft.simulation.supplychain.actor.ActorType;
 
 /**
  * AbstractSupplyChainModel is the base model for supply chain models as it contains a registry of actor types and role types.
@@ -25,9 +18,6 @@ public abstract class AbstractSupplyChainModel extends AbstractDSOLModel<Duratio
 {
     /** */
     private static final long serialVersionUID = 20221127L;
-
-    /** the actor types. */
-    private ImmutableMap<String, ActorType> actorTypes = new ImmutableLinkedHashMap<>(new LinkedHashMap<>());
 
     /**
      * Construct a new supply chain model with a default stream information object.
@@ -48,24 +38,6 @@ public abstract class AbstractSupplyChainModel extends AbstractDSOLModel<Duratio
     public AbstractSupplyChainModel(final SCSimulatorInterface simulator, final StreamInformation streamInformation)
     {
         super(simulator, streamInformation);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void registerActorType(final ActorType actorType)
-    {
-        Throw.when(getActorTypes().containsKey(actorType.getId()), IllegalArgumentException.class,
-                "Duplicate registration of actor type " + actorType.getId());
-        Map<String, ActorType> newMap = this.actorTypes.toMap();
-        newMap.put(actorType.getId(), actorType);
-        this.actorTypes = new ImmutableLinkedHashMap<>(newMap);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ImmutableMap<String, ActorType> getActorTypes()
-    {
-        return this.actorTypes;
     }
 
 }

@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
 /**
@@ -12,7 +12,7 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class AbstractShipmentPolicy extends SupplyChainPolicy
+public abstract class AbstractShipmentPolicy extends SupplyChainPolicy<Shipment>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -24,7 +24,7 @@ public abstract class AbstractShipmentPolicy extends SupplyChainPolicy
      */
     public AbstractShipmentPolicy(final String id, final SupplyChainActor owner)
     {
-        super(id, owner, TradeMessageTypes.SHIPMENT);
+        super(id, owner, Shipment.class);
     }
 
 }

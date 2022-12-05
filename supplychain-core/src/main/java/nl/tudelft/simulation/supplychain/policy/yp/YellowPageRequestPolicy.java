@@ -17,7 +17,7 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
-import nl.tudelft.simulation.supplychain.yellowpage.YellowPage;
+import nl.tudelft.simulation.supplychain.yellowpage.YellowPageActor;
 
 /**
  * The YellowPageRequestHandler implements the business logic for a yellow page actor who receives a YellowPageRequest and has
@@ -43,7 +43,7 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
      * @param owner SupplyChainActor; the owner of the policy
      * @param handlingTime the distribution of the time to react on the YP request
      */
-    public YellowPageRequestPolicy(final YellowPage owner, final DistContinuousDuration handlingTime)
+    public YellowPageRequestPolicy(final YellowPageActor owner, final DistContinuousDuration handlingTime)
     {
         super("YellowPageRequestPolicy", owner, YellowPageRequest.class);
         this.handlingTime = handlingTime;
@@ -57,7 +57,7 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
         {
             return false;
         }
-        Set<SupplyChainActor> supplierSet = ((YellowPage) getOwner()).getSuppliers(ypRequest.getProduct());
+        Set<SupplyChainActor> supplierSet = ((YellowPageActor) getOwner()).getSuppliers(ypRequest.getProduct());
         if (supplierSet == null)
         {
             Logger.warn("YellowPage '{}' has no supplier map for product {}", getOwner().getName(),

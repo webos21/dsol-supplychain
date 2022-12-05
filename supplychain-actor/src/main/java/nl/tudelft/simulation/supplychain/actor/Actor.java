@@ -67,6 +67,7 @@ public abstract class Actor extends AbstractPolicyHandler implements Locatable
         this.locationDescription = locationDescription;
         this.location = location;
         this.messageHandler = messageHandler;
+        messageHandler.setOwner(this);
     }
 
     /**

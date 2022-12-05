@@ -38,10 +38,8 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
         this.id = id;
     }
 
-    /**
-     * Set the owner; can only be called once, preferably in the constructor of the Actor.
-     * @param owner Actor; the Actor to which this message handler belongs
-     */
+    /** {@inheritDoc} */
+    @Override
     public void setOwner(final Actor owner)
     {
         Throw.whenNull(owner, "owner cannot be null");

@@ -32,4 +32,10 @@ public interface MessageHandlerInterface extends Identifiable, Serializable
      */
     void handleMessageReceipt(Message message);
 
+    /**
+     * Set the owner; can only be called once, preferably in the constructor of the Actor.
+     * @param owner Actor; the Actor to which this message handler belongs
+     */
+    void setOwner(Actor owner);
+
 }

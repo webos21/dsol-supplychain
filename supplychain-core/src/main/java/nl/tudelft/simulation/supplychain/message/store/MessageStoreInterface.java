@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.store;
 
 import java.io.Serializable;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
@@ -11,8 +11,7 @@ import nl.tudelft.simulation.supplychain.message.Message;
  * sets off the whole chain of messages, no matter whether it is a purchase, internal production, or stock replenishment: in all
  * cases the InternalDemand triggers all the other messages.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -23,9 +22,9 @@ public interface MessageStoreInterface extends Serializable
      * Set the owner for the message store after is has been created. The reason for explicitly having to set the owner and not
      * include the owner in the constructor is that the SupplyChainActor needs a MessageStore in its constructor, so the
      * MessageStore cannot be constructed with the owner.
-     * @param owner the owner
+     * @param owner SupplyChainActorInterface; the owner
      */
-    void setOwner(SupplyChainActor owner);
+    void setOwner(SupplyChainActorInterface owner);
 
     /**
      * Method addMessage stores a new message object into the store.
@@ -50,7 +49,7 @@ public interface MessageStoreInterface extends Serializable
 
     /**
      * Return the owner.
-     * @return SupplyChainActor; the owner
+     * @return SupplyChainActorInterface; the owner
      */
-    SupplyChainActor getOwner();
+    SupplyChainActorInterface getOwner();
 }

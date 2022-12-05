@@ -54,8 +54,7 @@ public abstract class SupplyChainActor extends Actor
      */
     public SupplyChainActor(final Builder builder)
     {
-        super(builder.actorType, builder.name, builder.messageHandler, builder.simulator, builder.location,
-                builder.locationDescription);
+        super(builder.name, builder.messageHandler, builder.simulator, builder.location, builder.locationDescription);
         this.bankAccount = new BankAccount(this, builder.bank, builder.initialBalance);
         this.messageStore = builder.messageStore;
         this.messageStore.setOwner(this);
@@ -63,7 +62,6 @@ public abstract class SupplyChainActor extends Actor
 
     /**
      * Construct a new Actor.
-     * @param actorType ActorType; the type of the actor
      * @param name String; the name of the actor
      * @param messageHandler MessageHandlerInterface; the message handler to use
      * @param simulator SCSimulatorInterface; the simulator to use
@@ -74,11 +72,11 @@ public abstract class SupplyChainActor extends Actor
      * @param messageStore TradeMessageStoreInterface; the message store for messages
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public SupplyChainActor(final ActorType actorType, final String name, final MessageHandlerInterface messageHandler,
+    public SupplyChainActor(final String name, final MessageHandlerInterface messageHandler,
             final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
             final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
     {
-        super(actorType, name, messageHandler, simulator, location, locationDescription);
+        super(name, messageHandler, simulator, location, locationDescription);
         Throw.whenNull(bank, "bank cannot be null");
         Throw.whenNull(initialBalance, "initialBalance cannot be null");
         Throw.whenNull(messageStore, "messageStore cannot be null");
@@ -168,9 +166,6 @@ public abstract class SupplyChainActor extends Actor
     @SuppressWarnings({"checkstyle:visibilitymodifier", "checkstyle:hiddenfield"})
     public abstract static class Builder
     {
-        /** actorType. */
-        protected ActorType actorType;
-
         /** name. */
         protected String name;
 
@@ -201,7 +196,6 @@ public abstract class SupplyChainActor extends Actor
          */
         public Builder check()
         {
-            Throw.whenNull(this.actorType, "actorType cannot be null");
             Throw.whenNull(this.name, "name cannot be null");
             Throw.whenNull(this.messageHandler, "messagehandler cannot be null");
             Throw.whenNull(this.simulator, "simulator cannot be null");
@@ -218,16 +212,6 @@ public abstract class SupplyChainActor extends Actor
          * @return the constructed SupplyChainActor.
          */
         public abstract SupplyChainActor build();
-
-        /**
-         * @param actorType ActorType; the actor type for the actor
-         * @return Builder for chaining
-         */
-        public Builder setActorType(final ActorType actorType)
-        {
-            this.actorType = actorType;
-            return this;
-        }
 
         /**
          * @param name String; the name of the actor

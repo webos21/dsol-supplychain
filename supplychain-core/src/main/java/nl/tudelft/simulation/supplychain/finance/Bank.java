@@ -1,5 +1,6 @@
 package nl.tudelft.simulation.supplychain.finance;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.djunits.value.vdouble.scalar.Duration;
@@ -9,6 +10,7 @@ import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.trade.EmptyTradeMessageStore;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 
 /**
@@ -31,7 +33,16 @@ public class Bank extends Actor implements SupplyChainActorInterface
 
     /** the interest rate for a negative bank account. */
     private double annualInterestRateNeg = 0.08;
+    
+    /** the store for the content to use. */
+    private final TradeMessageStoreInterface messageStore;
 
+    /** the bank account of the actor. */
+    private final BankAccount bankAccount;
+
+    /** the fixed costs for this supply chain actor. */
+    private List<FixedCost> fixedCosts = new ArrayList<FixedCost>();
+    
     /**
      * Create a new Bank.
      * @param name String; the name of the bank
@@ -44,6 +55,8 @@ public class Bank extends Actor implements SupplyChainActorInterface
             final OrientedPoint3d location, final String locationDescription)
     {
         super(name, messageHandler, simulator, location, locationDescription);
+        this.bankAccount = new BankAccount(this, this, new Money(0.0, MoneyUnit.USD));
+        this.messageStore = new EmptyTradeMessageStore();
     }
 
     /**
@@ -86,26 +99,27 @@ public class Bank extends Actor implements SupplyChainActorInterface
     @Override
     public void addFixedCost(final String description, final Duration interval, final Money amount)
     {
+        // ignore.
     }
 
     /** {@inheritDoc} */
     @Override
     public List<FixedCost> getFixedCosts()
     {
-        return null;
+        return this.fixedCosts;
     }
 
     /** {@inheritDoc} */
     @Override
     public TradeMessageStoreInterface getMessageStore()
     {
-        return null;
+        return this.messageStore;
     }
 
     /** {@inheritDoc} */
     @Override
     public BankAccount getBankAccount()
     {
-        return null;
+        return this.bankAccount;
     }
 }

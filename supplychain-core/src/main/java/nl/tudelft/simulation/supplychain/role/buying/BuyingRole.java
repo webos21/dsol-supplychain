@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.buying;
 
+import nl.tudelft.simulation.supplychain.actor.RoleInterface;
+
 /**
  * The buying role is a role that can handle several types of message content: internal demand, order confirmation, bill, and
  * shipment. Depending on the extension of the BuyingRole, which actually indicates the type if InternalDemandPolicy used,
@@ -12,7 +14,7 @@ package nl.tudelft.simulation.supplychain.role.buying;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface BuyingRole
+public interface BuyingRole extends RoleInterface
 {
     // tagging interface for now.
 }

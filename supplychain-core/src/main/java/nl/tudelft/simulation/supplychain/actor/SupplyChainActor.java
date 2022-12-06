@@ -29,7 +29,6 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-
 public abstract class SupplyChainActor extends Actor implements SupplyChainActorInterface
 {
     /** */

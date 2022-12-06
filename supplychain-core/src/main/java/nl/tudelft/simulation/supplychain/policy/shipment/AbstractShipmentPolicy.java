@@ -15,7 +15,7 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 public abstract class AbstractShipmentPolicy extends SupplyChainPolicy<Shipment>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221205L;
 
     /**
      * Construct a new ShipmentHandler.

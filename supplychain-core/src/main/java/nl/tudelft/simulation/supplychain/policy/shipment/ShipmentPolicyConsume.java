@@ -1,7 +1,6 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 
 /**
@@ -32,13 +31,12 @@ public class ShipmentPolicyConsume extends AbstractShipmentPolicy
      * {@inheritDoc}
      */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final Shipment shipment)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(shipment))
         {
             return false;
         }
-        Shipment shipment = (Shipment) message;
         shipment.setInTransit(false);
         shipment.setDelivered(true);
         // do nothing

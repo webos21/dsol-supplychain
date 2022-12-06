@@ -1,7 +1,6 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
@@ -35,13 +34,12 @@ public class ShipmentPolicyStock extends AbstractShipmentPolicy
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final Shipment shipment)
     {
-        if (!isValidMessage(message))
+        if (!isValidMessage(shipment))
         {
             return false;
         }
-        Shipment shipment = (Shipment) message;
         // get the cargo from the shipment, and add its contents to the stock
         Product product = shipment.getProduct();
         double amount = shipment.getAmount();

@@ -7,7 +7,6 @@ import org.djunits.value.vdouble.scalar.Time;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 
 /**
@@ -52,11 +51,10 @@ public class ShipmentPolicyFineConsume extends ShipmentPolicyConsume
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleMessage(final Message message)
+    public boolean handleMessage(final Shipment shipment)
     {
-        if (super.handleMessage(message))
+        if (super.handleMessage(shipment))
         {
-            Shipment shipment = (Shipment) message;
             Time time = shipment.getSender().getSimulatorTime();
             if (time.gt(shipment.getOrder().getDeliveryDate())
                     && time.lt(shipment.getOrder().getDeliveryDate().plus(this.maximumTimeOut)))

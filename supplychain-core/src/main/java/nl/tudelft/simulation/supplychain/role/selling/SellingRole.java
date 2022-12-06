@@ -1,5 +1,8 @@
 package nl.tudelft.simulation.supplychain.role.selling;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+
 /**
  * The selling role is a role that can handle several types of message content: order and payment in the minimum form. Depending
  * on the type of handling by the seller, several other messages can be handled as well. Examples are to be able to handle an
@@ -10,7 +13,18 @@ package nl.tudelft.simulation.supplychain.role.selling;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface SellingRole
+public abstract class SellingRole extends SupplyChainRole
 {
-    // tagging interface for selling role
+    /** */
+    private static final long serialVersionUID = 20221206L;
+
+    /**
+     * Create a SellingRole object for an actor.
+     * @param owner SupplyChainActor; the owner of this role
+     */
+    public SellingRole(final SupplyChainActor owner)
+    {
+        super(owner);
+    }
+
 }

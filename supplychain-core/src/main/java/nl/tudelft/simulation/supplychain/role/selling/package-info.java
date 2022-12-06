@@ -1,5 +1,5 @@
 /**
- * BuyingRole implementations for different sequences of messages.
+ * Role descriptions for Actor that sells products to an actor with a BuyingRole.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, PO Box 5, 2600 AA, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.

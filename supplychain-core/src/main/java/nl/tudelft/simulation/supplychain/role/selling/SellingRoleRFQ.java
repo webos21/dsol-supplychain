@@ -1,6 +1,5 @@
 package nl.tudelft.simulation.supplychain.role.selling;
 
-import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
@@ -16,7 +15,7 @@ import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SellingRoleRFQ extends Role implements SellingRole
+public class SellingRoleRFQ extends SellingRole
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221205L;

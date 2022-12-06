@@ -1,6 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.buying;
 
-import nl.tudelft.simulation.supplychain.actor.RoleInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 
 /**
  * The buying role is a role that can handle several types of message content: internal demand, order confirmation, bill, and
@@ -14,7 +15,17 @@ import nl.tudelft.simulation.supplychain.actor.RoleInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface BuyingRole extends RoleInterface
+public abstract class BuyingRole extends SupplyChainRole
 {
-    // tagging interface for now.
+    /** */
+    private static final long serialVersionUID = 20221206L;
+
+    /**
+     * Create a BuyingRole object for an actor.
+     * @param owner SupplyChainActor; the owner of this role
+     */
+    public BuyingRole(final SupplyChainActor owner)
+    {
+        super(owner);
+    }
 }

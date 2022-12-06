@@ -4,7 +4,7 @@ import org.djunits.Throw;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.Role;
+import nl.tudelft.simulation.supplychain.actor.RoleInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
@@ -57,7 +57,7 @@ public abstract class AbstractMessageHandler implements MessageHandlerInterface
     {
         boolean processed = false;
         processed |= this.owner.processMessage(message);
-        for (Role role : this.owner.getRoles())
+        for (RoleInterface role : this.owner.getRoles())
         {
             processed |= role.processMessage(message);
         }

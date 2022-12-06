@@ -1,64 +1,55 @@
 package nl.tudelft.simulation.supplychain.reference;
 
-import java.io.Serializable;
-
+import org.djunits.Throw;
 import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.capabilities.BuyerInterface;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
-import nl.tudelft.simulation.supplychain.demand.DemandGeneration;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.roles.BuyingRole;
+import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingActorInterface;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingRole;
+import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationActorInterface;
+import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRole;
 
 /**
  * A Customer is an actor which usually orders (pulls) products from a Distributor. <br>
- * TODO: implement push processes, such as when VMI (Vendor Managed Inventory) is used.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Customer extends SupplyChainActor implements BuyerInterface
+public class Customer extends SupplyChainActor implements BuyingActorInterface, DemandGenerationActorInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** The role instance to generate demand. */
-    private DemandGeneration demandGeneration = null;
+    /** The role to buy products. */
+    private BuyingRole buyingRole;
 
-    /** The role to buy. */
-    private BuyingRole buyingRole = null;
-
-    /**
-     * @param name the name
-     * @param simulator the simulator
-     * @param position the position
-     * @param bank the bank
-     * @param initialBankAccount the initial bank account
-     * @param contentStore the contentStore for the messages
-     */
-    public Customer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
-            final Money initialBankAccount, final ContentStoreInterface contentStore)
-    {
-        super(name, simulator, position, bank, initialBankAccount, contentStore);
-    }
+    /** The role to generate demand. */
+    private DemandGenerationRole demandGenerationRole;
 
     /**
-     * @param name the name
-     * @param simulator the simulator
-     * @param position the position
-     * @param bank the bank
-     * @param contentStore the contentStore for the messages
+     * @param name String; the name of the Customer
+     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param simulator SCSimulatorInterface; the simulator
+     * @param location Location; the locatrion of the actor on the map or grid
+     * @param locationDescription String; a description of the location of the Customer
+     * @param bank Bank; the bank of the customer
+     * @param initialBalance Money; the initial bank balance
+     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
      */
-    public Customer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
-            final ContentStoreInterface contentStore)
+    @SuppressWarnings("checkstyle:parameternumber")
+    public Customer(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
+            final OrientedPoint3d location, final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore)
     {
-        super(name, simulator, position, bank, contentStore);
+        super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
     }
 
     /** {@inheritDoc} */
@@ -68,44 +59,39 @@ public class Customer extends SupplyChainActor implements BuyerInterface
         return this.buyingRole;
     }
 
-    /**
-     * @param buyingRole The buyingRole to set.
-     */
+    /** {@inheritDoc} */
+    @Override
     public void setBuyingRole(final BuyingRole buyingRole)
     {
-        // remove the previous buying role
-        if (this.buyingRole != null)
-        {
-            super.removeRole(this.buyingRole);
-        }
-        super.addRole(buyingRole);
+        Throw.whenNull(buyingRole, "buyingRole cannot be null");
+        Throw.when(this.buyingRole != null, IllegalStateException.class, "buyingRole already initialized");
+        addRole(buyingRole);
         this.buyingRole = buyingRole;
-    }
-
-    /**
-     * @return Returns the demandGenerationRole.
-     */
-    public DemandGeneration getDemandGeneration()
-    {
-        return this.demandGeneration;
-    }
-
-    /**
-     * @param demandGenerationRole The demandGenerationRole to set.
-     */
-    public void setDemandGeneration(final DemandGeneration demandGenerationRole)
-    {
-        this.demandGeneration = demandGenerationRole;
     }
 
     /** {@inheritDoc} */
     @Override
-    public boolean handleContent(final Serializable content)
+    public DemandGenerationRole getDemandGenerationRole()
     {
-        if (this.demandGeneration == null || this.buyingRole == null)
-        {
-            throw new RuntimeException("DemandGeneration or buyingRole not initialized for Customer: " + this.getName());
-        }
-        return super.handleContent(content);
+        return this.demandGenerationRole;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setDemandGenerationRole(final DemandGenerationRole demandGenerationRole)
+    {
+        Throw.whenNull(demandGenerationRole, "demandGenerationRole cannot be null");
+        Throw.when(this.demandGenerationRole != null, IllegalStateException.class, "demandGenerationRole already initialized");
+        addRole(demandGenerationRole);
+        this.demandGenerationRole = demandGenerationRole;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void receiveMessage(final Message message)
+    {
+        Throw.whenNull(this.buyingRole, "BuyingRole not initialized for Customer: " + this.getName());
+        Throw.whenNull(this.demandGenerationRole, "DemandGenerationRole not initialized for Customer: " + this.getName());
+        super.receiveMessage(message);
     }
 }

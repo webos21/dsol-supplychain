@@ -24,13 +24,13 @@ public interface ActorInterface extends PolicyHandlerInterface, Locatable
      * Add a role to the actor.
      * @param role Role; the role to add to the actor
      */
-    void addRole(Role role);
+    void addRole(RoleInterface role);
 
     /**
      * Return the set of roles for this actor.
      * @return Set&lt;roles&gt;; the roles of this actor
      */
-    ImmutableSet<Role> getRoles();
+    ImmutableSet<RoleInterface> getRoles();
 
     /**
      * Receive a message from another actor, and handle it (storing or handling, depending on the MessageHandler).

@@ -35,7 +35,7 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
     private final String locationDescription;
 
     /** the roles. */
-    private ImmutableSet<Role> roles = new ImmutableLinkedHashSet<>(new LinkedHashSet<Role>());
+    private ImmutableSet<RoleInterface> roles = new ImmutableLinkedHashSet<>(new LinkedHashSet<>());
 
     /** the message handler. */
     private final MessageHandlerInterface messageHandler;
@@ -70,17 +70,17 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
 
     /** {@inheritDoc} */
     @Override
-    public void addRole(final Role role)
+    public void addRole(final RoleInterface role)
     {
         Throw.whenNull(role, "role cannot be null");
-        Set<Role> newRoles = this.roles.toSet();
+        Set<RoleInterface> newRoles = this.roles.toSet();
         newRoles.add(role);
         this.roles = new ImmutableLinkedHashSet<>(newRoles);
     }
 
     /** {@inheritDoc} */
     @Override
-    public ImmutableSet<Role> getRoles()
+    public ImmutableSet<RoleInterface> getRoles()
     {
         return this.roles;
     }

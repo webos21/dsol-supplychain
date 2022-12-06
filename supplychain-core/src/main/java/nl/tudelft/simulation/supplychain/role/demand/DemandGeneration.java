@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.demand;
+package nl.tudelft.simulation.supplychain.role.demand;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
@@ -15,13 +15,13 @@ import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.supplychain.actor.InternalActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.content.InternalDemand;
+import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
  * Demand generation.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -59,7 +59,7 @@ public class DemandGeneration extends InternalActor
     }
 
     /**
-     * @param product the product
+     * @param product Product; the product
      * @param demand the demand
      */
     public void addDemandGenerator(final Product product, final Demand demand)
@@ -78,8 +78,8 @@ public class DemandGeneration extends InternalActor
 
     /**
      * Method getDemandGenerator.
-     * @param product the product to return the demand generator for
-     * @return Returns a demand, or null if it could not be found
+     * @param product Product; the product to return the demand generator for
+     * @return a demand, or null if it could not be found
      */
     public Demand getDemandGenerator(final Product product)
     {
@@ -87,7 +87,7 @@ public class DemandGeneration extends InternalActor
     }
 
     /**
-     * @param product the product
+     * @param product Product; the product
      */
     public void removeDemandGenerator(final Product product)
     {
@@ -95,7 +95,7 @@ public class DemandGeneration extends InternalActor
     }
 
     /**
-     * @param product the product
+     * @param product Product; the product
      * @param demand the demand
      */
     protected void createInternalDemand(final Product product, final Demand demand)
@@ -111,7 +111,7 @@ public class DemandGeneration extends InternalActor
                 InternalDemand id = new InternalDemand(getOwner(), product, amount,
                         super.simulator.getAbsSimulatorTime().plus(demand.getEarliestDeliveryDurationDistribution().draw()),
                         super.simulator.getAbsSimulatorTime().plus(demand.getLatestDeliveryDuration().draw()));
-                getOwner().sendContent(id, this.administrativeDelay.draw());
+                getOwner().sendMessage(id, this.administrativeDelay.draw());
                 Serializable[] args = {product, demand};
                 Time time = super.simulator.getAbsSimulatorTime().plus(demand.getIntervalDistribution().draw());
                 super.simulator.scheduleEventAbs(time, this, this, "createInternalDemand", args);
@@ -136,7 +136,7 @@ public class DemandGeneration extends InternalActor
     }
 
     /**
-     * @return Returns the administrativeDelay.
+     * @return the administrativeDelay.
      */
     public DistContinuousDuration getAdministrativeDelay()
     {

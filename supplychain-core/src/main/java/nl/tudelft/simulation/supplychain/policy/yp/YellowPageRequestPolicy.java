@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.point.Point3d;
 import org.pmw.tinylog.Logger;
@@ -24,8 +23,7 @@ import nl.tudelft.simulation.supplychain.yellowpage.YellowPageActor;
  * to look up supply chain actors within the boundaries of the request For the moment, these are max number, max distance, and
  * product.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -85,12 +83,9 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
             final Point3d location)
     {
         SortedMap<Length, SupplyChainActor> sortedSuppliers = new TreeMap<>();
-        Iterator<SupplyChainActor> i = supplierSet.iterator();
-        while (i.hasNext())
+        for (SupplyChainActor actor : sortedSuppliers.values())
         {
-            SupplyChainActor actor = i.next();
-            // TODO: get proper locations; assume km for now...
-            Length distance = new Length(actor.getLocation().distance(location), LengthUnit.KILOMETER);
+            Length distance = getOwner().getSimulator().getModel().calculateDistance(actor.getLocation(), location);
             if (distance.le(maxDistance))
             {
                 sortedSuppliers.put(distance, actor);

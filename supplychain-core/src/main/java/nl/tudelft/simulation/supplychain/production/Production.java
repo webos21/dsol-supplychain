@@ -7,7 +7,7 @@ import java.util.Map;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
-import nl.tudelft.simulation.supplychain.content.ProductionOrder;
+import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -15,7 +15,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * ProductionService that can produce the ordered product. It only works for a Trader, because there needs to be stock to take
  * the raw materials from, and there needs to be stock to put the final products in.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  */
 public class Production implements Serializable
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the owner of production */

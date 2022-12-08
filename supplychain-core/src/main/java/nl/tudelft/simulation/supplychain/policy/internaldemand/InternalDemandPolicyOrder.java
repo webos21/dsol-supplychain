@@ -2,7 +2,9 @@ package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
+import org.djunits.Throw;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
@@ -13,6 +15,9 @@ import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
+import nl.tudelft.simulation.supplychain.transport.TransportChoiceProvider;
+import nl.tudelft.simulation.supplychain.transport.TransportOption;
+import nl.tudelft.simulation.supplychain.transport.TransportOptionProvider;
 
 /**
  * The InternalDemandPolicyOrder is a simple implementation of the business logic to handle a request for new products through
@@ -32,16 +37,29 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
     /** a table to map the products onto a unique supplier. */
     private Map<Product, SupplierRecord> suppliers = new LinkedHashMap<Product, SupplierRecord>();
 
+    /** the provider of transport options betwween two locations. */
+    private final TransportOptionProvider transportOptionProvider;
+
+    /** the provider to choose between transport options. */
+    private final TransportChoiceProvider transportChoiceProvider;
+
     /**
      * Constructs a new InternalDemandPolicyOrder.
      * @param owner the owner of the internal demand
+     * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
+     * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
      * @param handlingTime the handling time distribution
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicyOrder(final SupplyChainActor owner, final DistContinuousDuration handlingTime,
+    public InternalDemandPolicyOrder(final SupplyChainActor owner, final TransportOptionProvider transportOptionProvider,
+            final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
             final StockInterface stock)
     {
         super("InternalDemandPolicyOrder", owner, handlingTime, stock);
+        Throw.whenNull(transportOptionProvider, "transportOptionProvider cannot be null");
+        Throw.whenNull(transportChoiceProvider, "transportChoiceProvider cannot be null");
+        this.transportOptionProvider = transportOptionProvider;
+        this.transportChoiceProvider = transportChoiceProvider;
     }
 
     /**
@@ -77,8 +95,11 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
         }
         SupplyChainActor supplier = supplierRecord.getSupplier();
         Money price = supplierRecord.getUnitPrice().multiplyBy(internalDemand.getAmount());
+        Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getOwner());
+        TransportOption transportOption =
+                this.transportChoiceProvider.chooseTransportOptions(transportOptions, internalDemand.getProduct().getSku());
         Order order = new OrderStandalone(getOwner(), supplier, internalDemand, internalDemand.getLatestDeliveryDate(),
-                internalDemand.getProduct(), internalDemand.getAmount(), price);
+                internalDemand.getProduct(), internalDemand.getAmount(), price, transportOption);
         // and send it out after the handling time
         getOwner().sendMessage(order, this.handlingTime.draw());
         return true;

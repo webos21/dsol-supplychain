@@ -22,32 +22,32 @@ import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDe
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.WebApplication;
 import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.actor.yellowpage.Topic;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.contentstore.memory.LeanContentStore;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyYP;
-import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyNoStock;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
-import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicyAll;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
-import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicyConsume;
 import nl.tudelft.simulation.supplychain.policy.yp.YellowPageAnswerPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Retailer;
 import nl.tudelft.simulation.supplychain.reference.YellowPage;
-import nl.tudelft.simulation.supplychain.roles.BuyingRole;
-import nl.tudelft.simulation.supplychain.roles.SellingRole;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingRoleYP;
+import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 import nl.tudelft.simulation.supplychain.stock.Stock;
 import nl.tudelft.simulation.supplychain.stock.policies.RestockingPolicySafety;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
@@ -55,7 +55,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 /**
  * MtsMtomarket.java. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -83,7 +83,7 @@ public class DemoRetailer extends Retailer
             final Bank bank, final Money initialBankAccount, final Product product, final double initialStock,
             final YellowPage ypCustomer, final YellowPage ypProduction, final StreamInterface stream, final boolean mts)
     {
-        super(name, simulator, position, bank, initialBankAccount, new LeanContentStore(simulator));
+        super(name, simulator, position, bank, initialBankAccount, new LeanTradeMessageStore(simulator));
 
         // COMMUNICATION
 
@@ -121,17 +121,17 @@ public class DemoRetailer extends Retailer
 
         DistContinuousDuration administrativeDelayQuote =
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
-        QuotePolicy quoteHandler =
+        AbstractQuotePolicy quoteHandler =
                 new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE, administrativeDelayQuote, 0.4, 0);
 
         OrderConfirmationPolicy orderConfirmationHandler = new OrderConfirmationPolicy(this);
 
-        ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
+        AbstractShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
 
         DistContinuousDuration paymentDelay = new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
         BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME, paymentDelay);
 
-        BuyingRole buyingRole = new BuyingRole(this, simulator, internalDemandHandler, ypAnswerHandler, quoteHandler,
+        BuyingRoleYP buyingRole = new BuyingRoleYP(this, simulator, internalDemandHandler, ypAnswerHandler, quoteHandler,
                 orderConfirmationHandler, shipmentHandler, billHandler);
         this.setBuyingRole(buyingRole);
 
@@ -140,7 +140,7 @@ public class DemoRetailer extends Retailer
         RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.stock, 1.2,
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
 
-        OrderPolicy orderHandler;
+        AbstractOrderPolicy orderHandler;
         if (mts)
             orderHandler = new OrderPolicyStock(this, super.stock);
         else

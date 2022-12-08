@@ -9,14 +9,14 @@ import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimation;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimator;
-import nl.tudelft.simulation.supplychain.content.Content;
-import nl.tudelft.simulation.supplychain.content.Shipment;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.message.trade.Shipment;
+import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
 /**
  * DemoContentAnimator.java. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -37,12 +37,12 @@ public class DemoContentAnimator extends ContentAnimator
     @Override
     public void notify(EventInterface event) throws RemoteException
     {
-        if (event.getType().equals(SupplyChainActor.SEND_CONTENT_EVENT))
+        if (event.getType().equals(SupplyChainActor.SEND_MESSAGE_EVENT))
         {
             if (getSimulator() instanceof AnimatorInterface)
             {
                 Object[] eventContent = (Object[]) event.getContent();
-                Content content = (Content) eventContent[0];
+                TradeMessage content = (TradeMessage) eventContent[0];
                 Duration delay = (Duration) eventContent[1];
 
                 if (content instanceof Shipment)

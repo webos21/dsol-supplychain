@@ -106,21 +106,6 @@ public class TransportOption implements Identifiable, Serializable
         return result;
     }
 
-    /**
-     * Transform the TrasnportOption to a TransportRequest based on a given SKU.
-     * @param sku Sku; the SKU for which to create the TransportRequest
-     * @return TransportRequest; the request for transport based on a given SKU
-     */
-    public TransportRequest makeTranbportRequest(final Sku sku)
-    {
-        TransportRequest transportRequest = new TransportRequest("Request for " + this.id);
-        for (TransportOptionStep transportOptionStep : this.transportSteps)
-        {
-            transportRequest.addTransportStep(transportOptionStep.makeTranbportRequestStep(sku));
-        }
-        return transportRequest;
-    }
-    
     /** {@inheritDoc} */
     @Override
     public int hashCode()

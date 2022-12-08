@@ -27,14 +27,13 @@ public class OrderBasedOnQuote extends Order
      * The constructor for the OrderBasedOnQuote.
      * @param sender SupplyChainActor; the sender actor of the message content
      * @param receiver SupplyChainActor; the receving actor of the message content
-     * @param internalDemand the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      * @param quote the quote on which the order is based
      */
-    public OrderBasedOnQuote(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final InternalDemand internalDemand, final Time deliveryDate, final Quote quote)
+    public OrderBasedOnQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final Time deliveryDate,
+            final Quote quote)
     {
-        super(sender, receiver, internalDemand, deliveryDate);
+        super(sender, receiver, quote.getInternalDemand(), deliveryDate);
         this.quote = quote;
     }
 

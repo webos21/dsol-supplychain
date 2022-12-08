@@ -21,6 +21,9 @@ public abstract class Order extends TradeMessage
     /** */
     private static final long serialVersionUID = 1L;
 
+    /** the InternalDemand. */
+    private final InternalDemand internalDemand;
+    
     /** the delivery date as ordered. */
     private Time deliveryDate;
 
@@ -35,12 +38,21 @@ public abstract class Order extends TradeMessage
             final InternalDemand internalDemand, final Time deliveryDate)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());
+        this.internalDemand = internalDemand;
         this.deliveryDate = deliveryDate;
     }
 
     /** {@inheritDoc} */
     @Override
     public abstract Product getProduct();
+
+    /**
+     * @return the internalDemand
+     */
+    protected InternalDemand getInternalDemand()
+    {
+        return this.internalDemand;
+    }
 
     /**
      * @return the amount.

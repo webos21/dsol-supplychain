@@ -95,8 +95,8 @@ public class QuotePolicyAll extends AbstractQuotePolicy
                         + ", bestQuote=" + bestQuote);
             }
 
-            Order order =
-                    new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(), bestQuote);
+            Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(),
+                    bestQuote, bestQuote.getTransportOption());
             getOwner().sendMessage(order, getHandlingTime().draw());
         }
         return true;

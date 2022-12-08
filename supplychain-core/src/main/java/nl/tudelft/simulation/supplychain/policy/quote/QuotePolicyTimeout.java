@@ -122,7 +122,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
             if (bestQuote != null)
             {
                 Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(),
-                        bestQuote);
+                        bestQuote, bestQuote.getTransportOption());
                 getOwner().sendMessage(order, this.getHandlingTime().draw());
             }
         }

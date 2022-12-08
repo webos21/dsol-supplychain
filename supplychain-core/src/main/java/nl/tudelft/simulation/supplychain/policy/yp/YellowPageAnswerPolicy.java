@@ -1,7 +1,9 @@
 package nl.tudelft.simulation.supplychain.policy.yp;
 
 import java.util.List;
+import java.util.Set;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
@@ -10,10 +12,12 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessageTypes;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
+import nl.tudelft.simulation.supplychain.transport.TransportChoiceProvider;
+import nl.tudelft.simulation.supplychain.transport.TransportOption;
+import nl.tudelft.simulation.supplychain.transport.TransportOptionProvider;
 
 /**
  * The YellowPageAnswerHandler implements the business logic for a buyer who receives a YellowPageAnswer from a yellow page
@@ -28,20 +32,41 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 120221203;
+
+    /** the provider of transport options betwween two locations. */
+    private final TransportOptionProvider transportOptionProvider;
+
+    /** the provider to choose between transport options. */
+    private final TransportChoiceProvider transportChoiceProvider;
 
     /** the handling time of the handler in simulation time units. */
     private DistContinuousDuration handlingTime;
 
+    /** the maximum time after which the RFQ will stop collecting quotes. */
+    private final Duration cutoffDuration;
+
     /**
      * Constructs a new YellowPageAnswerHandler.
      * @param owner SupplyChainActor; the owner of the policy
-     * @param handlingTime the distribution of the time to react on the YP answer
+     * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
+     * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
+     * @param handlingTime DistContinuousDuration; the distribution of the time to react on the YP answer
+     * @param cutoffDuration Duration; the maximum time after which the RFQ will stop collecting quotes
      */
-    public YellowPageAnswerPolicy(final SupplyChainActor owner, final DistContinuousDuration handlingTime)
+    public YellowPageAnswerPolicy(final SupplyChainActor owner, final TransportOptionProvider transportOptionProvider,
+            final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
+            final Duration cutoffDuration)
     {
         super("YellowPageAnswerPolicy", owner, YellowPageAnswer.class);
+        Throw.whenNull(handlingTime, "handlingTime cannot be null");
+        Throw.whenNull(transportOptionProvider, "transportOptionProvider cannot be null");
+        Throw.whenNull(transportChoiceProvider, "transportChoiceProvider cannot be null");
+        Throw.whenNull(cutoffDuration, "cutoffDuration cannot be null");
+        this.transportOptionProvider = transportOptionProvider;
+        this.transportChoiceProvider = transportChoiceProvider;
         this.handlingTime = handlingTime;
+        this.cutoffDuration = cutoffDuration;
     }
 
     /** {@inheritDoc} */
@@ -52,10 +77,10 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
         {
             return false;
         }
-        TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
+        TradeMessageStoreInterface messageStore = getOwner().getMessageStore();
         YellowPageRequest ypRequest = ypAnswer.getYellowPageRequest();
         List<InternalDemand> internalDemandList =
-                contentStore.getMessageList(ypRequest.getInternalDemandId(), InternalDemand.class);
+                messageStore.getMessageList(ypRequest.getInternalDemandId(), InternalDemand.class);
         if (internalDemandList.size() == 0) // we send it to ourselves, so it is 2x in the content store
         {
             Logger.warn("YPAnswerHandler - Actor '{}' could not find InternalDemandID '{}' for YPAnswer '{}'",
@@ -67,9 +92,10 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
         Duration delay = this.handlingTime.draw();
         for (SupplyChainActor supplier : potentialSuppliers)
         {
-            RequestForQuote rfq = new RequestForQuote(getOwner(), supplier, internalDemand, internalDemand.getProduct(),
-                    internalDemand.getAmount(), internalDemand.getEarliestDeliveryDate(),
-                    internalDemand.getLatestDeliveryDate());
+            Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getOwner());
+            TransportOption transportOption = this.transportChoiceProvider.chooseTransportOptions(transportOptions);
+            RequestForQuote rfq = new RequestForQuote(getOwner(), supplier, internalDemand,
+                    transportOption.makeTranbportRequest(internalDemand.getProduct().getSku()), this.cutoffDuration);
             getOwner().sendMessage(rfq, delay);
         }
         return true;

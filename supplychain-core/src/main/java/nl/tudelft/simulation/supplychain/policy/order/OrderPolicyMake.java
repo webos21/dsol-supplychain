@@ -83,12 +83,9 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
         // wait till the right time to start shipping
         try
         {
-            // for now we use the TransportMode.PLANE
-            // TODO get the transportation mode, currently using TransportMode.PLANE
-            Duration transportationDuration = TransportMode.PLANE.transportTime(order.getSender(), order.getReceiver());
-
+            Duration transportationDuration =
+                    order.getTransportOption().estimatedTotalTransportDuration(order.getProduct().getSku());
             Time proposedShippingDate = ((OrderBasedOnQuote) order).getQuote().getProposedShippingDate();
-
             Time scheduledShippingTime = proposedShippingDate.minus(transportationDuration);
 
             // start shipping 8 hours from now at the earliest

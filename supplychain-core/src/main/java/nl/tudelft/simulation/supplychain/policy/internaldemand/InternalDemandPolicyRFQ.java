@@ -1,11 +1,12 @@
 package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
@@ -15,6 +16,9 @@ import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
+import nl.tudelft.simulation.supplychain.transport.TransportChoiceProvider;
+import nl.tudelft.simulation.supplychain.transport.TransportOption;
+import nl.tudelft.simulation.supplychain.transport.TransportOptionProvider;
 
 /**
  * The InternalDemandPolicyRFQ is a simple implementation of the business logic to handle a request for new products through
@@ -35,16 +39,35 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
     /** a table to map the products onto a list of possible suppliers. */
     private Map<Product, HashSet<SupplyChainActor>> suppliers = new LinkedHashMap<Product, HashSet<SupplyChainActor>>();
 
+    /** the provider of transport options betwween two locations. */
+    private final TransportOptionProvider transportOptionProvider;
+
+    /** the provider to choose between transport options. */
+    private final TransportChoiceProvider transportChoiceProvider;
+
+    /** the maximum time after which the RFQ will stop collecting quotes. */
+    private final Duration cutoffDuration;
+
     /**
      * Constructs a new InternalDemandPolicyRFQ.
      * @param owner the owner of the internal demand
-     * @param handlingTime the handling time distribution delay to use
+     * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
+     * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
+     * @param handlingTime DistContinuousDuration; the distribution of the time to react on the YP answer
+     * @param cutoffDuration Duration; the maximum time after which the RFQ will stop collecting quotes
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicyRFQ(final SupplyChainActor owner, final DistContinuousDuration handlingTime,
-            final StockInterface stock)
+    public InternalDemandPolicyRFQ(final SupplyChainActor owner, final TransportOptionProvider transportOptionProvider,
+            final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
+            final Duration cutoffDuration, final StockInterface stock)
     {
         super("InternalDemandPolicyRFQ", owner, handlingTime, stock);
+        Throw.whenNull(transportOptionProvider, "transportOptionProvider cannot be null");
+        Throw.whenNull(transportChoiceProvider, "transportChoiceProvider cannot be null");
+        Throw.whenNull(cutoffDuration, "cutoffDuration cannot be null");
+        this.transportOptionProvider = transportOptionProvider;
+        this.transportChoiceProvider = transportChoiceProvider;
+        this.cutoffDuration = cutoffDuration;
     }
 
     /**
@@ -88,7 +111,7 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
             return false;
         }
         // resolve the suplier
-        HashSet<SupplyChainActor> supplierSet = this.suppliers.get(internalDemand.getProduct());
+        Set<SupplyChainActor> supplierSet = this.suppliers.get(internalDemand.getProduct());
         if (supplierSet == null)
         {
             Logger.warn("handleContent", "InternalDemand for actor " + getOwner() + " contains product "
@@ -101,14 +124,13 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
             super.stock.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
         }
         Duration delay = this.handlingTime.draw();
-        Iterator<SupplyChainActor> supplierIterator = supplierSet.iterator();
-        while (supplierIterator.hasNext())
+        for (SupplyChainActor supplier : supplierSet)
         {
-            SupplyChainActor supplier = supplierIterator.next();
-            RequestForQuote rfq = new RequestForQuote(getOwner(), supplier, internalDemand, internalDemand.getProduct(),
-                    internalDemand.getAmount(), internalDemand.getEarliestDeliveryDate(),
-                    internalDemand.getLatestDeliveryDate());
-            // and send it out after the handling time (same for each)
+            Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getOwner());
+            TransportOption transportOption =
+                    this.transportChoiceProvider.chooseTransportOptions(transportOptions, internalDemand.getProduct().getSku());
+            RequestForQuote rfq =
+                    new RequestForQuote(getOwner(), supplier, internalDemand, transportOption, this.cutoffDuration);
             getOwner().sendMessage(rfq, delay);
         }
         return true;

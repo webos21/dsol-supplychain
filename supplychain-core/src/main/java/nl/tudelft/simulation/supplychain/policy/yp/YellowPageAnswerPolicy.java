@@ -93,9 +93,10 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
         for (SupplyChainActor supplier : potentialSuppliers)
         {
             Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getOwner());
-            TransportOption transportOption = this.transportChoiceProvider.chooseTransportOptions(transportOptions);
-            RequestForQuote rfq = new RequestForQuote(getOwner(), supplier, internalDemand,
-                    transportOption.makeTranbportRequest(internalDemand.getProduct().getSku()), this.cutoffDuration);
+            TransportOption transportOption =
+                    this.transportChoiceProvider.chooseTransportOptions(transportOptions, ypRequest.getProduct().getSku());
+            RequestForQuote rfq =
+                    new RequestForQuote(getOwner(), supplier, internalDemand, transportOption, this.cutoffDuration);
             getOwner().sendMessage(rfq, delay);
         }
         return true;

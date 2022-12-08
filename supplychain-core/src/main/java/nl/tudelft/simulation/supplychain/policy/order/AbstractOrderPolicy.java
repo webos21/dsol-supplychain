@@ -14,7 +14,6 @@ import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
-import nl.tudelft.simulation.supplychain.transport.TransportMode;
 
 /**
  * The OrderHandler contains the business logic for handling an incoming Order. It will send out a positive or negative
@@ -92,8 +91,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
                         actualAmount, unitPrice.multiplyBy(actualAmount));
                 shipment.setInTransit(true);
 
-                // TODO: get the transportation mode from the shipment?
-                Duration transportTime = TransportMode.PLANE.transportTime(shipment.getSender(), shipment.getReceiver());
+                Duration transportTime = order.getTransportOption().estimatedTotalTransportDuration(product.getSku());
                 Logger.trace("OrderHandlerStock: transportation delay for order: {} is: {}", order, transportTime);
                 getOwner().sendMessage(shipment, transportTime);
 
@@ -102,11 +100,9 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
                         getOwner().getSimulatorTime().plus(new Duration(14.0, DurationUnit.DAY)), shipment.getTotalCargoValue(),
                         "SALE");
 
-                // .... by scheduling it based on the transportation delay
+                // ... by scheduling it based on the transportation delay
                 Serializable[] args = new Serializable[] {bill};
-                getOwner().getSimulator().scheduleEventRel(
-                        TransportMode.PLANE.transportTime(shipment.getSender(), shipment.getReceiver()), this, this, "sendBill",
-                        args);
+                getOwner().getSimulator().scheduleEventRel(transportTime, this, this, "sendBill", args);
             }
         }
         catch (Exception e)

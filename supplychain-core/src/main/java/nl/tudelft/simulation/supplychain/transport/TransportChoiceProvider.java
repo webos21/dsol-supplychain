@@ -2,6 +2,8 @@ package nl.tudelft.simulation.supplychain.transport;
 
 import java.util.Set;
 
+import nl.tudelft.simulation.supplychain.product.Sku;
+
 /**
  * TransportChoiceProvider chooses between options for transport.
  * <p>
@@ -13,10 +15,13 @@ import java.util.Set;
 public interface TransportChoiceProvider
 {
     /**
-     * Give the transport options for a transport from a sender actor to a receiver actor.
+     * Give the transport options for a transport from a sender actor to a receiver actor. The SKU is provided to see whether a
+     * certain transport mode can transport the given SKU. For instance, an airplane cannot transport 40ft containers; a
+     * container ship cannot transport liquid bulk; etc.
      * @param transportOptions set&lt;TransportOption&gt;; a set of transport options from sender to receiver
+     * @param sku Sku; the SKU to see which transport option can thatsport the given SKU
      * @return a preferred option for transport
      */
-    TransportOption chooseTransportOptions(Set<TransportOption> transportOptions);
+    TransportOption chooseTransportOptions(Set<TransportOption> transportOptions, Sku sku);
 
 }

@@ -12,14 +12,14 @@ import org.djutils.event.TimedEventType;
 
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
-import nl.tudelft.simulation.supplychain.banking.BankAccount;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 
 /**
  * StockPlot.java. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -58,7 +58,7 @@ public class BankPlot extends XYChart
      * LalanceListener - delegate class to handle the bank account balance change subscription and event production for the
      * Persistent variables. <br>
      * <br>
-     * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+     * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
      * <br>
      * The supply chain Java library uses a BSD-3 style license.
      * </p>

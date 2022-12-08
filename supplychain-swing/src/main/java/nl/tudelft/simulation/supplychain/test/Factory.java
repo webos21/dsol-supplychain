@@ -14,28 +14,28 @@ import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.banking.BankAccount;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
+import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
-import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Supplier;
-import nl.tudelft.simulation.supplychain.roles.SellingRole;
+import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 import nl.tudelft.simulation.supplychain.stock.Stock;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
 
 /**
  * The ComputerShop named Factory. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -43,7 +43,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  */
 public class Factory extends Supplier
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /**
@@ -53,15 +53,15 @@ public class Factory extends Supplier
      * @param bank the bank
      * @param product initial stock product
      * @param amount amount of initial stock
-     * @param contentStore the contentStore to store the messages
+     * @param messageStore the messageStore to store the messages
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
     public Factory(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
-            final Product product, final double amount, final ContentStoreInterface contentStore)
+            final Product product, final double amount, final MessageStoreInterface messageStore)
             throws RemoteException, NamingException
     {
-        this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), product, amount, contentStore);
+        this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), product, amount, messageStore);
     }
 
     /**
@@ -72,15 +72,15 @@ public class Factory extends Supplier
      * @param initialBankAccount the initial bank balance
      * @param product initial stock product
      * @param amount amount of initial stock
-     * @param contentStore the contentStore to store the messages
+     * @param messageStore the messageStore to store the messages
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
     public Factory(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
             final Money initialBankAccount, final Product product, final double amount,
-            final ContentStoreInterface contentStore) throws RemoteException, NamingException
+            final MessageStoreInterface messageStore) throws RemoteException, NamingException
     {
-        super(name, simulator, position, bank, initialBankAccount, contentStore);
+        super(name, simulator, position, bank, initialBankAccount, messageStore);
         // give the retailer some stock
         Stock _stock = new Stock(this);
         if (product != null)
@@ -114,7 +114,7 @@ public class Factory extends Supplier
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
         //
         // create an order handler
-        OrderPolicy orderHandler = new OrderPolicyStock(this, super.stock);
+        AbstractOrderPolicy orderHandler = new OrderPolicyStock(this, super.stock);
         //
         // hopefully, Factory will get payments in the end
         PaymentPolicy paymentHandler = new PaymentPolicy(this, super.bankAccount);

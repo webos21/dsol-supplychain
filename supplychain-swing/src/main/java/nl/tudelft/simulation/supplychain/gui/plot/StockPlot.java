@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.stock.StockUpdateData;
 /**
  * StockPlot.java. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -74,7 +74,7 @@ public class StockPlot extends XYChart
      * StockListener - delegate class to handle the stock change subscription, filtering for the right product, and event
      * production for the SimPersistent variables. <br>
      * <br>
-     * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+     * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
      * <br>
      * The supply chain Java library uses a BSD-3 style license.
      * </p>

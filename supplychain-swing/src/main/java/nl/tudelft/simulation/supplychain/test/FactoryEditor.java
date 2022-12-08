@@ -14,11 +14,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
-import nl.tudelft.simulation.supplychain.banking.BankAccount;
+import nl.tudelft.simulation.supplychain.finance.BankAccount;
 
 /**
  * <br>
- * Copyright (c) 2003-2006 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2006 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.banking.BankAccount;
  */
 public class FactoryEditor extends AbstractCellEditor implements TableCellEditor
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the value */

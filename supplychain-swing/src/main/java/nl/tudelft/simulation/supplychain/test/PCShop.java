@@ -16,31 +16,31 @@ import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.banking.BankAccount;
-import nl.tudelft.simulation.supplychain.contentstore.ContentStoreInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
+import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyRFQ;
-import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
-import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicyAll;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
-import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicyStock;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Retailer;
-import nl.tudelft.simulation.supplychain.roles.BuyingRole;
-import nl.tudelft.simulation.supplychain.roles.SellingRole;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingRoleYP;
+import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 import nl.tudelft.simulation.supplychain.stock.Stock;
 import nl.tudelft.simulation.supplychain.stock.policies.RestockingPolicySafety;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
@@ -48,7 +48,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 /**
  * Retailer. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -56,7 +56,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
  */
 public class PCShop extends Retailer
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** the manufacturer where the PCShop buys */
@@ -70,15 +70,15 @@ public class PCShop extends Retailer
      * @param product initial stock product
      * @param amount amount of initial stock
      * @param manufacturer fixed manufacturer to use
-     * @param contentStore the contentStore to store the messages
+     * @param messageStore the messageStore to store the messages
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
     public PCShop(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
             final Product product, final double amount, final StockKeepingActor manufacturer,
-            final ContentStoreInterface contentStore) throws RemoteException, NamingException
+            final MessageStoreInterface messageStore) throws RemoteException, NamingException
     {
-        this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), product, amount, manufacturer, contentStore);
+        this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), product, amount, manufacturer, messageStore);
     }
 
     /**
@@ -90,15 +90,15 @@ public class PCShop extends Retailer
      * @param product initial stock product
      * @param amount amount of initial stock
      * @param manufacturer fixed manufacturer to use
-     * @param contentStore the contentStore to store the messages
+     * @param messageStore the messageStore to store the messages
      * @throws RemoteException remote simulator error
      * @throws NamingException
      */
     public PCShop(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
             final Money initialBankAccount, final Product product, final double amount, final StockKeepingActor manufacturer,
-            final ContentStoreInterface contentStore) throws RemoteException, NamingException
+            final MessageStoreInterface messageStore) throws RemoteException, NamingException
     {
-        super(name, simulator, position, bank, initialBankAccount, contentStore);
+        super(name, simulator, position, bank, initialBankAccount, messageStore);
         this.manufacturer = manufacturer;
         // give the retailer some stock
         Stock _stock = new Stock(this);
@@ -131,7 +131,7 @@ public class PCShop extends Retailer
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
         //
         // create an order handler
-        OrderPolicy orderHandler = new OrderPolicyStock(this, super.stock);
+        AbstractOrderPolicy orderHandler = new OrderPolicyStock(this, super.stock);
         //
         // hopefully, the PCShop will get payments in the end
         PaymentPolicy paymentHandler = new PaymentPolicy(this, super.bankAccount);
@@ -154,7 +154,7 @@ public class PCShop extends Retailer
         //
         // BUY PRODUCTS WHEN THERE IS INTERNAL DEMAND
         //
-        // tell PCShop to use the InternalDemandHandler for all products
+        // tell PCShop to use the InternalDemandPolicy for all products
         InternalDemandPolicyRFQ internalDemandHandler =
                 new InternalDemandPolicyRFQ(this, new Duration(1.0, DurationUnit.HOUR), super.stock);
         Iterator<Product> productIter = super.stock.iterator();
@@ -165,7 +165,7 @@ public class PCShop extends Retailer
         }
         //
         // tell PCShop to use the Quotehandler to handle quotes
-        QuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_DATE_PRICE_DISTANCE,
+        AbstractQuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_DATE_PRICE_DISTANCE,
                 new Duration(1.0, DurationUnit.HOUR), 0.4, 0.1);
         //
         // PCShop has the standard order confirmation handler
@@ -176,10 +176,10 @@ public class PCShop extends Retailer
                 new DistConstantDuration(Duration.ZERO));
         //
         // hopefully, PCShop will get laptop shipments, put them in stock
-        ShipmentPolicy shipmentHandler = new ShipmentPolicyStock(this, super.stock);
+        AbstractShipmentPolicy shipmentHandler = new ShipmentPolicyStock(this, super.stock);
         //
         // add the handlers to the buying role for PCShop
-        BuyingRole buyingRole = new BuyingRole(this, this.simulator, internalDemandHandler, quoteHandler, confirmationHandler,
+        BuyingRoleYP buyingRole = new BuyingRoleYP(this, this.simulator, internalDemandHandler, quoteHandler, confirmationHandler,
                 shipmentHandler, billHandler);
         super.setBuyingRole(buyingRole);
         //

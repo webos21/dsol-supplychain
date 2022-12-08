@@ -13,19 +13,19 @@ import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimator;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.contentstore.memory.LeanContentStore;
 import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.product.Unit;
+import nl.tudelft.simulation.supplychain.product.Sku;
 
 /**
  * The TestModel for the supplychain package. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -88,19 +88,19 @@ public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
 
             // create a product
             this.laptop =
-                    new Product("Laptop", Unit.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM), 0.0);
+                    new Product("Laptop", Sku.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM), 0.0);
 
             // create a manufacturer
             this.factory = new Factory("Factory", this.devsSimulator, new OrientedPoint3d(200, 200, 0), ing,
-                    new Money(50000.0, MoneyUnit.USD), this.laptop, 1000, new LeanContentStore(this.devsSimulator));
+                    new Money(50000.0, MoneyUnit.USD), this.laptop, 1000, new LeanTradeMessageStore(this.devsSimulator));
 
             // create a retailer
             this.pcShop = new PCShop("PCshop", this.devsSimulator, new OrientedPoint3d(20, 200, 0), ing,
-                    new Money(50000.0, MoneyUnit.USD), this.laptop, 10, this.factory, new LeanContentStore(this.devsSimulator));
+                    new Money(50000.0, MoneyUnit.USD), this.laptop, 10, this.factory, new LeanTradeMessageStore(this.devsSimulator));
 
             // create a customer
             this.client = new Client("Client", this.devsSimulator, new OrientedPoint3d(100, 100, 0), ing,
-                    new Money(1500000.0, MoneyUnit.USD), this.laptop, this.pcShop, new LeanContentStore(this.devsSimulator));
+                    new Money(1500000.0, MoneyUnit.USD), this.laptop, this.pcShop, new LeanTradeMessageStore(this.devsSimulator));
 
             // schedule a remark that the simulation is ready
             Duration endTime =

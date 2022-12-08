@@ -15,7 +15,7 @@ import nl.tudelft.simulation.dsol.swing.introspection.gui.IntrospectionDialog;
 /**
  * Editor for introspection. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

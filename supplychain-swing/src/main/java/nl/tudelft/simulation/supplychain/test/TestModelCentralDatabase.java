@@ -12,20 +12,20 @@ import org.djutils.draw.point.OrientedPoint3d;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
-import nl.tudelft.simulation.supplychain.banking.Bank;
-import nl.tudelft.simulation.supplychain.contentstore.database.CachingDatabaseWorker;
-import nl.tudelft.simulation.supplychain.contentstore.database.CentralDatabaseContentStore;
-import nl.tudelft.simulation.supplychain.contentstore.database.DatabaseWorkerInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.message.store.database.CachingDatabaseWorker;
+import nl.tudelft.simulation.supplychain.message.store.database.CentralDatabaseMessageStore;
+import nl.tudelft.simulation.supplychain.message.store.database.DatabaseWorkerInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.product.Unit;
+import nl.tudelft.simulation.supplychain.product.Sku;
 
 /**
  * The TestModel for the supplychain package. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -33,7 +33,7 @@ import nl.tudelft.simulation.supplychain.product.Unit;
  */
 public class TestModelCentralDatabase extends AbstractDSOLModel<Duration, SCSimulatorInterface>
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
     /** timing run-time */
@@ -76,22 +76,22 @@ public class TestModelCentralDatabase extends AbstractDSOLModel<Duration, SCSimu
             ing.setAnnualInterestRatePos(0.025);
             // create a product
             Product laptop =
-                    new Product("Laptop", Unit.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM), 0.0);
+                    new Product("Laptop", Sku.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM), 0.0);
 
-            // create a ContentStore
+            // create a MessageStore
             DatabaseWorkerInterface dbw = new CachingDatabaseWorker("TestModel_simulation");
 
             // create a manufacturer
             Factory factory = new Factory("Factory", this.devsSimulator, new OrientedPoint3d(200, 200, 0), ing,
-                    new Money(50000.0, MoneyUnit.USD), laptop, 1000, new CentralDatabaseContentStore(dbw));
+                    new Money(50000.0, MoneyUnit.USD), laptop, 1000, new CentralDatabaseMessageStore(dbw));
 
             // create a retailer
             PCShop pcShop = new PCShop("PCshop", this.devsSimulator, new OrientedPoint3d(20, 200, 0), ing,
-                    new Money(50000.0, MoneyUnit.USD), laptop, 10, factory, new CentralDatabaseContentStore(dbw));
+                    new Money(50000.0, MoneyUnit.USD), laptop, 10, factory, new CentralDatabaseMessageStore(dbw));
 
             // create a customer
             Client client = new Client("Client", this.devsSimulator, new OrientedPoint3d(100, 100, 0), ing,
-                    new Money(1500000.0, MoneyUnit.USD), laptop, pcShop, new CentralDatabaseContentStore(dbw));
+                    new Money(1500000.0, MoneyUnit.USD), laptop, pcShop, new CentralDatabaseMessageStore(dbw));
 
             // schedule a remark that the simulation is ready
             Duration endTime =

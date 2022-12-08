@@ -225,6 +225,16 @@ public class TransportOptionStep implements Identifiable, Serializable
         this.estimatedTransportCostsPerKm.put(sku, estimatedTransportCostPerKm);
     }
 
+    /**
+     * Transform the TrasnportOptionStep to a TransportRequestStep based on a given SKU.
+     * @param sku Sku; the SKU for which to create the TransportRequestStep
+     * @return TransportRequestStep; the step in the request for transport based on a given SKU
+     */
+    public TransportRequestStep makeTranbportRequestStep(final Sku sku)
+    {
+        return new TransportRequestStep(this.id, this.origin, this.destination, this.transportMode, sku);
+    }
+    
     /** {@inheritDoc} */
     @Override
     public int hashCode()

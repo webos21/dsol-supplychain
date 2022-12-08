@@ -5,14 +5,13 @@ import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.transport.TransportRequest;
+import nl.tudelft.simulation.supplychain.transport.TransportOption;
 
 /**
  * The RequestForQuote is a question to provide the receiver with a certain amount of a certain product at a certain date. It
  * will be answered with a Quote.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -27,25 +26,35 @@ public class RequestForQuote extends TradeMessage
 
     /** the date when the RFQ will be cut off. */
     private final Time cutoffDate;
-    
-    /** the transport request for moving the product from sender to receiver. */
-    private final TransportRequest transportRequest; 
+
+    /** the preferred transport option for moving the product from sender to receiver. */
+    private final TransportOption preferredTransportOption;
 
     /**
      * Create a new RFQ, based on an internal demand.
      * @param sender SupplyChainActor; the sender actor of the message content
      * @param receiver SupplyChainActor; the receving actor of the message content
      * @param internalDemand InternalDemand; internal demand that triggered the process
-     * @param transportRequest TransportRequest; the transport request for moving the product from sender to receiver
+     * @param preferredTransportOption TransportOption; the preferred transport option for moving the product from sender to
+     *            receiver
      * @param cutoffDuration Duration; after how much time will the RFQ stop collecting quotes?
      */
     public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
-            final TransportRequest transportRequest, final Duration cutoffDuration)
+            final TransportOption preferredTransportOption, final Duration cutoffDuration)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());
         this.internalDemand = internalDemand;
         this.cutoffDate = sender.getSimulatorTime().plus(cutoffDuration);
-        this.transportRequest = transportRequest;
+        this.preferredTransportOption = preferredTransportOption;
+    }
+
+    /**
+     * Return the InternalDemand that triggerred this RFQ.
+     * @return InternalDemand; the InternalDemand that triggerred this RFQ.
+     */
+    protected InternalDemand getInternalDemand()
+    {
+        return this.internalDemand;
     }
 
     /** {@inheritDoc} */
@@ -86,9 +95,9 @@ public class RequestForQuote extends TradeMessage
      * Return the transport request for moving the product from sender to receiver.
      * @return TransportRequest; the transport request for moving the product from sender to receiver
      */
-    public TransportRequest getTransportRequest()
+    public TransportOption getPreferredTransportOption()
     {
-        return this.transportRequest;
+        return this.preferredTransportOption;
     }
 
     /**

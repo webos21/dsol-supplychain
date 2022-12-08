@@ -81,7 +81,7 @@ public abstract class Order extends TradeMessage
     /**
      * @return transportOption
      */
-    protected TransportOption getTransportOption()
+    public TransportOption getTransportOption()
     {
         return this.transportOption;
     }

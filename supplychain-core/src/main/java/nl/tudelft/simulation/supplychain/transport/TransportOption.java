@@ -13,6 +13,8 @@ import org.djutils.immutablecollections.ImmutableArrayList;
 import org.djutils.immutablecollections.ImmutableList;
 
 import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
+import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.product.Sku;
 
 /**
@@ -104,6 +106,31 @@ public class TransportOption implements Identifiable, Serializable
             result = result.plus(distance.divide(step.getTransportMode().getAverageSpeed()));
         }
         return result;
+    }
+
+    /**
+     * Return the estimated total transport cost from sender to receiver.
+     * @param sku Sku; the sku that needs to be transported
+     * @return Money; the total costs including transport and transloading
+     */
+    public Money estimatedTotalTransportCost(final Sku sku)
+    {
+        double cost = 0.0;
+        MoneyUnit costUnit = null;
+        for (TransportOptionStep step : this.transportSteps)
+        {
+            Money costPerKm = step.getEstimatedTransportCostPerKm(sku);
+            if (costUnit == null)
+            {
+                costUnit = costPerKm.getMoneyUnit();
+            }
+            double distanceKm = step.getOrigin().getSimulator().getModel().calculateDistance(step.getOrigin().getLocation(),
+                    step.getDestination().getLocation()).si / 1000.0;
+            cost += step.getEstimatedLoadingCost(sku).getAmount();
+            cost += step.getEstimatedUnloadingCost(sku).getAmount();
+            cost += costPerKm.getAmount() * distanceKm;
+        }
+        return new Money(cost, costUnit);
     }
 
     /** {@inheritDoc} */

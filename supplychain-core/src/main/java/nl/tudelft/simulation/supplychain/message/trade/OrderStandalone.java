@@ -5,6 +5,7 @@ import org.djunits.value.vdouble.scalar.Time;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.transport.TransportOption;
 
 /**
  * This is a stand alone order, that is not based on an RFQ and Quote, but which is directly placed to another actor. It
@@ -39,11 +40,14 @@ public class OrderStandalone extends Order
      * @param product Product; the ordered product
      * @param amount double; the amount ordered
      * @param price Money; the price to pay
+     * @param transportOption TransportOption; the accepted transport option
      */
+    @SuppressWarnings("checkstyle:parameternumber")
     public OrderStandalone(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
-            final Time deliveryDate, final Product product, final double amount, final Money price)
+            final Time deliveryDate, final Product product, final double amount, final Money price,
+            final TransportOption transportOption)
     {
-        super(sender, receiver, internalDemand, deliveryDate);
+        super(sender, receiver, internalDemand, deliveryDate, transportOption);
         this.product = product;
         this.amount = amount;
         this.price = price;

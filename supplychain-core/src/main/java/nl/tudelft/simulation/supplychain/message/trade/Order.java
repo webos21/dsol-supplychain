@@ -5,6 +5,7 @@ import org.djunits.value.vdouble.scalar.Time;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.transport.TransportOption;
 
 /**
  * An Order indicates: I want a certain amount of products on a certain date for a certain price. The four attributes "product",
@@ -25,7 +26,10 @@ public abstract class Order extends TradeMessage
     private final InternalDemand internalDemand;
     
     /** the delivery date as ordered. */
-    private Time deliveryDate;
+    private final Time deliveryDate;
+
+    /** the accepted transport option. */
+    private final TransportOption transportOption;
 
     /**
      * Constructor for an order. This abstract constructor has to be called by every extending class.
@@ -33,13 +37,15 @@ public abstract class Order extends TradeMessage
      * @param receiver SupplyChainActor; the receving actor of the message content
      * @param internalDemand the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
+     * @param transportOption TransportOption; the accepted transport option
      */
     public Order(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final InternalDemand internalDemand, final Time deliveryDate)
+            final InternalDemand internalDemand, final Time deliveryDate, final TransportOption transportOption)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());
         this.internalDemand = internalDemand;
         this.deliveryDate = deliveryDate;
+        this.transportOption = transportOption;
     }
 
     /** {@inheritDoc} */
@@ -70,6 +76,14 @@ public abstract class Order extends TradeMessage
     public Time getDeliveryDate()
     {
         return this.deliveryDate;
+    }
+
+    /**
+     * @return transportOption
+     */
+    protected TransportOption getTransportOption()
+    {
+        return this.transportOption;
     }
 
     /** {@inheritDoc} */

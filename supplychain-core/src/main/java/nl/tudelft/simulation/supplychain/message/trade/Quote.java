@@ -79,6 +79,14 @@ public class Quote extends TradeMessage
     }
 
     /**
+     * @return the InternalDemand
+     */
+    public InternalDemand getInternalDemand()
+    {
+        return this.requestForQuote.getInternalDemand();
+    }
+
+    /**
      * @return the product.
      */
     @Override

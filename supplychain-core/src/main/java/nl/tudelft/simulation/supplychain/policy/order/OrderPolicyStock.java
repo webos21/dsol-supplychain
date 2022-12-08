@@ -12,15 +12,13 @@ import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
-import nl.tudelft.simulation.supplychain.transport.TransportMode;
 
 /**
  * The most simple form of an OrderHandler that takes the orders from stock is one that sends out an OrderConfirmation right
  * away, and waits till the delivery date (should be minus the expected transportation time), picks the order, and ships it out
  * as a Shipment. When the order is not available: wait one day and try again till it is available.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -58,12 +56,9 @@ public class OrderPolicyStock extends AbstractOrderPolicy<Order>
         // wait till the right time to start shipping
         try
         {
-            // for now we use the TransportMode.PLANE
-            // TODO get the transportation mode, currently using TransportMode.PLANE
-            Duration transportationDuration = TransportMode.PLANE.transportTime(order.getSender(), order.getReceiver());
-
+            Duration transportationDuration =
+                    order.getTransportOption().estimatedTotalTransportDuration(order.getProduct().getSku());
             Time proposedShippingDate = ((OrderBasedOnQuote) order).getQuote().getProposedShippingDate();
-
             Time scheduledShippingTime = proposedShippingDate.minus(transportationDuration);
 
             // start shipping 8 hours from now at the earliest

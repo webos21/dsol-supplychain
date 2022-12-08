@@ -68,8 +68,8 @@ public class QuotePolicyAll extends AbstractQuotePolicy
         }
         // look if all quotes are there for the RFQs that we sent out
         long id = quote.getInternalDemandId();
-        TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
-        if (contentStore.getMessageList(id, Quote.class).size() == contentStore.getMessageList(id, RequestForQuote.class)
+        TradeMessageStoreInterface messageStore = getOwner().getMessageStore();
+        if (messageStore.getMessageList(id, Quote.class).size() == messageStore.getMessageList(id, RequestForQuote.class)
                 .size())
         {
             // All quotes are in. Select the best and place an order
@@ -77,10 +77,10 @@ public class QuotePolicyAll extends AbstractQuotePolicy
             if (QuotePolicyAll.DEBUG)
             {
                 System.err.println("t=" + getOwner().getSimulatorTime() + " DEBUG -- QuoteHandlerAll of actor " + getOwner()
-                        + ", size=" + contentStore.getMessageList(id, Quote.class).size());
+                        + ", size=" + messageStore.getMessageList(id, Quote.class).size());
             }
 
-            List<Quote> quotes = contentStore.getMessageList(id, Quote.class);
+            List<Quote> quotes = messageStore.getMessageList(id, Quote.class);
             Quote bestQuote = selectBestQuote(quotes);
             if (bestQuote == null)
             {
@@ -95,8 +95,8 @@ public class QuotePolicyAll extends AbstractQuotePolicy
                         + ", bestQuote=" + bestQuote);
             }
 
-            Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), id, bestQuote.getProposedDeliveryDate(),
-                    bestQuote);
+            Order order =
+                    new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(), bestQuote);
             getOwner().sendMessage(order, getHandlingTime().draw());
         }
         return true;

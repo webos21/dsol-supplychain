@@ -16,15 +16,13 @@ import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
-import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
 /**
  * The QuoteHandlerTimeout handles quotes until a certain timeout is reached. When all Quotes are in, it reacts. It schedules
  * the timeout date when the FIRST Quote comes in, because it makes no sense to cut off the negotiation process without any
  * received Quote.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -74,9 +72,9 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
             return false;
         }
         long internalDemandId = quote.getInternalDemandId();
-        TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
-        int numberQuotes = contentStore.getMessageList(internalDemandId, Quote.class).size();
-        int numberRFQs = contentStore.getMessageList(internalDemandId, RequestForQuote.class).size();
+        TradeMessageStoreInterface messageStore = getOwner().getMessageStore();
+        int numberQuotes = messageStore.getMessageList(internalDemandId, Quote.class).size();
+        int numberRFQs = messageStore.getMessageList(internalDemandId, RequestForQuote.class).size();
         // when the first quote comes in, schedule the timeout
         if (numberQuotes == 1)
         {
@@ -114,8 +112,8 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
         if (this.unansweredIDs.contains(internalDemandId))
         {
             this.unansweredIDs.remove(internalDemandId);
-            TradeMessageStoreInterface contentStore = getOwner().getMessageStore();
-            List<Quote> quotes = contentStore.getMessageList(internalDemandId, Quote.class);
+            TradeMessageStoreInterface messageStore = getOwner().getMessageStore();
+            List<Quote> quotes = messageStore.getMessageList(internalDemandId, Quote.class);
 
             // the size of the quotes is at least one
             // since the invocation of this method is scheduled after a first
@@ -123,8 +121,8 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
             Quote bestQuote = this.selectBestQuote(quotes);
             if (bestQuote != null)
             {
-                Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), internalDemandId,
-                        bestQuote.getProposedDeliveryDate(), bestQuote);
+                Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(),
+                        bestQuote);
                 getOwner().sendMessage(order, this.getHandlingTime().draw());
             }
         }

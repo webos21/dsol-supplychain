@@ -7,8 +7,6 @@ import java.util.Objects;
 
 import org.djunits.Throw;
 import org.djutils.base.Identifiable;
-import org.djutils.immutablecollections.ImmutableArrayList;
-import org.djutils.immutablecollections.ImmutableList;
 
 /**
  * TransportRequest describes a request to get goods from A to B. The class can incicate a singular transport mode that
@@ -30,7 +28,7 @@ public class TransportRequest implements Identifiable, Serializable
     private final String id;
 
     /** the sequence of TransportSteps. */
-    private ImmutableList<TransportRequestStep> transportSteps = new ImmutableArrayList<>(new ArrayList<>());
+    private List<TransportRequestStep> transportSteps = new ArrayList<>();
 
     /**
      * make a new TransportRequest.
@@ -53,7 +51,7 @@ public class TransportRequest implements Identifiable, Serializable
      * Return the transport steps.
      * @return ImmutableList&lt;TransportRequestStep&gt;; the transport steps
      */
-    public ImmutableList<TransportRequestStep> getTransportSteps()
+    public List<TransportRequestStep> getTransportSteps()
     {
         return this.transportSteps;
     }
@@ -65,9 +63,7 @@ public class TransportRequest implements Identifiable, Serializable
     public void addTransportStep(final TransportRequestStep transportRequestStep)
     {
         Throw.whenNull(transportRequestStep, "transportRequestStep cannot be null");
-        List<TransportRequestStep> steps = this.transportSteps.toList();
-        steps.add(transportRequestStep);
-        this.transportSteps = new ImmutableArrayList<>(steps);
+        this.transportSteps.add(transportRequestStep);
     }
 
     /**

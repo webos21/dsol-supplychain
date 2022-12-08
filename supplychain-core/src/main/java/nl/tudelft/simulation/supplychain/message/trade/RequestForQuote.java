@@ -37,7 +37,7 @@ public class RequestForQuote extends TradeMessage
      * @param receiver SupplyChainActor; the receving actor of the message content
      * @param internalDemand InternalDemand; internal demand that triggered the process
      * @param transportRequest TransportRequest; the transport request for moving the product from sender to receiver
-     * @param cutoffDuration after how much time will the RFQ stop collecting quotes?
+     * @param cutoffDuration Duration; after how much time will the RFQ stop collecting quotes?
      */
     public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
             final TransportRequest transportRequest, final Duration cutoffDuration)

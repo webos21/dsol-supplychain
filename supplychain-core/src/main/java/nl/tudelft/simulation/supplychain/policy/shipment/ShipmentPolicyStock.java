@@ -1,9 +1,9 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * When a Shipment comes in, it just has to be added to the Stock.

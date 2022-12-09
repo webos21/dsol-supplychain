@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.stock.policies;
+package nl.tudelft.simulation.supplychain.inventory.policies;
 
 import java.io.Serializable;
 
@@ -8,9 +8,9 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * <p>

@@ -7,8 +7,8 @@ import org.djunits.value.vdouble.scalar.Time;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * A stocking Shipment handler where a check is performed whether the shipment was delivered on time. If not, a fine is imposed.

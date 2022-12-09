@@ -1,9 +1,9 @@
-package nl.tudelft.simulation.supplychain.stock.policies;
+package nl.tudelft.simulation.supplychain.inventory.policies;
 
 import org.djunits.value.vdouble.scalar.Duration;
 
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
 /**

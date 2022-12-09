@@ -1,10 +1,10 @@
-package nl.tudelft.simulation.supplychain.stock.policies;
+package nl.tudelft.simulation.supplychain.inventory.policies;
 
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * This RestockingPolicy either orders fixed amounts of goods at the times indicated by the 'frequency', or supplements the

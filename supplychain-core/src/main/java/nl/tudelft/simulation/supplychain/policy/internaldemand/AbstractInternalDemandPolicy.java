@@ -2,9 +2,9 @@ package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * The abstract InternalDemandPolicy class provides the general methods that all InternalDemandPolicy classes need, such as

@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.stock;
+package nl.tudelft.simulation.supplychain.inventory;
 
 import java.io.Serializable;
 import java.util.Iterator;

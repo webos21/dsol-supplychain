@@ -3,9 +3,9 @@ package nl.tudelft.simulation.supplychain.production;
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * The abstract class ProductionService implements the ProductionServiceInterface and is a simple starting point for the

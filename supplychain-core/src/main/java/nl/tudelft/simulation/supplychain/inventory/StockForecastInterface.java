@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.stock;
+package nl.tudelft.simulation.supplychain.inventory;
 
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventType;

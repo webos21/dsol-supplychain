@@ -9,6 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
@@ -16,7 +17,6 @@ import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.production.Production;
 import nl.tudelft.simulation.supplychain.production.ProductionService;
 import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * <p>

@@ -1,11 +1,11 @@
-package nl.tudelft.simulation.supplychain.stock.policies;
+package nl.tudelft.simulation.supplychain.inventory.policies;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * Restocking according to economic order quantity. Needs fixed and variable costs when it has to be implemented. For that

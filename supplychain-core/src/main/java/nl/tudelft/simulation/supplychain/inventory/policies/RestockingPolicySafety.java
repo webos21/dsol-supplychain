@@ -1,10 +1,10 @@
-package nl.tudelft.simulation.supplychain.stock.policies;
+package nl.tudelft.simulation.supplychain.inventory.policies;
 
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * This restocking policy looks at a safety stock level. As long as the stock level is above the safety stock level, do nothing.

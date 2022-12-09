@@ -4,9 +4,9 @@ import org.djunits.value.vdouble.scalar.Length;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.inventory.StockInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
-import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
 /**
  * The InternalDemandPolicyYP is a simple implementation of the business logic to handle a request for new products through a

@@ -46,8 +46,7 @@ import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRolePeriodi
 /**
  * MtsMtomarket.java. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -84,8 +83,8 @@ public class DemoMarket extends Customer
         Demand demand = new Demand(product, new DistContinuousDuration(new DistExponential(stream, 8.0), DurationUnit.HOUR),
                 new DistConstant(stream, 1.0), new DistConstantDuration(Duration.ZERO),
                 new DistConstantDuration(new Duration(14.0, DurationUnit.DAY)));
-        DemandGenerationRolePeriodic dg =
-                new DemandGenerationRolePeriodic(this, new DistContinuousDuration(new DistExponential(stream, 2.0), DurationUnit.MINUTE));
+        DemandGenerationRolePeriodic dg = new DemandGenerationRolePeriodic(this,
+                new DistContinuousDuration(new DistExponential(stream, 2.0), DurationUnit.MINUTE));
         dg.addDemandGenerator(product, demand);
         this.setDemandGeneration(dg);
 

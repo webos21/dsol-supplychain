@@ -25,8 +25,7 @@ import nl.tudelft.simulation.supplychain.product.Sku;
 /**
  * The TestModel for the supplychain package. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -96,11 +95,13 @@ public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
 
             // create a retailer
             this.pcShop = new PCShop("PCshop", this.devsSimulator, new OrientedPoint3d(20, 200, 0), ing,
-                    new Money(50000.0, MoneyUnit.USD), this.laptop, 10, this.factory, new LeanTradeMessageStore(this.devsSimulator));
+                    new Money(50000.0, MoneyUnit.USD), this.laptop, 10, this.factory,
+                    new LeanTradeMessageStore(this.devsSimulator));
 
             // create a customer
             this.client = new Client("Client", this.devsSimulator, new OrientedPoint3d(100, 100, 0), ing,
-                    new Money(1500000.0, MoneyUnit.USD), this.laptop, this.pcShop, new LeanTradeMessageStore(this.devsSimulator));
+                    new Money(1500000.0, MoneyUnit.USD), this.laptop, this.pcShop,
+                    new LeanTradeMessageStore(this.devsSimulator));
 
             // schedule a remark that the simulation is ready
             Duration endTime =

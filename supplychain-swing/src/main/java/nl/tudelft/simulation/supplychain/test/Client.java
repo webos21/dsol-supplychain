@@ -44,8 +44,7 @@ import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRolePeriodi
 /**
  * Customer. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -107,8 +106,8 @@ public class Client extends Customer
         Demand demand = new Demand(this.product,
                 new DistContinuousDuration(new DistExponential(stream, 24.0), DurationUnit.HOUR), new DistConstant(stream, 1.0),
                 new DistConstantDuration(Duration.ZERO), new DistConstantDuration(new Duration(14.0, DurationUnit.DAY)));
-        DemandGenerationRolePeriodic dg =
-                new DemandGenerationRolePeriodic(this, new DistContinuousDuration(new DistExponential(stream, 2.0), DurationUnit.MINUTE));
+        DemandGenerationRolePeriodic dg = new DemandGenerationRolePeriodic(this,
+                new DistContinuousDuration(new DistExponential(stream, 2.0), DurationUnit.MINUTE));
         dg.addDemandGenerator(this.product, demand);
         super.setDemandGeneration(dg);
         //
@@ -132,8 +131,8 @@ public class Client extends Customer
         AbstractShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
         //
         // add the handlers to the buying role for Client
-        BuyingRoleYP buyingRole = new BuyingRoleYP(this, super.simulator, internalDemandHandler, quoteHandler, confirmationHandler,
-                shipmentHandler, billHandler);
+        BuyingRoleYP buyingRole = new BuyingRoleYP(this, super.simulator, internalDemandHandler, quoteHandler,
+                confirmationHandler, shipmentHandler, billHandler);
         super.setBuyingRole(buyingRole);
 
         //

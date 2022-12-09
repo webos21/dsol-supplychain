@@ -48,8 +48,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 /**
  * Retailer. <br>
  * <br>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -179,8 +178,8 @@ public class PCShop extends Retailer
         AbstractShipmentPolicy shipmentHandler = new ShipmentPolicyStock(this, super.stock);
         //
         // add the handlers to the buying role for PCShop
-        BuyingRoleYP buyingRole = new BuyingRoleYP(this, this.simulator, internalDemandHandler, quoteHandler, confirmationHandler,
-                shipmentHandler, billHandler);
+        BuyingRoleYP buyingRole = new BuyingRoleYP(this, this.simulator, internalDemandHandler, quoteHandler,
+                confirmationHandler, shipmentHandler, billHandler);
         super.setBuyingRole(buyingRole);
         //
         // CHARTS

@@ -28,7 +28,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Stock extends EventProducer implements InventoryInterface, StockForecastInterface
+public class Inventory extends EventProducer implements InventoryInterface, StockForecastInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -46,7 +46,7 @@ public class Stock extends EventProducer implements InventoryInterface, StockFor
      * Create a new Stock for an actor.
      * @param owner the Trader that physically owns the stock.
      */
-    public Stock(final StockKeepingActor owner)
+    public Inventory(final StockKeepingActor owner)
     {
         super();
         this.owner = owner;
@@ -57,7 +57,7 @@ public class Stock extends EventProducer implements InventoryInterface, StockFor
      * @param owner the trader for which this is the stock
      * @param initialStock the initial stock
      */
-    public Stock(final StockKeepingActor owner, final Stock initialStock)
+    public Inventory(final StockKeepingActor owner, final Inventory initialStock)
     {
         this(owner);
         for (Iterator<Product> productIterator = initialStock.iterator(); productIterator.hasNext();)

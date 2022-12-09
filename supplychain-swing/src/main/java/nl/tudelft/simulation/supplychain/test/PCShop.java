@@ -21,7 +21,7 @@ import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.inventory.Stock;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.inventory.policies.RestockingPolicySafety;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
@@ -101,7 +101,7 @@ public class PCShop extends Retailer
         super(name, simulator, position, bank, initialBankAccount, messageStore);
         this.manufacturer = manufacturer;
         // give the retailer some stock
-        Stock _stock = new Stock(this);
+        Inventory _stock = new Inventory(this);
         if (product != null)
         {
             _stock.addInventory(product, amount, product.getUnitMarketPrice().multiplyBy(amount));

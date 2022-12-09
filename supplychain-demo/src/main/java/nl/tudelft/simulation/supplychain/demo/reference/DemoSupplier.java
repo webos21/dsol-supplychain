@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.actor.yellowpage.Topic;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.Stock;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.inventory.policies.RestockingPolicySafety;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
@@ -78,7 +78,7 @@ public class DemoSupplier extends Supplier
 
         // STOCK
 
-        Stock _stock = new Stock(this);
+        Inventory _stock = new Inventory(this);
         _stock.addInventory(product, initialStock, product.getUnitMarketPrice().multiplyBy(initialStock));
         super.setInitialStock(_stock);
 

@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.inventory.Stock;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
@@ -82,7 +82,7 @@ public class Factory extends Supplier
     {
         super(name, simulator, position, bank, initialBankAccount, messageStore);
         // give the retailer some stock
-        Stock _stock = new Stock(this);
+        Inventory _stock = new Inventory(this);
         if (product != null)
         {
             _stock.addInventory(product, amount, product.getUnitMarketPrice().multiplyBy(amount));

@@ -13,18 +13,18 @@ import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * A StockRecord keeps the information about products, such as actual, ordered and claimed amounts of products. It assists the
- * Stock object and the restocking policies to assess the needed order amounts.
+ * A InventoryRecord keeps the information about products, such as actual, ordered and claimed amounts of products. It assists
+ * the Inventory object and the restocking policies to assess the needed order amounts.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class StockRecord implements Serializable
+public class InventoryRecord implements Serializable
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221209L;
 
     /** the owner. */
     private StockKeepingActor owner = null;
@@ -35,7 +35,7 @@ public class StockRecord implements Serializable
     /** the product for which to keep information. */
     private Product product;
 
-    /** the amount currently on stock. */
+    /** the amount currently on inventory. */
     private double actualAmount;
 
     /** the amount that is claimed by orders, but not yet taken. */
@@ -44,7 +44,7 @@ public class StockRecord implements Serializable
     /** the amount that has been ordered, but not yet delivered. */
     private double orderedAmount;
 
-    /** the costprice of the total amount of these products in stock. */
+    /** the costprice of the total amount of these products in inventory. */
     private Money costprice = new Money(0.0, MoneyUnit.USD);
 
     /** the depreciation factor per day. */
@@ -55,7 +55,7 @@ public class StockRecord implements Serializable
      * @param simulator the simulator
      * @param product Product; the product
      */
-    public StockRecord(final StockKeepingActor owner, final SCSimulatorInterface simulator, final Product product)
+    public InventoryRecord(final StockKeepingActor owner, final SCSimulatorInterface simulator, final Product product)
     {
         super();
         this.owner = owner;
@@ -208,7 +208,7 @@ public class StockRecord implements Serializable
     }
 
     /**
-     * decrease the value of the stock according to the current depreciation.
+     * decrease the value of the inventory according to the current depreciation.
      */
     protected void depreciate()
     {

@@ -2,9 +2,9 @@ package nl.tudelft.simulation.supplychain.inventory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.djunits.value.vdouble.scalar.Time;
@@ -18,12 +18,11 @@ import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * Simple implementation of Stock for a Trader. The information on stocked amounts is stored in a HashTable of StockRecords.
- * Events on stock changes are fired by Stock, so subscribers who are interested in the stock amounts can see what is going on
- * in the Stock.
+ * Simple implementation of Inventory for a Trader. The information on stocked amounts is stored in a HashTable of
+ * InventoryRecords. Events on stock changes are fired by Inventory, so subscribers who are interested in the stock amounts can
+ * see what is going on in the Inventory.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -37,33 +36,31 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     protected StockKeepingActor owner;
 
     /** record keeping of the stock. */
-    protected Map<Product, StockRecord> stockRecords = new LinkedHashMap<Product, StockRecord>();
+    protected Map<Product, InventoryRecord> inventoryRecords = new LinkedHashMap<Product, InventoryRecord>();
 
     /** Map of Product to Map of time to ArrayList of values for time moment: future changes. */
     protected Map<Product, TreeMap<Time, ArrayList<Double>>> futureChanges = new LinkedHashMap<>();
 
     /**
-     * Create a new Stock for an actor.
+     * Create a new Inventory for an actor.
      * @param owner the Trader that physically owns the stock.
      */
     public Inventory(final StockKeepingActor owner)
     {
-        super();
         this.owner = owner;
     }
 
     /**
-     * Create a new Stock for an actor, with an initial amount of products.
+     * Create a new Inventory for an actor, with an initial amount of products.
      * @param owner the trader for which this is the stock
      * @param initialStock the initial stock
      */
     public Inventory(final StockKeepingActor owner, final Inventory initialStock)
     {
         this(owner);
-        for (Iterator<Product> productIterator = initialStock.iterator(); productIterator.hasNext();)
+        for (Product product : initialStock.getProducts())
         {
-            Product product = productIterator.next();
-            addInventory(product, initialStock.getActualAmount(product), product.getUnitMarketPrice());
+            addToInventory(product, initialStock.getActualAmount(product), product.getUnitMarketPrice());
             this.changeClaimedAmount(product, initialStock.getClaimedAmount(product));
             this.changeFutureClaimedAmount(product, initialStock.getClaimedAmount(product), owner.getSimulatorTime());
             this.changeOrderedAmount(product, initialStock.getOrderedAmount(product));
@@ -81,13 +78,20 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
 
     /** {@inheritDoc} */
     @Override
-    public void addInventory(final Product product, final double amount, final Money totalPrice)
+    public Set<Product> getProducts()
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        return this.inventoryRecords.keySet();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void addToInventory(final Product product, final double amount, final Money totalPrice)
+    {
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         if (stockRecord == null)
         {
-            stockRecord = new StockRecord(this.owner, this.owner.getSimulator(), product);
-            this.stockRecords.put(product, stockRecord);
+            stockRecord = new InventoryRecord(this.owner, this.owner.getSimulator(), product);
+            this.inventoryRecords.put(product, stockRecord);
         }
         try
         {
@@ -107,13 +111,13 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
 
     /** {@inheritDoc} */
     @Override
-    public void addInventory(final Shipment shipment)
+    public void addToInventory(final Shipment shipment)
     {
-        StockRecord stockRecord = this.stockRecords.get(shipment.getProduct());
+        InventoryRecord stockRecord = this.inventoryRecords.get(shipment.getProduct());
         if (stockRecord == null)
         {
-            stockRecord = new StockRecord(this.owner, this.owner.getSimulator(), shipment.getProduct());
-            this.stockRecords.put(shipment.getProduct(), stockRecord);
+            stockRecord = new InventoryRecord(this.owner, this.owner.getSimulator(), shipment.getProduct());
+            this.inventoryRecords.put(shipment.getProduct(), stockRecord);
         }
         stockRecord.addActualAmount(shipment.getAmount(), shipment.getTotalCargoValue().divideBy(shipment.getAmount()));
         this.sendStockUpdateEvent(stockRecord);
@@ -121,9 +125,9 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
 
     /** {@inheritDoc} */
     @Override
-    public double removeInventory(final Product product, final double amount)
+    public double removeFromInventory(final Product product, final double amount)
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         double actualAmount = 0.0;
         if (stockRecord != null)
         {
@@ -140,7 +144,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     @Override
     public double getActualAmount(final Product product)
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         if (stockRecord == null)
         {
             return 0.0;
@@ -152,7 +156,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     @Override
     public double getClaimedAmount(final Product product)
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         if (stockRecord == null)
         {
             return 0.0;
@@ -164,7 +168,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     @Override
     public double getOrderedAmount(final Product product)
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         if (stockRecord == null)
         {
             return 0.0;
@@ -176,7 +180,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     @Override
     public boolean changeClaimedAmount(final Product product, final double delta)
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         if (stockRecord == null)
         {
             return false;
@@ -224,7 +228,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     @Override
     public boolean changeOrderedAmount(final Product product, final double delta)
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         if (stockRecord == null)
         {
             return false;
@@ -268,7 +272,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     @Override
     public Money getUnitPrice(final Product product)
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         if (stockRecord == null)
         {
             return product.getUnitMarketPrice();
@@ -278,28 +282,22 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
 
     /** {@inheritDoc} */
     @Override
-    public Iterator<Product> iterator()
-    {
-        return this.stockRecords.keySet().iterator();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public int numberOfProducts()
     {
-        return this.stockRecords.keySet().size();
+        return this.inventoryRecords.keySet().size();
     }
 
     /**
      * Method sendStockUpdateEvent.
      * @param stockRecord the stock record that is updated
      */
-    public void sendStockUpdateEvent(final StockRecord stockRecord)
+    public void sendStockUpdateEvent(final InventoryRecord stockRecord)
     {
         StockUpdateData data = new StockUpdateData(stockRecord.getProduct().getName(), stockRecord.getActualAmount(),
                 stockRecord.getClaimedAmount(), stockRecord.getOrderedAmount());
 
-        this.fireEvent(new TimedEvent<Time>(InventoryInterface.INVENTORY_CHANGE_EVENT, this, data, this.owner.getSimulatorTime()));
+        this.fireEvent(
+                new TimedEvent<Time>(InventoryInterface.INVENTORY_CHANGE_EVENT, this, data, this.owner.getSimulatorTime()));
     }
 
     // TODO: schedule the method below on a regular interval instead of invoking
@@ -360,7 +358,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     @Override
     public void sendInventoryUpdateEvent(final Product product)
     {
-        StockRecord stockRecord = this.stockRecords.get(product);
+        InventoryRecord stockRecord = this.inventoryRecords.get(product);
         if (stockRecord != null)
         {
             this.sendStockUpdateEvent(stockRecord);

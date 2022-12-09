@@ -1,7 +1,6 @@
 package nl.tudelft.simulation.supplychain.actor;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.djutils.draw.point.OrientedPoint3d;
@@ -90,10 +89,8 @@ public abstract class StockKeepingActor extends SupplyChainActor
     public List<Product> getProductsOnStock()
     {
         List<Product> products = new ArrayList<Product>();
-        Iterator<Product> it = this.stock.iterator();
-        while (it.hasNext())
+        for (Product product : this.stock.getProducts())
         {
-            Product product = it.next();
             products.add(product);
         }
         return products;

@@ -83,10 +83,8 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
     public List<Product> getRawMaterials()
     {
         List<Product> rawMaterials = new ArrayList<Product>();
-        Iterator<Product> it = super.stock.iterator();
-        while (it.hasNext())
+        for (Product product: super.stock.getProducts())
         {
-            Product product = it.next();
             if (product.getBillOfMaterials().getMaterials().size() == 0)
             {
                 rawMaterials.add(product);
@@ -101,10 +99,8 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
     public List<Product> getEndProducts()
     {
         List<Product> endProducts = new ArrayList<Product>();
-        Iterator<Product> it = super.stock.iterator();
-        while (it.hasNext())
+        for (Product product: super.stock.getProducts())
         {
-            Product product = it.next();
             if (product.getBillOfMaterials().getMaterials().size() > 0)
             {
                 endProducts.add(product);

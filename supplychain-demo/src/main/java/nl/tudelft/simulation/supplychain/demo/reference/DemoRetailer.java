@@ -105,7 +105,7 @@ public class DemoRetailer extends Retailer
         // STOCK
 
         Inventory _stock = new Inventory(this);
-        _stock.addInventory(product, initialStock, product.getUnitMarketPrice().multiplyBy(initialStock));
+        _stock.addToInventory(product, initialStock, product.getUnitMarketPrice().multiplyBy(initialStock));
         super.setInitialStock(_stock);
 
         // BUYING HANDLERS

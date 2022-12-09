@@ -1,6 +1,7 @@
 package nl.tudelft.simulation.supplychain.inventory;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import org.djutils.event.EventProducerInterface;
 import org.djutils.event.TimedEventType;
@@ -37,13 +38,13 @@ public interface InventoryInterface extends Serializable, EventProducerInterface
      * @param amount double; the amount
      * @param totalPrice the value of this amount of product
      */
-    void addInventory(Product product, double amount, Money totalPrice);
+    void addToInventory(Product product, double amount, Money totalPrice);
 
     /**
      * Add products to the inventory, based on a received Shipment.
      * @param shipment the shipment to add to the inventory
      */
-    void addInventory(Shipment shipment);
+    void addToInventory(Shipment shipment);
 
     /**
      * Remove products from the inventory.
@@ -51,8 +52,14 @@ public interface InventoryInterface extends Serializable, EventProducerInterface
      * @param amount double; the amount
      * @return double the actual amount of the product taken out of inventory
      */
-    double removeInventory(Product product, double amount);
+    double removeFromInventory(Product product, double amount);
 
+    /**
+     * Return an overview of the products that we have in inventory.
+     * @return Set&lt;Product&gt;; an overview of the products that we have in inventory
+     */
+    Set<Product> getProducts();
+    
     /**
      * Get the actual amount of a certain product in inventory.
      * @param product Product; the product

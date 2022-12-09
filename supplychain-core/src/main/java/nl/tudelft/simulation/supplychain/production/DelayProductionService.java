@@ -206,7 +206,7 @@ public class DelayProductionService extends ProductionService
         Product _product = productionOrder.getProduct();
         double amount = productionOrder.getAmount();
         Money cost = productionOrder.getMaterialCost();
-        super.stock.addInventory(_product, amount, cost.multiplyBy(this.profitMargin));
+        super.stock.addToInventory(_product, amount, cost.multiplyBy(this.profitMargin));
     }
 
     /**
@@ -231,7 +231,7 @@ public class DelayProductionService extends ProductionService
             }
             if (pick)
             {
-                double actualAmount = super.stock.removeInventory(rawProduct, pickAmount);
+                double actualAmount = super.stock.removeFromInventory(rawProduct, pickAmount);
                 productionOrder.addMaterialCost(super.stock.getUnitPrice(rawProduct).multiplyBy(actualAmount));
                 System.out.println("DelayProduction: products taken from stock: " + rawProduct + ", amount=" + actualAmount);
             }

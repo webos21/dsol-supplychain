@@ -43,7 +43,7 @@ public class ShipmentPolicyStock extends AbstractShipmentPolicy
         // get the cargo from the shipment, and add its contents to the stock
         Product product = shipment.getProduct();
         double amount = shipment.getAmount();
-        this.stock.addInventory(product, amount, shipment.getTotalCargoValue());
+        this.stock.addToInventory(product, amount, shipment.getTotalCargoValue());
         // update the administration
         this.stock.changeOrderedAmount(product, -amount);
         shipment.setInTransit(false);

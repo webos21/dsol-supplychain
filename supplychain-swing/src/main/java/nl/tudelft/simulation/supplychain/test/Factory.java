@@ -85,7 +85,7 @@ public class Factory extends Supplier
         Inventory _stock = new Inventory(this);
         if (product != null)
         {
-            _stock.addInventory(product, amount, product.getUnitMarketPrice().multiplyBy(amount));
+            _stock.addToInventory(product, amount, product.getUnitMarketPrice().multiplyBy(amount));
             super.setInitialStock(_stock);
         }
         // We initialize Factory

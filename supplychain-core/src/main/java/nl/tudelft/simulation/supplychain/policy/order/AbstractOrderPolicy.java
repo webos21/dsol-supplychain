@@ -86,7 +86,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
                 this.stock.changeClaimedAmount(order.getProduct(), -order.getAmount());
                 // available: make shipment and ship to customer
                 Money unitPrice = this.stock.getUnitPrice(product);
-                double actualAmount = this.stock.removeInventory(product, amount);
+                double actualAmount = this.stock.removeFromInventory(product, amount);
                 Shipment shipment = new Shipment(getOwner(), order.getSender(), order.getInternalDemandId(), order, product,
                         actualAmount, unitPrice.multiplyBy(actualAmount));
                 shipment.setInTransit(true);

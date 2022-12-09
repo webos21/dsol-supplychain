@@ -15,8 +15,8 @@ import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.production.Production;
 import nl.tudelft.simulation.supplychain.production.ProductionService;
+import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
-import nl.tudelft.simulation.supplychain.transport.TransportMode;
 
 /**
  * <p>
@@ -53,13 +53,13 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
                 getOwner().getName(), orderConfirmation);
 
         // this is MTO, so we don't keep stock of this product. Therefore, produce it.
-        if (!(getOwner() instanceof ProducerInterface))
+        if (!(getOwner() instanceof ProducingActorInterface))
         {
             Logger.error("OrderHandlerMake: Actor '{}' not a Producer", getOwner().getName());
             return false;
         }
 
-        Production production = ((ProducerInterface) getOwner()).getProduction();
+        Production production = ((ProducingActorInterface) getOwner()).getProduction();
         if (production == null)
         {
             Logger.error("OrderHandlerMake: Production for Actor '{}' not found", getOwner().getName());

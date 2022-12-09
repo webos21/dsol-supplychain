@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.inventory.policies;
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -35,7 +35,7 @@ public class RestockingPolicySafety extends RestockingPolicyFixed
      * @param safetyAmount the safety stock level for the product
      * @param maxDeliveryTime the maximum delivery time to use
      */
-    public RestockingPolicySafety(final StockInterface stock, final Product product, final DistContinuousDuration frequency,
+    public RestockingPolicySafety(final InventoryInterface stock, final Product product, final DistContinuousDuration frequency,
             final boolean ceiling, final double amount, final boolean includeClaims, final double safetyAmount,
             final Duration maxDeliveryTime)
     {

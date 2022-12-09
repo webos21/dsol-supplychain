@@ -8,7 +8,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
@@ -44,7 +44,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
 
     /** access to the owner's stock to look at availability of products. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
-    protected StockInterface stock;
+    protected InventoryInterface stock;
 
     /**
      * Construct a new OrderHandler. The OrderHandler is abstract, so this constructor can not be called directly.
@@ -53,7 +53,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
      * @param stock StockInterface; the stock to use to handle the incoming order
      * @param messageClass MessageClass; the specific order message class
      */
-    public AbstractOrderPolicy(final String id, final SupplyChainActor owner, final StockInterface stock,
+    public AbstractOrderPolicy(final String id, final SupplyChainActor owner, final InventoryInterface stock,
             final Class<O> messageClass)
     {
         super(id, owner, messageClass);
@@ -86,7 +86,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
                 this.stock.changeClaimedAmount(order.getProduct(), -order.getAmount());
                 // available: make shipment and ship to customer
                 Money unitPrice = this.stock.getUnitPrice(product);
-                double actualAmount = this.stock.removeStock(product, amount);
+                double actualAmount = this.stock.removeInventory(product, amount);
                 Shipment shipment = new Shipment(getOwner(), order.getSender(), order.getInternalDemandId(), order, product,
                         actualAmount, unitPrice.multiplyBy(actualAmount));
                 shipment.setInTransit(true);

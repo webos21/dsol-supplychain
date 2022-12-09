@@ -4,7 +4,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -28,7 +28,7 @@ public abstract class RestockingPolicyEOQ extends RestockingPolicy
      * @param frequency the frequency distribution for restocking or checking
      * @param maxDeliveryTime the maximum delivery time to use
      */
-    public RestockingPolicyEOQ(final StockInterface stock, final Product product, final DistContinuousDuration frequency,
+    public RestockingPolicyEOQ(final InventoryInterface stock, final Product product, final DistContinuousDuration frequency,
             final Duration maxDeliveryTime)
     {
         super(stock, product, frequency, maxDeliveryTime);

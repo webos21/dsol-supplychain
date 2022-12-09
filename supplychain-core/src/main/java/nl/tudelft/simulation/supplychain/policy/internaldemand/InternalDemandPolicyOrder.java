@@ -10,7 +10,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
@@ -53,7 +53,7 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
      */
     public InternalDemandPolicyOrder(final SupplyChainActor owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
-            final StockInterface stock)
+            final InventoryInterface stock)
     {
         super("InternalDemandPolicyOrder", owner, handlingTime, stock);
         Throw.whenNull(transportOptionProvider, "transportOptionProvider cannot be null");

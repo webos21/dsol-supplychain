@@ -10,7 +10,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -31,7 +31,7 @@ public abstract class StockKeepingActor extends SupplyChainActor
 
     /** the stock of the trader. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
-    protected StockInterface stock = null;
+    protected InventoryInterface stock = null;
 
     /**
      * Build the StockKeepingActor with a Builder.
@@ -66,7 +66,7 @@ public abstract class StockKeepingActor extends SupplyChainActor
      * different. The method ONLY works when the stock object is still null
      * @param initialStock the initial stock to set
      */
-    public void setInitialStock(final StockInterface initialStock)
+    public void setInitialStock(final InventoryInterface initialStock)
     {
         if (this.stock == null)
         {
@@ -103,7 +103,7 @@ public abstract class StockKeepingActor extends SupplyChainActor
      * Return the stock of this Actor.
      * @return StockInterface; the stock of this Actor
      */
-    public StockInterface getStock()
+    public InventoryInterface getStock()
     {
         return this.stock;
     }

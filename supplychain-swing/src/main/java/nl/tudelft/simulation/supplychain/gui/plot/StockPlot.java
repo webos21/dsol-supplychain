@@ -13,7 +13,7 @@ import org.djutils.event.TimedEventType;
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.inventory.StockUpdateData;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -47,7 +47,7 @@ public class StockPlot extends XYChart
      * @param product
      */
     @SuppressWarnings("static-access")
-    public StockPlot(final SCSimulatorInterface simulator, final String title, final StockInterface stock,
+    public StockPlot(final SCSimulatorInterface simulator, final String title, final InventoryInterface stock,
             final Product product)
     {
         super(simulator, title);
@@ -105,14 +105,14 @@ public class StockPlot extends XYChart
          * @param stock
          * @param product
          */
-        public StockListener(final SCSimulatorInterface simulator, final StockInterface stock, final Product product)
+        public StockListener(final SCSimulatorInterface simulator, final InventoryInterface stock, final Product product)
         {
             super();
             this.product = product;
             this.simulator = simulator;
             try
             {
-                stock.addListener(this, StockInterface.STOCK_CHANGE_EVENT);
+                stock.addListener(this, InventoryInterface.INVENTORY_CHANGE_EVENT);
             }
             catch (RemoteException exception)
             {

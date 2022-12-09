@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -19,14 +19,14 @@ public class ShipmentPolicyStock extends AbstractShipmentPolicy
     private static final long serialVersionUID = 12L;
 
     /** access to the owner's stock to look at availability of products. */
-    protected StockInterface stock;
+    protected InventoryInterface stock;
 
     /**
      * Construct a new ShipmentHandlerStock handler.
      * @param owner SupplyChainActor; the owner of the policy
      * @param stock the stock to use for storing the incoming cargo
      */
-    public ShipmentPolicyStock(final SupplyChainActor owner, final StockInterface stock)
+    public ShipmentPolicyStock(final SupplyChainActor owner, final InventoryInterface stock)
     {
         super("ShipmentPolicyStock", owner);
         this.stock = stock;
@@ -43,7 +43,7 @@ public class ShipmentPolicyStock extends AbstractShipmentPolicy
         // get the cargo from the shipment, and add its contents to the stock
         Product product = shipment.getProduct();
         double amount = shipment.getAmount();
-        this.stock.addStock(product, amount, shipment.getTotalCargoValue());
+        this.stock.addInventory(product, amount, shipment.getTotalCargoValue());
         // update the administration
         this.stock.changeOrderedAmount(product, -amount);
         shipment.setInTransit(false);

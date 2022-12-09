@@ -28,7 +28,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Stock extends EventProducer implements StockInterface, StockForecastInterface
+public class Stock extends EventProducer implements InventoryInterface, StockForecastInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
@@ -63,12 +63,12 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
         for (Iterator<Product> productIterator = initialStock.iterator(); productIterator.hasNext();)
         {
             Product product = productIterator.next();
-            addStock(product, initialStock.getActualAmount(product), product.getUnitMarketPrice());
+            addInventory(product, initialStock.getActualAmount(product), product.getUnitMarketPrice());
             this.changeClaimedAmount(product, initialStock.getClaimedAmount(product));
             this.changeFutureClaimedAmount(product, initialStock.getClaimedAmount(product), owner.getSimulatorTime());
             this.changeOrderedAmount(product, initialStock.getOrderedAmount(product));
             this.changeFutureOrderedAmount(product, initialStock.getOrderedAmount(product), owner.getSimulatorTime());
-            sendStockUpdateEvent(product);
+            sendInventoryUpdateEvent(product);
         }
     }
 
@@ -81,7 +81,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
 
     /** {@inheritDoc} */
     @Override
-    public void addStock(final Product product, final double amount, final Money totalPrice)
+    public void addInventory(final Product product, final double amount, final Money totalPrice)
     {
         StockRecord stockRecord = this.stockRecords.get(product);
         if (stockRecord == null)
@@ -107,7 +107,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
 
     /** {@inheritDoc} */
     @Override
-    public void addStock(final Shipment shipment)
+    public void addInventory(final Shipment shipment)
     {
         StockRecord stockRecord = this.stockRecords.get(shipment.getProduct());
         if (stockRecord == null)
@@ -121,7 +121,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
 
     /** {@inheritDoc} */
     @Override
-    public double removeStock(final Product product, final double amount)
+    public double removeInventory(final Product product, final double amount)
     {
         StockRecord stockRecord = this.stockRecords.get(product);
         double actualAmount = 0.0;
@@ -299,7 +299,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
         StockUpdateData data = new StockUpdateData(stockRecord.getProduct().getName(), stockRecord.getActualAmount(),
                 stockRecord.getClaimedAmount(), stockRecord.getOrderedAmount());
 
-        this.fireEvent(new TimedEvent<Time>(StockInterface.STOCK_CHANGE_EVENT, this, data, this.owner.getSimulatorTime()));
+        this.fireEvent(new TimedEvent<Time>(InventoryInterface.INVENTORY_CHANGE_EVENT, this, data, this.owner.getSimulatorTime()));
     }
 
     // TODO: schedule the method below on a regular interval instead of invoking
@@ -358,7 +358,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
      * @param product Product; the product for which the stock is updated
      */
     @Override
-    public void sendStockUpdateEvent(final Product product)
+    public void sendInventoryUpdateEvent(final Product product)
     {
         StockRecord stockRecord = this.stockRecords.get(product);
         if (stockRecord != null)

@@ -7,7 +7,7 @@ import org.djunits.value.vdouble.scalar.Time;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
@@ -29,7 +29,7 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
     private static final long serialVersionUID = 12L;
 
     /** the stock on which checks can take place. */
-    private StockInterface stock;
+    private InventoryInterface stock;
 
     /** the reaction time of the handler in simulation time units. */
     private DistContinuousDuration handlingTime;
@@ -48,7 +48,7 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the RFQ
      * @param validityDuration Duration;
      */
-    public RequestForQuotePolicy(final StockKeepingActor owner, final StockInterface stock, final double profitMargin,
+    public RequestForQuotePolicy(final StockKeepingActor owner, final InventoryInterface stock, final double profitMargin,
             final DistContinuousDuration handlingTime, final Duration validityDuration)
     {
         super("RequestForQuotePolicy", owner, RequestForQuote.class);

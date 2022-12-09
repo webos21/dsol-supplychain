@@ -7,7 +7,7 @@ import org.djunits.value.vdouble.scalar.Time;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 
 /**
@@ -40,7 +40,7 @@ public class ShipmentPolicyFineStock extends ShipmentPolicyStock
      * @param fineMarginPerDay the fine margin per day
      * @param fixedFinePerDay the fixed fine per day
      */
-    public ShipmentPolicyFineStock(final SupplyChainActor owner, final StockInterface stock, final Duration maximumTimeOut,
+    public ShipmentPolicyFineStock(final SupplyChainActor owner, final InventoryInterface stock, final Duration maximumTimeOut,
             final double fineMarginPerDay, final Money fixedFinePerDay)
     {
         super(owner, stock);

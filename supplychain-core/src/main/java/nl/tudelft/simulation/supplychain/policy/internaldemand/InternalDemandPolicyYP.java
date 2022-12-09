@@ -4,7 +4,7 @@ import org.djunits.value.vdouble.scalar.Length;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 
@@ -41,7 +41,7 @@ public class InternalDemandPolicyYP extends AbstractInternalDemandPolicy
      * @param stock the stock for being able to change the ordered amount
      */
     public InternalDemandPolicyYP(final SupplyChainActor owner, final DistContinuousDuration handlingTime,
-            final SupplyChainActor yp, final Length maximumDistance, final int maximumNumber, final StockInterface stock)
+            final SupplyChainActor yp, final Length maximumDistance, final int maximumNumber, final InventoryInterface stock)
     {
         super("InternalDemandPolicyYP", owner, handlingTime, stock);
         this.yp = yp;

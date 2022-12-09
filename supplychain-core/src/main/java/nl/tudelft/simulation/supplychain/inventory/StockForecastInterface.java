@@ -15,7 +15,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 
-public interface StockForecastInterface extends StockInterface
+public interface StockForecastInterface extends InventoryInterface
 {
     /** An event to indicate that there is a new stock forecast. */
     EventType STOCK_FORECAST_UPDATE_EVENT = new EventType("STOCK_FORECAST_UPDATE_EVENT");

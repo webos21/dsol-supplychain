@@ -104,7 +104,7 @@ public class PCShop extends Retailer
         Stock _stock = new Stock(this);
         if (product != null)
         {
-            _stock.addStock(product, amount, product.getUnitMarketPrice().multiplyBy(amount));
+            _stock.addInventory(product, amount, product.getUnitMarketPrice().multiplyBy(amount));
             super.setInitialStock(_stock);
         }
         init();

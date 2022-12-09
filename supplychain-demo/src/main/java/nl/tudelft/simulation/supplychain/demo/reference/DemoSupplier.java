@@ -79,7 +79,7 @@ public class DemoSupplier extends Supplier
         // STOCK
 
         Stock _stock = new Stock(this);
-        _stock.addStock(product, initialStock, product.getUnitMarketPrice().multiplyBy(initialStock));
+        _stock.addInventory(product, initialStock, product.getUnitMarketPrice().multiplyBy(initialStock));
         super.setInitialStock(_stock);
 
         // SELLING HANDLERS

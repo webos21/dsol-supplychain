@@ -1,7 +1,6 @@
 package nl.tudelft.simulation.supplychain.inventory;
 
 import java.io.Serializable;
-import java.util.Iterator;
 
 import org.djutils.event.EventProducerInterface;
 import org.djutils.event.TimedEventType;
@@ -12,72 +11,71 @@ import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * The StockInterface describes the standard services that any object representing Stock in the supply chain project should
- * have. Methods are related to handling physical stock itself, and three types of information on the stock: the available
- * amount (really in the warehouse), the ordered amount (how many units did we order), and the claimed amount (how many units
- * are claimed for committed orders, as far as we know).
+ * The InventoryInterface describes the standard services that any object representing inventory in the supply chain project
+ * should have. Methods are related to handling physical products in inventory itself, and three types of information on the
+ * inventory: the available amount (really in the warehouse), the ordered amount (how many units did we order), and the claimed
+ * amount (how many units are claimed for committed orders, as far as we know).
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface StockInterface extends Serializable, EventProducerInterface
+public interface InventoryInterface extends Serializable, EventProducerInterface
 {
-    /** An event to indicate stock levels changed. */
-    TimedEventType STOCK_CHANGE_EVENT = new TimedEventType("STOCK_CHANGE_EVENT");
+    /** An event to indicate inventory levels changed. */
+    TimedEventType INVENTORY_CHANGE_EVENT = new TimedEventType("INVENTORY_CHANGE_EVENT");
 
     /**
-     * @return the trader who owns this stock
+     * @return the trader who owns this inventory
      */
     StockKeepingActor getOwner();
 
     /**
-     * Method addStock.
+     * Add products to the inventory.
      * @param product Product; the product
      * @param amount double; the amount
      * @param totalPrice the value of this amount of product
      */
-    void addStock(Product product, double amount, Money totalPrice);
+    void addInventory(Product product, double amount, Money totalPrice);
 
     /**
-     * Method addStock.
-     * @param shipment the shipment to add to the stock
+     * Add products to the inventory, based on a received Shipment.
+     * @param shipment the shipment to add to the inventory
      */
-    void addStock(Shipment shipment);
+    void addInventory(Shipment shipment);
 
     /**
-     * Method removeStock.
+     * Remove products from the inventory.
      * @param product Product; the product
      * @param amount double; the amount
-     * @return double the actual amount of the product taken out of stock
+     * @return double the actual amount of the product taken out of inventory
      */
-    double removeStock(Product product, double amount);
+    double removeInventory(Product product, double amount);
 
     /**
-     * Method getActualAmount.
+     * Get the actual amount of a certain product in inventory.
      * @param product Product; the product
      * @return double the actual amount
      */
     double getActualAmount(Product product);
 
     /**
-     * Method getClaimedAmount.
+     * Get the claimed amount of a certain product in inventory.
      * @param product Product; the product
      * @return double the claimed amount
      */
     double getClaimedAmount(Product product);
 
     /**
-     * Method getOrderedAmount.
+     * Get the ordered amount of a certain product in inventory.
      * @param product Product; the product
      * @return double the ordered amount
      */
     double getOrderedAmount(Product product);
 
     /**
-     * Method changeClaimedAmount.
+     * Update the claimed amount of a certain product in inventory.
      * @param product Product; the product
      * @param delta the delta (positive or negative)
      * @return boolean success or not
@@ -85,7 +83,7 @@ public interface StockInterface extends Serializable, EventProducerInterface
     boolean changeClaimedAmount(Product product, double delta);
 
     /**
-     * Method changeOrderedAmount.
+     * Update the ordered amount of a certain product in inventory.
      * @param product Product; the product
      * @param delta the delta (positive or negative)
      * @return boolean success or not
@@ -93,27 +91,21 @@ public interface StockInterface extends Serializable, EventProducerInterface
     boolean changeOrderedAmount(Product product, double delta);
 
     /**
-     * Method getUnitPrice.
+     * Return the unit price of a product (based on its SKU).
      * @param product Product; the product
      * @return double the price per unit
      */
     Money getUnitPrice(Product product);
 
     /**
-     * Method iterator.
-     * @return the iterator
-     */
-    Iterator<Product> iterator();
-
-    /**
-     * give the number of product types in stock.
+     * Return the number of product types in inventory.
      * @return int number of products
      */
     int numberOfProducts();
 
     /**
-     * fires an update event on the current status of the stock for the specific product.
+     * Fires an update event on the current status of the inventory for the specific product.
      * @param product Product; the product to fire the update for
      */
-    void sendStockUpdateEvent(Product product);
+    void sendInventoryUpdateEvent(Product product);
 }

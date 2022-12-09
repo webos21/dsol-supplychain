@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
@@ -26,7 +26,7 @@ public abstract class AbstractInternalDemandPolicy extends SupplyChainPolicy<Int
 
     /** the stock for changing 'ordered amount. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
-    protected StockInterface stock;
+    protected InventoryInterface stock;
 
     /**
      * Construct a new InternalDemandPolicy.
@@ -36,7 +36,7 @@ public abstract class AbstractInternalDemandPolicy extends SupplyChainPolicy<Int
      * @param stock the stock for being able to change the ordered amount
      */
     public AbstractInternalDemandPolicy(final String id, final SupplyChainActor owner,
-            final DistContinuousDuration handlingTime, final StockInterface stock)
+            final DistContinuousDuration handlingTime, final InventoryInterface stock)
     {
         super(id, owner, InternalDemand.class);
         this.handlingTime = handlingTime;

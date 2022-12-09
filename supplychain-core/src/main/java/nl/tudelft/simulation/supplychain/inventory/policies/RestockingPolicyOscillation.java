@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.inventory.policies;
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -36,7 +36,7 @@ public class RestockingPolicyOscillation extends RestockingPolicyFixed
      * @param overReactionMargin the over reaction margin
      * @param maxDeliveryTime the maximum delivery time to use
      */
-    public RestockingPolicyOscillation(final StockInterface stock, final Product product,
+    public RestockingPolicyOscillation(final InventoryInterface stock, final Product product,
             final DistContinuousDuration frequency, final boolean ceiling, final double amount, final boolean includeClaims,
             final double overReactionMargin, final Duration maxDeliveryTime)
     {

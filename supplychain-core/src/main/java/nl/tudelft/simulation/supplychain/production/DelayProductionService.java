@@ -14,7 +14,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -57,7 +57,7 @@ public class DelayProductionService extends ProductionService
      * @param greedy if true, immediately start picking raw materials when production has to start.
      * @param profitMargin the fraction that is added to the cost of the materials.
      */
-    public DelayProductionService(final StockKeepingActor owner, final StockInterface stock, final Product product,
+    public DelayProductionService(final StockKeepingActor owner, final InventoryInterface stock, final Product product,
             final DistContinuousDuration productionTime, final boolean fixedTime, final boolean greedy,
             final double profitMargin)
     {
@@ -206,7 +206,7 @@ public class DelayProductionService extends ProductionService
         Product _product = productionOrder.getProduct();
         double amount = productionOrder.getAmount();
         Money cost = productionOrder.getMaterialCost();
-        super.stock.addStock(_product, amount, cost.multiplyBy(this.profitMargin));
+        super.stock.addInventory(_product, amount, cost.multiplyBy(this.profitMargin));
     }
 
     /**
@@ -231,7 +231,7 @@ public class DelayProductionService extends ProductionService
             }
             if (pick)
             {
-                double actualAmount = super.stock.removeStock(rawProduct, pickAmount);
+                double actualAmount = super.stock.removeInventory(rawProduct, pickAmount);
                 productionOrder.addMaterialCost(super.stock.getUnitPrice(rawProduct).multiplyBy(actualAmount));
                 System.out.println("DelayProduction: products taken from stock: " + rawProduct + ", amount=" + actualAmount);
             }

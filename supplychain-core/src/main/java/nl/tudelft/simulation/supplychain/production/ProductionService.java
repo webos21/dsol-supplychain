@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.production;
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -26,7 +26,7 @@ public abstract class ProductionService implements ProductionServiceInterface
     protected StockKeepingActor owner;
 
     /** the stock for getting and storing materials. */
-    protected StockInterface stock;
+    protected InventoryInterface stock;
 
     /** The product of the production service. */
     protected Product product;
@@ -37,7 +37,7 @@ public abstract class ProductionService implements ProductionServiceInterface
      * @param stock the stock for getting and storing materials.
      * @param product Product; the product of the production service.
      */
-    public ProductionService(final StockKeepingActor owner, final StockInterface stock, final Product product)
+    public ProductionService(final StockKeepingActor owner, final InventoryInterface stock, final Product product)
     {
         super();
         this.owner = owner;

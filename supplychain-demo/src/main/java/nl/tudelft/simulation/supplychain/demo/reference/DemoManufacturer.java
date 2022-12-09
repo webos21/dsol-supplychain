@@ -108,11 +108,11 @@ public class DemoManufacturer extends Manufacturer
         // STOCK, ALSO FOR BOM ENTRIES
 
         Stock _stock = new Stock(this);
-        _stock.addStock(product, initialStock, product.getUnitMarketPrice().multiplyBy(initialStock));
+        _stock.addInventory(product, initialStock, product.getUnitMarketPrice().multiplyBy(initialStock));
         for (Product p : product.getBillOfMaterials().getMaterials().keySet())
         {
             double amount = initialStock * product.getBillOfMaterials().getMaterials().get(p);
-            _stock.addStock(p, amount, p.getUnitMarketPrice().multiplyBy(amount));
+            _stock.addInventory(p, amount, p.getUnitMarketPrice().multiplyBy(amount));
         }
         super.setInitialStock(_stock);
 

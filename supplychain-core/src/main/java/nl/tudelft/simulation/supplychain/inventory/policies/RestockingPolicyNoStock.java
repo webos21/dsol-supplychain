@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.inventory.policies;
 
 import org.djunits.value.vdouble.scalar.Duration;
 
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
@@ -23,7 +23,7 @@ public class RestockingPolicyNoStock extends RestockingPolicyFixed
      * @param stock
      * @param product
      */
-    public RestockingPolicyNoStock(final StockInterface stock, final Product product)
+    public RestockingPolicyNoStock(final InventoryInterface stock, final Product product)
     {
         super(stock, product, new DistConstantDuration(Duration.POS_MAXVALUE), false, 0.0, false, Duration.ZERO);
     }

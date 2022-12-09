@@ -8,7 +8,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -28,7 +28,7 @@ public abstract class RestockingPolicy implements Serializable
     protected SCSimulatorInterface simulator;
 
     /** the stock for which the policy holds. */
-    protected StockInterface stock;
+    protected InventoryInterface stock;
 
     /** the product that has to be restocked. */
     protected Product product;
@@ -47,7 +47,7 @@ public abstract class RestockingPolicy implements Serializable
      * @param frequency the frequency distribution for restocking or checking
      * @param maxDeliveryDuration the maximum delivery time to use
      */
-    public RestockingPolicy(final StockInterface stock, final Product product, final DistContinuousDuration frequency,
+    public RestockingPolicy(final InventoryInterface stock, final Product product, final DistContinuousDuration frequency,
             final Duration maxDeliveryDuration)
     {
         super();

@@ -9,7 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.inventory.StockInterface;
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
@@ -35,7 +35,7 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
      * @param owner SupplyChainActor; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
-    public OrderPolicyMake(final SupplyChainActor owner, final StockInterface stock)
+    public OrderPolicyMake(final SupplyChainActor owner, final InventoryInterface stock)
     {
         super("OrderPolicyMake", owner, stock, Order.class);
     }

@@ -8,7 +8,7 @@ import nl.tudelft.simulation.supplychain.message.handler.DirectMessageHandler;
 /**
  * NoBank is a class that can be used for organizations that do not need any banking services.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, ProducingActorInterfaceDelft, the Netherlands. All rights reserved.
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

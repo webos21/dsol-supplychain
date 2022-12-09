@@ -21,7 +21,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * The demand generation role is a role for customers, markets, and other actors that have an autonomous generation of demand
  * for products. This is different from the InventoryRole, where demand generation is triggered by depletion of stock.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, ProducingActorInterfaceDelft, the Netherlands. All rights reserved.
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>

@@ -26,10 +26,10 @@ public class QuoteComparator implements Comparator<Quote>, Serializable
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** comparatorType indicates the sorting order for the comparator */
+    /** comparatorType indicates the sorting order for the comparator. */
     private QuoteComparatorEnum comparatorType;
 
-    /** ownerPosition stores the position of the owner */
+    /** ownerPosition stores the position of the owner. */
     private Point3d ownerPosition;
 
     /**

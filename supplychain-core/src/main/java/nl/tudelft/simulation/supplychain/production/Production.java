@@ -26,10 +26,10 @@ public class Production implements Serializable
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the owner of production */
+    /** the owner of production. */
     protected StockKeepingActor owner = null;
 
-    /** the handlers for this role */
+    /** the handlers for this role. */
     protected Map<Product, ProductionService> productionServices = new LinkedHashMap<>();
 
     /**
@@ -43,7 +43,7 @@ public class Production implements Serializable
     }
 
     /**
-     * Add a production service
+     * Add a production service.
      * @param productionService the service to add
      */
     public void addProductionService(final ProductionService productionService)
@@ -52,8 +52,8 @@ public class Production implements Serializable
     }
 
     /**
-     * Method acceptProductionOrder gets the correct production service and starts producing
-     * @param productionOrder the production order
+     * Method acceptProductionOrder gets the correct production service and starts producing.
+     * @param productionOrder the production order.
      * @return returns false if no production service could be found
      */
     public boolean acceptProductionOrder(final ProductionOrder productionOrder)
@@ -71,7 +71,7 @@ public class Production implements Serializable
     }
 
     /**
-     * Method getProductionServices
+     * Method getProductionServices.
      * @return returns the production services
      */
     public Map<Product, ProductionService> getProductionServices()

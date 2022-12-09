@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
+import org.djutils.immutablecollections.ImmutableMap;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
-import nl.tudelft.simulation.supplychain.content.ProductionOrder;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
@@ -23,34 +23,33 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * resources. TODO: decide on cycle times, setup times, linked resources, capacity, cleaning times, batch sizes, maintenance,
  * etc. KPIs that should be calculated are B1 value and material completeness.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
 public class ResourceProductionService extends ProductionService
 {
-    /** the serial version uid */
+    /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the time distribution to produce products */
+    /** the time distribution to produce products. */
     protected DistContinuousDuration productionTime;
 
-    /** fixed time, independent of order size; otherwise time is per unit */
+    /** fixed time, independent of order size; otherwise time is per unit. */
     protected boolean fixedTime;
 
-    /** if true, immediately start picking raw materials */
+    /** if true, immediately start picking raw materials. */
     protected boolean greedy;
 
-    /** the fraction that is added to the cost of the materials */
+    /** the fraction that is added to the cost of the materials. */
     protected double profitMargin;
 
     /**
      * Constructs a new production service for one product.
      * @param owner the actor that owns the production service.
      * @param stock the stock for getting and storing materials.
-     * @param product the product of the production service.
+     * @param product Product; the product of the production service.
      * @param productionTime the time distribution to produce products.
      * @param fixedTime fixed time, independent of order size; otherwise, the time is per unit.
      * @param greedy if true, immediately start picking raw materials when production has to start.
@@ -87,7 +86,7 @@ public class ResourceProductionService extends ProductionService
         startTime = Time.max(this.owner.getSimulatorTime(), startTime);
         // determine the needed raw materials
         Product _product = productionOrder.getProduct();
-        Map<Product, Double> bom = _product.getBillOfMaterials().getMaterials();
+        ImmutableMap<Product, Double> bom = _product.getBillOfMaterials().getMaterials();
 
         HashMap<Product, Double> availableMaterials = new LinkedHashMap<>();
         Iterator<Product> bomIter = bom.keySet().iterator();
@@ -123,7 +122,7 @@ public class ResourceProductionService extends ProductionService
         }
 
         Product _product = productionOrder.getProduct();
-        Map<Product, Double> bom = _product.getBillOfMaterials().getMaterials();
+        ImmutableMap<Product, Double> bom = _product.getBillOfMaterials().getMaterials();
 
         // check whether there is enough on stock for this order
         HashMap<Product, Double> availableMaterials = new LinkedHashMap<>();

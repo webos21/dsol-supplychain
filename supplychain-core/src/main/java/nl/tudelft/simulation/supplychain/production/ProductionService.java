@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.production;
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
-import nl.tudelft.simulation.supplychain.content.ProductionOrder;
+import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.stock.StockInterface;
 
@@ -11,7 +11,7 @@ import nl.tudelft.simulation.supplychain.stock.StockInterface;
  * The abstract class ProductionService implements the ProductionServiceInterface and is a simple starting point for the
  * production of goods. The bill of materials of the product determines the required raw materials to use.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Jaffalaan 5, 2628 BX Delft, the Netherlands. All rights reserved.
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -22,20 +22,20 @@ public abstract class ProductionService implements ProductionServiceInterface
     /** */
     private static final long serialVersionUID = 1L;
 
-    /** The actor that owns the production service */
+    /** The actor that owns the production service. */
     protected StockKeepingActor owner;
 
-    /** the stock for getting and storing materials */
+    /** the stock for getting and storing materials. */
     protected StockInterface stock;
 
-    /** The product of the production service */
+    /** The product of the production service. */
     protected Product product;
 
     /**
      * Constructs a new production service for one product.
      * @param owner the actor that owns the production service.
      * @param stock the stock for getting and storing materials.
-     * @param product the product of the production service.
+     * @param product Product; the product of the production service.
      */
     public ProductionService(final StockKeepingActor owner, final StockInterface stock, final Product product)
     {
@@ -47,14 +47,14 @@ public abstract class ProductionService implements ProductionServiceInterface
 
     /** {@inheritDoc} */
     @Override
-    public abstract void acceptProductionOrder(final ProductionOrder productionOrder);
+    public abstract void acceptProductionOrder(ProductionOrder productionOrder);
 
     /** {@inheritDoc} */
     @Override
-    public abstract Duration getExpectedProductionDuration(final ProductionOrder productionOrder);
+    public abstract Duration getExpectedProductionDuration(ProductionOrder productionOrder);
 
     /**
-     * @return Returns the product.
+     * @return the product.
      */
     public Product getProduct()
     {

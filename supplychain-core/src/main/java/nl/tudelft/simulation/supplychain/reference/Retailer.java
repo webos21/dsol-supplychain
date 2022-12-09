@@ -36,12 +36,12 @@ public class Retailer extends StockKeepingActor implements BuyingActorInterface,
     private SellingRole sellingRole = null;
 
     /**
-     * @param name String; the name of the Customer
+     * @param name String; the name of the retailer
      * @param messageHandler MessageHandlerInterface; the message handler to use
      * @param simulator SCSimulatorInterface; the simulator
      * @param location Location; the locatrion of the actor on the map or grid
-     * @param locationDescription String; a description of the location of the Customer
-     * @param bank Bank; the bank of the customer
+     * @param locationDescription String; a description of the location of the retailer
+     * @param bank Bank; the bank of the retailer
      * @param initialBalance Money; the initial bank balance
      * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
      */
@@ -98,8 +98,8 @@ public class Retailer extends StockKeepingActor implements BuyingActorInterface,
     @Override
     public void receiveMessage(final Message message)
     {
-        Throw.whenNull(this.buyingRole, "BuyingRole not initialized for Customer: " + this.getName());
-        Throw.whenNull(this.sellingRole, "SellingRole not initialized for Customer: " + this.getName());
+        Throw.whenNull(this.buyingRole, "BuyingRole not initialized for Retailer: " + this.getName());
+        Throw.whenNull(this.sellingRole, "SellingRole not initialized for Retailer: " + this.getName());
         super.receiveMessage(message);
     }
 }

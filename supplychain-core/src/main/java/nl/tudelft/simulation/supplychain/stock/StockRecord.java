@@ -16,8 +16,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * A StockRecord keeps the information about products, such as actual, ordered and claimed amounts of products. It assists the
  * Stock object and the restocking policies to assess the needed order amounts.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -27,28 +26,28 @@ public class StockRecord implements Serializable
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the owner */
+    /** the owner. */
     private StockKeepingActor owner = null;
 
-    /** the simulator to schedule the depriciation */
+    /** the simulator to schedule the depriciation. */
     private SCSimulatorInterface simulator = null;
 
-    /** the product for which to keep information */
+    /** the product for which to keep information. */
     private Product product;
 
-    /** the amount currently on stock */
+    /** the amount currently on stock. */
     private double actualAmount;
 
-    /** the amount that is claimed by orders, but not yet taken */
+    /** the amount that is claimed by orders, but not yet taken. */
     private double claimedAmount;
 
-    /** the amount that has been ordered, but not yet delivered */
+    /** the amount that has been ordered, but not yet delivered. */
     private double orderedAmount;
 
-    /** the costprice of the total amount of these products in stock */
+    /** the costprice of the total amount of these products in stock. */
     private Money costprice = new Money(0.0, MoneyUnit.USD);
 
-    /** the depreciation factor per day */
+    /** the depreciation factor per day. */
     private double dailyDepreciation = 0.0;
 
     /**
@@ -209,7 +208,7 @@ public class StockRecord implements Serializable
     }
 
     /**
-     * decrease the value of the stock according to the current depreciation
+     * decrease the value of the stock according to the current depreciation.
      */
     protected void depreciate()
     {

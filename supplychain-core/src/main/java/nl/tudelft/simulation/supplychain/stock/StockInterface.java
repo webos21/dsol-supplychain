@@ -25,7 +25,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  */
 public interface StockInterface extends Serializable, EventProducerInterface
 {
-    /** An event to indicate stock levels changed */
+    /** An event to indicate stock levels changed. */
     TimedEventType STOCK_CHANGE_EVENT = new TimedEventType("STOCK_CHANGE_EVENT");
 
     /**
@@ -53,7 +53,7 @@ public interface StockInterface extends Serializable, EventProducerInterface
      * @param amount double; the amount
      * @return double the actual amount of the product taken out of stock
      */
-    public double removeStock(final Product product, final double amount);
+    double removeStock(Product product, double amount);
 
     /**
      * Method getActualAmount.
@@ -112,7 +112,7 @@ public interface StockInterface extends Serializable, EventProducerInterface
     int numberOfProducts();
 
     /**
-     * fires an update event on the current status of the stock for the specific product
+     * fires an update event on the current status of the stock for the specific product.
      * @param product Product; the product to fire the update for
      */
     void sendStockUpdateEvent(Product product);

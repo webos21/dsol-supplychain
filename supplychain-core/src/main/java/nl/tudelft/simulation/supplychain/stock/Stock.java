@@ -305,7 +305,7 @@ public class Stock extends EventProducer implements StockInterface, StockForecas
     // TODO: schedule the method below on a regular interval instead of invoking
     // it for every stock change?
     /**
-     * Method sendForecastUpdateEvent
+     * Method sendForecastUpdateEvent.
      * @param product
      */
     public void sendForecastUpdateEvent(final Product product)

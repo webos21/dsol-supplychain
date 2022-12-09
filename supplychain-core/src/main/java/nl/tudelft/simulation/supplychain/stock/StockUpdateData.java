@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.stock;
 import java.io.Serializable;
 
 /**
- * <br>
+ * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
  * <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -15,16 +15,16 @@ public class StockUpdateData implements Serializable
     /** the serial version uid. */
     private static final long serialVersionUID = 12L;
 
-    /** the product name */
+    /** the product name. */
     private String productName;
 
-    /** the actual number of units */
+    /** the actual number of units. */
     private double actualAmount;
 
-    /** the claimed amount of units */
+    /** the claimed amount of units. */
     private double claimedAmount;
 
-    /** the ordered number of product units */
+    /** the ordered number of product units. */
     private double orderedAmount;
 
     /**

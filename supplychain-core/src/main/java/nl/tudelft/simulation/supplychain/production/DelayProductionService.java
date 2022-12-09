@@ -24,8 +24,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * materials of the BoM are available in the right quantities. The other version is a greedy one, it takes all the materials it
  * needs from the moment production should start, and delays if necessary to get the missing materials.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>

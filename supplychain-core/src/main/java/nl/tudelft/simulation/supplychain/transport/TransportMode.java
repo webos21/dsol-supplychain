@@ -16,8 +16,7 @@ import nl.tudelft.simulation.supplychain.product.Sku;
 /**
  * TransportMode stores the information on a mode of transport, to transport products from an origin to a destination.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -32,7 +31,7 @@ public class TransportMode implements Identifiable, Serializable
 
     /** average transportation speed of the mode. */
     private Speed averageSpeed;
-    
+
     /** SKUs that the TransportMode can handle. */
     private ImmutableSet<Sku> handledSkuSet = new ImmutableLinkedHashSet<>(new LinkedHashSet<>());
 
@@ -86,7 +85,7 @@ public class TransportMode implements Identifiable, Serializable
         handledSkus.add(sku);
         this.handledSkuSet = new ImmutableLinkedHashSet<>(handledSkus);
     }
-    
+
     /**
      * Return the set of SKUs that this TransportMode can handle.
      * @return handledSkuSet ImmutableSet&lt;Sku&gt;; the set of SKUs that this TransportMode can handle

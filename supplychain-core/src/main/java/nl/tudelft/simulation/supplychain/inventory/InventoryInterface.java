@@ -59,7 +59,7 @@ public interface InventoryInterface extends Serializable, EventProducerInterface
      * @return Set&lt;Product&gt;; an overview of the products that we have in inventory
      */
     Set<Product> getProducts();
-    
+
     /**
      * Get the actual amount of a certain product in inventory.
      * @param product Product; the product

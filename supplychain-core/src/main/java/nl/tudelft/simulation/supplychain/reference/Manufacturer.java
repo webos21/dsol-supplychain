@@ -19,8 +19,7 @@ import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
 /**
  * Reference implementation for a manufacturer.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -83,7 +82,7 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
     public List<Product> getRawMaterials()
     {
         List<Product> rawMaterials = new ArrayList<Product>();
-        for (Product product: super.stock.getProducts())
+        for (Product product : super.stock.getProducts())
         {
             if (product.getBillOfMaterials().getMaterials().size() == 0)
             {
@@ -99,7 +98,7 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
     public List<Product> getEndProducts()
     {
         List<Product> endProducts = new ArrayList<Product>();
-        for (Product product: super.stock.getProducts())
+        for (Product product : super.stock.getProducts())
         {
             if (product.getBillOfMaterials().getMaterials().size() > 0)
             {

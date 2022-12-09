@@ -8,8 +8,7 @@ import org.djunits.value.vdouble.scalar.Volume;
 /**
  * The VolumeUnit is a Unit that has a certain volume as limiting / determining factor. Examples are fluids and gases.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -53,7 +52,7 @@ public class VolumeSku extends Sku
     {
         return this.volumeM3;
     }
-    
+
     /**
      * Return the volume as a Volume.
      * @return Volume; the volume of the SKU.
@@ -87,5 +86,5 @@ public class VolumeSku extends Sku
         VolumeSku other = (VolumeSku) obj;
         return Double.doubleToLongBits(this.volumeM3) == Double.doubleToLongBits(other.volumeM3);
     }
-    
+
 }

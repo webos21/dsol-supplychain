@@ -20,7 +20,7 @@ public class Topic implements Serializable
 
     /** the description of the topic. */
     private final String description;
-    
+
     /** a quick-and-dirty default topic for simple models. */
     public static final Topic DEFAULT = new Topic("Default");
 

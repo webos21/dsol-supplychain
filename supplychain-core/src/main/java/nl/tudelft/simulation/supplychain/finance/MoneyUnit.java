@@ -17,7 +17,7 @@ public class MoneyUnit implements Serializable
     /** */
     private static final long serialVersionUID = 20200211L;
 
-    /** The (short) name of the money unit. */ 
+    /** The (short) name of the money unit. */
     private final String name;
 
     /** The symbol to use when displaying the money unit. */
@@ -49,7 +49,7 @@ public class MoneyUnit implements Serializable
 
     /**
      * Return the (short) name of the money unit.
-     * @return String; the (short) name of the money unit 
+     * @return String; the (short) name of the money unit
      */
     public String getName()
     {

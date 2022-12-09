@@ -33,7 +33,7 @@ public class Bank extends Actor implements SupplyChainActorInterface
 
     /** the interest rate for a negative bank account. */
     private double annualInterestRateNeg = 0.08;
-    
+
     /** the store for the content to use. */
     private final TradeMessageStoreInterface messageStore;
 
@@ -42,7 +42,7 @@ public class Bank extends Actor implements SupplyChainActorInterface
 
     /** the fixed costs for this supply chain actor. */
     private List<FixedCost> fixedCosts = new ArrayList<FixedCost>();
-    
+
     /**
      * Create a new Bank.
      * @param name String; the name of the bank

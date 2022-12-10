@@ -1,9 +1,9 @@
 package nl.tudelft.simulation.supplychain.policy.productionorder;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
-import nl.tudelft.simulation.supplychain.role.producing.Production;
+import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
+import nl.tudelft.simulation.supplychain.role.producing.ProducingRole;
 
 /**
  * Handles ProductionOrders.
@@ -18,41 +18,24 @@ public class ProductionOrderPolicy extends SupplyChainPolicy<ProductionOrder>
     /** Serial version ID. */
     private static final long serialVersionUID = 20221201L;
 
-    /** for debugging. */
-    private static final boolean DEBUG = false;
-
-    /** the production facility of this handler. */
-    private Production production = null;
+    /** the producing role. */
+    private final ProducingRole producingRole;
 
     /**
      * constructs a new ProductionOrderHandler.
      * @param owner the owner of the production order handler
-     * @param production the production facility
      */
-    public ProductionOrderPolicy(final SupplyChainActorInterface owner, final Production production)
+    public ProductionOrderPolicy(final ProducingActorInterface owner)
     {
         super("ProductionOrderPolicy", owner, ProductionOrder.class);
-        this.production = production;
-        if (ProductionOrderPolicy.DEBUG)
-        {
-            System.out.println("DEBUG -- ProductionOrderHandler has been created and added to: " + owner.getName());
-        }
+        this.producingRole = owner.getProducingRole();
     }
 
     /** {@inheritDoc} */
     @Override
     public boolean handleMessage(final ProductionOrder productionOrder)
     {
-        return this.production.acceptProductionOrder(productionOrder);
-    }
-
-    /**
-     * Method getProduction.
-     * @return returns the production
-     */
-    public Production getProduction()
-    {
-        return this.production;
+        return this.producingRole.acceptProductionOrder(productionOrder);
     }
 
 }

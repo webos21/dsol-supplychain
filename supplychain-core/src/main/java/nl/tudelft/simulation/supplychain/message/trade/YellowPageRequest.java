@@ -18,7 +18,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class YellowPageRequest extends TradeMessage
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** maximum distance to use in the search. */
     private Length maximumDistance;

@@ -28,7 +28,7 @@ import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
 public class OrderPolicyMake extends AbstractOrderPolicy<Order>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * Construct a new OrderHandler that makes the goods when ordered.

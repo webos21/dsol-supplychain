@@ -18,7 +18,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class OrderConfirmation extends TradeMessage
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** Confirmation status order confirmed. */
     public static final int CONFIRMED = 0;

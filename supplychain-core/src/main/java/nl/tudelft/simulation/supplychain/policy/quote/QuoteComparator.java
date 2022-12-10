@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.message.trade.Quote;
 public class QuoteComparator implements Comparator<Quote>, Serializable
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** comparatorType indicates the sorting order for the comparator. */
     private QuoteComparatorEnum comparatorType;

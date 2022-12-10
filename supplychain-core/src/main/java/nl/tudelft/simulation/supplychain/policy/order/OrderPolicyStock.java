@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 public class OrderPolicyStock extends AbstractOrderPolicy<Order>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * Construct a new OrderHandler that takes the goods from stock when ordered.

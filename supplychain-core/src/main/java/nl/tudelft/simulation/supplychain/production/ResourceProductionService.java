@@ -31,7 +31,7 @@ import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 public class ResourceProductionService extends ProductionService
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the time distribution to produce products. */
     protected DistContinuousDuration productionTime;

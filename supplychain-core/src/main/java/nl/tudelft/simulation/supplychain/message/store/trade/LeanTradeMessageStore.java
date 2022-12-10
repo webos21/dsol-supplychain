@@ -36,7 +36,7 @@ import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 public class LeanTradeMessageStore extends TradeMessageStore
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the simulator to schedule time-out events. */
     protected SCSimulatorInterface simulator;

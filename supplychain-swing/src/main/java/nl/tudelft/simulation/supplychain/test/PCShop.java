@@ -56,7 +56,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 public class PCShop extends Retailer
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the manufacturer where the PCShop buys */
     private StockKeepingActor manufacturer;

@@ -31,7 +31,7 @@ import nl.tudelft.simulation.supplychain.yellowpage.YellowPageActor;
 public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the handling time of the handler in simulation time units. */
     private DistContinuousDuration handlingTime;

@@ -18,7 +18,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class YellowPageAnswer extends TradeMessage
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the suppliers of the requested product. */
     private final List<SupplyChainActor> suppliers;

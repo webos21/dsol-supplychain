@@ -33,7 +33,7 @@ import nl.tudelft.simulation.supplychain.product.Sku;
 public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** timing run-time. */
     private long startTimeMs = 0;

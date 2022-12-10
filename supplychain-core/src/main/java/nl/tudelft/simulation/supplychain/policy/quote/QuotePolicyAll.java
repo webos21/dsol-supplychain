@@ -25,7 +25,7 @@ import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 public class QuotePolicyAll extends AbstractQuotePolicy
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** for debugging. */
     private static final boolean DEBUG = false;

@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class ShipmentPolicyStock extends AbstractShipmentPolicy
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** access to the owner's stock to look at availability of products. */
     protected InventoryInterface stock;

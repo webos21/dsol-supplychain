@@ -34,7 +34,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportOptionProvider;
 public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** a table to map the products onto a list of possible suppliers. */
     private Map<Product, HashSet<SupplyChainActor>> suppliers = new LinkedHashMap<Product, HashSet<SupplyChainActor>>();

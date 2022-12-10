@@ -38,7 +38,7 @@ import nl.tudelft.simulation.supplychain.test.TestModel;
 public class MTSMTOModel extends AbstractDSOLModel<Duration, SCAnimator>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the simulator. */
     private SCAnimator devsSimulator;

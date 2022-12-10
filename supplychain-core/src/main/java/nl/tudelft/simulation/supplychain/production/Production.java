@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 public class Production implements Serializable
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the owner of production. */
     protected InventoryActorInterface owner = null;

@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRole;
 public class Customer extends SupplyChainActor implements BuyingActorInterface, DemandGenerationActorInterface
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** The role to buy products. */
     private BuyingRole buyingRole;

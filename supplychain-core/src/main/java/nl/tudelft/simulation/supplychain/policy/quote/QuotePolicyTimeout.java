@@ -30,7 +30,7 @@ import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 public class QuotePolicyTimeout extends AbstractQuotePolicy
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** a set of internal demand IDs for which we did not yet answer. */
     private Set<Serializable> unansweredIDs = new LinkedHashSet<Serializable>();

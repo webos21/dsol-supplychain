@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public abstract class RestockingPolicyEOQ extends RestockingPolicy
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * @param stock the stock for which the policy holds

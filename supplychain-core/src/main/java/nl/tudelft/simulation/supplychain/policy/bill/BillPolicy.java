@@ -28,7 +28,7 @@ import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 public class BillPolicy extends SupplyChainPolicy<Bill>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the bank account to use. */
     @SuppressWarnings("checkstyle:visibilitymodifier")

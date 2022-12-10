@@ -32,7 +32,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportOptionProvider;
 public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** a table to map the products onto a unique supplier. */
     private Map<Product, SupplierRecord> suppliers = new LinkedHashMap<Product, SupplierRecord>();

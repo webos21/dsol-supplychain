@@ -43,7 +43,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 public class Factory extends Supplier
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * @param name the name of the manufacturer

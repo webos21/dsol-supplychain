@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
 public class Manufacturer extends DistributionCenter implements ProducingActorInterface
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the production capabilities of this manufacturer. */
     private Production production;

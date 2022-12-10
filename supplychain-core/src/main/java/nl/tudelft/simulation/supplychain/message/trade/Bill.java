@@ -18,7 +18,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class Bill extends TradeMessage
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the simulation time for final payment. */
     private Time finalPaymentDate;

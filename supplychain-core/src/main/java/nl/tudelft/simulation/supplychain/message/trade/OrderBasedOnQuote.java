@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportOption;
 public class OrderBasedOnQuote extends Order
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the Quote the order is based on. */
     private Quote quote;

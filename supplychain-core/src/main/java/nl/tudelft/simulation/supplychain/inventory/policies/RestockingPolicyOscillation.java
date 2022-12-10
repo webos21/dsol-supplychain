@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class RestockingPolicyOscillation extends RestockingPolicyFixed
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** The oscillation margin. */
     protected double oscillationMargin = 0.0;

@@ -18,7 +18,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class RestockingPolicyFixed extends RestockingPolicy
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** fixed ceiling (true) or fixed amount (false). */
     protected boolean ceiling;

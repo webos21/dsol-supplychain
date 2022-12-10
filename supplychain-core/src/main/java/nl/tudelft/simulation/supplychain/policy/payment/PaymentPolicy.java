@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 public class PaymentPolicy extends SupplyChainPolicy<Payment>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the bank account to use. */
     private BankAccount bankAccount = null;

@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 public class InternalDemandPolicyYP extends AbstractInternalDemandPolicy
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the yellow page actor to use. */
     private SupplyChainActor yp;

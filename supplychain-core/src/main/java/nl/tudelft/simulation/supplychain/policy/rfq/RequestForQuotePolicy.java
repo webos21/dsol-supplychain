@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the stock on which checks can take place. */
     private InventoryInterface stock;

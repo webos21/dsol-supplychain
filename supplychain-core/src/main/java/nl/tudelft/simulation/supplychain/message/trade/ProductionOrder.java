@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 public class ProductionOrder extends TradeMessage
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the internal date the product should be ready. */
     private Time dateReady;

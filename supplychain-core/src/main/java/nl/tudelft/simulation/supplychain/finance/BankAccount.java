@@ -25,7 +25,7 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 public class BankAccount extends EventProducer
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the owner of the bank account. */
     private SupplyChainActorInterface owner;

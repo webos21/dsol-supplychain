@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.finance.BankAccount;
 public class FactoryEditor extends AbstractCellEditor implements TableCellEditor
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the value */
     protected Color value;

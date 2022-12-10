@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportOption;
 public class RequestForQuote extends TradeMessage
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the InternalDemand for linking purposes. */
     private final InternalDemand internalDemand;

@@ -7,14 +7,11 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
-import nl.tudelft.simulation.supplychain.production.Production;
-import nl.tudelft.simulation.supplychain.production.ProductionService;
 import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
 
@@ -35,7 +32,7 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
      * @param owner SupplyChainActorInterface; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
-    public OrderPolicyMake(final SupplyChainActor owner, final InventoryInterface stock)
+    public OrderPolicyMake(final ProducingActorInterface owner, final InventoryInterface stock)
     {
         super("OrderPolicyMake", owner, stock, Order.class);
     }
@@ -53,28 +50,9 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
                 getOwner().getName(), orderConfirmation);
 
         // this is MTO, so we don't keep stock of this product. Therefore, produce it.
-        if (!(getOwner() instanceof ProducingActorInterface))
-        {
-            Logger.error("OrderHandlerMake: Actor '{}' not a Producer", getOwner().getName());
-            return false;
-        }
-
-        Production production = ((ProducingActorInterface) getOwner()).getProduction();
-        if (production == null)
-        {
-            Logger.error("OrderHandlerMake: Production for Actor '{}' not found", getOwner().getName());
-            return false;
-        }
-        ProductionService productionService = production.getProductionServices().get(order.getProduct());
-        if (productionService == null)
-        {
-            Logger.error("OrderHandlerMake: ProductionService for Actor '{}' not found for product {}", getOwner().getName(),
-                    order.getProduct());
-            return false;
-        }
-        ProductionOrder productionOrder = new ProductionOrder(((InventoryActorInterface) getOwner()), order.getInternalDemandId(),
-                order.getDeliveryDate(), order.getProduct(), order.getAmount());
-        productionService.acceptProductionOrder(productionOrder);
+        ProductionOrder productionOrder = new ProductionOrder(((InventoryActorInterface) getOwner()),
+                order.getInternalDemandId(), order.getDeliveryDate(), order.getProduct(), order.getAmount());
+        getOwner().sendMessage(productionOrder);
 
         // production should get an mto stock
         // tell the stock that we claimed some amount

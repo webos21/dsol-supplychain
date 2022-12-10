@@ -3,16 +3,17 @@ package nl.tudelft.simulation.supplychain.reference;
 import org.djunits.Throw;
 import org.djutils.draw.point.OrientedPoint3d;
 
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
-import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.role.buying.BuyingActorInterface;
 import nl.tudelft.simulation.supplychain.role.buying.BuyingRole;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryRole;
 import nl.tudelft.simulation.supplychain.role.selling.SellingActorInterface;
 import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 
@@ -24,7 +25,7 @@ import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Retailer extends StockKeepingActor implements BuyingActorInterface, SellingActorInterface
+public class Retailer extends SupplyChainActor implements BuyingActorInterface, SellingActorInterface, InventoryActorInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221206L;
@@ -34,6 +35,9 @@ public class Retailer extends StockKeepingActor implements BuyingActorInterface,
 
     /** The role to sell. */
     private SellingRole sellingRole = null;
+
+    /** the role to keep inventory. */
+    private InventoryRole inventoryRole = null;
 
     /**
      * @param name String; the name of the retailer
@@ -51,13 +55,6 @@ public class Retailer extends StockKeepingActor implements BuyingActorInterface,
             final TradeMessageStoreInterface messageStore)
     {
         super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void checkStock(final Product product)
-    {
-        // TODO: to implement...
     }
 
     /** {@inheritDoc} */
@@ -96,10 +93,28 @@ public class Retailer extends StockKeepingActor implements BuyingActorInterface,
 
     /** {@inheritDoc} */
     @Override
+    public InventoryRole getInventoryRole()
+    {
+        return this.inventoryRole;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setInventoryRole(final InventoryRole inventoryRole)
+    {
+        Throw.whenNull(inventoryRole, "inventoryRole cannot be null");
+        Throw.when(this.inventoryRole != null, IllegalStateException.class, "inventoryRole already initialized");
+        addRole(inventoryRole);
+        this.inventoryRole = inventoryRole;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void receiveMessage(final Message message)
     {
-        Throw.whenNull(this.buyingRole, "BuyingRole not initialized for Retailer: " + this.getName());
-        Throw.whenNull(this.sellingRole, "SellingRole not initialized for Retailer: " + this.getName());
+        Throw.whenNull(this.buyingRole, "BuyingRole not initialized for actor: " + this.getName());
+        Throw.whenNull(this.sellingRole, "SellingRole not initialized for actor: " + this.getName());
+        Throw.whenNull(this.inventoryRole, "InventoryRole not initialized for actor: " + this.getName());
         super.receiveMessage(message);
     }
 }

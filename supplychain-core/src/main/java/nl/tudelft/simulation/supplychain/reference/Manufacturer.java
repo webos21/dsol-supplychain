@@ -1,7 +1,6 @@
 package nl.tudelft.simulation.supplychain.reference;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.djutils.draw.point.OrientedPoint3d;

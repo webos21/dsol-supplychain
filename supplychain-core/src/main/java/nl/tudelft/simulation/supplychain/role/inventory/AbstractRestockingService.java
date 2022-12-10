@@ -106,20 +106,11 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
         return this.checkInterval;
     }
 
-    /**
-     * @return the product.
-     */
-    protected Product getProduct()
+    /** {@inheritDoc} */
+    @Override
+    public Product getProduct()
     {
         return this.product;
-    }
-
-    /**
-     * @return serialversionuid
-     */
-    protected static long getSerialversionuid()
-    {
-        return serialVersionUID;
     }
 
     /**
@@ -130,10 +121,9 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
         return this.simulator;
     }
 
-    /**
-     * @return inventory
-     */
-    protected InventoryInterface getInventory()
+    /** {@inheritDoc} */
+    @Override
+    public InventoryInterface getInventory()
     {
         return this.inventory;
     }

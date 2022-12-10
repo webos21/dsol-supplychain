@@ -2,6 +2,9 @@ package nl.tudelft.simulation.supplychain.role.inventory;
 
 import java.io.Serializable;
 
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.product.Product;
+
 /**
  * Generic restocking service as the parent of different implementations. It contains the product, inventory, and interval for
  * checking the inventory levels or ordering.
@@ -13,5 +16,15 @@ import java.io.Serializable;
  */
 public interface RestockingServiceInterface extends Serializable
 {
-    // tagging interface
+    /**
+     * Return the product for which this is the restocking service.
+     * @return Product; the product for which this is the restocking service
+     */
+    Product getProduct();
+    
+    /**
+     * Return the inventory that needs to be checked for restocking.
+     * @return InventoryInterface; the inventory that needs to be checked for restocking
+     */
+    InventoryInterface getInventory();
 }

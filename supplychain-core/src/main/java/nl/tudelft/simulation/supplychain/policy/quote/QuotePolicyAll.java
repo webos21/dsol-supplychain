@@ -97,7 +97,7 @@ public class QuotePolicyAll extends AbstractQuotePolicy
 
             Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(),
                     bestQuote, bestQuote.getTransportOption());
-            sendMessage(order, getHandlingTime().draw());
+            getOwner().sendMessage(order, getHandlingTime().draw());
         }
         return true;
     }

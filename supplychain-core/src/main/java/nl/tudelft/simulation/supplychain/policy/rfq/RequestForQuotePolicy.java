@@ -87,7 +87,7 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
         // construct the quote
         Quote quote = new Quote(getOwner(), rfq.getSender(), rfq, product, rfq.getAmount(), price, proposedShippingDate,
                 rfq.getPreferredTransportOption(), getOwner().getSimulatorTime().plus(this.validityDuration));
-        sendMessage(quote, this.handlingTime.draw());
+        getOwner().sendMessage(quote, this.handlingTime.draw());
         return true;
     }
 

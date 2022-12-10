@@ -134,7 +134,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         // make a payment to send out
         this.bankAccount.withdrawFromBalance(bill.getPrice());
         Payment payment = new Payment(getOwner(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
-        sendMessage(payment, Duration.ZERO);
+        getOwner().sendMessage(payment, Duration.ZERO);
     }
 
     /**

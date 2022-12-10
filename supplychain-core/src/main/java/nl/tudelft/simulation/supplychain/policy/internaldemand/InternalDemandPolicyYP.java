@@ -65,7 +65,7 @@ public class InternalDemandPolicyYP extends AbstractInternalDemandPolicy
         YellowPageRequest ypRequest = new YellowPageRequest(getOwner(), this.yp, internalDemand.getUniqueId(),
                 internalDemand.getProduct(), this.maximumDistance, this.maximumNumber);
         // and send it out immediately
-        sendMessage(ypRequest, this.handlingTime.draw());
+        getOwner().sendMessage(ypRequest, this.handlingTime.draw());
         return true;
     }
 }

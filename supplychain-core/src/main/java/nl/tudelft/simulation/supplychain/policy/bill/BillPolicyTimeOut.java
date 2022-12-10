@@ -98,7 +98,7 @@ public class BillPolicyTimeOut extends BillPolicy
         // make a payment to send out
         super.bankAccount.withdrawFromBalance(bill.getPrice());
         Payment payment = new Payment(getOwner(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
-        sendMessage(payment, Duration.ZERO);
+        getOwner().sendMessage(payment, Duration.ZERO);
         if (this.debug)
         {
             System.out.println("DEBUG -- BILLTIMEOUTHANDLER: FORCED PAYMENT IMPOSED: ");

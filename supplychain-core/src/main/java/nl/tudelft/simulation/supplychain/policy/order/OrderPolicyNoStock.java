@@ -43,7 +43,7 @@ public class OrderPolicyNoStock extends AbstractOrderPolicy<Order>
         // send out the confirmation
         OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandId(),
                 order, OrderConfirmation.CONFIRMED);
-        sendMessage(orderConfirmation, Duration.ZERO);
+        getOwner().sendMessage(orderConfirmation, Duration.ZERO);
 
         Logger.trace("t={} - NOSTOCK ORDER CONFIRMATION of actor '{}': sent '{}'", getOwner().getSimulatorTime(),
                 getOwner().getName(), orderConfirmation);

@@ -68,7 +68,7 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
         List<SupplyChainActor> potentialSuppliers = new ArrayList<>(suppliers.values());
         YellowPageAnswer ypAnswer = new YellowPageAnswer(getOwner(), ypRequest.getSender(), ypRequest.getInternalDemandId(),
                 potentialSuppliers, ypRequest);
-        sendMessage(ypAnswer, this.handlingTime.draw());
+        getOwner().sendMessage(ypAnswer, this.handlingTime.draw());
         return true;
     }
 

@@ -78,7 +78,7 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation
 
             InternalDemand newID = new InternalDemand(oldID.getSender(), oldID.getProduct(), oldID.getAmount(),
                     oldID.getEarliestDeliveryDate(), oldID.getLatestDeliveryDate());
-            sendMessage(newID, Duration.ZERO);
+            getOwner().sendMessage(newID, Duration.ZERO);
 
             // also clean the messageStore for the old internal demand
             getOwner().getMessageStore().removeAllMessages(orderConfirmation.getInternalDemandId());

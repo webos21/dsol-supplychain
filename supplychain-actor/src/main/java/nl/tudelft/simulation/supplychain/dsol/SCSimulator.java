@@ -19,7 +19,7 @@ import nl.tudelft.simulation.naming.context.ContextInterface;
 public class SCSimulator extends DEVSSimulator<Duration> implements SCSimulatorInterface
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the start time of the simulator. */
     private final Time absStartTime;

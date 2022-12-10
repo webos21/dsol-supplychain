@@ -54,7 +54,7 @@ import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRolePeriodi
 public class DemoMarket extends Customer
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * @param name

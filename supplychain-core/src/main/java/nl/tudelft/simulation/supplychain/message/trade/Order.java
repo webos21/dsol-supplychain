@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportOption;
 public abstract class Order extends TradeMessage
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the InternalDemand. */
     private final InternalDemand internalDemand;

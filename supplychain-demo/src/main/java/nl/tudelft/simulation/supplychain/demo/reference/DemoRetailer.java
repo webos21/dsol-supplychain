@@ -63,7 +63,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 public class DemoRetailer extends Retailer
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * @param name

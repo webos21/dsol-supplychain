@@ -17,7 +17,7 @@ import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 public class RestockingPolicyNoStock extends RestockingPolicyFixed
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * @param stock

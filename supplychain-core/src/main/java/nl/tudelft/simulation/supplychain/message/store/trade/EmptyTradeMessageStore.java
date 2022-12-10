@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 public class EmptyTradeMessageStore implements TradeMessageStoreInterface
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the owner. */
     private SupplyChainActorInterface owner;

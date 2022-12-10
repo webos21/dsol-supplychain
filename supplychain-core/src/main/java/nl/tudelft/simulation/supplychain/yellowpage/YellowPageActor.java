@@ -31,7 +31,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class YellowPageActor extends SupplyChainActor implements YellowPageInterface
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the dictionary of topic-actor combinations. */
     private Map<Topic, List<Actor>> topicDictionary = new LinkedHashMap<Topic, List<Actor>>();

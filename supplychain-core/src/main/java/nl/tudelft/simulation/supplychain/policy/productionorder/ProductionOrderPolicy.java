@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.production.Production;
 public class ProductionOrderPolicy extends SupplyChainPolicy<ProductionOrder>
 {
     /** Serial version ID. */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** for debugging. */
     private static final boolean DEBUG = false;

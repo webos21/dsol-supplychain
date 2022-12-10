@@ -29,7 +29,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public abstract class SupplyChainPolicy<T extends TradeMessage> extends AbstractMessagePolicy<T>
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the products for which this policy is valid; if empty, all products are valid. */
     @SuppressWarnings("checkstyle:visibilitymodifier")

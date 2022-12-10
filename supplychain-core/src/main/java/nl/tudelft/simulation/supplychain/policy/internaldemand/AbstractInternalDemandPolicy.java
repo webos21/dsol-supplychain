@@ -18,7 +18,7 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 public abstract class AbstractInternalDemandPolicy extends SupplyChainPolicy<InternalDemand>
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the handling time distribution to handle internal demand. */
     @SuppressWarnings("checkstyle:visibilitymodifier")

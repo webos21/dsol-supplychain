@@ -65,7 +65,7 @@ public class BankPlot extends XYChart
     private static class BalanceListener extends EventProducer implements EventListenerInterface
     {
         /** */
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 20221201L;
 
         /** the simulator to get the time for the TimedEvent. */
         private final SCSimulatorInterface simulator;

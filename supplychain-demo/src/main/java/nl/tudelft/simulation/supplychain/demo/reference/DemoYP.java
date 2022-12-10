@@ -33,7 +33,7 @@ import nl.tudelft.simulation.supplychain.reference.YellowPage;
 public class DemoYP extends YellowPage
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * @param name

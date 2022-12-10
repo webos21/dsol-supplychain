@@ -40,7 +40,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPolicy<O>
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** access to the owner's stock to look at availability of products. */
     @SuppressWarnings("checkstyle:visibilitymodifier")

@@ -14,7 +14,7 @@ import nl.tudelft.simulation.supplychain.message.Message;
 public class EmptyMessageStore implements MessageStoreInterface
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the owner. */
     private SupplyChainActorInterface owner;

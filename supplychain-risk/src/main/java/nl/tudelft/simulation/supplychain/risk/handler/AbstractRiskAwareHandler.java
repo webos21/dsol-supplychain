@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 public abstract class AbstractRiskAwareHandler extends SupplyChainPolicy implements EventListenerInterface
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * @param owner the owner of this handler

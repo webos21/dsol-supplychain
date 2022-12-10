@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 public abstract class ProductionService implements ProductionServiceInterface
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** The actor that owns the production service. */
     protected InventoryActorInterface owner;

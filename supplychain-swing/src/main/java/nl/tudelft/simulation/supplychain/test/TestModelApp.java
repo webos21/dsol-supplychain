@@ -37,7 +37,7 @@ import nl.tudelft.simulation.supplychain.gui.plot.StockPlot;
 public class TestModelApp extends DSOLAnimationApplication
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the model. */
     private final TestModel model;

@@ -32,7 +32,7 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 public abstract class SupplyChainActor extends Actor implements SupplyChainActorInterface
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** the store for the content to use. */
     private final TradeMessageStoreInterface messageStore;

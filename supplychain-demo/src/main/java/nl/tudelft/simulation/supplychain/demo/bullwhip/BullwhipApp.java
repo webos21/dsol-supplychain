@@ -34,7 +34,7 @@ import nl.tudelft.simulation.supplychain.gui.SCControlPanel;
 public class BullwhipApp extends DSOLAnimationApplication
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /**
      * @param title

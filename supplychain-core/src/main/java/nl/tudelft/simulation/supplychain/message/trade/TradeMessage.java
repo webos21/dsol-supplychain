@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public abstract class TradeMessage extends Message
 {
     /** */
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 20221201L;
 
     /** unique id of the InternalDemand that triggered the message chain. */
     private long internalDemandId;

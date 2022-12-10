@@ -81,7 +81,7 @@ public class StockPlot extends XYChart
     private static class StockListener extends EventProducer implements EventListenerInterface
     {
         /** */
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 20221201L;
 
         /** the product to filter the updates for. */
         private final Product product;

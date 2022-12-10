@@ -21,8 +21,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * The demand generation role is a role for customers, markets, and other actors that have an autonomous generation of demand
  * for products. This is different from the InventoryRole, where demand generation is triggered by depletion of stock.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -104,7 +103,7 @@ public class DemandGenerationRole extends SupplyChainRole
                 InternalDemand id = new InternalDemand(getOwner(), product, amount,
                         this.simulator.getAbsSimulatorTime().plus(demand.getEarliestDeliveryDurationDistribution().draw()),
                         this.simulator.getAbsSimulatorTime().plus(demand.getLatestDeliveryDurationDistribution().draw()));
-                getOwner().sendMessage(id, this.administrativeDelay.draw());
+                sendMessage(id, this.administrativeDelay.draw());
                 Serializable[] args = {product, demand};
                 Time time = super.simulator.getAbsSimulatorTime().plus(demand.getIntervalDistribution().draw());
                 super.simulator.scheduleEventAbs(time, this, this, "createInternalDemand", args);

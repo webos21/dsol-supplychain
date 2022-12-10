@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.demand;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+
 /**
  * DemandGenerationActorInterface indicates that the actor has a DemandGenerationRole.
  * <p>
@@ -8,7 +10,7 @@ package nl.tudelft.simulation.supplychain.role.demand;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface DemandGenerationActorInterface
+public interface DemandGenerationActorInterface extends SupplyChainActorInterface
 {
     /**
      * Return the demandGeneration role of this actor.

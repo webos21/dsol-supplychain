@@ -41,7 +41,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
 
     /**
      * @param id String; the id of the policy
-     * @param owner SupplyChainActor; the owner of this policy
+     * @param owner SupplyChainActorInterface; the owner of this policy
      * @param messageClass Class&lt;T&gt;; the message type that this policy can process
      */
     public SupplyChainPolicy(final String id, final SupplyChainActorInterface owner, final Class<T> messageClass)

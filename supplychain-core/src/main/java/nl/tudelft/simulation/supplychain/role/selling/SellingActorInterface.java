@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.selling;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+
 /**
  * SellingActorInterface indicates that the actor has a SellingRole.
  * <p>
@@ -8,7 +10,7 @@ package nl.tudelft.simulation.supplychain.role.selling;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface SellingActorInterface
+public interface SellingActorInterface extends SupplyChainActorInterface
 {
     /**
      * Return the selling role of this actor.

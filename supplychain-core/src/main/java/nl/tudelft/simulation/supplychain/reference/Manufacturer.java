@@ -3,17 +3,17 @@ package nl.tudelft.simulation.supplychain.reference;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.djunits.Throw;
 import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
+import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.production.Production;
-import nl.tudelft.simulation.supplychain.production.ProductionService;
 import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
+import nl.tudelft.simulation.supplychain.role.producing.ProducingRole;
 
 /**
  * Reference implementation for a manufacturer.
@@ -29,50 +29,41 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
     private static final long serialVersionUID = 20221201L;
 
     /** the production capabilities of this manufacturer. */
-    private Production production;
+    private ProducingRole producingRole;
 
     /**
-     * @param name the name of the manufacturer
-     * @param simulator the simulator to use
-     * @param position the position on the map
-     * @param bank the bank
-     * @param messageStore the messageStore for the messages
+     * @param name String; the name of the Supplier
+     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param simulator SCSimulatorInterface; the simulator
+     * @param location Location; the locatrion of the actor on the map or grid
+     * @param locationDescription String; a description of the location of the Supplier
+     * @param bank Bank; the bank of the reSuppliertailer
+     * @param initialBalance Money; the initial bank balance
+     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
      */
-    public Manufacturer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final MessageStoreInterface messageStore)
+    @SuppressWarnings("checkstyle:parameternumber")
+    public Manufacturer(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
+            final OrientedPoint3d location, final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore)
     {
-        this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), messageStore);
-    }
-
-    /**
-     * @param name the name of the manufacturer
-     * @param simulator the simulator to use
-     * @param position the position on the map
-     * @param bank the bank
-     * @param initialBankAccount the initial bank balance
-     * @param messageStore the messageStore for the messages
-     */
-    public Manufacturer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
-            final Bank bank, final Money initialBankAccount, final MessageStoreInterface messageStore)
-    {
-        super(name, simulator, position, bank, initialBankAccount, messageStore);
-        this.production = new Production(this);
+        super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
     }
 
     /** {@inheritDoc} */
     @Override
-    public Production getProduction()
+    public ProducingRole getProducingRole()
     {
-        return this.production;
+        return this.producingRole;
     }
 
-    /**
-     * Add a production service for the manufacturer.
-     * @param productionService the service to add
-     */
-    public void addProductionService(final ProductionService productionService)
+    /** {@inheritDoc} */
+    @Override
+    public void setProducingRole(final ProducingRole producingRole)
     {
-        this.production.addProductionService(productionService);
+        Throw.whenNull(this.producingRole, "producingRole cannot be null");
+        Throw.when(this.producingRole != null, IllegalStateException.class, "producingRole already initialized");
+        addRole(this.producingRole);
+        this.producingRole = producingRole;
     }
 
     /**
@@ -81,7 +72,7 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
     public List<Product> getRawMaterials()
     {
         List<Product> rawMaterials = new ArrayList<Product>();
-        for (Product product : super.stock.getProducts())
+        for (Product product : getInventoryRole().getInventory().getProducts())
         {
             if (product.getBillOfMaterials().getMaterials().size() == 0)
             {
@@ -97,7 +88,7 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
     public List<Product> getEndProducts()
     {
         List<Product> endProducts = new ArrayList<Product>();
-        for (Product product : super.stock.getProducts())
+        for (Product product : getInventoryRole().getInventory().getProducts())
         {
             if (product.getBillOfMaterials().getMaterials().size() > 0)
             {
@@ -106,4 +97,5 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
         }
         return endProducts;
     }
+
 }

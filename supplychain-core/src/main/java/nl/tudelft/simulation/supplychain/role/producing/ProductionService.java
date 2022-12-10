@@ -1,8 +1,8 @@
 package nl.tudelft.simulation.supplychain.role.producing;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
 
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
@@ -22,25 +22,21 @@ public abstract class ProductionService implements ProductionServiceInterface
     private static final long serialVersionUID = 20221201L;
 
     /** The actor that owns the production service. */
-    protected InventoryActorInterface owner;
-
-    /** the stock for getting and storing materials. */
-    protected InventoryInterface stock;
+    private InventoryActorInterface owner;
 
     /** The product of the production service. */
-    protected Product product;
+    private Product product;
 
     /**
      * Constructs a new production service for one product.
      * @param owner the actor that owns the production service.
-     * @param stock the stock for getting and storing materials.
      * @param product Product; the product of the production service.
      */
-    public ProductionService(final InventoryActorInterface owner, final InventoryInterface stock, final Product product)
+    public ProductionService(final InventoryActorInterface owner, final Product product)
     {
-        super();
+        Throw.whenNull(owner, "owner cannot be null");
+        Throw.whenNull(product, "product cannot be null");
         this.owner = owner;
-        this.stock = stock;
         this.product = product;
     }
 
@@ -55,8 +51,17 @@ public abstract class ProductionService implements ProductionServiceInterface
     /**
      * @return the product.
      */
+    @Override
     public Product getProduct()
     {
         return this.product;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public InventoryActorInterface getOwner()
+    {
+        return this.owner;
+    }
+
 }

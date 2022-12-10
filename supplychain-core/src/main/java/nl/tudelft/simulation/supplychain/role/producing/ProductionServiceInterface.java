@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 import org.djunits.value.vdouble.scalar.Duration;
 
+import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
+import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * The ProductionServiceInterface represents a production service. An internal production order can be handed to a class that
@@ -29,4 +32,26 @@ public interface ProductionServiceInterface extends Serializable
      * @return returns the expected production time for an order in simulator time units
      */
     Duration getExpectedProductionDuration(ProductionOrder productionOrder);
+    
+    /**
+     * Return the product for which the ProductionService applies.
+     * @return Product; the product for which the ProductionService applies
+     */
+    Product getProduct();
+
+    /**
+     * Return the actor with inventory.
+     * @return InventoryActorInterface; the actor with inventory
+     */
+    InventoryActorInterface getOwner();
+
+    /**
+     * Return the inventory.
+     * @return InventoryInterface; the inevntory.
+     */
+    default InventoryInterface getInventory()
+    {
+        return getOwner().getInventoryRole().getInventory();
+    }
+    
 }

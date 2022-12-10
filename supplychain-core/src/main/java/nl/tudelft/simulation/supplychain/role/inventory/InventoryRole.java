@@ -29,7 +29,17 @@ public abstract class InventoryRole extends SupplyChainRole
     protected final InventoryInterface inventory;
 
     /**
-     * Create a ProducingRole object for an actor.
+     * Create an InventoryRole object for an actor, with an empty inventory.
+     * @param owner SupplyChainActorInterface; the owner of this role
+     */
+    public InventoryRole(final InventoryActorInterface owner)
+    {
+        super(owner);
+        this.inventory = new Inventory(owner);
+    }
+
+    /**
+     * Create an InventoryRole object for an actor.
      * @param owner SupplyChainActorInterface; the owner of this role
      * @param initialInventory InventoryInterface; the Inventory to use within this role
      */
@@ -41,15 +51,15 @@ public abstract class InventoryRole extends SupplyChainRole
     }
 
     /**
-     * Implement to check whether the stock is below some level, might trigger ordering of extra amount of the product.
-     * @param product Product; the product to check the stock for.
+     * Implement to check whether the inventory is below some level, might trigger ordering of extra amount of the product.
+     * @param product Product; the product to check the inventory for.
      */
-    public abstract void checkStock(Product product);
+    public abstract void checkInventory(Product product);
 
     /**
      * @return the raw materials
      */
-    public List<Product> getProductsOnStock()
+    public List<Product> getProductsInInventory()
     {
         List<Product> products = new ArrayList<Product>();
         for (Product product : this.inventory.getProducts())
@@ -60,10 +70,10 @@ public abstract class InventoryRole extends SupplyChainRole
     }
 
     /**
-     * Return the stock of this Actor.
-     * @return StockInterface; the stock of this Actor
+     * Return the inventory of this Role.
+     * @return InventoryInterface; the inventory of this Role
      */
-    public InventoryInterface getStock()
+    public InventoryInterface getInventory()
     {
         return this.inventory;
     }

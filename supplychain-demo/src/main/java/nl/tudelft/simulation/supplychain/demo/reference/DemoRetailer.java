@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
-import nl.tudelft.simulation.supplychain.inventory.policies.RestockingPolicySafety;
+import nl.tudelft.simulation.supplychain.inventory.policies.RestockingServiceSafety;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
@@ -157,7 +157,7 @@ public class DemoRetailer extends Retailer
         {
             Product stockProduct = stockIter.next();
             // the restocking policy will generate InternalDemand, handled by the BuyingRole
-            new RestockingPolicySafety(super.stock, stockProduct, new Duration(24.0, DurationUnit.HOUR), false, initialStock,
+            new RestockingServiceSafety(super.stock, stockProduct, new Duration(24.0, DurationUnit.HOUR), false, initialStock,
                     true, 2.0 * initialStock, new Duration(14.0, DurationUnit.DAY));
         }
 

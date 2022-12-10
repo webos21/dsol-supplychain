@@ -22,7 +22,7 @@ import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
-import nl.tudelft.simulation.supplychain.inventory.policies.RestockingPolicySafety;
+import nl.tudelft.simulation.supplychain.inventory.policies.RestockingServiceSafety;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
@@ -145,7 +145,7 @@ public class PCShop extends Retailer
         while (stockIter.hasNext())
         {
             Product product = stockIter.next();
-            new RestockingPolicySafety(super.stock, product, new Duration(24.0, DurationUnit.HOUR), false, 5.0, true, 10.0,
+            new RestockingServiceSafety(super.stock, product, new Duration(24.0, DurationUnit.HOUR), false, 5.0, true, 10.0,
                     new Duration(14.0, DurationUnit.DAY));
             // order 100 PCs when actual+claimed < 100
             // policy will schedule itself

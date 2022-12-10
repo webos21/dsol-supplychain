@@ -15,7 +15,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class RestockingPolicySafety extends RestockingPolicyFixed
+public class RestockingServiceSafety extends RestockingServiceFixed
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -35,7 +35,7 @@ public class RestockingPolicySafety extends RestockingPolicyFixed
      * @param maxDeliveryTime the maximum delivery time to use
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public RestockingPolicySafety(final InventoryInterface inventory, final Product product,
+    public RestockingServiceSafety(final InventoryInterface inventory, final Product product,
             final DistContinuousDuration frequency, final boolean ceiling, final double amount, final boolean includeClaims,
             final double safetyAmount, final Duration maxDeliveryTime)
     {

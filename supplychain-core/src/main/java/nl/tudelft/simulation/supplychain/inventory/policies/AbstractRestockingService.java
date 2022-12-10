@@ -21,7 +21,7 @@ import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class RestockingPolicy implements Serializable
+public abstract class AbstractRestockingService implements Serializable
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -48,7 +48,7 @@ public abstract class RestockingPolicy implements Serializable
      * @param checkInterval the distribution of the interval for restocking or checking
      * @param maxDeliveryDuration the maximum delivery time to use
      */
-    public RestockingPolicy(final InventoryInterface inventory, final Product product,
+    public AbstractRestockingService(final InventoryInterface inventory, final Product product,
             final DistContinuousDuration checkInterval, final Duration maxDeliveryDuration)
     {
         this.simulator = inventory.getOwner().getSimulator();

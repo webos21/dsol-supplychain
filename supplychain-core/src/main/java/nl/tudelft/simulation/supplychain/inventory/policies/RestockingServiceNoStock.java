@@ -14,7 +14,7 @@ import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class RestockingPolicyNoStock extends RestockingPolicyFixed
+public class RestockingServiceNoStock extends RestockingServiceFixed
 {
     /** */
     private static final long serialVersionUID = 20221201L;
@@ -24,7 +24,7 @@ public class RestockingPolicyNoStock extends RestockingPolicyFixed
      * @param inventory the inventory for which the policy holds
      * @param product Product; the product that will not be restocked
      */
-    public RestockingPolicyNoStock(final InventoryInterface inventory, final Product product)
+    public RestockingServiceNoStock(final InventoryInterface inventory, final Product product)
     {
         super(inventory, product, new DistConstantDuration(Duration.POS_MAXVALUE), false, 0.0, false, Duration.ZERO);
     }

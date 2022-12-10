@@ -2,6 +2,7 @@ package nl.tudelft.simulation.supplychain.actor;
 
 import java.io.Serializable;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.EventProducerInterface;
 
 import nl.tudelft.simulation.supplychain.message.Message;
@@ -11,8 +12,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
  * AbstractPolicyHandler contains a set of policies for an Actor or Role, and processes Messages using the correct MessagePolicy
  * for each Message.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -41,5 +41,18 @@ public interface PolicyHandlerInterface extends EventProducerInterface, Serializ
      * @return boolean; whether the PolicyHandler processed the message or not
      */
     <M extends Message> boolean processMessage(M message);
+
+    /**
+     * Send a message to another actor with a delay.
+     * @param message message; the message to send
+     * @param delay Duration; the time it takes between sending and receiving
+     */
+    void sendMessage(Message message, Duration delay);
+
+    /**
+     * Send a message to another actor without a delay.
+     * @param message message; the message to send
+     */
+    void sendMessage(Message message);
 
 }

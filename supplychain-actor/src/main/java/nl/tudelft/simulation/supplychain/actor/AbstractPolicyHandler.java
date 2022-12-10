@@ -98,21 +98,16 @@ public abstract class AbstractPolicyHandler extends EventProducer implements Pol
         return true;
     }
 
-    /**
-     * Send a message to another actor with a delay.
-     * @param message message; the message to send
-     * @param delay Duration; the time it takes between sending and receiving
-     */
-    protected void sendMessage(final Message message, final Duration delay)
+    /** {@inheritDoc} */
+    @Override
+    public void sendMessage(final Message message, final Duration delay)
     {
         this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
     }
 
-    /**
-     * Send a message to another actor without a delay.
-     * @param message message; the message to send
-     */
-    protected void sendMessage(final Message message)
+    /** {@inheritDoc} */
+    @Override
+    public void sendMessage(final Message message)
     {
         sendMessage(message, Duration.ZERO);
     }

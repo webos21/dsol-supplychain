@@ -12,7 +12,7 @@ import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * Generic restocking policy as the parent of different implementations. It contains the product, inventory, and interval for
+ * Generic restocking service as the parent of different implementations. It contains the product, inventory, and interval for
  * checking the inventory levels or ordering.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
@@ -28,7 +28,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
     /** the simulator on which to schedule. */
     private SCSimulatorInterface simulator;
 
-    /** the inventory for which the policy holds. */
+    /** the inventory for which the service holds. */
     private InventoryInterface inventory;
 
     /** the product that has to be restocked. */
@@ -41,8 +41,8 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
     private Duration maxDeliveryDuration = Duration.ZERO;
 
     /**
-     * Construct a new restocking policy, with the basic parameters that every restocking policy has.
-     * @param inventory the inventory for which the policy holds
+     * Construct a new restocking service, with the basic parameters that every restocking service has.
+     * @param inventory the inventory for which the service holds
      * @param product Product; the product that has to be restocked
      * @param checkInterval the distribution of the interval for restocking or checking
      * @param maxDeliveryDuration the maximum delivery time to use
@@ -61,7 +61,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
         }
         catch (Exception e)
         {
-            Logger.error(e, "RestockingPolicy");
+            Logger.error(e, "RestockingService");
         }
     }
 

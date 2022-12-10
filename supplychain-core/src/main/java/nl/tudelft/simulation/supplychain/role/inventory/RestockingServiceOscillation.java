@@ -7,7 +7,7 @@ import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * This restocking policy looks at the difference between ordered and stock on hand on one hand, and the committed stock on the
+ * This restocking service looks at the difference between ordered and stock on hand on one hand, and the committed stock on the
  * other hand. If we committed more than we ordered and have on hand, we overreact and order more products than strictly
  * necessary. This reaction tends to lead in an oscillation of order sizes upstream the supply chain.
  * <p>
@@ -25,8 +25,8 @@ public class RestockingServiceOscillation extends RestockingServiceFixed
     private double oscillationMargin = 0.0;
 
     /**
-     * Construct a new restocking policy based on a safety stock level.
-     * @param inventory the inventory for which the policy holds
+     * Construct a new restocking service based on a safety stock level.
+     * @param inventory the inventory for which the service holds
      * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking
      * @param ceiling fixed ceiling (true) or fixed amount (false)

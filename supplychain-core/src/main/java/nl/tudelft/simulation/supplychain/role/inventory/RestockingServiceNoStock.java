@@ -7,7 +7,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
 /**
- * RestockingPolicyNoStock is a policy that indicates that restocking will not take place.
+ * RestockingServiceNoStock is a service that indicates that restocking will not take place.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -20,8 +20,8 @@ public class RestockingServiceNoStock extends RestockingServiceFixed
     private static final long serialVersionUID = 20221201L;
 
     /**
-     * Construct a new restocking policy that keeps no stock of the product.
-     * @param inventory the inventory for which the policy holds
+     * Construct a new restocking service that keeps no stock of the product.
+     * @param inventory the inventory for which the service holds
      * @param product Product; the product that will not be restocked
      */
     public RestockingServiceNoStock(final InventoryInterface inventory, final Product product)

@@ -7,7 +7,7 @@ import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * This RestockingPolicy either orders fixed amounts of goods at the times indicated by the 'checkInterval', or supplements the
+ * This RestockingService either orders fixed amounts of goods at the times indicated by the 'checkInterval', or supplements the
  * number of products till a fixed amount is reached.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
@@ -26,12 +26,12 @@ public class RestockingServiceFixed extends AbstractRestockingService
     /** whether to include the claims in the inventory or not. */
     private boolean includeClaims;
 
-    /** the amount in the policy. */
+    /** the amount in the service. */
     private double amount;
 
     /**
-     * Construct a new restocking policy, which works with fixed amounts.
-     * @param inventory the inventory for which the policy holds
+     * Construct a new restocking service, which works with fixed amounts.
+     * @param inventory the inventory for which the service holds
      * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking
      * @param ceiling fixed ceiling (true) or fixed amount (false)

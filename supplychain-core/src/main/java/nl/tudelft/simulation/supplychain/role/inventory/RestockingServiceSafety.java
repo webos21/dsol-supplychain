@@ -7,8 +7,8 @@ import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * This restocking policy looks at a safety stock level. As long as the stock level is above the safety stock level, do nothing.
- * Otherwise, order either a fixed amount or replenish until a certain level.
+ * This restocking service looks at a safety stock level. As long as the stock level is above the safety stock level, do
+ * nothing. Otherwise, order either a fixed amount or replenish until a certain level.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -24,8 +24,8 @@ public class RestockingServiceSafety extends RestockingServiceFixed
     private double safetyAmount;
 
     /**
-     * Construct a new restocking policy based on a safety stock level.
-     * @param inventory the inventory for which the policy holds
+     * Construct a new restocking service based on a safety stock level.
+     * @param inventory the inventory for which the service holds
      * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking
      * @param ceiling fixed ceiling (true) or fixed amount (false)

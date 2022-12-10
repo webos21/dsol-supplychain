@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.role.inventory;
 import java.io.Serializable;
 
 /**
- * Generic restocking policy as the parent of different implementations. It contains the product, inventory, and interval for
+ * Generic restocking service as the parent of different implementations. It contains the product, inventory, and interval for
  * checking the inventory levels or ordering.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>

@@ -6,7 +6,7 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
@@ -53,7 +53,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
      * @param stock StockInterface; the stock to use to handle the incoming order
      * @param messageClass MessageClass; the specific order message class
      */
-    public AbstractOrderPolicy(final String id, final SupplyChainActor owner, final InventoryInterface stock,
+    public AbstractOrderPolicy(final String id, final SupplyChainActorInterface owner, final InventoryInterface stock,
             final Class<O> messageClass)
     {
         super(id, owner, messageClass);

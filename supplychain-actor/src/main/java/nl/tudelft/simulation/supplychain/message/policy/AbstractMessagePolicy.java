@@ -1,6 +1,5 @@
 package nl.tudelft.simulation.supplychain.message.policy;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.exceptions.Throw;
 
 import nl.tudelft.simulation.supplychain.actor.ActorInterface;
@@ -43,26 +42,6 @@ public abstract class AbstractMessagePolicy<M extends Message> implements Messag
         this.id = id;
         this.owner = owner;
         this.messageClass = messageClass;
-    }
-
-    /**
-     * Send a message to another actor with a delay, on behalf of the owner.
-     * @param message Message; the message to send
-     * @param delay Duration; the time it takes between sending and receiving
-     */
-    protected void sendMessage(final Message message, final Duration delay)
-    {
-        getOwner().getSimulator().scheduleEventRel(delay, getOwner(), message.getReceiver(), "receiveMessage",
-                new Object[] {message});
-    }
-
-    /**
-     * Send a message to another actor without a delay, on behalf of the owner.
-     * @param message Message; the message to send
-     */
-    protected void sendMessage(final Message message)
-    {
-        sendMessage(message, Duration.ZERO);
     }
 
     /** {@inheritDoc} */

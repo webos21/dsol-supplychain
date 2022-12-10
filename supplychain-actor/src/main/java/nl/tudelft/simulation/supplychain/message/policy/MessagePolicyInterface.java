@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.djutils.base.Identifiable;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.ActorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
@@ -27,9 +27,9 @@ public interface MessagePolicyInterface<M extends Message> extends Serializable,
 
     /**
      * Return the owner of this handler.
-     * @return owner Actor; the owner of this handler.
+     * @return owner ActorInterface; the owner of this handler.
      */
-    Actor getOwner();
+    ActorInterface getOwner();
 
     /**
      * Return the class of messages for which this policy applies.

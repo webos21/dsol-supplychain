@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.djutils.draw.point.Point;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.ActorInterface;
 
 /**
  * TransportOptionProvider gives options for transport on the basis of an origin and a destination.
@@ -22,7 +22,7 @@ public interface TransportOptionProvider
      * @param receiver Actor; the receiver actor
      * @return a set of transport options from sender to receiver
      */
-    default Set<TransportOption> provideTransportOptions(final Actor sender, final Actor receiver)
+    default Set<TransportOption> provideTransportOptions(final ActorInterface sender, final ActorInterface receiver)
     {
         return provideTransportOptions(sender.getLocation(), receiver.getLocation());
     }

@@ -2,7 +2,6 @@ package nl.tudelft.simulation.supplychain.actor;
 
 import java.io.Serializable;
 
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.EventProducerInterface;
 
 import nl.tudelft.simulation.supplychain.message.Message;
@@ -41,18 +40,5 @@ public interface PolicyHandlerInterface extends EventProducerInterface, Serializ
      * @return boolean; whether the PolicyHandler processed the message or not
      */
     <M extends Message> boolean processMessage(M message);
-
-    /**
-     * Send a message to another actor with a delay.
-     * @param message message; the message to send
-     * @param delay Duration; the time it takes between sending and receiving
-     */
-    void sendMessage(Message message, Duration delay);
-
-    /**
-     * Send a message to another actor without a delay.
-     * @param message message; the message to send
-     */
-    void sendMessage(Message message);
 
 }

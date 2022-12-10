@@ -1,5 +1,6 @@
 package nl.tudelft.simulation.supplychain.actor;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.draw.bounds.Bounds;
 import org.djutils.draw.bounds.Bounds3d;
@@ -80,5 +81,18 @@ public interface ActorInterface extends PolicyHandlerInterface, Locatable
      * @param bounds the bounds for the (animation) object
      */
     void setBounds(Bounds3d bounds);
+
+    /**
+     * Send a message to another actor with a delay.
+     * @param message message; the message to send
+     * @param delay Duration; the time it takes between sending and receiving
+     */
+    void sendMessage(Message message, Duration delay);
+
+    /**
+     * Send a message to another actor without a delay.
+     * @param message message; the message to send
+     */
+    void sendMessage(Message message);
 
 }

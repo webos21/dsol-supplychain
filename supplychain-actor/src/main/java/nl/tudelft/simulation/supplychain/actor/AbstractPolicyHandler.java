@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.djunits.Throw;
-import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.EventProducer;
 
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
@@ -17,8 +16,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
  * AbstractPolicyHandler contains a set of policies for an Actor or Role, and processes Messages using the correct MessagePolicy
  * for each Message.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved.
- * <br>
+ * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -96,20 +94,6 @@ public abstract class AbstractPolicyHandler extends EventProducer implements Pol
             ((MessagePolicyInterface<M>) policy).handleMessage(message);
         }
         return true;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sendMessage(final Message message, final Duration delay)
-    {
-        this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void sendMessage(final Message message)
-    {
-        sendMessage(message, Duration.ZERO);
     }
 
 }

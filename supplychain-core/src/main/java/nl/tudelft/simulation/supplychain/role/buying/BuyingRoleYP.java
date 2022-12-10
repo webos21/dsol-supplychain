@@ -23,7 +23,7 @@ public class BuyingRoleYP extends BuyingRole
 
     /**
      * Construct a new BuyingRole for Demand - YPAnswer - Quote - Confirmation - Shipment - Bill.
-     * @param owner SupplyChainActor; the actor to which this role belongs
+     * @param owner SupplyChainActorInterface; the actor to which this role belongs
      * @param internalDemandPolicy the internal demand handler, results in sending out an RFQ
      * @param ypAnswerPolicy the yellow page answer handler
      * @param quotePolicy the quote handler

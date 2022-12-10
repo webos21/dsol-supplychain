@@ -23,7 +23,7 @@ public class BuyingRoleRFQ extends BuyingRole
 
     /**
      * Constructs a new BuyingRole for Demand - Quote - Confirmation - Shipment - Bill.
-     * @param owner SupplyChainActor; the actor to which this role belongs
+     * @param owner SupplyChainActorInterface; the actor to which this role belongs
      * @param internalDemandPolicy the internal demand handler, results in sending out an RFQ
      * @param quotePolicy the quote handler
      * @param orderConfirmationPolicy the order confirmation handler

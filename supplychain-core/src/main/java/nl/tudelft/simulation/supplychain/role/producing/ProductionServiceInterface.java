@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.production;
+package nl.tudelft.simulation.supplychain.role.producing;
 
 import java.io.Serializable;
 

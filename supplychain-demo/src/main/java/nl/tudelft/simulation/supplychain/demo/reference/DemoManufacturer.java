@@ -46,12 +46,12 @@ import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicyConsume;
 import nl.tudelft.simulation.supplychain.policy.yp.YellowPageAnswerPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.production.DelayProductionService;
-import nl.tudelft.simulation.supplychain.production.ProductionService;
 import nl.tudelft.simulation.supplychain.reference.Manufacturer;
 import nl.tudelft.simulation.supplychain.reference.YellowPage;
 import nl.tudelft.simulation.supplychain.role.buying.BuyingRoleYP;
 import nl.tudelft.simulation.supplychain.role.inventory.RestockingServiceSafety;
+import nl.tudelft.simulation.supplychain.role.producing.DelayProductionService;
+import nl.tudelft.simulation.supplychain.role.producing.ProductionService;
 import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
 

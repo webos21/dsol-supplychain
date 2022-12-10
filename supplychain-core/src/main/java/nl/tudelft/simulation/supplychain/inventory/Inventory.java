@@ -142,7 +142,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
         }
         // double unitprice = stockRecord.getUnitPrice();
         stockRecord.removeActualAmount(actualAmount);
-        this.inventoryRole.checkStock(product);
+        this.inventoryRole.checkInventory(product);
         this.sendStockUpdateEvent(stockRecord);
         return actualAmount;
     }
@@ -193,7 +193,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
             return false;
         }
         stockRecord.changeClaimedAmount(delta);
-        this.inventoryRole.checkStock(product);
+        this.inventoryRole.checkInventory(product);
         this.sendStockUpdateEvent(stockRecord);
         return true;
     }
@@ -239,7 +239,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
             return false;
         }
         stockRecord.changeOrderedAmount(delta);
-        this.inventoryRole.checkStock(product);
+        this.inventoryRole.checkInventory(product);
         this.sendStockUpdateEvent(stockRecord);
         return true;
     }

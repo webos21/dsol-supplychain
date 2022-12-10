@@ -17,9 +17,9 @@ public interface RoleInterface extends PolicyHandlerInterface, Identifiable
 {
     /**
      * Return the actor to which this role belongs.
-     * @return owner Actor; the actor to which this role belongs
+     * @return owner ActorInterface; the actor to which this role belongs
      */
-    Actor getOwner();
+    ActorInterface getOwner();
 
     /** {@inheritDoc} */
     @Override

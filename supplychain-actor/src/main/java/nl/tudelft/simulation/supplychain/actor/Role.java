@@ -19,13 +19,13 @@ public abstract class Role extends AbstractPolicyHandler implements RoleInterfac
     private static final long serialVersionUID = 20221121L;
 
     /** the actor to which this role belongs. */
-    private final Actor owner;
+    private final ActorInterface owner;
 
     /**
      * Create a new Role.
      * @param owner Actor; the actor to which this role belongs
      */
-    public Role(final Actor owner)
+    public Role(final ActorInterface owner)
     {
         super(owner.getSimulator());
         Throw.whenNull(owner, "owner cannot be null");
@@ -37,7 +37,7 @@ public abstract class Role extends AbstractPolicyHandler implements RoleInterfac
      * @return owner Actor; the actor to which this role belongs
      */
     @Override
-    public Actor getOwner()
+    public ActorInterface getOwner()
     {
         return this.owner;
     }

@@ -40,7 +40,7 @@ public class FixedCost implements Serializable
 
     /**
      * Create a Fixed cost item for an actor.
-     * @param owner SupplyChainActor; the supply chain actor
+     * @param owner SupplyChainActorInterface; the supply chain actor
      * @param description String; the description
      * @param interval Duration; the interval for booking fixed cost
      * @param amount double; the fixed cost per interval

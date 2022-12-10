@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.inventory.policies;
+package nl.tudelft.simulation.supplychain.role.inventory;
 
 import java.io.Serializable;
 
@@ -10,7 +10,6 @@ import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * Generic restocking policy as the parent of different implementations. It contains the product, inventory, and interval for

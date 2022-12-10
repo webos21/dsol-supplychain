@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.inventory.policies;
+package nl.tudelft.simulation.supplychain.role.inventory;
 
 import org.djunits.value.vdouble.scalar.Duration;
 

@@ -21,9 +21,7 @@
     <module>supplychain-actor</module>
     <module>supplychain-core</module>
     <module>supplychain-swing</module>
-    <module>supplychain-risk</module>
     <module>supplychain-demo</module>
-    <module>supplychain-ato</module>
   </modules>
 
   <properties>
@@ -165,12 +163,6 @@
       <dependency>
         <groupId>nl.tudelft.simulation</groupId>
         <artifactId>supplychain-swing</artifactId>
-        <version>${supplychain.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>nl.tudelft.simulation</groupId>
-        <artifactId>supplychain-risk</artifactId>
         <version>${supplychain.version}</version>
       </dependency>
 

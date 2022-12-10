@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.message.policy.AbstractMessagePolicy;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
@@ -37,14 +37,14 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
 
     /** the partner actors for which this policy is valid; if empty, all partners are valid. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
-    protected Set<SupplyChainActor> validPartners = new LinkedHashSet<SupplyChainActor>();
+    protected Set<SupplyChainActorInterface> validPartners = new LinkedHashSet<>();
 
     /**
      * @param id String; the id of the policy
      * @param owner SupplyChainActor; the owner of this policy
      * @param messageClass Class&lt;T&gt;; the message type that this policy can process
      */
-    public SupplyChainPolicy(final String id, final SupplyChainActor owner, final Class<T> messageClass)
+    public SupplyChainPolicy(final String id, final SupplyChainActorInterface owner, final Class<T> messageClass)
     {
         super(id, owner, messageClass);
     }
@@ -128,16 +128,16 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
 
     /** {@inheritDoc} */
     @Override
-    public SupplyChainActor getOwner()
+    public SupplyChainActorInterface getOwner()
     {
-        return (SupplyChainActor) super.getOwner();
+        return (SupplyChainActorInterface) super.getOwner();
     }
 
     /**
      * Add a valid partner to the list of supply chain partners to handle with this policy.
      * @param partner a new valid partner to use
      */
-    public void addValidPartner(final SupplyChainActor partner)
+    public void addValidPartner(final SupplyChainActorInterface partner)
     {
         this.validPartners.add(partner);
     }
@@ -145,7 +145,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
     /**
      * @return the valid partners.
      */
-    public Set<SupplyChainActor> getValidPartners()
+    public Set<SupplyChainActorInterface> getValidPartners()
     {
         return this.validPartners;
     }
@@ -154,7 +154,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
      * Replace the current set of valid partners. If you want to ADD a set, use addValidPartner per partner instead.
      * @param validPartners A new set of valid partners.
      */
-    public void setValidPartners(final Set<SupplyChainActor> validPartners)
+    public void setValidPartners(final Set<SupplyChainActorInterface> validPartners)
     {
         this.validPartners = validPartners;
     }

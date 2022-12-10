@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.buying;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+
 /**
  * BuyingActorInterface indicates that the actor has a BuyingRole.
  * <p>
@@ -8,7 +10,7 @@ package nl.tudelft.simulation.supplychain.role.buying;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface BuyingActorInterface
+public interface BuyingActorInterface extends SupplyChainActorInterface
 {
     /**
      * Return the buying role of this actor.

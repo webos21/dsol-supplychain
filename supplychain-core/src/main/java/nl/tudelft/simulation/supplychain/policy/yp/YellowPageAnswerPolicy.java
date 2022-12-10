@@ -9,6 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
@@ -48,13 +49,13 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
 
     /**
      * Constructs a new YellowPageAnswerHandler.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainActorInterface; the owner of the policy
      * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
      * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the YP answer
      * @param cutoffDuration Duration; the maximum time after which the RFQ will stop collecting quotes
      */
-    public YellowPageAnswerPolicy(final SupplyChainActor owner, final TransportOptionProvider transportOptionProvider,
+    public YellowPageAnswerPolicy(final SupplyChainActorInterface owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
             final Duration cutoffDuration)
     {
@@ -97,7 +98,7 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
                     this.transportChoiceProvider.chooseTransportOptions(transportOptions, ypRequest.getProduct().getSku());
             RequestForQuote rfq =
                     new RequestForQuote(getOwner(), supplier, internalDemand, transportOption, this.cutoffDuration);
-            getOwner().sendMessage(rfq, delay);
+            sendMessage(rfq, delay);
         }
         return true;
     }

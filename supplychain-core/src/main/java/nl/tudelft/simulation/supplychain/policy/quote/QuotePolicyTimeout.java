@@ -123,7 +123,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
             {
                 Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(),
                         bestQuote, bestQuote.getTransportOption());
-                getOwner().sendMessage(order, this.getHandlingTime().draw());
+                sendMessage(order, this.getHandlingTime().draw());
             }
         }
     }

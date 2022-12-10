@@ -48,7 +48,7 @@ public class BillPolicyTimeOut extends BillPolicy
 
     /**
      * Constructs a new BillHandler that takes care of paying exactly on time.
-     * @param owner SupplyChainActor; the owner of the policy.
+     * @param owner SupplyChainActorInterface; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      * @param maximumTimeOut the maximum time out for a bill
      */
@@ -98,7 +98,7 @@ public class BillPolicyTimeOut extends BillPolicy
         // make a payment to send out
         super.bankAccount.withdrawFromBalance(bill.getPrice());
         Payment payment = new Payment(getOwner(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
-        getOwner().sendMessage(payment, Duration.ZERO);
+        sendMessage(payment, Duration.ZERO);
         if (this.debug)
         {
             System.out.println("DEBUG -- BILLTIMEOUTHANDLER: FORCED PAYMENT IMPOSED: ");

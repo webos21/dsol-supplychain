@@ -9,7 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
@@ -42,13 +42,13 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
 
     /**
      * Constructs a new BillHandler with possibilities to pay early or late.
-     * @param owner SupplyChainActor; the owner of the policy.
+     * @param owner SupplyChainActorInterface; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      * @param paymentPolicy the payment policy to use (early, late, etc.).
      * @param paymentDelay the delay to use in early or late payment
      */
-    public BillPolicy(final SupplyChainActor owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
-            final DistContinuousDuration paymentDelay)
+    public BillPolicy(final SupplyChainActorInterface owner, final BankAccount bankAccount,
+            final PaymentPolicyEnum paymentPolicy, final DistContinuousDuration paymentDelay)
     {
         super("BillPolicy", owner, Bill.class);
         this.bankAccount = bankAccount;
@@ -58,10 +58,10 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
 
     /**
      * Constructs a new BillHandler that takes care of paying exactly on time.
-     * @param owner SupplyChainActor; the owner of the policy.
+     * @param owner SupplyChainActorInterface; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      */
-    public BillPolicy(final SupplyChainActor owner, final BankAccount bankAccount)
+    public BillPolicy(final SupplyChainActorInterface owner, final BankAccount bankAccount)
     {
         this(owner, bankAccount, PaymentPolicyEnum.PAYMENT_ON_TIME, null);
     }
@@ -134,7 +134,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         // make a payment to send out
         this.bankAccount.withdrawFromBalance(bill.getPrice());
         Payment payment = new Payment(getOwner(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
-        getOwner().sendMessage(payment, Duration.ZERO);
+        sendMessage(payment, Duration.ZERO);
     }
 
     /**

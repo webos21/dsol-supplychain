@@ -28,7 +28,7 @@ public class OrderPolicyNoStock extends AbstractOrderPolicy<Order>
 
     /**
      * Construct a new OrderHandler that purchases the goods when ordered.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainActorInterface; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
     public OrderPolicyNoStock(final SupplyChainActor owner, final InventoryInterface stock)
@@ -43,7 +43,7 @@ public class OrderPolicyNoStock extends AbstractOrderPolicy<Order>
         // send out the confirmation
         OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandId(),
                 order, OrderConfirmation.CONFIRMED);
-        getOwner().sendMessage(orderConfirmation, Duration.ZERO);
+        sendMessage(orderConfirmation, Duration.ZERO);
 
         Logger.trace("t={} - NOSTOCK ORDER CONFIRMATION of actor '{}': sent '{}'", getOwner().getSimulatorTime(),
                 getOwner().getName(), orderConfirmation);

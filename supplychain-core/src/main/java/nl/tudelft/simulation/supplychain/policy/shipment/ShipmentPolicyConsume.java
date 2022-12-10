@@ -18,7 +18,7 @@ public class ShipmentPolicyConsume extends AbstractShipmentPolicy
 
     /**
      * Construct a new ShipmentHandlerConsume handler.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainActorInterface; the owner of the policy
      */
     public ShipmentPolicyConsume(final SupplyChainActor owner)
     {

@@ -7,7 +7,6 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
@@ -16,6 +15,7 @@ import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.production.Production;
 import nl.tudelft.simulation.supplychain.production.ProductionService;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
 
 /**
@@ -32,7 +32,7 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
 
     /**
      * Construct a new OrderHandler that makes the goods when ordered.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainActorInterface; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
     public OrderPolicyMake(final SupplyChainActor owner, final InventoryInterface stock)
@@ -47,7 +47,7 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
         // send out the confirmation
         OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandId(),
                 order, OrderConfirmation.CONFIRMED);
-        getOwner().sendMessage(orderConfirmation, Duration.ZERO);
+        sendMessage(orderConfirmation, Duration.ZERO);
 
         Logger.trace("t={} - MTO ORDER CONFIRMATION of actor '{}': sent '{}'", getOwner().getSimulatorTime(),
                 getOwner().getName(), orderConfirmation);
@@ -72,7 +72,7 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
                     order.getProduct());
             return false;
         }
-        ProductionOrder productionOrder = new ProductionOrder(((StockKeepingActor) getOwner()), order.getInternalDemandId(),
+        ProductionOrder productionOrder = new ProductionOrder(((InventoryActorInterface) getOwner()), order.getInternalDemandId(),
                 order.getDeliveryDate(), order.getProduct(), order.getAmount());
         productionService.acceptProductionOrder(productionOrder);
 

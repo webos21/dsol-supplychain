@@ -49,7 +49,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
     /**
      * Construct a new OrderHandler. The OrderHandler is abstract, so this constructor can not be called directly.
      * @param id String; the id of the policy
-     * @param owner SupplyChainActor; the owner of the handler
+     * @param owner SupplyChainActorInterface; the owner of the handler
      * @param stock StockInterface; the stock to use to handle the incoming order
      * @param messageClass MessageClass; the specific order message class
      */
@@ -93,7 +93,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
 
                 Duration transportTime = order.getTransportOption().estimatedTotalTransportDuration(product.getSku());
                 Logger.trace("OrderHandlerStock: transportation delay for order: {} is: {}", order, transportTime);
-                getOwner().sendMessage(shipment, transportTime);
+                sendMessage(shipment, transportTime);
 
                 // send a bill when the shipment leaves...
                 Bill bill = new Bill(getOwner(), order.getSender(), order.getInternalDemandId(), order,
@@ -119,6 +119,6 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
     protected void sendBill(final Bill bill)
     {
         // send after accepting the order.
-        getOwner().sendMessage(bill, new Duration(1.0, DurationUnit.MINUTE));
+        sendMessage(bill, new Duration(1.0, DurationUnit.MINUTE));
     }
 }

@@ -73,8 +73,8 @@ public class PaymentPolicyFine extends PaymentPolicy
                       // send the bill for the fine
                       Bill bill = new Bill(getOwner(), payment.getSender(), payment.getInternalDemandID(), payment.getBill()
                           .getOrder(), getOwner().getSimulatorTime().plus(new Duration(14.0, DurationUnit.DAY), fine, "FINE");
-                      getOwner().sendMessage(payment, Duration.ZERO);
-                      getOwner().sendMessage(bill, Duration.ZERO);
+                      sendMessage(payment, Duration.ZERO);
+                      sendMessage(bill, Duration.ZERO);
                      */
                     // do a forced payment
                     payment.getSender().getBankAccount().withdrawFromBalance(fine);

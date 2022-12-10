@@ -23,7 +23,7 @@ public class ShipmentPolicyStock extends AbstractShipmentPolicy
 
     /**
      * Construct a new ShipmentHandlerStock handler.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainActorInterface; the owner of the policy
      * @param stock the stock to use for storing the incoming cargo
      */
     public ShipmentPolicyStock(final SupplyChainActor owner, final InventoryInterface stock)

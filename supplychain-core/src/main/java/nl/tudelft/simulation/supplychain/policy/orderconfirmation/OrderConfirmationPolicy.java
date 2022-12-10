@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.policy.orderconfirmation;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
@@ -29,9 +29,9 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation
 
     /**
      * Constructs a new OrderConfirmationHandler.
-     * @param owner SupplyChainActor; the owner of the policy.
+     * @param owner SupplyChainActorInterface; the owner of the policy.
      */
-    public OrderConfirmationPolicy(final SupplyChainActor owner)
+    public OrderConfirmationPolicy(final SupplyChainActorInterface owner)
     {
         super("OrderConfirmationPolicy", owner, OrderConfirmation.class);
     }
@@ -78,7 +78,7 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation
 
             InternalDemand newID = new InternalDemand(oldID.getSender(), oldID.getProduct(), oldID.getAmount(),
                     oldID.getEarliestDeliveryDate(), oldID.getLatestDeliveryDate());
-            getOwner().sendMessage(newID, Duration.ZERO);
+            sendMessage(newID, Duration.ZERO);
 
             // also clean the messageStore for the old internal demand
             getOwner().getMessageStore().removeAllMessages(orderConfirmation.getInternalDemandId());

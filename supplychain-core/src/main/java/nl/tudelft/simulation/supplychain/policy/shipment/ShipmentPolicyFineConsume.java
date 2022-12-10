@@ -67,7 +67,7 @@ public class ShipmentPolicyFineConsume extends ShipmentPolicyConsume
                  // send the bill for the fine
                  Bill bill = new Bill(getOwner(), shipment.getSender(), shipment.getInternalDemandID(), shipment.getOrder(),
                          getOwner().getSimulatorTime(), fine, "FINE"); 
-                 getOwner().sendMessage(bill, Duration.ZERO);
+                 sendMessage(bill, Duration.ZERO);
                  */
 
                 shipment.getSender().getBankAccount().withdrawFromBalance(fine);

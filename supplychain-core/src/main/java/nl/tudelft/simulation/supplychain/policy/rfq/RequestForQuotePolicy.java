@@ -5,13 +5,13 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * The RequestForQuotehandler implements the business logic for a supplier who receives a RequestForQuote. The most simple
@@ -48,7 +48,7 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the RFQ
      * @param validityDuration Duration;
      */
-    public RequestForQuotePolicy(final StockKeepingActor owner, final InventoryInterface stock, final double profitMargin,
+    public RequestForQuotePolicy(final InventoryActorInterface owner, final InventoryInterface stock, final double profitMargin,
             final DistContinuousDuration handlingTime, final Duration validityDuration)
     {
         super("RequestForQuotePolicy", owner, RequestForQuote.class);
@@ -87,7 +87,7 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
         // construct the quote
         Quote quote = new Quote(getOwner(), rfq.getSender(), rfq, product, rfq.getAmount(), price, proposedShippingDate,
                 rfq.getPreferredTransportOption(), getOwner().getSimulatorTime().plus(this.validityDuration));
-        getOwner().sendMessage(quote, this.handlingTime.draw());
+        sendMessage(quote, this.handlingTime.draw());
         return true;
     }
 

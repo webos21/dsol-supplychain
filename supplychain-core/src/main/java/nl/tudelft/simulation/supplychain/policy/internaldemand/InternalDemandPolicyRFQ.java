@@ -131,7 +131,7 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
                     this.transportChoiceProvider.chooseTransportOptions(transportOptions, internalDemand.getProduct().getSku());
             RequestForQuote rfq =
                     new RequestForQuote(getOwner(), supplier, internalDemand, transportOption, this.cutoffDuration);
-            getOwner().sendMessage(rfq, delay);
+            sendMessage(rfq, delay);
         }
         return true;
     }

@@ -101,7 +101,7 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
         Order order = new OrderStandalone(getOwner(), supplier, internalDemand, internalDemand.getLatestDeliveryDate(),
                 internalDemand.getProduct(), internalDemand.getAmount(), price, transportOption);
         // and send it out after the handling time
-        getOwner().sendMessage(order, this.handlingTime.draw());
+        sendMessage(order, this.handlingTime.draw());
         return true;
     }
 

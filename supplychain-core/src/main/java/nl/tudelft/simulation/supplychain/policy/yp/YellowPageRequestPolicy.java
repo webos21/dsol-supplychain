@@ -38,7 +38,7 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
 
     /**
      * Constructs a new YellowPageRequestHandler.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainActorInterface; the owner of the policy
      * @param handlingTime the distribution of the time to react on the YP request
      */
     public YellowPageRequestPolicy(final YellowPageActor owner, final DistContinuousDuration handlingTime)
@@ -68,7 +68,7 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
         List<SupplyChainActor> potentialSuppliers = new ArrayList<>(suppliers.values());
         YellowPageAnswer ypAnswer = new YellowPageAnswer(getOwner(), ypRequest.getSender(), ypRequest.getInternalDemandId(),
                 potentialSuppliers, ypRequest);
-        getOwner().sendMessage(ypAnswer, this.handlingTime.draw());
+        sendMessage(ypAnswer, this.handlingTime.draw());
         return true;
     }
 

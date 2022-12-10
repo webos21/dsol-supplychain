@@ -1,7 +1,9 @@
 package nl.tudelft.simulation.supplychain.role.inventory;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.djunits.Throw;
 
@@ -28,6 +30,9 @@ public abstract class InventoryRole extends SupplyChainRole
     @SuppressWarnings("checkstyle:visibilitymodifier")
     protected final InventoryInterface inventory;
 
+    /** the restocking services per product. */
+    private final Map<Product, RestockingServiceInterface> restockingServices = new LinkedHashMap<>();
+
     /**
      * Create an InventoryRole object for an actor, with an empty inventory.
      * @param owner SupplyChainActorInterface; the owner of this role
@@ -48,6 +53,18 @@ public abstract class InventoryRole extends SupplyChainRole
         super(owner);
         Throw.whenNull(initialInventory, "initialInventory cannot be null");
         this.inventory = new Inventory(owner, initialInventory);
+    }
+
+    /**
+     * Add a restocking service to this role.
+     * @param restockingService RestockingServiceInterface; the restocking service to add to this role
+     */
+    public void addRestockingService(final RestockingServiceInterface restockingService)
+    {
+        Throw.whenNull(restockingService, "restockingService cannot be null");
+        Throw.when(!restockingService.getInventory().equals(this.inventory), IllegalArgumentException.class,
+                "Inventory of the restocking service does not belong to Actor of InventoryRole");
+        this.restockingServices.put(restockingService.getProduct(), restockingService);
     }
 
     /**

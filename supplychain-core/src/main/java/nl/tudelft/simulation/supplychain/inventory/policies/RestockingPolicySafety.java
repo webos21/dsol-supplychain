@@ -21,11 +21,11 @@ public class RestockingPolicySafety extends RestockingPolicyFixed
     private static final long serialVersionUID = 20221201L;
 
     /** The safety stock level. */
-    protected double safetyAmount;
+    private double safetyAmount;
 
     /**
      * Construct a new restocking policy based on a safety stock level.
-     * @param stock the stock for which the policy holds
+     * @param inventory the inventory for which the policy holds
      * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking
      * @param ceiling fixed ceiling (true) or fixed amount (false)
@@ -34,43 +34,36 @@ public class RestockingPolicySafety extends RestockingPolicyFixed
      * @param safetyAmount the safety stock level for the product
      * @param maxDeliveryTime the maximum delivery time to use
      */
-    public RestockingPolicySafety(final InventoryInterface stock, final Product product, final DistContinuousDuration frequency,
-            final boolean ceiling, final double amount, final boolean includeClaims, final double safetyAmount,
-            final Duration maxDeliveryTime)
+    @SuppressWarnings("checkstyle:parameternumber")
+    public RestockingPolicySafety(final InventoryInterface inventory, final Product product,
+            final DistContinuousDuration frequency, final boolean ceiling, final double amount, final boolean includeClaims,
+            final double safetyAmount, final Duration maxDeliveryTime)
     {
-        super(stock, product, frequency, ceiling, amount, includeClaims, maxDeliveryTime);
+        super(inventory, product, frequency, ceiling, amount, includeClaims, maxDeliveryTime);
         this.safetyAmount = safetyAmount;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void checkStockLevel()
+    protected void checkInventoryLevel()
     {
         // check if below safety level; if so, call super.checkStockLevel()
-        double stockLevel = super.stock.getActualAmount(super.product) + super.stock.getOrderedAmount(super.product);
-        if (this.includeClaims)
+        double inventoryLevel = getInventory().getActualAmount(getProduct()) + getInventory().getOrderedAmount(getProduct());
+        if (isIncludeClaims())
         {
-            stockLevel -= super.stock.getClaimedAmount(super.product);
+            inventoryLevel -= getInventory().getClaimedAmount(getProduct());
         }
-        if (stockLevel < this.safetyAmount)
+        if (inventoryLevel < this.safetyAmount)
         {
-            super.checkStockLevel();
+            super.checkInventoryLevel();
         }
     }
 
     /**
      * @return the safetyAmount.
      */
-    public double getSafetyAmount()
+    protected double getSafetyAmount()
     {
         return this.safetyAmount;
-    }
-
-    /**
-     * @param safetyAmount The safetyAmount to set.
-     */
-    public void setSafetyAmount(final double safetyAmount)
-    {
-        this.safetyAmount = safetyAmount;
     }
 }

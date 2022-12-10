@@ -13,6 +13,8 @@ import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
+ * Generic restocking policy as the parent of different implementations. It contains the product, inventory, and interval for
+ * checking the inventory levels or ordering.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -25,39 +27,38 @@ public abstract class RestockingPolicy implements Serializable
     private static final long serialVersionUID = 20221201L;
 
     /** the simulator on which to schedule. */
-    protected SCSimulatorInterface simulator;
+    private SCSimulatorInterface simulator;
 
-    /** the stock for which the policy holds. */
-    protected InventoryInterface stock;
+    /** the inventory for which the policy holds. */
+    private InventoryInterface inventory;
 
     /** the product that has to be restocked. */
-    protected Product product;
+    private Product product;
 
-    // TODO: See if this should be a Duration or a Frequency
-    /** the frequency distribution for restocking or checking the stock. */
-    protected DistContinuousDuration frequency;
+    /** the frequency distribution for restocking or checking the inventory levels. */
+    private DistContinuousDuration checkInterval;
 
     /** the maximum delivery time. */
-    protected Duration maxDeliveryDuration = Duration.ZERO;
+    private Duration maxDeliveryDuration = Duration.ZERO;
 
     /**
      * Construct a new restocking policy, with the basic parameters that every restocking policy has.
-     * @param stock the stock for which the policy holds
+     * @param inventory the inventory for which the policy holds
      * @param product Product; the product that has to be restocked
-     * @param frequency the frequency distribution for restocking or checking
+     * @param checkInterval the distribution of the interval for restocking or checking
      * @param maxDeliveryDuration the maximum delivery time to use
      */
-    public RestockingPolicy(final InventoryInterface stock, final Product product, final DistContinuousDuration frequency,
-            final Duration maxDeliveryDuration)
+    public RestockingPolicy(final InventoryInterface inventory, final Product product,
+            final DistContinuousDuration checkInterval, final Duration maxDeliveryDuration)
     {
-        this.simulator = stock.getOwner().getSimulator();
-        this.stock = stock;
+        this.simulator = inventory.getOwner().getSimulator();
+        this.inventory = inventory;
         this.product = product;
-        this.frequency = frequency;
+        this.checkInterval = checkInterval;
         this.maxDeliveryDuration = maxDeliveryDuration;
         try
         {
-            this.simulator.scheduleEventRel(frequency.draw(), this, this, "checkLoop", new Serializable[] {});
+            this.simulator.scheduleEventRel(checkInterval.draw(), this, this, "checkLoop", new Serializable[] {});
         }
         catch (Exception e)
         {
@@ -66,14 +67,14 @@ public abstract class RestockingPolicy implements Serializable
     }
 
     /**
-     * The main loop for checking or refilling stock.
+     * The main loop for checking or refilling inventory.
      */
     protected void checkLoop()
     {
-        checkStockLevel();
+        checkInventoryLevel();
         try
         {
-            this.simulator.scheduleEventRel(this.frequency.draw(), this, this, "checkLoop", new Serializable[] {});
+            this.simulator.scheduleEventRel(this.checkInterval.draw(), this, this, "checkLoop", new Serializable[] {});
         }
         catch (Exception e)
         {
@@ -82,9 +83,9 @@ public abstract class RestockingPolicy implements Serializable
     }
 
     /**
-     * Checks the stock level and takes action if needed.
+     * Check the inventory level and take action if needed.
      */
-    protected abstract void checkStockLevel();
+    protected abstract void checkInventoryLevel();
 
     /**
      * Creates an internal demand order.
@@ -92,7 +93,7 @@ public abstract class RestockingPolicy implements Serializable
      */
     protected void createInternalDemand(final double orderAmount)
     {
-        InventoryActorInterface owner = this.stock.getOwner();
+        InventoryActorInterface owner = this.inventory.getOwner();
         InternalDemand internalDemand = new InternalDemand(owner, this.product, orderAmount, owner.getSimulatorTime(),
                 owner.getSimulatorTime().plus(this.maxDeliveryDuration));
         owner.sendMessage(internalDemand, Duration.ZERO);
@@ -101,24 +102,57 @@ public abstract class RestockingPolicy implements Serializable
     /**
      * @return the frequency distribution.
      */
-    public DistContinuousDuration getFrequency()
+    protected DistContinuousDuration getFrequency()
     {
-        return this.frequency;
-    }
-
-    /**
-     * @param frequency The frequency distribution to set.
-     */
-    public void setFrequency(final DistContinuousDuration frequency)
-    {
-        this.frequency = frequency;
+        return this.checkInterval;
     }
 
     /**
      * @return the product.
      */
-    public Product getProduct()
+    protected Product getProduct()
     {
         return this.product;
     }
+
+    /**
+     * @return serialversionuid
+     */
+    protected static long getSerialversionuid()
+    {
+        return serialVersionUID;
+    }
+
+    /**
+     * @return simulator
+     */
+    protected SCSimulatorInterface getSimulator()
+    {
+        return this.simulator;
+    }
+
+    /**
+     * @return inventory
+     */
+    protected InventoryInterface getInventory()
+    {
+        return this.inventory;
+    }
+
+    /**
+     * @return checkInterval
+     */
+    protected DistContinuousDuration getCheckInterval()
+    {
+        return this.checkInterval;
+    }
+
+    /**
+     * @return maxDeliveryDuration
+     */
+    protected Duration getMaxDeliveryDuration()
+    {
+        return this.maxDeliveryDuration;
+    }
+
 }

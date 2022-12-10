@@ -7,7 +7,7 @@ import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * This RestockingPolicy either orders fixed amounts of goods at the times indicated by the 'frequency', or supplements the
+ * This RestockingPolicy either orders fixed amounts of goods at the times indicated by the 'checkInterval', or supplements the
  * number of products till a fixed amount is reached.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
@@ -21,17 +21,17 @@ public class RestockingPolicyFixed extends RestockingPolicy
     private static final long serialVersionUID = 20221201L;
 
     /** fixed ceiling (true) or fixed amount (false). */
-    protected boolean ceiling;
+    private boolean ceiling;
 
-    /** whether to include the claims in the stock or not. */
-    protected boolean includeClaims;
+    /** whether to include the claims in the inventory or not. */
+    private boolean includeClaims;
 
     /** the amount in the policy. */
-    protected double amount;
+    private double amount;
 
     /**
      * Construct a new restocking policy, which works with fixed amounts.
-     * @param stock the stock for which the policy holds
+     * @param inventory the inventory for which the policy holds
      * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking
      * @param ceiling fixed ceiling (true) or fixed amount (false)
@@ -39,10 +39,11 @@ public class RestockingPolicyFixed extends RestockingPolicy
      * @param includeClaims whether to include the claims in the stock or not
      * @param maxDeliveryTime the maximum delivery time to use
      */
-    public RestockingPolicyFixed(final InventoryInterface stock, final Product product, final DistContinuousDuration frequency,
-            final boolean ceiling, final double amount, final boolean includeClaims, final Duration maxDeliveryTime)
+    public RestockingPolicyFixed(final InventoryInterface inventory, final Product product,
+            final DistContinuousDuration frequency, final boolean ceiling, final double amount, final boolean includeClaims,
+            final Duration maxDeliveryTime)
     {
-        super(stock, product, frequency, maxDeliveryTime);
+        super(inventory, product, frequency, maxDeliveryTime);
         this.ceiling = ceiling;
         this.amount = amount;
         this.includeClaims = includeClaims;
@@ -50,18 +51,19 @@ public class RestockingPolicyFixed extends RestockingPolicy
 
     /** {@inheritDoc} */
     @Override
-    protected void checkStockLevel()
+    protected void checkInventoryLevel()
     {
         // just create an internal demand and send it to the owner
         double orderAmount = 0.0;
         if (this.ceiling)
         {
-            double stockLevel = super.stock.getActualAmount(super.product) + super.stock.getOrderedAmount(super.product);
+            double inventoryLevel =
+                    getInventory().getActualAmount(getProduct()) + getInventory().getOrderedAmount(getProduct());
             if (this.includeClaims)
             {
-                stockLevel -= super.stock.getClaimedAmount(super.product);
+                inventoryLevel -= getInventory().getClaimedAmount(getProduct());
             }
-            orderAmount = Math.max(0.0, this.amount - stockLevel);
+            orderAmount = Math.max(0.0, this.amount - inventoryLevel);
         }
         else
         {
@@ -76,48 +78,25 @@ public class RestockingPolicyFixed extends RestockingPolicy
     /**
      * @return the amount (ceiling or amount).
      */
-    public double getAmount()
+    protected double getAmount()
     {
         return this.amount;
     }
 
     /**
-     * @param amount The amount or ceiling to set in units of the product.
-     */
-    public void setAmount(final double amount)
-    {
-        this.amount = amount;
-    }
-
-    /**
      * @return whether we work with a ceiling or fixed amount.
      */
-    public boolean isCeiling()
+    protected boolean isCeiling()
     {
         return this.ceiling;
     }
 
     /**
-     * @param ceiling Set whether we work with a ceiling or fixed amount.
-     */
-    public void setCeiling(final boolean ceiling)
-    {
-        this.ceiling = ceiling;
-    }
-
-    /**
      * @return whether we include claims in the stock level or not.
      */
-    public boolean isIncludeClaims()
+    protected boolean isIncludeClaims()
     {
         return this.includeClaims;
     }
 
-    /**
-     * @param includeClaims Set whether we include claims in the stock level or not.
-     */
-    public void setIncludeClaims(final boolean includeClaims)
-    {
-        this.includeClaims = includeClaims;
-    }
 }

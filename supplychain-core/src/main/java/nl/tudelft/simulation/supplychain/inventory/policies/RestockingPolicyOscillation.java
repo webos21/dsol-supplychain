@@ -22,11 +22,11 @@ public class RestockingPolicyOscillation extends RestockingPolicyFixed
     private static final long serialVersionUID = 20221201L;
 
     /** The oscillation margin. */
-    protected double oscillationMargin = 0.0;
+    private double oscillationMargin = 0.0;
 
     /**
      * Construct a new restocking policy based on a safety stock level.
-     * @param stock the stock for which the policy holds
+     * @param inventory the inventory for which the policy holds
      * @param product Product; the product that has to be restocked
      * @param frequency the frequency distribution for restocking
      * @param ceiling fixed ceiling (true) or fixed amount (false)
@@ -35,33 +35,34 @@ public class RestockingPolicyOscillation extends RestockingPolicyFixed
      * @param overReactionMargin the over reaction margin
      * @param maxDeliveryTime the maximum delivery time to use
      */
-    public RestockingPolicyOscillation(final InventoryInterface stock, final Product product,
+    @SuppressWarnings("checkstyle:parameternumber")
+    public RestockingPolicyOscillation(final InventoryInterface inventory, final Product product,
             final DistContinuousDuration frequency, final boolean ceiling, final double amount, final boolean includeClaims,
             final double overReactionMargin, final Duration maxDeliveryTime)
     {
-        super(stock, product, frequency, ceiling, amount, includeClaims, maxDeliveryTime);
+        super(inventory, product, frequency, ceiling, amount, includeClaims, maxDeliveryTime);
         this.oscillationMargin = overReactionMargin;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void checkStockLevel()
+    protected void checkInventoryLevel()
     {
         // just create an internal demand and send it to the owner
         double orderAmount = 0.0;
-        double stockLevel = super.stock.getActualAmount(super.product) + super.stock.getOrderedAmount(super.product);
-        if (this.includeClaims)
+        double stockLevel = getInventory().getActualAmount(getProduct()) + getInventory().getOrderedAmount(getProduct());
+        if (isIncludeClaims())
         {
-            stockLevel -= super.stock.getClaimedAmount(super.product);
+            stockLevel -= getInventory().getClaimedAmount(getProduct());
         }
-        orderAmount = Math.max(0.0, this.amount - stockLevel);
+        orderAmount = Math.max(0.0, getAmount() - stockLevel);
 
         if (stockLevel <= 0.0)
         {
             // let's overreact!
             double old = orderAmount;
             orderAmount = Math.ceil(orderAmount + (Math.abs(stockLevel) * (this.oscillationMargin)));
-            System.out.println(super.stock.getOwner().getName() + " overreacted: was: " + old + " new: " + orderAmount);
+            System.out.println(getInventory().getOwner().getName() + " overreacted: was: " + old + " new: " + orderAmount);
         }
 
         if (orderAmount > 0.0)

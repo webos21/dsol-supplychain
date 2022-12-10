@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -37,16 +37,17 @@ public class Shipment extends TradeMessage
     private boolean delivered = false;
 
     /**
-     * @param sender SupplyChainActor; the sender actor of the message content
-     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param sender SupplyChainActorInterface; the sender actor of the message content
+     * @param receiver SupplyChainActorInterface; the receiving actor of the message content
      * @param internalDemandId internal demand that triggered the process
      * @param order the order for which this is the shipment
      * @param product Product; the product type
      * @param amount double; the number of product units
      * @param totalCargoValue the price of the cargo
      */
-    public Shipment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
-            final Order order, final Product product, final double amount, final Money totalCargoValue)
+    public Shipment(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+            final long internalDemandId, final Order order, final Product product, final double amount,
+            final Money totalCargoValue)
     {
         super(sender, receiver, internalDemandId);
         this.order = order;

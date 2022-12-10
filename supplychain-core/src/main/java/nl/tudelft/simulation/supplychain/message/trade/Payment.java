@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -25,14 +25,14 @@ public class Payment extends TradeMessage
 
     /**
      * Constructs a new Payment.
-     * @param sender SupplyChainActor; the sender actor of the message content
-     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param sender SupplyChainActorInterface; the sender actor of the message content
+     * @param receiver SupplyChainActorInterface; the receving actor of the message content
      * @param internalDemandId the internal demand that triggered the supply chain
      * @param bill the bill for which this is the payment
      * @param payment the payment
      */
-    public Payment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Bill bill,
-            final Money payment)
+    public Payment(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+            final long internalDemandId, final Bill bill, final Money payment)
     {
         super(sender, receiver, internalDemandId);
         this.bill = bill;

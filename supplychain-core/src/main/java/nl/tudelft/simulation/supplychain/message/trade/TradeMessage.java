@@ -1,6 +1,7 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -25,11 +26,12 @@ public abstract class TradeMessage extends Message
 
     /**
      * Constructs a new TradeMessage object.
-     * @param sender SupplyChainActor; the sending actor of the message content
-     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param sender SupplyChainActorInterface; the sending actor of the message content
+     * @param receiver SupplyChainActorInterface; the receiving actor of the message content
      * @param internalDemandId long; the InternalDemandId that triggered the chain
      */
-    public TradeMessage(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId)
+    public TradeMessage(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+            final long internalDemandId)
     {
         super(sender, receiver);
         this.internalDemandId = internalDemandId;
@@ -38,10 +40,10 @@ public abstract class TradeMessage extends Message
     /**
      * Constructs a new TradeMessage object, specifically an InternalDemand object, where the internalDemandId is set to the
      * value of the uniqueId.
-     * @param sender SupplyChainActor; the sending actor of the message content
-     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param sender SupplyChainActorInterface; the sending actor of the message content
+     * @param receiver SupplyChainActorInterface; the receiving actor of the message content
      */
-    public TradeMessage(final SupplyChainActor sender, final SupplyChainActor receiver)
+    public TradeMessage(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver)
     {
         super(sender, receiver);
         this.internalDemandId = getUniqueId();

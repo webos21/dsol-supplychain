@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
@@ -45,8 +45,8 @@ public class Quote extends TradeMessage
     /**
      * The Constructor for a Quote. Note that the Quote contains a product and an amount. This sounds superfluous, but it is
      * not. The quote might contain a replacement product or less amount than the original request in the RFQ.
-     * @param sender SupplyChainActor; the sender actor of the message content
-     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param sender SupplyChainActorInterface; the sender actor of the message content
+     * @param receiver SupplyChainActorInterface; the receving actor of the message content
      * @param requestForQuote RequestForQuote; the RFQ for which this is the quote
      * @param product Product; the product of the quote
      * @param amount double; the amount of products
@@ -56,9 +56,9 @@ public class Quote extends TradeMessage
      * @param validityTime Time; the time on the simulator clock until which the quote is valid
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Quote(final SupplyChainActor sender, final SupplyChainActor receiver, final RequestForQuote requestForQuote,
-            final Product product, final double amount, final Money price, final Time proposedShippingDate,
-            final TransportOption transportOption, final Time validityTime)
+    public Quote(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+            final RequestForQuote requestForQuote, final Product product, final double amount, final Money price,
+            final Time proposedShippingDate, final TransportOption transportOption, final Time validityTime)
     {
         super(sender, receiver, requestForQuote.getInternalDemandId());
         this.requestForQuote = requestForQuote;

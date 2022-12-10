@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.ActorInterface;
 
 /**
  * A message, which can be sent from a sender to a receiver. Extend this class to add content.
@@ -20,10 +20,10 @@ public abstract class Message implements Serializable
     private static final long serialVersionUID = 20221203L;
 
     /** sender of the message (necessary for a possible reply). */
-    private final Actor sender;
+    private final ActorInterface sender;
 
     /** the receiver of a message. */
-    private final Actor receiver;
+    private final ActorInterface receiver;
 
     /** the timestamp of a message. */
     private final Time timestamp;
@@ -33,10 +33,10 @@ public abstract class Message implements Serializable
 
     /**
      * Construct a new message.
-     * @param sender Actor; the sender
-     * @param receiver Actor; the receiver
+     * @param sender ActorInterface; the sender
+     * @param receiver ActorInterface; the receiver
      */
-    public Message(final Actor sender, final Actor receiver)
+    public Message(final ActorInterface sender, final ActorInterface receiver)
     {
         this.sender = sender;
         this.receiver = receiver;
@@ -46,18 +46,18 @@ public abstract class Message implements Serializable
 
     /**
      * Return the sender of the message (to allow for a reply to be sent).
-     * @return Actor; the sender of the message
+     * @return ActorInterface; the sender of the message
      */
-    public Actor getSender()
+    public ActorInterface getSender()
     {
         return this.sender;
     }
 
     /**
      * Return the receiver of the message.
-     * @return Actor; the receiver of the message
+     * @return ActorInterface; the receiver of the message
      */
-    public Actor getReceiver()
+    public ActorInterface getReceiver()
     {
         return this.receiver;
     }

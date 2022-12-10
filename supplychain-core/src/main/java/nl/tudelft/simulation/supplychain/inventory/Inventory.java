@@ -7,15 +7,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.event.EventProducer;
 import org.djutils.event.TimedEvent;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryRole;
 
 /**
  * Simple implementation of Inventory for a Trader. The information on stocked amounts is stored in a HashTable of
@@ -30,24 +32,29 @@ import nl.tudelft.simulation.supplychain.product.Product;
 public class Inventory extends EventProducer implements InventoryInterface, StockForecastInterface
 {
     /** the serial version uid. */
-    private static final long serialVersionUID = 12L;
+    private static final long serialVersionUID = 20221210L;
 
-    /** the actow that owns of the stock. */
-    protected StockKeepingActor owner;
+    /** the actow that owns the inventory. */
+    private final InventoryActorInterface owner;
+
+    /** the InventoryRole of the owner. */
+    private final InventoryRole inventoryRole;
 
     /** record keeping of the stock. */
-    protected Map<Product, InventoryRecord> inventoryRecords = new LinkedHashMap<Product, InventoryRecord>();
+    private Map<Product, InventoryRecord> inventoryRecords = new LinkedHashMap<Product, InventoryRecord>();
 
     /** Map of Product to Map of time to ArrayList of values for time moment: future changes. */
-    protected Map<Product, TreeMap<Time, ArrayList<Double>>> futureChanges = new LinkedHashMap<>();
+    private Map<Product, TreeMap<Time, ArrayList<Double>>> futureChanges = new LinkedHashMap<>();
 
     /**
      * Create a new Inventory for an actor.
      * @param owner the Trader that physically owns the stock.
      */
-    public Inventory(final StockKeepingActor owner)
+    public Inventory(final InventoryActorInterface owner)
     {
+        Throw.whenNull(owner, "owner cannot be null");
         this.owner = owner;
+        this.inventoryRole = owner.getInventoryRole();
     }
 
     /**
@@ -55,7 +62,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
      * @param owner the trader for which this is the stock
      * @param initialStock the initial stock
      */
-    public Inventory(final StockKeepingActor owner, final Inventory initialStock)
+    public Inventory(final InventoryActorInterface owner, final InventoryInterface initialStock)
     {
         this(owner);
         for (Product product : initialStock.getProducts())
@@ -71,7 +78,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
 
     /** {@inheritDoc} */
     @Override
-    public StockKeepingActor getOwner()
+    public InventoryActorInterface getOwner()
     {
         return this.owner;
     }
@@ -135,7 +142,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
         }
         // double unitprice = stockRecord.getUnitPrice();
         stockRecord.removeActualAmount(actualAmount);
-        this.owner.checkStock(product);
+        this.inventoryRole.checkStock(product);
         this.sendStockUpdateEvent(stockRecord);
         return actualAmount;
     }
@@ -186,7 +193,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
             return false;
         }
         stockRecord.changeClaimedAmount(delta);
-        this.owner.checkStock(product);
+        this.inventoryRole.checkStock(product);
         this.sendStockUpdateEvent(stockRecord);
         return true;
     }
@@ -216,11 +223,9 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
         {
             this.futureChanges.get(product).put(time, new ArrayList<Double>());
         }
-        // we consider a future claimed amount as a negative change for our
-        // stock
-        // value
+        // we consider a future claimed amount as a negative change for our stock value
         this.futureChanges.get(product).get(time).add(-delta);
-        this.sendForecastUpdateEvent(product);
+        // this.sendForecastUpdateEvent(product);
         return true;
     }
 
@@ -234,7 +239,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
             return false;
         }
         stockRecord.changeOrderedAmount(delta);
-        this.owner.checkStock(product);
+        this.inventoryRole.checkStock(product);
         this.sendStockUpdateEvent(stockRecord);
         return true;
     }
@@ -264,7 +269,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
             this.futureChanges.get(product).put(time, new ArrayList<Double>());
         }
         this.futureChanges.get(product).get(time).add(delta);
-        this.sendForecastUpdateEvent(product);
+        // this.sendForecastUpdateEvent(product);
         return true;
     }
 
@@ -298,57 +303,6 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
 
         this.fireEvent(
                 new TimedEvent<Time>(InventoryInterface.INVENTORY_CHANGE_EVENT, this, data, this.owner.getSimulatorTime()));
-    }
-
-    // TODO: schedule the method below on a regular interval instead of invoking
-    // it for every stock change?
-    /**
-     * Method sendForecastUpdateEvent.
-     * @param product
-     */
-    public void sendForecastUpdateEvent(final Product product)
-    {
-        // if (this.owner.getName().equalsIgnoreCase("tucker"))
-        // {
-        // TreeMap<Double, ArrayList<Double>> futureChangesPerProduct = this.futureChanges
-        // .get(product);
-        //
-        // // make a list with the values on a per moment of time basis
-        // SortedMap<Double, Double> futureValues = new TreeMap<Double, Double>();
-        //
-        // // get the current value of the stock
-        // double futureStockValue = this.getActualAmount(product);
-        //
-        // // store this value
-        // futureValues.put(this.owner.getSimulatorTime(), futureStockValue);
-        //
-        // for (Double time : futureChangesPerProduct.keySet())
-        // {
-        // // we only consider the 'future' changes
-        // if (time >= this.owner.getSimulatorTime())
-        // {
-        // ArrayList<Double> changeValues = futureChangesPerProduct
-        // .get(time);
-        // for (Double changeValue : changeValues)
-        // {
-        // futureStockValue += changeValue;
-        // }
-        // // store the changed futureStockValue
-        // futureValues.put(time, futureStockValue);
-        // }
-        // }
-        //
-        // this.fireEvent(new Event(
-        // StockForecastInterface.STOCK_FORECAST_UPDATE_EVENT, this,
-        // futureValues));
-        //
-        // System.out.println("Future values for product: "
-        // + product.getName());
-        // for (double time : futureValues.keySet())
-        // {
-        // System.out.println(time + " value: " + futureValues.get(time));
-        // }
-        // }
     }
 
     /**

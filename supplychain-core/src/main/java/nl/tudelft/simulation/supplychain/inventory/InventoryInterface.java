@@ -6,10 +6,10 @@ import java.util.Set;
 import org.djutils.event.EventProducerInterface;
 import org.djutils.event.TimedEventType;
 
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * The InventoryInterface describes the standard services that any object representing inventory in the supply chain project
@@ -30,7 +30,7 @@ public interface InventoryInterface extends Serializable, EventProducerInterface
     /**
      * @return the trader who owns this inventory
      */
-    StockKeepingActor getOwner();
+    InventoryActorInterface getOwner();
 
     /**
      * Add products to the inventory.

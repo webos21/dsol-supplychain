@@ -6,11 +6,11 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * <p>
@@ -50,7 +50,6 @@ public abstract class RestockingPolicy implements Serializable
     public RestockingPolicy(final InventoryInterface stock, final Product product, final DistContinuousDuration frequency,
             final Duration maxDeliveryDuration)
     {
-        super();
         this.simulator = stock.getOwner().getSimulator();
         this.stock = stock;
         this.product = product;
@@ -93,7 +92,7 @@ public abstract class RestockingPolicy implements Serializable
      */
     protected void createInternalDemand(final double orderAmount)
     {
-        StockKeepingActor owner = this.stock.getOwner();
+        InventoryActorInterface owner = this.stock.getOwner();
         InternalDemand internalDemand = new InternalDemand(owner, this.product, orderAmount, owner.getSimulatorTime(),
                 owner.getSimulatorTime().plus(this.maxDeliveryDuration));
         owner.sendMessage(internalDemand, Duration.ZERO);

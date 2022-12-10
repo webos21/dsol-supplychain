@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class AbstractRestockingService implements Serializable
+public abstract class AbstractRestockingService implements RestockingServiceInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;

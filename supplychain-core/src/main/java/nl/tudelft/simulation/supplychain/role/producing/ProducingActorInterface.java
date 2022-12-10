@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.producing;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+
 /**
  * ProducingActorInterface indicates that the actor has a ProducingRole.
  * <p>
@@ -8,7 +10,7 @@ package nl.tudelft.simulation.supplychain.role.producing;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface ProducingActorInterface
+public interface ProducingActorInterface extends SupplyChainActorInterface
 {
     /**
      * Return the producing role of this actor.

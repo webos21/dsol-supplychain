@@ -1,7 +1,9 @@
 package nl.tudelft.simulation.supplychain.actor;
 
 import org.djunits.value.vdouble.scalar.Time;
+import org.djutils.draw.bounds.Bounds;
 import org.djutils.draw.bounds.Bounds3d;
+import org.djutils.draw.point.Point;
 import org.djutils.immutablecollections.ImmutableSet;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
@@ -64,6 +66,14 @@ public interface ActorInterface extends PolicyHandlerInterface, Locatable
     {
         return getSimulator().getAbsSimulatorTime();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    Point<?> getLocation();
+
+    /** {@inheritDoc} */
+    @Override
+    Bounds<?, ?, ?> getBounds();
 
     /**
      * Set the bounds of the object (size and relative height in the animation).

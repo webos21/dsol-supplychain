@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.producing;
 
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * The producing role is a role that handles the production of products from parts, based on a Bill of Materials (BOM). Parts
@@ -20,9 +20,9 @@ public abstract class ProducingRole extends SupplyChainRole
 
     /**
      * Create a ProducingRole object for an actor.
-     * @param owner SupplyChainActor; the owner of this role
+     * @param owner SupplyChainActorInterface; the owner of this role
      */
-    public ProducingRole(final StockKeepingActor owner)
+    public ProducingRole(final InventoryActorInterface owner)
     {
         super(owner);
     }

@@ -12,11 +12,11 @@ import org.djutils.immutablecollections.ImmutableMap;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * The DelayProductionService starts production at the latest possible moment to meet the delivery date of the production order.
@@ -56,7 +56,7 @@ public class DelayProductionService extends ProductionService
      * @param greedy if true, immediately start picking raw materials when production has to start.
      * @param profitMargin the fraction that is added to the cost of the materials.
      */
-    public DelayProductionService(final StockKeepingActor owner, final InventoryInterface stock, final Product product,
+    public DelayProductionService(final InventoryActorInterface owner, final InventoryInterface stock, final Product product,
             final DistContinuousDuration productionTime, final boolean fixedTime, final boolean greedy,
             final double profitMargin)
     {

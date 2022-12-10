@@ -12,11 +12,11 @@ import org.djutils.immutablecollections.ImmutableMap;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * The ResourceProductionService simulates a manufacturing or assembly process that is constrained by the (non-)availability of
@@ -55,7 +55,7 @@ public class ResourceProductionService extends ProductionService
      * @param greedy if true, immediately start picking raw materials when production has to start.
      * @param profitMargin the fraction that is added to the cost of the materials.
      */
-    public ResourceProductionService(final StockKeepingActor owner, final InventoryInterface stock, final Product product,
+    public ResourceProductionService(final InventoryActorInterface owner, final InventoryInterface stock, final Product product,
             final DistContinuousDuration productionTime, final boolean fixedTime, final boolean greedy,
             final double profitMargin)
     {

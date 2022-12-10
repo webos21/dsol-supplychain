@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
 
 /**
  * Production is a basic production unit for a producing Trader. It accepts a ProductionOrder, and searches for the right
@@ -26,7 +26,7 @@ public class Production implements Serializable
     private static final long serialVersionUID = 12L;
 
     /** the owner of production. */
-    protected StockKeepingActor owner = null;
+    protected InventoryActorInterface owner = null;
 
     /** the handlers for this role. */
     protected Map<Product, ProductionService> productionServices = new LinkedHashMap<>();
@@ -35,7 +35,7 @@ public class Production implements Serializable
      * Constructor for a production department of a Trader.
      * @param owner the owner of production.
      */
-    public Production(final StockKeepingActor owner)
+    public Production(final InventoryActorInterface owner)
     {
         super();
         this.owner = owner;

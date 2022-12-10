@@ -10,7 +10,6 @@ import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
-import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.role.selling.SellingActorInterface;
 import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 
@@ -46,13 +45,6 @@ public class Supplier extends SupplyChainActor implements SellingActorInterface
             final TradeMessageStoreInterface messageStore)
     {
         super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void checkStock(final Product product)
-    {
-        // TODO: implement checkStock
     }
 
     /** {@inheritDoc} */

@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.exceptions.Throw;
 import org.djutils.immutablecollections.ImmutableLinkedHashSet;
 import org.djutils.immutablecollections.ImmutableSet;
+import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
@@ -89,7 +91,29 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
     @Override
     public void receiveMessage(final Message message)
     {
+        if (!message.getReceiver().equals(this))
+        {
+            Logger.warn("Message " + message + " not meant for receiver " + toString());
+        }
         this.messageHandler.handleMessageReceipt(message);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void sendMessage(final Message message, final Duration delay)
+    {
+        if (!message.getSender().equals(this))
+        {
+            Logger.warn("Message " + message + " not originating from sender " + toString());
+        }
+        this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void sendMessage(final Message message)
+    {
+        sendMessage(message, Duration.ZERO);
     }
 
     /** {@inheritDoc} */

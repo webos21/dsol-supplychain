@@ -16,21 +16,18 @@ import nl.tudelft.simulation.jstats.distributions.DistConstant;
 import nl.tudelft.simulation.jstats.distributions.DistExponential;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
-import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
-import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
-import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyRFQ;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
-import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicyAll;
 import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicyConsume;
@@ -39,11 +36,11 @@ import nl.tudelft.simulation.supplychain.reference.Customer;
 import nl.tudelft.simulation.supplychain.reference.Retailer;
 import nl.tudelft.simulation.supplychain.role.buying.BuyingRoleYP;
 import nl.tudelft.simulation.supplychain.role.demand.Demand;
-import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRolePeriodic;
+import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
 /**
- * Customer. <br>
- * <br>
+ * Customer.
+ * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -54,29 +51,33 @@ public class Client extends Customer
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
-    /** the product that Client wants to buy */
+    /** the product that Client wants to buy. */
     private Product product;
 
-    /** the fixed retailer where Client buys */
+    /** the fixed retailer where Client buys. */
     private Retailer retailer;
 
     /**
-     * @param name the name of the manufacturer
-     * @param simulator the simulator to use
-     * @param position the position on the map
-     * @param bank the bank
-     * @param initialBankAccount the initial bank balance
+     * @param name String; the name of the Customer
+     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param simulator SCSimulatorInterface; the simulator
+     * @param location Location; the locatrion of the actor on the map or grid
+     * @param locationDescription String; a description of the location of the Customer
+     * @param bank Bank; the bank of the customer
+     * @param initialBalance Money; the initial bank balance
+     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
      * @param product product to order
      * @param retailer fixed retailer to use
-     * @param messageStore the messageStore to store the messages
-     * @throws RemoteException remote simulator error
-     * @throws NamingException
+     * @throws RemoteException on remote simulator error
+     * @throws NamingException on animation error
      */
-    public Client(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
-            final Money initialBankAccount, final Product product, final Retailer retailer,
-            final MessageStoreInterface messageStore) throws RemoteException, NamingException
+    @SuppressWarnings("checkstyle:parameternumber")
+    public Client(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
+            final OrientedPoint3d location, final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore, final Product product, final Retailer retailer)
+            throws RemoteException, NamingException
     {
-        super(name, simulator, position, bank, initialBankAccount, messageStore);
+        super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
         this.product = product;
         this.retailer = retailer;
         this.init();
@@ -96,12 +97,6 @@ public class Client extends Customer
         StreamInterface stream = this.simulator.getModel().getStream("default");
         Duration hour = new Duration(1.0, DurationUnit.HOUR);
         //
-        // give the actor a fax device which is checked every hour
-        FaxDevice fax = new FaxDevice("ClientFax", this.simulator);
-        super.addSendingDevice(fax);
-        MessageHandlerInterface secretary = new HandleAllMessages(this);
-        super.addReceivingDevice(fax, secretary, new DistConstantDuration(hour));
-        //
         // create the internal demand for PCs
         Demand demand = new Demand(this.product,
                 new DistContinuousDuration(new DistExponential(stream, 24.0), DurationUnit.HOUR), new DistConstant(stream, 1.0),
@@ -113,7 +108,7 @@ public class Client extends Customer
         //
         // tell Client to use the InternalDemandPolicy
         InternalDemandPolicyRFQ internalDemandHandler =
-                new InternalDemandPolicyRFQ(this, new Duration(24.0, DurationUnit.HOUR), null); // XXX: Why does it need stock?
+                new InternalDemandPolicyRFQ(this, new Duration(24.0, DurationUnit.HOUR)O, null); // XXX: Why does it need stock?
         internalDemandHandler.addSupplier(this.product, this.retailer);
         //
         // tell Client to use the Quotehandler to handle quotes
@@ -140,8 +135,8 @@ public class Client extends Customer
         //
         if (this.simulator instanceof AnimatorInterface)
         {
-            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + this.name);
-            bankChart.add("bank account", this.bankAccount, BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
+            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + getName());
+            bankChart.add("bank account", getBankAccount(), BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
         }
     }
 

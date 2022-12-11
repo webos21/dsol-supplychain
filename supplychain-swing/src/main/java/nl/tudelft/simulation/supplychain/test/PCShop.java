@@ -15,7 +15,6 @@ import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.actor.StockKeepingActor;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
@@ -32,8 +31,8 @@ import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
-import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicyAll;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
@@ -44,10 +43,11 @@ import nl.tudelft.simulation.supplychain.role.buying.BuyingRoleYP;
 import nl.tudelft.simulation.supplychain.role.inventory.RestockingServiceSafety;
 import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
+import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
 /**
- * Retailer. <br>
- * <br>
+ * Retailer. 
+ * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -58,7 +58,7 @@ public class PCShop extends Retailer
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
-    /** the manufacturer where the PCShop buys */
+    /** the manufacturer where the PCShop buys. */
     private StockKeepingActor manufacturer;
 
     /**
@@ -119,12 +119,6 @@ public class PCShop extends Retailer
      */
     public void init() throws RemoteException
     {
-        // give the actor a fax device which is checked every hour
-        FaxDevice fax = new FaxDevice("PCShopFAx", this.simulator);
-        super.addSendingDevice(fax);
-        MessageHandlerInterface secretary = new HandleAllMessages(this);
-        super.addReceivingDevice(fax, secretary, new DistConstantDuration(new Duration(1.0, DurationUnit.HOUR)));
-        //
         // tell PCshop to use the RFQhandler to handle RFQs
         RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.stock, 1.2,
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
@@ -186,8 +180,8 @@ public class PCShop extends Retailer
         //
         if (this.simulator instanceof AnimatorInterface)
         {
-            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + this.name);
-            bankChart.add("bank account", this.bankAccount, BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
+            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + getName());
+            bankChart.add("bank account", getBankAccount(), BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
         }
     }
 

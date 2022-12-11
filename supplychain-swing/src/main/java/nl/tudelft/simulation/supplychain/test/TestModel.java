@@ -4,8 +4,10 @@ import java.io.Serializable;
 
 import org.djunits.unit.DurationUnit;
 import org.djunits.unit.MassUnit;
+import org.djunits.unit.VolumeUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Mass;
+import org.djunits.value.vdouble.scalar.Volume;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 
@@ -18,13 +20,14 @@ import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
+import nl.tudelft.simulation.supplychain.message.handler.DirectMessageHandler;
 import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.product.Sku;
 
 /**
- * The TestModel for the supplychain package. <br>
- * <br>
+ * The TestModel for the supplychain package.
+ * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -81,13 +84,13 @@ public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
             }
 
             // create the bank
-            Bank ing = new Bank("ING", this.devsSimulator, new OrientedPoint3d(0, 0, 0));
+            Bank ing = new Bank("ING", new DirectMessageHandler(), this.devsSimulator, new OrientedPoint3d(0, 0, 0), "ING");
             ing.setAnnualInterestRateNeg(0.080);
             ing.setAnnualInterestRatePos(0.025);
 
             // create a product
-            this.laptop =
-                    new Product("Laptop", Sku.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM), 0.0);
+            this.laptop = new Product("Laptop", Sku.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM),
+                    new Volume(0.05, VolumeUnit.CUBIC_METER), 0.0);
 
             // create a manufacturer
             this.factory = new Factory("Factory", this.devsSimulator, new OrientedPoint3d(200, 200, 0), ing,
@@ -121,7 +124,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
     }
 
     /**
-     * end of simulation -- display a message
+     * end of simulation -- display a message.
      */
     protected void endSimulation()
     {

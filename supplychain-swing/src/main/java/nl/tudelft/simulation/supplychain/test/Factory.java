@@ -13,7 +13,6 @@ import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
-import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
@@ -31,6 +30,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Supplier;
 import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
+import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
 /**
  * The ComputerShop named Factory. <br>
@@ -102,12 +102,6 @@ public class Factory extends Supplier
      */
     public void init() throws RemoteException
     {
-        // give the actor a fax device which is checked every hour
-        FaxDevice fax = new FaxDevice("FactoryFax", this.simulator);
-        super.addSendingDevice(fax);
-        MessageHandlerInterface secretary = new HandleAllMessages(this);
-        super.addReceivingDevice(fax, secretary, new DistConstantDuration(new Duration(1.0, DurationUnit.HOUR)));
-        //
         // tell Factory to use the RFQhandler to handle RFQs
         RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.stock, 1.2,
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
@@ -126,8 +120,8 @@ public class Factory extends Supplier
         //
         if (this.simulator instanceof AnimatorInterface)
         {
-            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + this.name);
-            bankChart.add("bank account", this.bankAccount, BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
+            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + getName());
+            bankChart.add("bank account", getBankAccount(), BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
         }
     }
 

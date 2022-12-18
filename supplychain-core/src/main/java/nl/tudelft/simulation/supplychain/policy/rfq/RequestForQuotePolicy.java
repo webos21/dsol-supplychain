@@ -28,8 +28,8 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
-    /** the stock on which checks can take place. */
-    private InventoryInterface stock;
+    /** the inventory on which checks can take place. */
+    private InventoryInterface inventory;
 
     /** the reaction time of the handler in simulation time units. */
     private DistContinuousDuration handlingTime;
@@ -43,20 +43,20 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
     /**
      * Construct a new RFQ handler.
      * @param owner a trader in this case as only traders handle RFQs
-     * @param stock the stock to check for products when quoting
+     * @param inventory the stock to check for products when quoting
      * @param profitMargin double; the profit margin to use; 1.0 is no profit
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the RFQ
      * @param validityDuration Duration;
      */
-    public RequestForQuotePolicy(final InventoryActorInterface owner, final InventoryInterface stock, final double profitMargin,
-            final DistContinuousDuration handlingTime, final Duration validityDuration)
+    public RequestForQuotePolicy(final InventoryActorInterface owner, final InventoryInterface inventory,
+            final double profitMargin, final DistContinuousDuration handlingTime, final Duration validityDuration)
     {
         super("RequestForQuotePolicy", owner, RequestForQuote.class);
-        Throw.whenNull(stock, "stock cannot be null");
+        Throw.whenNull(inventory, "inventory cannot be null");
         Throw.whenNull(handlingTime, "handlingTime cannot be null");
         Throw.whenNull(profitMargin, "profitMargin cannot be null");
         Throw.whenNull(validityDuration, "validityDuration cannot be null");
-        this.stock = stock;
+        this.inventory = inventory;
         this.handlingTime = handlingTime;
         this.profitMargin = profitMargin;
         this.validityDuration = validityDuration;
@@ -80,7 +80,7 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
         Duration shippingDuration = rfq.getPreferredTransportOption().estimatedTotalTransportDuration(product.getSku());
         Money transportCosts = rfq.getPreferredTransportOption().estimatedTotalTransportCost(product.getSku());
         // react with a Quote. First calculate the price
-        Money price = this.stock.getUnitPrice(product).multiplyBy(rfq.getAmount() * this.profitMargin).plus(transportCosts);
+        Money price = this.inventory.getUnitPrice(product).multiplyBy(rfq.getAmount() * this.profitMargin).plus(transportCosts);
         // then look at the delivery date
         Time proposedShippingDate =
                 Time.max(getOwner().getSimulatorTime(), rfq.getEarliestDeliveryDate().minus(shippingDuration));

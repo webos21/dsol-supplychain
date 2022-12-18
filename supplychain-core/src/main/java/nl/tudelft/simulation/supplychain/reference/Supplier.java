@@ -10,6 +10,8 @@ import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryRole;
 import nl.tudelft.simulation.supplychain.role.selling.SellingActorInterface;
 import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 
@@ -21,13 +23,16 @@ import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Supplier extends SupplyChainActor implements SellingActorInterface
+public class Supplier extends SupplyChainActor implements SellingActorInterface, InventoryActorInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221206L;
 
     /** The role to sell. */
     private SellingRole sellingRole = null;
+
+    /** the role to keep inventory. */
+    private InventoryRole inventoryRole = null;
 
     /**
      * @param name String; the name of the Supplier
@@ -68,9 +73,28 @@ public class Supplier extends SupplyChainActor implements SellingActorInterface
 
     /** {@inheritDoc} */
     @Override
+    public InventoryRole getInventoryRole()
+    {
+        return this.inventoryRole;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setInventoryRole(final InventoryRole inventoryRole)
+    {
+        Throw.whenNull(inventoryRole, "inventoryRole cannot be null");
+        Throw.when(this.inventoryRole != null, IllegalStateException.class, "inventoryRole already initialized");
+        addRole(inventoryRole);
+        this.inventoryRole = inventoryRole;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void receiveMessage(final Message message)
     {
-        Throw.whenNull(this.sellingRole, "SellingRole not initialized for Retailer: " + this.getName());
+        Throw.whenNull(this.sellingRole, "SellingRole not initialized for actor: " + this.getName());
+        Throw.whenNull(this.inventoryRole, "InventoryRole not initialized for actor: " + this.getName());
         super.receiveMessage(message);
     }
+
 }

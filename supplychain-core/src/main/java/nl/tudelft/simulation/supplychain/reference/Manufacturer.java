@@ -9,6 +9,7 @@ import org.djutils.draw.point.OrientedPoint3d;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
+import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -64,6 +65,14 @@ public class Manufacturer extends DistributionCenter implements ProducingActorIn
         Throw.when(this.producingRole != null, IllegalStateException.class, "producingRole already initialized");
         addRole(this.producingRole);
         this.producingRole = producingRole;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void receiveMessage(final Message message)
+    {
+        Throw.whenNull(this.producingRole, "ProducingRole not initialized for actor: " + this.getName());
+        super.receiveMessage(message);
     }
 
     /**

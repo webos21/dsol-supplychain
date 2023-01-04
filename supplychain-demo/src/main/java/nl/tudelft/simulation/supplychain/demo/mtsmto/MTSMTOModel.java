@@ -3,8 +3,10 @@ package nl.tudelft.simulation.supplychain.demo.mtsmto;
 import java.io.Serializable;
 
 import org.djunits.unit.MassUnit;
+import org.djunits.unit.VolumeUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Mass;
+import org.djunits.value.vdouble.scalar.Volume;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 
@@ -73,16 +75,16 @@ public class MTSMTOModel extends AbstractDSOLModel<Duration, SCAnimator>
             StreamInterface streamMTO = new MersenneTwister();
 
             // Products and BOM
-            Product keyboard =
-                    new Product("keyboard", Sku.PIECE, new Money(15.0, MoneyUnit.USD), new Mass(0.5, MassUnit.KILOGRAM), 0.0);
-            Product casing =
-                    new Product("casing", Sku.PIECE, new Money(400.0, MoneyUnit.USD), new Mass(10.0, MassUnit.KILOGRAM), 0.02);
-            Product mouse =
-                    new Product("mouse", Sku.PIECE, new Money(10.0, MoneyUnit.USD), new Mass(0.1, MassUnit.KILOGRAM), 0.0);
-            Product monitor =
-                    new Product("monitor", Sku.PIECE, new Money(200.0, MoneyUnit.USD), new Mass(5.0, MassUnit.KILOGRAM), 0.01);
-            Product pc =
-                    new Product("PC", Sku.PIECE, new Money(1100.0, MoneyUnit.USD), new Mass(16.0, MassUnit.KILOGRAM), 0.02);
+            Product keyboard = new Product("keyboard", Sku.PIECE, new Money(15.0, MoneyUnit.USD),
+                    new Mass(0.5, MassUnit.KILOGRAM), new Volume(50.0 * 15.0 * 2.0, VolumeUnit.CUBIC_CENTIMETER), 0.0);
+            Product casing = new Product("casing", Sku.PIECE, new Money(400.0, MoneyUnit.USD),
+                    new Mass(10.0, MassUnit.KILOGRAM), new Volume(60.0 * 50.0 * 20.0, VolumeUnit.CUBIC_CENTIMETER), 0.02);
+            Product mouse = new Product("mouse", Sku.PIECE, new Money(10.0, MoneyUnit.USD), new Mass(0.1, MassUnit.KILOGRAM),
+                    new Volume(10.0 * 5.0 * 4.0, VolumeUnit.CUBIC_CENTIMETER), 0.0);
+            Product monitor = new Product("monitor", Sku.PIECE, new Money(200.0, MoneyUnit.USD),
+                    new Mass(5.0, MassUnit.KILOGRAM), new Volume(60.0 * 40.0 * 10.0, VolumeUnit.CUBIC_CENTIMETER), 0.01);
+            Product pc = new Product("PC", Sku.PIECE, new Money(1100.0, MoneyUnit.USD), new Mass(16.0, MassUnit.KILOGRAM),
+                    new Volume(10.0 * 5.0 * 4.0, VolumeUnit.CUBIC_CENTIMETER), 0.02);
             BillOfMaterials pcBOM = new BillOfMaterials(pc);
             pcBOM.add(keyboard, 1.0);
             pcBOM.add(casing, 1.0);

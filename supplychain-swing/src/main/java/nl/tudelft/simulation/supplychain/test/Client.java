@@ -108,7 +108,7 @@ public class Client extends Customer
         //
         // tell Client to use the InternalDemandPolicy
         InternalDemandPolicyRFQ internalDemandHandler =
-                new InternalDemandPolicyRFQ(this, new Duration(24.0, DurationUnit.HOUR)O, null); // XXX: Why does it need stock?
+                new InternalDemandPolicyRFQ(this, new Duration(24.0, DurationUnit.HOUR), null); // XXX: Why does it need stock?
         internalDemandHandler.addSupplier(this.product, this.retailer);
         //
         // tell Client to use the Quotehandler to handle quotes
@@ -119,7 +119,7 @@ public class Client extends Customer
         OrderConfirmationPolicy confirmationHandler = new OrderConfirmationPolicy(this);
         //
         // Client will get a bill in the end
-        BillPolicy billHandler = new BillPolicy(this, super.bankAccount, PaymentPolicyEnum.PAYMENT_IMMEDIATE,
+        BillPolicy billHandler = new BillPolicy(this, getBankAccount(), PaymentPolicyEnum.PAYMENT_IMMEDIATE,
                 new DistConstantDuration(Duration.ZERO));
         //
         // hopefully, Client will get laptop shipments

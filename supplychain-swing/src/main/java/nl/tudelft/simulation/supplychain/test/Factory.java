@@ -12,16 +12,13 @@ import org.djutils.draw.point.OrientedPoint3d;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
-import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
-import nl.tudelft.simulation.supplychain.message.store.MessageStoreInterface;
-import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
@@ -33,8 +30,8 @@ import nl.tudelft.simulation.supplychain.transport.TransportMode;
 import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
 /**
- * The ComputerShop named Factory. <br>
- * <br>
+ * The ComputerShop named Factory.
+ * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
@@ -46,40 +43,26 @@ public class Factory extends Supplier
     private static final long serialVersionUID = 20221201L;
 
     /**
-     * @param name the name of the manufacturer
-     * @param simulator the simulator to use
-     * @param position the position on the map
-     * @param bank the bank
+     * @param name String; the name of the Customer
+     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param simulator SCSimulatorInterface; the simulator
+     * @param location Location; the locatrion of the actor on the map or grid
+     * @param locationDescription String; a description of the location of the Customer
+     * @param bank Bank; the bank of the customer
+     * @param initialBalance Money; the initial bank balance
+     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
      * @param product initial stock product
      * @param amount amount of initial stock
-     * @param messageStore the messageStore to store the messages
      * @throws RemoteException remote simulator error
-     * @throws NamingException
+     * @throws NamingException on animation error
      */
-    public Factory(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
-            final Product product, final double amount, final MessageStoreInterface messageStore)
+    @SuppressWarnings("checkstyle:parameternumber")
+    public Factory(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
+            final OrientedPoint3d location, final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore, final Product product, final double amount)
             throws RemoteException, NamingException
     {
-        this(name, simulator, position, bank, new Money(0.0, MoneyUnit.USD), product, amount, messageStore);
-    }
-
-    /**
-     * @param name the name of the manufacturer
-     * @param simulator the simulator to use
-     * @param position the position on the map
-     * @param bank the bank
-     * @param initialBankAccount the initial bank balance
-     * @param product initial stock product
-     * @param amount amount of initial stock
-     * @param messageStore the messageStore to store the messages
-     * @throws RemoteException remote simulator error
-     * @throws NamingException
-     */
-    public Factory(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position, final Bank bank,
-            final Money initialBankAccount, final Product product, final double amount,
-            final MessageStoreInterface messageStore) throws RemoteException, NamingException
-    {
-        super(name, simulator, position, bank, initialBankAccount, messageStore);
+        super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
         // give the retailer some stock
         Inventory _stock = new Inventory(this);
         if (product != null)
@@ -110,7 +93,7 @@ public class Factory extends Supplier
         AbstractOrderPolicy orderHandler = new OrderPolicyStock(this, super.stock);
         //
         // hopefully, Factory will get payments in the end
-        PaymentPolicy paymentHandler = new PaymentPolicy(this, super.bankAccount);
+        PaymentPolicy paymentHandler = new PaymentPolicy(this, getBankAccount());
         //
         // add the handlers to the SellingRole
         SellingRole sellingRole = new SellingRole(this, this.simulator, rfqHandler, orderHandler, paymentHandler);

@@ -1,10 +1,17 @@
 package nl.tudelft.simulation.supplychain.message;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import org.djunits.value.vdouble.scalar.Time;
 
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
 import nl.tudelft.simulation.supplychain.actor.ActorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
 
 /**
  * A message, which can be sent from a sender to a receiver. Extend this class to add content.
@@ -36,12 +43,27 @@ public abstract class Message implements Serializable
      * @param sender ActorInterface; the sender
      * @param receiver ActorInterface; the receiver
      */
-    public Message(final ActorInterface sender, final ActorInterface receiver)
+    public Message(final SCModelInterface model, final ActorInterface sender, final ActorInterface receiver)
     {
         this.sender = sender;
         this.receiver = receiver;
         this.timestamp = sender.getSimulatorTime();
         this.uniqueId = sender.getSimulator().getUniqueMessageId();
+    }
+    
+    /**
+     * Construct a new message from JSON content.
+     * @param json String; the message content encoded as a JSON string
+     * @throws IOException when decoding of the message fails
+     */
+    public Message(final String json) throws IOException
+    {
+        StringReader in = new StringReader(json);
+        JsonReader jr = new JsonReader(in);
+        jr.beginObject();
+        this.sender = 
+        
+        jr.endObject();
     }
 
     /**
@@ -79,5 +101,45 @@ public abstract class Message implements Serializable
     {
         return this.uniqueId;
     }
+
+    /**
+     * Return the content of the message as a JSON string.
+     * @return String; the content of the message as a JSON string
+     * @throws IOException when encoding of the message fails
+     */
+    protected String toJson() throws IOException
+    {
+        StringWriter out = new StringWriter();
+        JsonWriter jw = new JsonWriter(out);
+        jw.beginObject();
+        jw.name("sender");
+        jw.value(getSender().getName());
+        jw.name("receiver");
+        jw.value(getReceiver().getName());
+        jw.name("uniqueId");
+        jw.value(getUniqueId());
+        jw.name("timestamp");
+        jw.value(getTimestamp().getSI());
+        encodeAsJson(jw);
+        jw.endObject();
+        jw.close();
+        return out.toString();
+    }
+
+    /**
+     * Write the further content of this message to a JSON string. The sender, receiver, unique id, and timestamp have already
+     * been written.
+     * @param jw JsonWriter; the JSON writer to use to encode the message
+     * @throws IOException when encoding of the message fails
+     */
+    public abstract void encodeAsJson(JsonWriter jw) throws IOException;
+
+    /**
+     * Decode the further content of this message from a JSON string. The sender, receiver, unique id, and timestamp have already
+     * been read.
+     * @param jr JsonReader; the JSON reader to use to decode the message
+     * @throws IOException when decoding of the message fails
+     */
+    public abstract void decodeFromJson(JsonReader jr) throws IOException;
 
 }

@@ -17,6 +17,12 @@ import nl.tudelft.simulation.dsol.model.DSOLModel;
 public interface SCModelInterface extends DSOLModel<Duration, SCSimulatorInterface>
 {
     /**
+     * Return a unique message id.
+     * @return long; a unique message id
+     */
+    long getUniqueMessageId();
+
+    /**
      * Calculate the distance between two points as a Length. The point could be in lat/lon, on an orthogonal grid, or based on
      * a GIS projection.
      * @param loc1 Point; first location
@@ -37,4 +43,8 @@ public interface SCModelInterface extends DSOLModel<Duration, SCSimulatorInterfa
         return calculateDistance(loc1, loc2).si / 1000.0;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    SCSimulatorInterface getSimulator();
+    
 }

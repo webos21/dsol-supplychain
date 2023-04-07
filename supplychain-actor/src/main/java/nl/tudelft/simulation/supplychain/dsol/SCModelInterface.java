@@ -5,6 +5,9 @@ import org.djunits.value.vdouble.scalar.Length;
 import org.djutils.draw.point.Point;
 
 import nl.tudelft.simulation.dsol.model.DSOLModel;
+import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.actor.ActorNotFoundException;
 
 /**
  * SCModelInterface defines the specific methods of a supply chain model.
@@ -43,8 +46,18 @@ public interface SCModelInterface extends DSOLModel<Duration, SCSimulatorInterfa
         return calculateDistance(loc1, loc2).si / 1000.0;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    SCSimulatorInterface getSimulator();
+    /**
+     * Retrieve an actor based on its id.
+     * @param actor Actor; the actor to register
+     * @throws ActorAlreadyDefinedException when the actor was already registered in the Actor map
+     */
+    void registerActor(Actor actor) throws ActorAlreadyDefinedException;
     
+    /**
+     * Retrieve an actor based on its id.
+     * @param id String; the id to use to find the Actor
+     * @return Actor; the actor based on its id
+     * @throws ActorNotFoundException when the actor was not registered in the Actor map
+     */
+    Actor getActor(String id) throws ActorNotFoundException;
 }

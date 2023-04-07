@@ -1,69 +1,54 @@
 package nl.tudelft.simulation.supplychain.dsol;
 
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djunits.value.vdouble.scalar.Length;
-import org.djutils.draw.point.Point;
 
-import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.experiment.StreamInformation;
-import nl.tudelft.simulation.dsol.model.inputparameters.InputParameterMap;
-import nl.tudelft.simulation.dsol.statistics.SimulationStatistic;
+import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
+import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.ActorNotFoundException;
 
 /**
- * SCModel.java.
+ * SCModel is the default model implementation from which model implementations can extend. It defines an empty set of input
+ * parameters, an empty set of output statistics, an empty set of actors,
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SCModel implements SCModelInterface
+public abstract class SCModel extends AbstractDSOLModel<Duration, SCSimulatorInterface> implements SCModelInterface
 {
+    /** */
+    private static final long serialVersionUID = 20230407L;
 
     /** the counter for the unique message id. */
     private AtomicLong uniqueMessageId = new AtomicLong(1_000_000L);
 
+    /** the map of actors based on their id. */
+    private Map<String, Actor> actorMap = new LinkedHashMap<>();
+
     /**
-     * 
+     * Create a supply chain model with a specific set of random streams for this replication.
+     * @param simulator SCSimulatorInterface; the simulator
+     * @param streamInformation StreamInformation; information about the random streams to use in a replication
      */
-    public SCModel()
+    public SCModel(final SCSimulatorInterface simulator, final StreamInformation streamInformation)
     {
+        super(simulator, streamInformation);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void constructModel() throws SimRuntimeException
+    /**
+     * Create a supply chain model with a default set of random streams for this replication.
+     * @param simulator SCSimulatorInterface; the simulator
+     */
+    public SCModel(final SCSimulatorInterface simulator)
     {
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public InputParameterMap getInputParameterMap()
-    {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<SimulationStatistic<Duration>> getOutputStatistics()
-    {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setStreamInformation(final StreamInformation streamInformation)
-    {
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StreamInformation getStreamInformation()
-    {
-        return null;
+        super(simulator);
     }
 
     /** {@inheritDoc} */
@@ -75,16 +60,10 @@ public class SCModel implements SCModelInterface
 
     /** {@inheritDoc} */
     @Override
-    public Length calculateDistance(final Point<?> loc1, final Point<?> loc2)
+    public Actor getActor(final String id) throws ActorNotFoundException
     {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SCSimulatorInterface getSimulator()
-    {
-        return null;
+        Throw.when(!this.actorMap.containsKey(id), ActorNotFoundException.class, id);
+        return this.actorMap.get(id);
     }
 
 }

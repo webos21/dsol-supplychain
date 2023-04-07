@@ -56,12 +56,11 @@ public abstract class Message implements Serializable
      * @param json String; the message content encoded as a JSON string
      * @throws IOException when decoding of the message fails
      */
-    public Message(final String json) throws IOException
+    public Message(final SCModelInterface model, final String json) throws IOException
     {
         StringReader in = new StringReader(json);
         JsonReader jr = new JsonReader(in);
         jr.beginObject();
-        this.sender = 
         
         jr.endObject();
     }

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
+import org.djutils.base.Identifiable;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.exceptions.Throw;
@@ -13,6 +14,7 @@ import org.djutils.immutablecollections.ImmutableSet;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
+import nl.tudelft.simulation.supplychain.SupplyChainRuntimeException;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
@@ -26,12 +28,15 @@ import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Actor extends AbstractPolicyHandler implements PolicyHandlerInterface, Locatable
+public abstract class Actor extends AbstractPolicyHandler implements PolicyHandlerInterface, Locatable, Identifiable
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
 
-    /** the name of the actor. */
+    /** the id of the actor. */
+    private final String id;
+
+    /** the longer name of the actor. */
     private final String name;
 
     /** the location description of the actor (e.g., a city, country). */
@@ -51,19 +56,23 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
 
     /**
      * Construct a new Actor.
-     * @param name String; the name of the actor
+     * @param id String; the short id of the actor
+     * @param name String; the longer name of the actor
      * @param messageHandler MessageHandlerInterface; the message handler to use
      * @param simulator SCSimulatorInterface; the simulator to use
      * @param location OrientedPoint3d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
      */
-    public Actor(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
-            final OrientedPoint3d location, final String locationDescription)
+    public Actor(final String id, final String name, final MessageHandlerInterface messageHandler,
+            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription)
     {
         super(simulator);
+        Throw.whenNull(id, "name cannot be null");
+        Throw.when(id.length() == 0, SupplyChainRuntimeException.class, "id of actor cannot be null");
         Throw.whenNull(name, "name cannot be null");
         Throw.whenNull(location, "location cannot be null");
         Throw.whenNull(locationDescription, "locationDescription cannot be null");
+        this.id = id;
         this.name = name;
         this.locationDescription = locationDescription;
         this.location = location;
@@ -93,7 +102,8 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     }
 
     /**
-     * Receive a message from another actor, and handle it (storing or handling, depending on the MessageHandler).
+     * Receive a message from another actor, and handle it (storing or handling, depending on the MessageHandler). When the
+     * message is not intended for this actor, a log warning is given, and the message is not processed.
      * @param message message; the message to receive
      */
     public void receiveMessage(final Message message)
@@ -102,11 +112,17 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
         {
             Logger.warn("Message " + message + " not meant for receiver " + toString());
         }
-        this.messageHandler.handleMessageReceipt(message);
+        else
+        {
+            this.messageHandler.handleMessageReceipt(message);
+        }
     }
 
     /**
-     * Send a message to another actor with a delay.
+     * Send a message to another actor with a delay. This method is public, so Roles, Policies, Departments, ad other
+     * sub-components of the Actor can send messages on its behalf. The public method has the risk that the message is sent from
+     * the wrong actor. When this happens, i.e., when the message is not originating from this actor, a log warning is given,
+     * but the message itself is sent.
      * @param message message; the message to send
      * @param delay Duration; the time it takes between sending and receiving
      */
@@ -129,8 +145,18 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     }
 
     /**
-     * Return the name of the actor.
-     * @return String; the name of the actor
+     * Return the short id of the actor.
+     * @return String; the short id of the actor
+     */
+    @Override
+    public String getId()
+    {
+        return this.id;
+    }
+    
+    /**
+     * Return the longer name of the actor.
+     * @return String; the longer name of the actor
      */
     public String getName()
     {

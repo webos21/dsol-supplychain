@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
+import nl.tudelft.simulation.dsol.simulators.DevsRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.DevsSimulatorInterface;
 
 /**
@@ -128,9 +128,9 @@ public class SCRunSpeedSliderPanel extends JPanel
          */
 
         // initial value of simulation speed
-        if (simulator instanceof DEVSRealTimeAnimator)
+        if (simulator instanceof DevsRealTimeAnimator)
         {
-            DEVSRealTimeAnimator<?> clock = (DEVSRealTimeAnimator<?>) simulator;
+            DevsRealTimeAnimator<?> clock = (DevsRealTimeAnimator<?>) simulator;
             clock.setSpeedFactor(this.factor * SCRunSpeedSliderPanel.this.tickValues.get(this.slider.getValue()));
         }
 
@@ -141,9 +141,9 @@ public class SCRunSpeedSliderPanel extends JPanel
             public void stateChanged(final ChangeEvent ce)
             {
                 JSlider source = (JSlider) ce.getSource();
-                if (!source.getValueIsAdjusting() && simulator instanceof DEVSRealTimeAnimator)
+                if (!source.getValueIsAdjusting() && simulator instanceof DevsRealTimeAnimator)
                 {
-                    DEVSRealTimeAnimator<?> clock = (DEVSRealTimeAnimator<?>) simulator;
+                    DevsRealTimeAnimator<?> clock = (DevsRealTimeAnimator<?>) simulator;
                     clock.setSpeedFactor(SCRunSpeedSliderPanel.this.factor
                             * ((SCRunSpeedSliderPanel) source.getParent()).getTickValues().get(source.getValue()));
                 }

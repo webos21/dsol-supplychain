@@ -26,9 +26,9 @@ public class SCControlPanel extends SCRealTimeControlPanel
      * panel assumes a DevsSimulator and animation. The model specification is not necessarily specified as "real time"; its
      * execution is.
      * @param model DSOLModel&lt;Duration&gt;; the model for the control panel, to allow a reset of the model
-     * @param simulator DEVSRealTimeAnimator&lt;Duration&gt;; the simulator. Specified separately, because the model can have
+     * @param simulator DevsRealTimeAnimator&lt;Duration&gt;; the simulator. Specified separately, because the model can have
      *            been specified with a superclass of the simulator that the ControlPanel actually needs (e.g., model has been
-     *            specified with a DEVSAnimator, whereas the panel needs a RealTimeControlAnimator)
+     *            specified with a DevsAnimator, whereas the panel needs a RealTimeControlAnimator)
      * @throws RemoteException when simulator cannot be accessed for listener attachment
      */
     public SCControlPanel(final DSOLModel<Duration, SCAnimator> model, final SCAnimator simulator) throws RemoteException

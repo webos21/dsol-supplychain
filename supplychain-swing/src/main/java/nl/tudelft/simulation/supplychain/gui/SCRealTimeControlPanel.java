@@ -11,9 +11,9 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.EventInterface;
 
 import nl.tudelft.simulation.dsol.model.DSOLModel;
-import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
+import nl.tudelft.simulation.dsol.simulators.DevsRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.RunState;
-import nl.tudelft.simulation.dsol.swing.gui.control.DEVSControlPanel;
+import nl.tudelft.simulation.dsol.swing.gui.control.DevsControlPanel;
 import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
 
 /**
@@ -24,7 +24,7 @@ import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SCRealTimeControlPanel extends DEVSControlPanel<Duration, SCAnimator> implements PropertyChangeListener
+public class SCRealTimeControlPanel extends DevsControlPanel<Duration, SCAnimator> implements PropertyChangeListener
 {
     /** */
     private static final long serialVersionUID = 20201227L;
@@ -36,12 +36,12 @@ public class SCRealTimeControlPanel extends DEVSControlPanel<Duration, SCAnimato
     private long savedAnimationDelay = 100L;
 
     /**
-     * Generic control panel with a different set of control buttons. The control panel assumes a RealTimeDEVSAnimator and
+     * Generic control panel with a different set of control buttons. The control panel assumes a RealTimeDevsAnimator and
      * animation, but the model specification is not necessarily specified as "real time"; its execution is.
-     * @param model DSOLModel&lt;T, ? extends DEVSSimulationInterface&lt;T&gt;&gt;; the model for the control panel, to allow a
+     * @param model DSOLModel&lt;T, ? extends DevsSimulationInterface&lt;T&gt;&gt;; the model for the control panel, to allow a
      *            reset of the model
      * @param simulator S; the simulator. Specified separately, because the model can have been specified with a superclass of
-     *            the simulator that the ControlPanel actually needs (e.g., model has been specified with a DEVSAnimator,
+     *            the simulator that the ControlPanel actually needs (e.g., model has been specified with a DevsAnimator,
      *            whereas the panel needs a RealTimeControlAnimator)
      * @throws RemoteException when simulator cannot be accessed for listener attachment
      */
@@ -56,7 +56,7 @@ public class SCRealTimeControlPanel extends DEVSControlPanel<Duration, SCAnimato
         this.runSpeedSliderPanel = new SCRunSpeedSliderPanel(0.1, 1000, 1, 3600.0, 3, getSimulator());
         add(this.runSpeedSliderPanel);
 
-        getSimulator().addListener(this, DEVSRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT);
+        getSimulator().addListener(this, DevsRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT);
     }
 
     /** {@inheritDoc} */
@@ -131,7 +131,7 @@ public class SCRealTimeControlPanel extends DEVSControlPanel<Duration, SCAnimato
     @Override
     public void notify(final EventInterface event) throws RemoteException
     {
-        if (event.getType().equals(DEVSRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT))
+        if (event.getType().equals(DevsRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT))
         {
             this.runSpeedSliderPanel.setSpeed((Double) event.getContent());
             fixButtons();

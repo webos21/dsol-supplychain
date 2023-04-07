@@ -7,7 +7,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.EmptyTradeMessageStore;
@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreIn
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Bank extends Actor implements SupplyChainActorInterface
+public class Bank extends Actor implements SupplyChainActor
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221127L;

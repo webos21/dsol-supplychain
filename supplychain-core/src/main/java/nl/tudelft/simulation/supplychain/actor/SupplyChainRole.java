@@ -15,18 +15,18 @@ public abstract class SupplyChainRole extends Role
 
     /**
      * Create a SupplyChainRole that is aware of the SupplyChainActor rather than the Actor.
-     * @param owner SupplyChainActorInterface; the owner of this role
+     * @param owner SupplyChainActor; the owner of this role
      */
-    public SupplyChainRole(final SupplyChainActorInterface owner)
+    public SupplyChainRole(final SupplyChainActor owner)
     {
         super(owner);
     }
 
     /** {@inheritDoc} */
     @Override
-    public SupplyChainActorInterface getOwner()
+    public SupplyChainActor getOwner()
     {
-        return (SupplyChainActorInterface) super.getOwner();
+        return (SupplyChainActor) super.getOwner();
     }
 
 }

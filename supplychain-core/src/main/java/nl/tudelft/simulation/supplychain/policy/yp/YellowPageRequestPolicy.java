@@ -38,7 +38,7 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
 
     /**
      * Constructs a new YellowPageRequestHandler.
-     * @param owner SupplyChainActorInterface; the owner of the policy
+     * @param owner SupplyChainActor; the owner of the policy
      * @param handlingTime the distribution of the time to react on the YP request
      */
     public YellowPageRequestPolicy(final YellowPageActor owner, final DistContinuousDuration handlingTime)

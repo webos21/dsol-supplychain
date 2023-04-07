@@ -29,7 +29,7 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class SupplyChainActor extends Actor implements SupplyChainActorInterface
+public abstract class SupplyChainActor extends Actor implements SupplyChainActor
 {
     /** */
     private static final long serialVersionUID = 20221201L;

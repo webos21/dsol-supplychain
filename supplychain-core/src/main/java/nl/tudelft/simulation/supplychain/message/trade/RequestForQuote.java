@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
 
@@ -32,14 +32,14 @@ public class RequestForQuote extends TradeMessage
 
     /**
      * Create a new RFQ, based on an internal demand.
-     * @param sender SupplyChainActorInterface; the sender actor of the message content
-     * @param receiver SupplyChainActorInterface; the receving actor of the message content
+     * @param sender SupplyChainActor; the sender actor of the message content
+     * @param receiver SupplyChainActor; the receving actor of the message content
      * @param internalDemand InternalDemand; internal demand that triggered the process
      * @param preferredTransportOption TransportOption; the preferred transport option for moving the product from sender to
      *            receiver
      * @param cutoffDuration Duration; after how much time will the RFQ stop collecting quotes?
      */
-    public RequestForQuote(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+    public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver,
             final InternalDemand internalDemand, final TransportOption preferredTransportOption, final Duration cutoffDuration)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());

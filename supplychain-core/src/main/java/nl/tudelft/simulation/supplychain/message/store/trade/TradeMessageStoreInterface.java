@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.message.store.trade;
 import java.io.Serializable;
 import java.util.List;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
 /**
@@ -23,9 +23,9 @@ public interface TradeMessageStoreInterface extends Serializable
      * Set the owner for the message store after is has been created. The reason for explicitly having to set the owner and not
      * include the owner in the constructor is that the SupplyChainActor needs a MessageStore in its constructor, so the
      * MessageStore cannot be constructed with the owner.
-     * @param owner SupplyChainActorInterface; the owner
+     * @param owner SupplyChainActor; the owner
      */
-    void setOwner(SupplyChainActorInterface owner);
+    void setOwner(SupplyChainActor owner);
 
     /**
      * Add a new message object to the store.
@@ -51,9 +51,9 @@ public interface TradeMessageStoreInterface extends Serializable
 
     /**
      * Return the owner.
-     * @return SupplyChainActorInterface; the owner
+     * @return SupplyChainActor; the owner
      */
-    SupplyChainActorInterface getOwner();
+    SupplyChainActor getOwner();
 
     /**
      * Remove all messages belonging to an internalDemandId from the store. No error message is given when no messages belonging

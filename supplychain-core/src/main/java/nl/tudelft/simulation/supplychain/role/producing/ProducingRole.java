@@ -8,7 +8,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
 
 /**
  * The producing role is a role that handles the production of products from parts, based on a Bill of Materials (BOM). Parts
@@ -30,9 +30,9 @@ public abstract class ProducingRole extends SupplyChainRole
 
     /**
      * Create a ProducingRole object for an actor.
-     * @param owner SupplyChainActorInterface; the owner of this role
+     * @param owner SupplyChainActor; the owner of this role
      */
-    public ProducingRole(final InventoryActorInterface owner)
+    public ProducingRole(final InventoryActor owner)
     {
         super(owner);
     }

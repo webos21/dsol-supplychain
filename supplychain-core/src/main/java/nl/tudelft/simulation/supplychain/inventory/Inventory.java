@@ -16,7 +16,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
 import nl.tudelft.simulation.supplychain.role.inventory.InventoryRole;
 
 /**
@@ -35,7 +35,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
     private static final long serialVersionUID = 20221210L;
 
     /** the actow that owns the inventory. */
-    private final InventoryActorInterface owner;
+    private final InventoryActor owner;
 
     /** the InventoryRole of the owner. */
     private final InventoryRole inventoryRole;
@@ -50,7 +50,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
      * Create a new Inventory for an actor.
      * @param owner the Trader that physically owns the stock.
      */
-    public Inventory(final InventoryActorInterface owner)
+    public Inventory(final InventoryActor owner)
     {
         Throw.whenNull(owner, "owner cannot be null");
         this.owner = owner;
@@ -62,7 +62,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
      * @param owner the trader for which this is the stock
      * @param initialStock the initial stock
      */
-    public Inventory(final InventoryActorInterface owner, final InventoryInterface initialStock)
+    public Inventory(final InventoryActor owner, final InventoryInterface initialStock)
     {
         this(owner);
         for (Product product : initialStock.getProducts())
@@ -78,7 +78,7 @@ public class Inventory extends EventProducer implements InventoryInterface, Stoc
 
     /** {@inheritDoc} */
     @Override
-    public InventoryActorInterface getOwner()
+    public InventoryActor getOwner()
     {
         return this.owner;
     }

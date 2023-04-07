@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.message.store;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
@@ -17,7 +17,7 @@ public class EmptyMessageStore implements MessageStoreInterface
     private static final long serialVersionUID = 20221201L;
 
     /** the owner. */
-    private SupplyChainActorInterface owner;
+    private SupplyChainActor owner;
 
     /**
      * Create a content store that does not store anything. E.g., for the YellowPage that does not need to keep track of
@@ -30,14 +30,14 @@ public class EmptyMessageStore implements MessageStoreInterface
 
     /** {@inheritDoc} */
     @Override
-    public void setOwner(final SupplyChainActorInterface owner)
+    public void setOwner(final SupplyChainActor owner)
     {
         this.owner = owner;
     }
 
     /** {@inheritDoc} */
     @Override
-    public SupplyChainActorInterface getOwner()
+    public SupplyChainActor getOwner()
     {
         return this.owner;
     }

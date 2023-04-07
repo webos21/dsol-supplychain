@@ -1,10 +1,10 @@
 package nl.tudelft.simulation.supplychain.actor;
 
-import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.djunits.value.vdouble.scalar.Duration;
+import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint3d;
 import org.djutils.exceptions.Throw;
@@ -12,20 +12,21 @@ import org.djutils.immutablecollections.ImmutableLinkedHashSet;
 import org.djutils.immutablecollections.ImmutableSet;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 
 /**
  * The actor is the basic class in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'
- * object, that is able to exchange messages with other actors and process the incoming messages.<br>
+ * object, that is able to exchange messages with other actors and process the incoming messages.
  * <p>
  * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Actor extends AbstractPolicyHandler implements ActorInterface
+public abstract class Actor extends AbstractPolicyHandler implements PolicyHandlerInterface, Locatable
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
@@ -37,7 +38,7 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
     private final String locationDescription;
 
     /** the roles. */
-    private ImmutableSet<RoleInterface> roles = new ImmutableLinkedHashSet<>(new LinkedHashSet<>());
+    private ImmutableSet<Role> roles = new ImmutableLinkedHashSet<>(new LinkedHashSet<>());
 
     /** the message handler. */
     private final MessageHandlerInterface messageHandler;
@@ -70,25 +71,31 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
         messageHandler.setOwner(this);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void addRole(final RoleInterface role)
+    /**
+     * Add a role to the actor.
+     * @param role Role; the role to add to the actor
+     */
+    public void addRole(final Role role)
     {
         Throw.whenNull(role, "role cannot be null");
-        Set<RoleInterface> newRoles = this.roles.toSet();
+        Set<Role> newRoles = this.roles.toSet();
         newRoles.add(role);
         this.roles = new ImmutableLinkedHashSet<>(newRoles);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ImmutableSet<RoleInterface> getRoles()
+    /**
+     * Return the set of roles for this actor.
+     * @return Set&lt;roles&gt;; the roles of this actor
+     */
+    public ImmutableSet<Role> getRoles()
     {
         return this.roles;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Receive a message from another actor, and handle it (storing or handling, depending on the MessageHandler).
+     * @param message message; the message to receive
+     */
     public void receiveMessage(final Message message)
     {
         if (!message.getReceiver().equals(this))
@@ -98,8 +105,11 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
         this.messageHandler.handleMessageReceipt(message);
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Send a message to another actor with a delay.
+     * @param message message; the message to send
+     * @param delay Duration; the time it takes between sending and receiving
+     */
     public void sendMessage(final Message message, final Duration delay)
     {
         if (!message.getSender().equals(this))
@@ -109,32 +119,49 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
         this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Send a message to another actor without a delay.
+     * @param message message; the message to send
+     */
     public void sendMessage(final Message message)
     {
         sendMessage(message, Duration.ZERO);
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Return the name of the actor.
+     * @return String; the name of the actor
+     */
     public String getName()
     {
         return this.name;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Return the location description of the actor (e.g., a city, country).
+     * @return String; the location description of the actor
+     */
     public String getLocationDescription()
     {
         return this.locationDescription;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Return the simulator to schedule simulation events on.
+     * @return simulator SCSimulatorInterface the simulator
+     */
     public SCSimulatorInterface getSimulator()
     {
         return this.simulator;
+    }
+
+    /**
+     * Return the current simulation time.
+     * @return Time; the current simulation time
+     */
+    public Time getSimulatorTime()
+    {
+        return getSimulator().getAbsSimulatorTime();
     }
 
     /** {@inheritDoc} */
@@ -144,15 +171,10 @@ public abstract class Actor extends AbstractPolicyHandler implements ActorInterf
         return this.location;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Serializable getSourceId()
-    {
-        return getName();
-    }
-
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Set the bounds of the object (size and relative height in the animation).
+     * @param bounds the bounds for the (animation) object
+     */
     public void setBounds(final Bounds3d bounds)
     {
         this.bounds = bounds;

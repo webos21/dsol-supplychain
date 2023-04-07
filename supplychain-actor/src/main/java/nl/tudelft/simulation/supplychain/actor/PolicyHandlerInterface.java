@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.actor;
 
 import java.io.Serializable;
 
-import org.djutils.event.EventProducerInterface;
+import org.djutils.event.EventProducer;
 
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface PolicyHandlerInterface extends EventProducerInterface, Serializable
+public interface PolicyHandlerInterface extends EventProducer, Serializable
 {
     /**
      * Add a message handling policy to the PolicyHandler.

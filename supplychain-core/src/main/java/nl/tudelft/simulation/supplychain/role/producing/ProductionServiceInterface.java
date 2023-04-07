@@ -7,7 +7,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
 
 /**
  * The ProductionServiceInterface represents a production service. An internal production order can be handed to a class that
@@ -41,9 +41,9 @@ public interface ProductionServiceInterface extends Serializable
 
     /**
      * Return the actor with inventory.
-     * @return InventoryActorInterface; the actor with inventory
+     * @return InventoryActor; the actor with inventory
      */
-    InventoryActorInterface getOwner();
+    InventoryActor getOwner();
 
     /**
      * Return the inventory.

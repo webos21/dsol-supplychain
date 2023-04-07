@@ -13,7 +13,7 @@ import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
+import nl.tudelft.simulation.supplychain.role.producing.ProducingActor;
 import nl.tudelft.simulation.supplychain.role.producing.ProducingRole;
 
 /**
@@ -24,7 +24,7 @@ import nl.tudelft.simulation.supplychain.role.producing.ProducingRole;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Manufacturer extends DistributionCenter implements ProducingActorInterface
+public class Manufacturer extends DistributionCenter implements ProducingActor
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;

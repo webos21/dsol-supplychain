@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 import java.util.List;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -28,13 +28,13 @@ public class YellowPageAnswer extends TradeMessage
 
     /**
      * Constructs a new YellowPageAnswer.
-     * @param sender SupplyChainActorInterface; the sender of the yellow page answer
-     * @param receiver SupplyChainActorInterface; the receiver of the yellow page answer
+     * @param sender SupplyChainActor; the sender of the yellow page answer
+     * @param receiver SupplyChainActor; the receiver of the yellow page answer
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param suppliers the suppliers of the requested product
      * @param ypRequest the request that triggered this YP answer
      */
-    public YellowPageAnswer(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+    public YellowPageAnswer(final SupplyChainActor sender, final SupplyChainActor receiver,
             final long internalDemandId, final List<SupplyChainActor> suppliers, final YellowPageRequest ypRequest)
     {
         super(sender, receiver, internalDemandId);

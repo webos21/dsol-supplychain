@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.policy;
 
 import org.djutils.exceptions.Throw;
 
-import nl.tudelft.simulation.supplychain.actor.ActorInterface;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
@@ -23,7 +23,7 @@ public abstract class AbstractMessagePolicy<M extends Message> implements Messag
     private final String id;
 
     /** the owner of this policy. */
-    private final ActorInterface owner;
+    private final Actor owner;
 
     /** the class of messages for which this policy applies. */
     private final Class<M> messageClass;
@@ -31,10 +31,10 @@ public abstract class AbstractMessagePolicy<M extends Message> implements Messag
     /**
      * constructs a new message policy.
      * @param id String; the id of the policy
-     * @param owner ActorInterface; the owner of this policy
+     * @param owner Actor; the owner of this policy
      * @param messageClass Class&lt;M&gt;; the message type that this policy can process
      */
-    public AbstractMessagePolicy(final String id, final ActorInterface owner, final Class<M> messageClass)
+    public AbstractMessagePolicy(final String id, final Actor owner, final Class<M> messageClass)
     {
         Throw.whenNull(id, "id cannot be null");
         Throw.whenNull(owner, "owner cannot be null");
@@ -53,7 +53,7 @@ public abstract class AbstractMessagePolicy<M extends Message> implements Messag
 
     /** {@inheritDoc} */
     @Override
-    public ActorInterface getOwner()
+    public Actor getOwner()
     {
         return this.owner;
     }

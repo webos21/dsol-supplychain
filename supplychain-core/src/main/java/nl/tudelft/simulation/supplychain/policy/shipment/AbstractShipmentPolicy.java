@@ -20,7 +20,7 @@ public abstract class AbstractShipmentPolicy extends SupplyChainPolicy<Shipment>
     /**
      * Construct a new ShipmentHandler.
      * @param id String; the id of the ;olicy
-     * @param owner SupplyChainActorInterface; the owner of the policy
+     * @param owner SupplyChainActor; the owner of the policy
      */
     public AbstractShipmentPolicy(final String id, final SupplyChainActor owner)
     {

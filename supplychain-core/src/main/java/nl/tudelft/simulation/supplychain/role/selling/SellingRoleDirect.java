@@ -21,7 +21,7 @@ public class SellingRoleDirect extends SellingRole
 
     /**
      * Constructs a new SellingRole for Order - Payment.
-     * @param owner SupplyChainActorInterface; the owner this role
+     * @param owner SupplyChainActor; the owner this role
      * @param orderPolicy the order handler
      * @param paymentPolicy the payment handler
      */

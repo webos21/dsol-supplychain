@@ -1,7 +1,5 @@
 package nl.tudelft.simulation.supplychain.actor;
 
-import java.io.Serializable;
-
 import org.djutils.exceptions.Throw;
 
 /**
@@ -13,19 +11,19 @@ import org.djutils.exceptions.Throw;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Role extends AbstractPolicyHandler implements RoleInterface
+public abstract class Role extends AbstractPolicyHandler
 {
     /** */
     private static final long serialVersionUID = 20221121L;
 
     /** the actor to which this role belongs. */
-    private final ActorInterface owner;
+    private final Actor owner;
 
     /**
      * Create a new Role.
      * @param owner Actor; the actor to which this role belongs
      */
-    public Role(final ActorInterface owner)
+    public Role(final Actor owner)
     {
         super(owner.getSimulator());
         Throw.whenNull(owner, "owner cannot be null");
@@ -36,17 +34,9 @@ public abstract class Role extends AbstractPolicyHandler implements RoleInterfac
      * Return the actor to which this role belongs.
      * @return owner Actor; the actor to which this role belongs
      */
-    @Override
-    public ActorInterface getOwner()
+    public Actor getOwner()
     {
         return this.owner;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Serializable getSourceId()
-    {
-        return getId();
     }
 
 }

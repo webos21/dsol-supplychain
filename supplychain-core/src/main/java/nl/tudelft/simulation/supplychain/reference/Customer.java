@@ -10,9 +10,9 @@ import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
-import nl.tudelft.simulation.supplychain.role.buying.BuyingActorInterface;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingActor;
 import nl.tudelft.simulation.supplychain.role.buying.BuyingRole;
-import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationActorInterface;
+import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationActor;
 import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRole;
 
 /**
@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRole;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Customer extends SupplyChainActor implements BuyingActorInterface, DemandGenerationActorInterface
+public class Customer extends SupplyChainActor implements BuyingActor, DemandGenerationActor
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;

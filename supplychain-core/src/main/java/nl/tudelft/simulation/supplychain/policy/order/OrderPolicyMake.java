@@ -12,8 +12,8 @@ import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
-import nl.tudelft.simulation.supplychain.role.producing.ProducingActorInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
+import nl.tudelft.simulation.supplychain.role.producing.ProducingActor;
 
 /**
  * <p>
@@ -29,10 +29,10 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
 
     /**
      * Construct a new OrderHandler that makes the goods when ordered.
-     * @param owner SupplyChainActorInterface; the owner of the policy
+     * @param owner SupplyChainActor; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
-    public OrderPolicyMake(final ProducingActorInterface owner, final InventoryInterface stock)
+    public OrderPolicyMake(final ProducingActor owner, final InventoryInterface stock)
     {
         super("OrderPolicyMake", owner, stock, Order.class);
     }
@@ -50,7 +50,7 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
                 getOwner().getName(), orderConfirmation);
 
         // this is MTO, so we don't keep stock of this product. Therefore, produce it.
-        ProductionOrder productionOrder = new ProductionOrder(((InventoryActorInterface) getOwner()),
+        ProductionOrder productionOrder = new ProductionOrder(((InventoryActor) getOwner()),
                 order.getInternalDemandId(), order.getDeliveryDate(), order.getProduct(), order.getAmount());
         getOwner().sendMessage(productionOrder);
 

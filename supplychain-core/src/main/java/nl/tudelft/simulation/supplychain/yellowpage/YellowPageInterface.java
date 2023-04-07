@@ -17,7 +17,7 @@ public interface YellowPageInterface
     /**
      * finds actors based on the regex.
      * @param regex the name of the actor as regular expression
-     * @return ActorInterface[] the result
+     * @return Actor[] the result
      */
     List<Actor> findActor(String regex);
 
@@ -25,14 +25,14 @@ public interface YellowPageInterface
      * finds an actor based on the regex.
      * @param regex the name of the actor as regular expression
      * @param topic the topic for which this actor is registered
-     * @return ActorInterface[] the result
+     * @return Actor[] the result
      */
     List<Actor> findActor(String regex, Topic topic);
 
     /**
      * finds an actor based on the category.
      * @param topic the category for this actor
-     * @return ActorInterface[] the result
+     * @return Actor[] the result
      */
     List<Actor> findActor(Topic topic);
 

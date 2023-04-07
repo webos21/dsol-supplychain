@@ -22,7 +22,7 @@ public abstract class BuyingRole extends SupplyChainRole
 
     /**
      * Create a BuyingRole object for an actor.
-     * @param owner SupplyChainActorInterface; the owner of this role
+     * @param owner SupplyChainActor; the owner of this role
      */
     public BuyingRole(final SupplyChainActor owner)
     {

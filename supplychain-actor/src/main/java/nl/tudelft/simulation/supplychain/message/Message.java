@@ -10,7 +10,7 @@ import org.djunits.value.vdouble.scalar.Time;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import nl.tudelft.simulation.supplychain.actor.ActorInterface;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
 
 /**
@@ -27,10 +27,10 @@ public abstract class Message implements Serializable
     private static final long serialVersionUID = 20221203L;
 
     /** sender of the message (necessary for a possible reply). */
-    private final ActorInterface sender;
+    private final Actor sender;
 
     /** the receiver of a message. */
-    private final ActorInterface receiver;
+    private final Actor receiver;
 
     /** the timestamp of a message. */
     private final Time timestamp;
@@ -40,10 +40,10 @@ public abstract class Message implements Serializable
 
     /**
      * Construct a new message.
-     * @param sender ActorInterface; the sender
-     * @param receiver ActorInterface; the receiver
+     * @param sender Actor; the sender
+     * @param receiver Actor; the receiver
      */
-    public Message(final SCModelInterface model, final ActorInterface sender, final ActorInterface receiver)
+    public Message(final SCModelInterface model, final Actor sender, final Actor receiver)
     {
         this.sender = sender;
         this.receiver = receiver;
@@ -67,18 +67,18 @@ public abstract class Message implements Serializable
 
     /**
      * Return the sender of the message (to allow for a reply to be sent).
-     * @return ActorInterface; the sender of the message
+     * @return Actor; the sender of the message
      */
-    public ActorInterface getSender()
+    public Actor getSender()
     {
         return this.sender;
     }
 
     /**
      * Return the receiver of the message.
-     * @return ActorInterface; the receiver of the message
+     * @return Actor; the receiver of the message
      */
-    public ActorInterface getReceiver()
+    public Actor getReceiver()
     {
         return this.receiver;
     }

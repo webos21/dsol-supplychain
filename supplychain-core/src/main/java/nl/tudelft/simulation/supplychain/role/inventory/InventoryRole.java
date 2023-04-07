@@ -35,9 +35,9 @@ public abstract class InventoryRole extends SupplyChainRole
 
     /**
      * Create an InventoryRole object for an actor, with an empty inventory.
-     * @param owner SupplyChainActorInterface; the owner of this role
+     * @param owner SupplyChainActor; the owner of this role
      */
-    public InventoryRole(final InventoryActorInterface owner)
+    public InventoryRole(final InventoryActor owner)
     {
         super(owner);
         this.inventory = new Inventory(owner);
@@ -45,10 +45,10 @@ public abstract class InventoryRole extends SupplyChainRole
 
     /**
      * Create an InventoryRole object for an actor.
-     * @param owner SupplyChainActorInterface; the owner of this role
+     * @param owner SupplyChainActor; the owner of this role
      * @param initialInventory InventoryInterface; the Inventory to use within this role
      */
-    public InventoryRole(final InventoryActorInterface owner, final InventoryInterface initialInventory)
+    public InventoryRole(final InventoryActor owner, final InventoryInterface initialInventory)
     {
         super(owner);
         Throw.whenNull(initialInventory, "initialInventory cannot be null");

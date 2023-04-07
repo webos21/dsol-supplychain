@@ -10,9 +10,9 @@ import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActorInterface;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
 import nl.tudelft.simulation.supplychain.role.inventory.InventoryRole;
-import nl.tudelft.simulation.supplychain.role.selling.SellingActorInterface;
+import nl.tudelft.simulation.supplychain.role.selling.SellingActor;
 import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
 
 /**
@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Supplier extends SupplyChainActor implements SellingActorInterface, InventoryActorInterface
+public class Supplier extends SupplyChainActor implements SellingActor, InventoryActor
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221206L;

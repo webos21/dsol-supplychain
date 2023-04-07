@@ -1,16 +1,16 @@
 package nl.tudelft.simulation.supplychain.role.inventory;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 
 /**
- * InventoryActorInterface indicates that the actor has a InventoryRole.
+ * InventoryActor indicates that the actor has a InventoryRole.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface InventoryActorInterface extends SupplyChainActorInterface
+public interface InventoryActor extends SupplyChainActor
 {
     /**
      * Return the inventory role of this actor.

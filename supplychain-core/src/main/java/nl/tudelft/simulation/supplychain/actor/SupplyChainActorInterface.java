@@ -10,7 +10,7 @@ import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 
 /**
- * SupplyChainActorInterface defines the defining methods of the SupplyChainActor. The SupplyChainActor extends the Actor, and
+ * SupplyChainActor defines the defining methods of the SupplyChainActor. The SupplyChainActor extends the Actor, and
  * adds a bank account, cost items, and a Store for the sent and received Messages.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
@@ -18,7 +18,7 @@ import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreIn
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface SupplyChainActorInterface extends ActorInterface
+public interface SupplyChainActor extends Actor
 {
     /**
      * Add a fixed cost item for this actor.

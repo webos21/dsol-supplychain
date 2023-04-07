@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 import org.djunits.unit.LengthUnit;
 import org.djunits.value.vdouble.scalar.Length;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActorInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -31,13 +31,13 @@ public class YellowPageRequest extends TradeMessage
 
     /**
      * Construct a YellowPageRequest with a maximum distance.
-     * @param sender SupplyChainActorInterface; the sender of the yellow page request
-     * @param receiver SupplyChainActorInterface; the receiver of the yellow page request
+     * @param sender SupplyChainActor; the sender of the yellow page request
+     * @param receiver SupplyChainActor; the receiver of the yellow page request
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      * @param maximumDistance the maximum distance around the 'sender' to search for suppliers
      */
-    public YellowPageRequest(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver,
             final long internalDemandId, final Product product, final Length maximumDistance)
     {
         this(sender, receiver, internalDemandId, product, maximumDistance, Integer.MAX_VALUE);
@@ -45,13 +45,13 @@ public class YellowPageRequest extends TradeMessage
 
     /**
      * Construct a YellowPageRequest with a maximum number of answers. The nearest 'maximumNumber' suppliers are returned.
-     * @param sender SupplyChainActorInterface; the sender of the yellow page request
-     * @param receiver SupplyChainActorInterface; the receiver of the yellow page request
+     * @param sender SupplyChainActor; the sender of the yellow page request
+     * @param receiver SupplyChainActor; the receiver of the yellow page request
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      * @param maximumNumber the maximum number of supplier to return
      */
-    public YellowPageRequest(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver,
             final long internalDemandId, final Product product, final int maximumNumber)
     {
         this(sender, receiver, internalDemandId, product, new Length(Double.MAX_VALUE, LengthUnit.SI), maximumNumber);
@@ -59,12 +59,12 @@ public class YellowPageRequest extends TradeMessage
 
     /**
      * Construct a YellowPageRequest without constraints.
-     * @param sender SupplyChainActorInterface; the sender of the yellow page request
-     * @param receiver SupplyChainActorInterface; the receiver of the yellow page request
+     * @param sender SupplyChainActor; the sender of the yellow page request
+     * @param receiver SupplyChainActor; the receiver of the yellow page request
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      */
-    public YellowPageRequest(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver,
             final long internalDemandId, final Product product)
     {
         this(sender, receiver, internalDemandId, product, new Length(Double.MAX_VALUE, LengthUnit.SI), Integer.MAX_VALUE);
@@ -73,14 +73,14 @@ public class YellowPageRequest extends TradeMessage
     /**
      * Construct a YellowPageRequest with a maximum number of answers and a geographic range to search in. Only nearest
      * 'maximumNumber' suppliers within the given range are returned.
-     * @param sender SupplyChainActorInterface; the sender of the yellow page request
-     * @param receiver SupplyChainActorInterface; the receiver of the yellow page request
+     * @param sender SupplyChainActor; the sender of the yellow page request
+     * @param receiver SupplyChainActor; the receiver of the yellow page request
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      * @param maximumDistance the maximum distance around the 'sender' to search for suppliers
      * @param maximumNumber the maximum number of supplier to return
      */
-    public YellowPageRequest(final SupplyChainActorInterface sender, final SupplyChainActorInterface receiver,
+    public YellowPageRequest(final SupplyChainActor sender, final SupplyChainActor receiver,
             final long internalDemandId, final Product product, final Length maximumDistance, final int maximumNumber)
     {
         super(sender, receiver, internalDemandId);

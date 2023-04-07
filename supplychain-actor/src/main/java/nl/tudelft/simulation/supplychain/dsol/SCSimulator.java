@@ -1,7 +1,6 @@
 package nl.tudelft.simulation.supplychain.dsol;
 
 import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
@@ -24,9 +23,6 @@ public class SCSimulator extends DevsSimulator<Duration> implements SCSimulatorI
 
     /** the start time of the simulator. */
     private final Time absStartTime;
-
-    /** the counter for the unique message id. */
-    private AtomicLong uniqueMessageId = new AtomicLong(1_000_000L);
 
     /**
      * Construct the SCSimulator that extends the DevsSimulator, and offers absolute Time for the simulation time in addition to
@@ -52,13 +48,6 @@ public class SCSimulator extends DevsSimulator<Duration> implements SCSimulatorI
     public Time getAbsStartTime()
     {
         return this.absStartTime;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public long getUniqueMessageId()
-    {
-        return this.uniqueMessageId.getAndIncrement();
     }
 
     /** {@inheritDoc} */

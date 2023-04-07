@@ -2,7 +2,6 @@ package nl.tudelft.simulation.supplychain.message;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Objects;
 
@@ -55,13 +54,13 @@ public abstract class Message implements Serializable
         this.timestamp = model.getSimulator().getAbsSimulatorTime();
         this.uniqueId = model.getUniqueMessageId();
     }
-   
+
     /**
      * Construct a new message from JSON content.
      * @param model SCModelInterface; the supply chain model
      * @param json String; the message content encoded as a JSON string
      * @throws IOException when decoding of the message fails
-     * @throws ActorNotFoundException when either the sender, or the receiver could not be found
+     * @throws ActorNotFoundException when either the sender, or the receiver could not be found in the model's actor map
      */
     public Message(final SCModelInterface model, final String json) throws IOException, ActorNotFoundException
     {
@@ -119,9 +118,9 @@ public abstract class Message implements Serializable
         JsonWriter jw = new JsonWriter(out);
         jw.beginObject();
         jw.name("sender");
-        jw.value(getSender().getName());
+        jw.value(getSender().getId());
         jw.name("receiver");
-        jw.value(getReceiver().getName());
+        jw.value(getReceiver().getId());
         jw.name("uniqueId");
         jw.value(getUniqueId());
         jw.name("timestamp");
@@ -141,8 +140,8 @@ public abstract class Message implements Serializable
     public abstract void encodeAsJson(JsonWriter jw) throws IOException;
 
     /**
-     * Decode the further content of this message from a JSON string. The sender, receiver, unique id, and timestamp have already
-     * been read.
+     * Decode the further content of this message from a JSON string. The sender, receiver, unique id, and timestamp have
+     * already been read.
      * @param jr JsonReader; the JSON reader to use to decode the message
      * @throws IOException when decoding of the message fails
      */

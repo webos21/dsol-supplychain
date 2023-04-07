@@ -12,7 +12,7 @@ import org.djutils.draw.point.OrientedPoint2d;
 import org.djutils.exceptions.Throw;
 import org.djutils.immutablecollections.ImmutableLinkedHashSet;
 import org.djutils.immutablecollections.ImmutableSet;
-import org.pmw.tinylog.Logger;
+import org.djutils.logger.CategoryLogger;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
@@ -116,7 +116,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     {
         if (!message.getReceiver().equals(this))
         {
-            Logger.warn("Message " + message + " not meant for receiver " + toString());
+            CategoryLogger.always().warn("Message " + message + " not meant for receiver " + toString());
         }
         else
         {
@@ -136,7 +136,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     {
         if (!message.getSender().equals(this))
         {
-            Logger.warn("Message " + message + " not originating from sender " + toString());
+            CategoryLogger.always().warn("Message " + message + " not originating from sender " + toString());
         }
         this.simulator.scheduleEventRel(delay, message.getReceiver(), "receiveMessage", new Object[] {message});
     }

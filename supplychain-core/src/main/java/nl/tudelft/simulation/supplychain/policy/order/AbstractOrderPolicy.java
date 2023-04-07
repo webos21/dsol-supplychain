@@ -78,7 +78,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
             {
                 // try again in one day
                 Serializable[] args = new Serializable[] {order};
-                getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "ship", args);
+                getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "ship", args);
             }
             else
             {
@@ -102,7 +102,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
 
                 // ... by scheduling it based on the transportation delay
                 Serializable[] args = new Serializable[] {bill};
-                getOwner().getSimulator().scheduleEventRel(transportTime, this, this, "sendBill", args);
+                getOwner().getSimulator().scheduleEventRel(transportTime, this, "sendBill", args);
             }
         }
         catch (Exception e)

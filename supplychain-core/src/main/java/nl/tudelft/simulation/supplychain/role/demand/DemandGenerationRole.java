@@ -60,7 +60,7 @@ public class DemandGenerationRole extends SupplyChainRole
         try
         {
             Serializable[] args = {product, demand};
-            super.simulator.scheduleEventRel(demand.getIntervalDistribution().draw(), this, this, "createInternalDemand", args);
+            super.simulator.scheduleEventRel(demand.getIntervalDistribution().draw(), this, "createInternalDemand", args);
         }
         catch (Exception e)
         {

@@ -57,7 +57,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
         this.maxDeliveryDuration = maxDeliveryDuration;
         try
         {
-            this.simulator.scheduleEventRel(checkInterval.draw(), this, this, "checkLoop", new Serializable[] {});
+            this.simulator.scheduleEventRel(checkInterval.draw(), this, "checkLoop", new Serializable[] {});
         }
         catch (Exception e)
         {
@@ -73,7 +73,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
         checkInventoryLevel();
         try
         {
-            this.simulator.scheduleEventRel(this.checkInterval.draw(), this, this, "checkLoop", new Serializable[] {});
+            this.simulator.scheduleEventRel(this.checkInterval.draw(), this, "checkLoop", new Serializable[] {});
         }
         catch (Exception e)
         {

@@ -109,7 +109,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
             // schedule a remark that the simulation is ready
             Duration endTime =
                     new Duration(this.simulator.getReplication().getRunLength().doubleValue() - 0.001, DurationUnit.SI);
-            this.devsSimulator.scheduleEventRel(endTime, this, this, "endSimulation", new Serializable[] {});
+            this.devsSimulator.scheduleEventRel(endTime, this, "endSimulation", new Serializable[] {});
 
             // Create the animation.
             ContentAnimator contentAnimator = new ContentAnimator(this.devsSimulator);

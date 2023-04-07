@@ -73,7 +73,7 @@ public class FixedCost implements Serializable
             // cancel the previous event
             this.owner.getSimulator().cancelEvent(this.fixedAmountEvent);
         }
-        this.fixedAmountEvent = this.owner.getSimulator().scheduleEventRel(this.interval, this, this, "bookFixedCost", null);
+        this.fixedAmountEvent = this.owner.getSimulator().scheduleEventRel(this.interval, this, "bookFixedCost", null);
     }
 
     /**
@@ -92,7 +92,7 @@ public class FixedCost implements Serializable
     protected void bookFixedCost()
     {
         this.owner.getBankAccount().withdrawFromBalance(this.amount);
-        this.fixedAmountEvent = this.owner.getSimulator().scheduleEventRel(this.interval, this, this, "bookFixedCost", null);
+        this.fixedAmountEvent = this.owner.getSimulator().scheduleEventRel(this.interval, this, "bookFixedCost", null);
     }
 
     /**

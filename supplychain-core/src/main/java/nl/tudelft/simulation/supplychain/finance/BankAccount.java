@@ -57,7 +57,7 @@ public class BankAccount extends EventProducer
         this.roundBalance();
         sendBalanceUpdateEvent();
         // start the interest process...
-        this.owner.getSimulator().scheduleEventNow(this, this, "interest", null);
+        this.owner.getSimulator().scheduleEventNow(this, "interest", null);
     }
 
     /**
@@ -121,7 +121,7 @@ public class BankAccount extends EventProducer
             addToBalance(this.balance.multiplyBy(this.bank.getAnnualInterestRatePos() / 365.0));
         }
         this.roundBalance();
-        this.owner.getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "interest", null);
+        this.owner.getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "interest", null);
     }
 
     /** {@inheritDoc} */

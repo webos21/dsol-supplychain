@@ -71,7 +71,7 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
                             .scheduleEventRel(
                                     orderConfirmation.getOrder().getDeliveryDate().minus(getOwner().getSimulatorTime())
                                             .plus(this.maximumTimeOut),
-                                    this, this, "checkShipment", new Serializable[] {orderConfirmation});
+                                    this, "checkShipment", new Serializable[] {orderConfirmation});
                 }
                 catch (Exception exception)
                 {

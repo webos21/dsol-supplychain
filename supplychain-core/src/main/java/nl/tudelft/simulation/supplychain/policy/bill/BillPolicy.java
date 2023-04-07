@@ -123,7 +123,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
             try
             {
                 Serializable[] args = new Serializable[] {bill};
-                getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "pay", args);
+                getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "pay", args);
             }
             catch (SimRuntimeException exception)
             {

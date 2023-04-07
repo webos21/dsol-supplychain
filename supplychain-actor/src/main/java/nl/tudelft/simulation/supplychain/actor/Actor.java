@@ -116,7 +116,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
         {
             Logger.warn("Message " + message + " not originating from sender " + toString());
         }
-        this.simulator.scheduleEventRel(delay, this, message.getReceiver(), "receiveMessage", new Object[] {message});
+        this.simulator.scheduleEventRel(delay, message.getReceiver(), "receiveMessage", new Object[] {message});
     }
 
     /**

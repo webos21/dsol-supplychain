@@ -64,7 +64,7 @@ public class InventoryRecord implements Serializable
         // start the depreciation process...
         try
         {
-            this.simulator.scheduleEventNow(this, this, "depreciate", null);
+            this.simulator.scheduleEventNow(this, "depreciate", null);
         }
         catch (Exception exception)
         {
@@ -215,7 +215,7 @@ public class InventoryRecord implements Serializable
         {
             this.costprice = this.costprice.multiplyBy(1.0 - this.dailyDepreciation);
             this.owner.getBankAccount().withdrawFromBalance(this.costprice.multiplyBy(this.dailyDepreciation));
-            this.simulator.scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, this, "depreciate", null);
+            this.simulator.scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "depreciate", null);
         }
         catch (Exception exception)
         {

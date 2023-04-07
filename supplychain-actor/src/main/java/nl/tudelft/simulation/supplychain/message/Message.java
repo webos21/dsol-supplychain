@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Objects;
 
 import org.djunits.value.vdouble.scalar.Time;
 
@@ -146,5 +147,27 @@ public abstract class Message implements Serializable
      * @throws IOException when decoding of the message fails
      */
     public abstract void decodeFromJson(JsonReader jr) throws IOException;
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(this.receiver, this.sender, this.timestamp, this.uniqueId);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Message other = (Message) obj;
+        return Objects.equals(this.receiver, other.receiver) && Objects.equals(this.sender, other.sender)
+                && Objects.equals(this.timestamp, other.timestamp) && this.uniqueId == other.uniqueId;
+    }
 
 }

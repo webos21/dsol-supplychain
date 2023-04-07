@@ -20,7 +20,7 @@ import nl.tudelft.simulation.dsol.swing.gui.DSOLPanel;
 import nl.tudelft.simulation.dsol.swing.gui.animation.DSOLAnimationApplication;
 import nl.tudelft.simulation.language.DSOLException;
 import nl.tudelft.simulation.supplychain.demo.mtsmto.MTSMTOModel;
-import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
 import nl.tudelft.simulation.supplychain.gui.SCControlPanel;
 
 /**
@@ -63,7 +63,7 @@ public class BullwhipApp extends DSOLAnimationApplication
         CategoryLogger.setAllLogLevel(Level.TRACE);
         CategoryLogger.setAllLogMessageFormat("{level} - {class_name}.{method}:{line}  {message}");
 
-        SCAnimator animator = new SCAnimator("Bullwhip", Time.ZERO);
+        SupplyChainAnimator animator = new SupplyChainAnimator("Bullwhip", Time.ZERO);
         animator.setSpeedFactor(3600.0);
         MTSMTOModel model = new MTSMTOModel(animator);
         ReplicationInterface<Duration> replication =

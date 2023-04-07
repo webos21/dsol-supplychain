@@ -12,7 +12,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.animation.interpolation.LinearInterpolation;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
 /**
@@ -34,7 +34,7 @@ public class ContentAnimation implements Locatable, Serializable
     private static final long serialVersionUID = 20221201L;
 
     /** the simulator on which to schedule. */
-    private SCSimulatorInterface simulator;
+    private SupplyChainSimulatorInterface simulator;
 
     /** a helper instance for linear interpolation. */
     private LinearInterpolation linearInterpolation = null;

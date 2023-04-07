@@ -47,8 +47,8 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
      * @param paymentPolicy the payment policy to use (early, late, etc.).
      * @param paymentDelay the delay to use in early or late payment
      */
-    public BillPolicy(final SupplyChainActor owner, final BankAccount bankAccount,
-            final PaymentPolicyEnum paymentPolicy, final DistContinuousDuration paymentDelay)
+    public BillPolicy(final SupplyChainActor owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
+            final DistContinuousDuration paymentDelay)
     {
         super("BillPolicy", owner, Bill.class);
         this.bankAccount = bankAccount;

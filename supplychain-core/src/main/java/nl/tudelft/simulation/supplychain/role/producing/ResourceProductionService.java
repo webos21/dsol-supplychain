@@ -183,8 +183,7 @@ public class ResourceProductionService extends ProductionService
             Serializable[] args = new Serializable[] {productionOrder, prodctionDuration, availableMaterials};
             try
             {
-                getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "startProduction",
-                        args);
+                getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "startProduction", args);
             }
             catch (Exception e)
             {

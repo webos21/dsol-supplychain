@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.reference;
 
 import org.djutils.draw.point.OrientedPoint3d;
 
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
@@ -24,7 +24,7 @@ public class DistributionCenter extends Retailer
     /**
      * @param name String; the name of the DistributionCenter
      * @param messageHandler MessageHandlerInterface; the message handler to use
-     * @param simulator SCSimulatorInterface; the simulator
+     * @param simulator SupplyChainSimulatorInterface; the simulator
      * @param location Location; the locatrion of the actor on the map or grid
      * @param locationDescription String; a description of the location of the DistributionCenter
      * @param bank Bank; the bank of the DistributionCenter
@@ -33,7 +33,7 @@ public class DistributionCenter extends Retailer
      */
     @SuppressWarnings("checkstyle:parameternumber")
     public DistributionCenter(final String name, final MessageHandlerInterface messageHandler,
-            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
+            final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
             final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
     {
         super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);

@@ -39,8 +39,8 @@ public abstract class Order extends TradeMessage
      * @param deliveryDate the intended delivery date of the products
      * @param transportOption TransportOption; the accepted transport option
      */
-    public Order(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final InternalDemand internalDemand, final Time deliveryDate, final TransportOption transportOption)
+    public Order(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
+            final Time deliveryDate, final TransportOption transportOption)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());
         this.internalDemand = internalDemand;

@@ -12,7 +12,7 @@ import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.finance.NoBank;
@@ -42,11 +42,11 @@ public class YellowPageActor extends SupplyChainActor implements YellowPageInter
     /**
      * Create a new YellowPage organization.
      * @param name String;
-     * @param simulator SCSimulatorInterface;
+     * @param simulator SupplyChainSimulatorInterface;
      * @param position OrientedPoint3d;
      * @param messageStore TradeMessageStoreInterface;
      */
-    public YellowPageActor(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+    public YellowPageActor(final String name, final SupplyChainSimulatorInterface simulator, final OrientedPoint3d position,
             final TradeMessageStoreInterface messageStore)
     {
         super(name, new DirectMessageHandler(), simulator, position, name, new NoBank(simulator), new Money(0.0, MoneyUnit.USD),

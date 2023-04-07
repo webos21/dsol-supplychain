@@ -13,7 +13,7 @@ import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.WebApplication;
 import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.EmptyMessageStore;
@@ -41,7 +41,7 @@ public class DemoYP extends YellowPage
      * @param position
      * @param bank
      */
-    public DemoYP(String name, SCSimulatorInterface simulator, OrientedPoint3d position, Bank bank)
+    public DemoYP(String name, SupplyChainSimulatorInterface simulator, OrientedPoint3d position, Bank bank)
     {
         super(name, simulator, position, bank, new EmptyMessageStore());
 

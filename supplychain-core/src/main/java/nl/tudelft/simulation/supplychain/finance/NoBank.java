@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.finance;
 
 import org.djutils.draw.point.OrientedPoint3d;
 
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.handler.DirectMessageHandler;
 
 /**
@@ -20,9 +20,9 @@ public class NoBank extends Bank
 
     /**
      * Create a placeholder for a Bank.
-     * @param simulator SCSimulatorInterface; needed since it cannot be null
+     * @param simulator SupplyChainSimulatorInterface; needed since it cannot be null
      */
-    public NoBank(final SCSimulatorInterface simulator)
+    public NoBank(final SupplyChainSimulatorInterface simulator)
     {
         super("nobank", new DirectMessageHandler(), simulator, new OrientedPoint3d(0, 0, 0), "");
     }

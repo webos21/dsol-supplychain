@@ -8,7 +8,7 @@ import org.djutils.event.EventListenerInterface;
 
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
 /**
@@ -22,13 +22,13 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 public class ContentAnimator implements EventListenerInterface
 {
     /** the simulator. */
-    private final SCSimulatorInterface simulator;
+    private final SupplyChainSimulatorInterface simulator;
 
     /**
      * Create an animator for the moving content that listens to the SupplyChainActor.SEND_CONTENT_EVENT.
      * @param simulator the simulator
      */
-    public ContentAnimator(final SCSimulatorInterface simulator)
+    public ContentAnimator(final SupplyChainSimulatorInterface simulator)
     {
         this.simulator = simulator;
     }
@@ -59,7 +59,7 @@ public class ContentAnimator implements EventListenerInterface
     /**
      * @return the simulator
      */
-    public SCSimulatorInterface getSimulator()
+    public SupplyChainSimulatorInterface getSimulator()
     {
         return this.simulator;
     }

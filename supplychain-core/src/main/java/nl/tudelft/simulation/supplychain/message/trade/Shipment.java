@@ -45,9 +45,8 @@ public class Shipment extends TradeMessage
      * @param amount double; the number of product units
      * @param totalCargoValue the price of the cargo
      */
-    public Shipment(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final Order order, final Product product, final double amount,
-            final Money totalCargoValue)
+    public Shipment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+            final Order order, final Product product, final double amount, final Money totalCargoValue)
     {
         super(sender, receiver, internalDemandId);
         this.order = order;

@@ -22,7 +22,7 @@ import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDe
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.WebApplication;
 import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.actor.yellowpage.Topic;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
@@ -78,7 +78,7 @@ public class DemoRetailer extends Retailer
      * @param stream
      * @param mts true if MTS, false if MTO
      */
-    public DemoRetailer(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+    public DemoRetailer(final String name, final SupplyChainSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final Money initialBankAccount, final Product product, final double initialStock,
             final YellowPage ypCustomer, final YellowPage ypProduction, final StreamInterface stream, final boolean mts)
     {

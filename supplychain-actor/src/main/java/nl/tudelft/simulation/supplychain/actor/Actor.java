@@ -15,8 +15,8 @@ import org.djutils.immutablecollections.ImmutableSet;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
-import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 
@@ -60,15 +60,16 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
      * @param id String; the short id of the actor
      * @param name String; the longer name of the actor
      * @param messageHandler MessageHandlerInterface; the message handler to use
-     * @param model SCModelInterface; the model to retrieve the simulator, actor list, etc.
+     * @param model SupplyChainModelInterface; the model to retrieve the simulator, actor list, etc.
      * @param location OrientedPoint2d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
      * @throws ActorAlreadyDefinedException when an actor with this id has already been registered
      * @throws NullPointerException when any of the arguments is null
      * @throws IllegalArgumentException when the id is the empty string
      */
-    public Actor(final String id, final String name, final MessageHandlerInterface messageHandler, final SCModelInterface model,
-            final OrientedPoint2d location, final String locationDescription) throws ActorAlreadyDefinedException
+    public Actor(final String id, final String name, final MessageHandlerInterface messageHandler,
+            final SupplyChainModelInterface model, final OrientedPoint2d location, final String locationDescription)
+            throws ActorAlreadyDefinedException
     {
         super(model.getSimulator());
         Throw.whenNull(id, "name cannot be null");
@@ -179,9 +180,9 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
 
     /**
      * Return the simulator to schedule simulation events on.
-     * @return simulator SCSimulatorInterface the simulator
+     * @return simulator SupplyChainSimulatorInterface the simulator
      */
-    public SCSimulatorInterface getSimulator()
+    public SupplyChainSimulatorInterface getSimulator()
     {
         return this.simulator;
     }

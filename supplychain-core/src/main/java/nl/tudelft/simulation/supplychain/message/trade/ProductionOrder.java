@@ -41,8 +41,8 @@ public class ProductionOrder extends TradeMessage
      * @param product Product; the product that has to be produced
      * @param amount double; the amount of products to be produced, in the product's units
      */
-    public ProductionOrder(final InventoryActor owner, final long internalDemandId, final Time dateReady,
-            final Product product, final double amount)
+    public ProductionOrder(final InventoryActor owner, final long internalDemandId, final Time dateReady, final Product product,
+            final double amount)
     {
         super(owner, owner, internalDemandId);
         this.dateReady = dateReady;

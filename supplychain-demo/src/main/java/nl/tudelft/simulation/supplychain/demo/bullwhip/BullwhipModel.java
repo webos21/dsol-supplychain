@@ -26,7 +26,7 @@ import nl.tudelft.simulation.supplychain.demo.reference.DemoManufacturer;
 import nl.tudelft.simulation.supplychain.demo.reference.DemoMarket;
 import nl.tudelft.simulation.supplychain.demo.reference.DemoRetailer;
 import nl.tudelft.simulation.supplychain.demo.reference.DemoYP;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
@@ -46,19 +46,19 @@ import nl.tudelft.simulation.supplychain.util.DistDiscreteTriangular;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class BullwhipModel extends AbstractDSOLModel<Duration, SCSimulatorInterface>
+public class BullwhipModel extends AbstractDSOLModel<Duration, SupplyChainSimulatorInterface>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
     /** the simulator. */
-    private SCSimulatorInterface devsSimulator;
+    private SupplyChainSimulatorInterface devsSimulator;
 
     /**
      * constructs a new BullwhipModel.
      * @param simulator the simulator
      */
-    public BullwhipModel(final SCSimulatorInterface simulator)
+    public BullwhipModel(final SupplyChainSimulatorInterface simulator)
     {
         super(simulator);
         // We don't do anything to prevent state-based replications.

@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.demo.reference.DemoManufacturer;
 import nl.tudelft.simulation.supplychain.demo.reference.DemoMarket;
 import nl.tudelft.simulation.supplychain.demo.reference.DemoRetailer;
 import nl.tudelft.simulation.supplychain.demo.reference.DemoYP;
-import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
@@ -37,19 +37,19 @@ import nl.tudelft.simulation.supplychain.test.TestModel;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class MTSMTOModel extends AbstractDSOLModel<Duration, SCAnimator>
+public class MTSMTOModel extends AbstractDSOLModel<Duration, SupplyChainAnimator>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
     /** the simulator. */
-    private SCAnimator devsSimulator;
+    private SupplyChainAnimator devsSimulator;
 
     /**
      * constructs a new MTSMTOModel.
      * @param simulator the simulator
      */
-    public MTSMTOModel(final SCAnimator simulator)
+    public MTSMTOModel(final SupplyChainAnimator simulator)
     {
         super(simulator);
         // We don't do anything to prevent state-based replications.

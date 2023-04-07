@@ -32,7 +32,7 @@ public interface ProductionServiceInterface extends Serializable
      * @return returns the expected production time for an order in simulator time units
      */
     Duration getExpectedProductionDuration(ProductionOrder productionOrder);
-    
+
     /**
      * Return the product for which the ProductionService applies.
      * @return Product; the product for which the ProductionService applies
@@ -53,5 +53,5 @@ public interface ProductionServiceInterface extends Serializable
     {
         return getOwner().getInventoryRole().getInventory();
     }
-    
+
 }

@@ -12,7 +12,7 @@ import org.djutils.base.Identifiable;
 import org.djutils.immutablecollections.ImmutableArrayList;
 import org.djutils.immutablecollections.ImmutableList;
 
-import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.product.Sku;
@@ -101,7 +101,7 @@ public class TransportOption implements Identifiable, Serializable
         for (TransportOptionStep step : this.transportSteps)
         {
             result = result.plus(step.getEstimatedLoadingTime(sku)).plus(step.getEstimatedUnloadingTime(sku));
-            SCModelInterface model = step.getOrigin().getSimulator().getModel();
+            SupplyChainModelInterface model = step.getOrigin().getSimulator().getModel();
             Length distance = model.calculateDistance(step.getOrigin().getLocation(), step.getDestination().getLocation());
             result = result.plus(distance.divide(step.getTransportMode().getAverageSpeed()));
         }

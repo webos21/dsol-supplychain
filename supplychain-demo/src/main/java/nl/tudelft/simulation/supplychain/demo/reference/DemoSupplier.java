@@ -16,7 +16,7 @@ import nl.tudelft.simulation.jstats.streams.StreamInterface;
 import nl.tudelft.simulation.supplychain.actor.messaging.devices.reference.FaxDevice;
 import nl.tudelft.simulation.supplychain.actor.unit.dist.DistConstantDuration;
 import nl.tudelft.simulation.supplychain.actor.yellowpage.Topic;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
@@ -58,7 +58,7 @@ public class DemoSupplier extends Supplier
      * @param ypProduction
      * @param stream
      */
-    public DemoSupplier(final String name, final SCSimulatorInterface simulator, final OrientedPoint3d position,
+    public DemoSupplier(final String name, final SupplyChainSimulatorInterface simulator, final OrientedPoint3d position,
             final Bank bank, final Money initialBankAccount, final Product product, final double initialStock,
             final YellowPage ypProduction, final StreamInterface stream)
     {

@@ -11,7 +11,7 @@ import org.djutils.event.EventListenerMap;
 import org.djutils.event.EventProducer;
 import org.djutils.event.LocalEventProducer;
 
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
 
@@ -31,31 +31,31 @@ public abstract class AbstractPolicyHandler implements PolicyHandlerInterface
 
     /** the simulator to schedule simulation events on. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
-    protected final SCSimulatorInterface simulator;
+    protected final SupplyChainSimulatorInterface simulator;
 
     /** the message handling policies. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
     protected final Map<Class<? extends Message>, List<MessagePolicyInterface<? extends Message>>> messagePolicies =
             new LinkedHashMap<>();
-    
+
     /** the embedded event producer. */
     private final EventProducer eventProducer;
 
     /**
      * Create a new PolicyHandler (the superclass of Actor and Role) with a LocalEventProducer.
-     * @param simulator SCSimulatorInterface; the simulator to schedule simulation events on
+     * @param simulator SupplyChainSimulatorInterface; the simulator to schedule simulation events on
      */
-    public AbstractPolicyHandler(final SCSimulatorInterface simulator)
+    public AbstractPolicyHandler(final SupplyChainSimulatorInterface simulator)
     {
         this(simulator, new LocalEventProducer());
     }
 
     /**
      * Create a new PolicyHandler (the superclass of Actor and Role) with a special EventProducer.
-     * @param simulator SCSimulatorInterface; the simulator to schedule simulation events on
+     * @param simulator SupplyChainSimulatorInterface; the simulator to schedule simulation events on
      * @param eventProducer EventProducer; a special EventProducer to use, e.g., a RmiEventProducer
      */
-    public AbstractPolicyHandler(final SCSimulatorInterface simulator, final EventProducer eventProducer)
+    public AbstractPolicyHandler(final SupplyChainSimulatorInterface simulator, final EventProducer eventProducer)
     {
         Throw.whenNull(simulator, "simulator cannot be null");
         this.simulator = simulator;
@@ -119,5 +119,5 @@ public abstract class AbstractPolicyHandler implements PolicyHandlerInterface
     {
         return this.eventProducer.getEventListenerMap();
     }
-    
+
 }

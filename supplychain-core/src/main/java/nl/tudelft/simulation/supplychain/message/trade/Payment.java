@@ -31,8 +31,8 @@ public class Payment extends TradeMessage
      * @param bill the bill for which this is the payment
      * @param payment the payment
      */
-    public Payment(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final Bill bill, final Money payment)
+    public Payment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Bill bill,
+            final Money payment)
     {
         super(sender, receiver, internalDemandId);
         this.bill = bill;

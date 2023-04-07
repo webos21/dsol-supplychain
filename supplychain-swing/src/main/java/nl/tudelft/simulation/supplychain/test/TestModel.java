@@ -15,8 +15,8 @@ import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimator;
-import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
@@ -33,7 +33,7 @@ import nl.tudelft.simulation.supplychain.product.Sku;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
+public class TestModel extends AbstractDSOLModel<Duration, SupplyChainAnimator>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -42,7 +42,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
     private long startTimeMs = 0;
 
     /** the simulator. */
-    private SCSimulatorInterface devsSimulator;
+    private SupplyChainSimulatorInterface devsSimulator;
 
     /** */
     Product laptop;
@@ -60,7 +60,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
      * constructs a new TestModel.
      * @param simulator the simulator
      */
-    public TestModel(final SCAnimator simulator)
+    public TestModel(final SupplyChainAnimator simulator)
     {
         super(simulator);
         // We don't do anything to prevent state-based replications.
@@ -73,7 +73,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SCAnimator>
         try
         {
             this.startTimeMs = System.currentTimeMillis();
-            this.devsSimulator = (SCSimulatorInterface) this.simulator;
+            this.devsSimulator = (SupplyChainSimulatorInterface) this.simulator;
             if (this.devsSimulator instanceof AnimatorInterface)
             {
                 // First we create some background. We set the zValue to -Double.Min value to ensure that it is actually drawn

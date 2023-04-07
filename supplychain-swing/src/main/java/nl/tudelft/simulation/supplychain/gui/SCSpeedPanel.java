@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.gui;
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.dsol.swing.gui.control.SpeedPanel;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 
 /**
  * SCSpeedPanel takes 1 hour (3600 seconds) as "1".
@@ -22,7 +22,7 @@ public class SCSpeedPanel extends SpeedPanel.TimeDoubleUnit
      * Construct a clock panel with a djutils Duration.
      * @param simulator SimulatorInterface; the simulator
      */
-    public SCSpeedPanel(final SCSimulatorInterface simulator)
+    public SCSpeedPanel(final SupplyChainSimulatorInterface simulator)
     {
         super(simulator);
     }

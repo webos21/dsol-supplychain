@@ -12,7 +12,7 @@ import org.djutils.event.TimedEventType;
 
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.inventory.StockUpdateData;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -46,7 +46,7 @@ public class StockPlot extends XYChart
      * @param product
      */
     @SuppressWarnings("static-access")
-    public StockPlot(final SCSimulatorInterface simulator, final String title, final InventoryInterface stock,
+    public StockPlot(final SupplyChainSimulatorInterface simulator, final String title, final InventoryInterface stock,
             final Product product)
     {
         super(simulator, title);
@@ -87,7 +87,7 @@ public class StockPlot extends XYChart
         private final Product product;
 
         /** the simulator to get the time for the TimedEvent. */
-        private final SCSimulatorInterface simulator;
+        private final SupplyChainSimulatorInterface simulator;
 
         /** An event to indicate stock levels changed */
         static final TimedEventType STOCK_ACTUAL_CHANGE_EVENT = new TimedEventType("STOCK_ACTUAL_CHANGE_EVENT");
@@ -103,7 +103,8 @@ public class StockPlot extends XYChart
          * @param stock
          * @param product
          */
-        public StockListener(final SCSimulatorInterface simulator, final InventoryInterface stock, final Product product)
+        public StockListener(final SupplyChainSimulatorInterface simulator, final InventoryInterface stock,
+                final Product product)
         {
             super();
             this.product = product;

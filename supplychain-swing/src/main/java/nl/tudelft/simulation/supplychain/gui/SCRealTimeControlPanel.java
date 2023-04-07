@@ -14,7 +14,7 @@ import nl.tudelft.simulation.dsol.model.DSOLModel;
 import nl.tudelft.simulation.dsol.simulators.DevsRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.RunState;
 import nl.tudelft.simulation.dsol.swing.gui.control.DevsControlPanel;
-import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
 
 /**
  * SCRealTimeControlPanel.java.
@@ -24,7 +24,7 @@ import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SCRealTimeControlPanel extends DevsControlPanel<Duration, SCAnimator> implements PropertyChangeListener
+public class SCRealTimeControlPanel extends DevsControlPanel<Duration, SupplyChainAnimator> implements PropertyChangeListener
 {
     /** */
     private static final long serialVersionUID = 20201227L;
@@ -45,7 +45,7 @@ public class SCRealTimeControlPanel extends DevsControlPanel<Duration, SCAnimato
      *            whereas the panel needs a RealTimeControlAnimator)
      * @throws RemoteException when simulator cannot be accessed for listener attachment
      */
-    public SCRealTimeControlPanel(final DSOLModel<Duration, SCAnimator> model, final SCAnimator simulator)
+    public SCRealTimeControlPanel(final DSOLModel<Duration, SupplyChainAnimator> model, final SupplyChainAnimator simulator)
             throws RemoteException
     {
         super(model, simulator);

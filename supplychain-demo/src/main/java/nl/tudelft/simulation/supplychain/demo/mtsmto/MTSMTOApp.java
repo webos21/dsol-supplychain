@@ -19,7 +19,7 @@ import nl.tudelft.simulation.dsol.swing.gui.ConsoleOutput;
 import nl.tudelft.simulation.dsol.swing.gui.DSOLPanel;
 import nl.tudelft.simulation.dsol.swing.gui.animation.DSOLAnimationApplication;
 import nl.tudelft.simulation.language.DSOLException;
-import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
 import nl.tudelft.simulation.supplychain.gui.SCControlPanel;
 
 /**
@@ -61,7 +61,7 @@ public class MTSMTOApp extends DSOLAnimationApplication
         CategoryLogger.setAllLogLevel(Level.WARNING);
         CategoryLogger.setAllLogMessageFormat("{level} - {class_name}.{method}:{line}  {message}");
 
-        SCAnimator animator = new SCAnimator("MTSMTO", Time.ZERO);
+        SupplyChainAnimator animator = new SupplyChainAnimator("MTSMTO", Time.ZERO);
         animator.setSpeedFactor(3600.0);
         MTSMTOModel model = new MTSMTOModel(animator);
         ReplicationInterface<Duration> replication =

@@ -34,8 +34,8 @@ public class YellowPageAnswer extends TradeMessage
      * @param suppliers the suppliers of the requested product
      * @param ypRequest the request that triggered this YP answer
      */
-    public YellowPageAnswer(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final List<SupplyChainActor> suppliers, final YellowPageRequest ypRequest)
+    public YellowPageAnswer(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+            final List<SupplyChainActor> suppliers, final YellowPageRequest ypRequest)
     {
         super(sender, receiver, internalDemandId);
         this.suppliers = suppliers;

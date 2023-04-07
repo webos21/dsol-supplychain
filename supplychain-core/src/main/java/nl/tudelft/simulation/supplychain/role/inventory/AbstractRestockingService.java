@@ -6,7 +6,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -26,7 +26,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
     private static final long serialVersionUID = 20221201L;
 
     /** the simulator on which to schedule. */
-    private SCSimulatorInterface simulator;
+    private SupplyChainSimulatorInterface simulator;
 
     /** the inventory for which the service holds. */
     private InventoryInterface inventory;
@@ -116,7 +116,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
     /**
      * @return simulator
      */
-    protected SCSimulatorInterface getSimulator()
+    protected SupplyChainSimulatorInterface getSimulator()
     {
         return this.simulator;
     }

@@ -56,9 +56,9 @@ public class Quote extends TradeMessage
      * @param validityTime Time; the time on the simulator clock until which the quote is valid
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Quote(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final RequestForQuote requestForQuote, final Product product, final double amount, final Money price,
-            final Time proposedShippingDate, final TransportOption transportOption, final Time validityTime)
+    public Quote(final SupplyChainActor sender, final SupplyChainActor receiver, final RequestForQuote requestForQuote,
+            final Product product, final double amount, final Money price, final Time proposedShippingDate,
+            final TransportOption transportOption, final Time validityTime)
     {
         super(sender, receiver, requestForQuote.getInternalDemandId());
         this.requestForQuote = requestForQuote;

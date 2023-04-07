@@ -10,7 +10,7 @@ import org.djutils.event.EventType;
 import org.djutils.metadata.MetaData;
 import org.djutils.metadata.ObjectDescriptor;
 
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.FixedCost;
@@ -63,7 +63,7 @@ public abstract class SupplyChainActor extends Actor implements SupplyChainActor
      * Construct a new Actor.
      * @param name String; the name of the actor
      * @param messageHandler MessageHandlerInterface; the message handler to use
-     * @param simulator SCSimulatorInterface; the simulator to use
+     * @param simulator SupplyChainSimulatorInterface; the simulator to use
      * @param location OrientedPoint3d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
      * @param bank Bank; the bank for the BankAccount
@@ -72,7 +72,7 @@ public abstract class SupplyChainActor extends Actor implements SupplyChainActor
      */
     @SuppressWarnings("checkstyle:parameternumber")
     public SupplyChainActor(final String name, final MessageHandlerInterface messageHandler,
-            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
+            final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
             final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
     {
         super(name, messageHandler, simulator, location, locationDescription);
@@ -165,7 +165,7 @@ public abstract class SupplyChainActor extends Actor implements SupplyChainActor
         protected MessageHandlerInterface messageHandler;
 
         /** simulator. */
-        protected SCSimulatorInterface simulator;
+        protected SupplyChainSimulatorInterface simulator;
 
         /** location. */
         protected OrientedPoint3d location;
@@ -226,10 +226,10 @@ public abstract class SupplyChainActor extends Actor implements SupplyChainActor
         }
 
         /**
-         * @param simulator SCSimulatorInterface; the simulator
+         * @param simulator SupplyChainSimulatorInterface; the simulator
          * @return Builder for chaining
          */
-        public Builder setSimulator(final SCSimulatorInterface simulator)
+        public Builder setSimulator(final SupplyChainSimulatorInterface simulator)
         {
             this.simulator = simulator;
             return this;

@@ -30,8 +30,7 @@ public abstract class TradeMessage extends Message
      * @param receiver SupplyChainActor; the receiving actor of the message content
      * @param internalDemandId long; the InternalDemandId that triggered the chain
      */
-    public TradeMessage(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId)
+    public TradeMessage(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId)
     {
         super(sender, receiver);
         this.internalDemandId = internalDemandId;

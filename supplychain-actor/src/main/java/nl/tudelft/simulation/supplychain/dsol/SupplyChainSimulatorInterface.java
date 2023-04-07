@@ -10,15 +10,15 @@ import nl.tudelft.simulation.dsol.simulators.DevsSimulatorInterface;
 import nl.tudelft.simulation.naming.context.Contextualized;
 
 /**
- * SCSimulatorInterface adds a start time to the simulator, so the current simulator time can be printed as a date, possibly with a
- * time on that date. The SCSimulatorInterface also allows to schedule events on absolute times.
+ * SupplyChainSimulatorInterface adds a start time to the simulator, so the current simulator time can be printed as a date,
+ * possibly with a time on that date. The SupplyChainSimulatorInterface also allows to schedule events on absolute times.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface SCSimulatorInterface extends DevsSimulatorInterface<Duration>, Contextualized
+public interface SupplyChainSimulatorInterface extends DevsSimulatorInterface<Duration>, Contextualized
 {
     /**
      * Schedules a methodCall at an absolute time.
@@ -95,6 +95,6 @@ public interface SCSimulatorInterface extends DevsSimulatorInterface<Duration>, 
 
     /** {@inheritDoc} */
     @Override
-    SCModelInterface getModel();
+    SupplyChainModelInterface getModel();
 
 }

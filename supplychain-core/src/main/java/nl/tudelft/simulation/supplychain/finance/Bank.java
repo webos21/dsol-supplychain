@@ -8,7 +8,7 @@ import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.EmptyTradeMessageStore;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
@@ -47,11 +47,11 @@ public class Bank extends Actor implements SupplyChainActor
      * Create a new Bank.
      * @param name String; the name of the bank
      * @param messageHandler MessageHandlerInterface; the handler for messages
-     * @param simulator SCSimulatorInterface; the simulator
+     * @param simulator SupplyChainSimulatorInterface; the simulator
      * @param location OrientedPoint3d; the location on the map
      * @param locationDescription String; a description of the location (e.g., "Frankfurt")
      */
-    public Bank(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
+    public Bank(final String name, final MessageHandlerInterface messageHandler, final SupplyChainSimulatorInterface simulator,
             final OrientedPoint3d location, final String locationDescription)
     {
         super(name, messageHandler, simulator, location, locationDescription);

@@ -43,9 +43,9 @@ public class OrderStandalone extends Order
      * @param transportOption TransportOption; the accepted transport option
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public OrderStandalone(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final InternalDemand internalDemand, final Time deliveryDate, final Product product, final double amount,
-            final Money price, final TransportOption transportOption)
+    public OrderStandalone(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
+            final Time deliveryDate, final Product product, final double amount, final Money price,
+            final TransportOption transportOption)
     {
         super(sender, receiver, internalDemand, deliveryDate, transportOption);
         this.product = product;

@@ -10,14 +10,14 @@ import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
 import nl.tudelft.simulation.supplychain.actor.ActorNotFoundException;
 
 /**
- * SCModelInterface defines the specific methods of a supply chain model.
+ * SupplyChainModelInterface defines the specific methods of a supply chain model.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface SCModelInterface extends DSOLModel<Duration, SCSimulatorInterface>
+public interface SupplyChainModelInterface extends DSOLModel<Duration, SupplyChainSimulatorInterface>
 {
     /**
      * Return a unique message id.
@@ -52,7 +52,7 @@ public interface SCModelInterface extends DSOLModel<Duration, SCSimulatorInterfa
      * @throws ActorAlreadyDefinedException when the actor was already registered in the Actor map
      */
     void registerActor(Actor actor) throws ActorAlreadyDefinedException;
-    
+
     /**
      * Retrieve an actor based on its id.
      * @param id String; the id to use to find the Actor

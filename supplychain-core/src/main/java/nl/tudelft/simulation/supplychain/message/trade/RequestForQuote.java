@@ -39,8 +39,8 @@ public class RequestForQuote extends TradeMessage
      *            receiver
      * @param cutoffDuration Duration; after how much time will the RFQ stop collecting quotes?
      */
-    public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final InternalDemand internalDemand, final TransportOption preferredTransportOption, final Duration cutoffDuration)
+    public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
+            final TransportOption preferredTransportOption, final Duration cutoffDuration)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());
         this.internalDemand = internalDemand;

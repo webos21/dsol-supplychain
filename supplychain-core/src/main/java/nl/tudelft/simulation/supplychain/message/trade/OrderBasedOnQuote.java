@@ -32,8 +32,8 @@ public class OrderBasedOnQuote extends Order
      * @param quote the quote on which the order is based
      * @param transportOption TransportOption; the accepted transport option
      */
-    public OrderBasedOnQuote(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final Time deliveryDate, final Quote quote, final TransportOption transportOption)
+    public OrderBasedOnQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final Time deliveryDate,
+            final Quote quote, final TransportOption transportOption)
     {
         super(sender, receiver, quote.getInternalDemand(), deliveryDate, transportOption);
         this.quote = quote;

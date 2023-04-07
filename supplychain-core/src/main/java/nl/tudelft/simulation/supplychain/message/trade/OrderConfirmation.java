@@ -42,8 +42,8 @@ public class OrderConfirmation extends TradeMessage
      * @param order the order for which this is the confirmation
      * @param status the confirmation status (accepted, not accepted)
      */
-    public OrderConfirmation(final SupplyChainActor sender, final SupplyChainActor receiver,
-            final long internalDemandId, final Order order, final int status)
+    public OrderConfirmation(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+            final Order order, final int status)
     {
         super(sender, receiver, internalDemandId);
         this.order = order;

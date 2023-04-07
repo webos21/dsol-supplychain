@@ -12,7 +12,7 @@ import org.djutils.event.TimedEventType;
 
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 
@@ -37,7 +37,7 @@ public class BankPlot extends XYChart
      * @param title
      * @param bankAccount
      */
-    public BankPlot(final SCSimulatorInterface simulator, final String title, final BankAccount bankAccount)
+    public BankPlot(final SupplyChainSimulatorInterface simulator, final String title, final BankAccount bankAccount)
     {
         super(simulator, title);
         BalanceListener balanceListener = new BalanceListener(simulator, bankAccount);
@@ -68,7 +68,7 @@ public class BankPlot extends XYChart
         private static final long serialVersionUID = 20221201L;
 
         /** the simulator to get the time for the TimedEvent. */
-        private final SCSimulatorInterface simulator;
+        private final SupplyChainSimulatorInterface simulator;
 
         /** An event to indicate stock levels changed */
         static final TimedEventType BALANCE_CHANGE_EVENT = new TimedEventType("BALANCE_CHANGE_EVENT");
@@ -77,7 +77,7 @@ public class BankPlot extends XYChart
          * @param simulator
          * @param bankAccount
          */
-        public BalanceListener(final SCSimulatorInterface simulator, final BankAccount bankAccount)
+        public BalanceListener(final SupplyChainSimulatorInterface simulator, final BankAccount bankAccount)
         {
             super();
             this.simulator = simulator;

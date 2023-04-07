@@ -9,7 +9,7 @@ import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimation;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimator;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
@@ -27,7 +27,7 @@ public class DemoContentAnimator extends ContentAnimator
     /**
      * @param simulator
      */
-    public DemoContentAnimator(SCSimulatorInterface simulator)
+    public DemoContentAnimator(SupplyChainSimulatorInterface simulator)
     {
         super(simulator);
     }

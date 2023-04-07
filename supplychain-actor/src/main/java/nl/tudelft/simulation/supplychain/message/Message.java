@@ -14,7 +14,7 @@ import com.google.gson.stream.JsonWriter;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.ActorNotFoundException;
-import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 
 /**
  * A message, which can be sent from a sender to a receiver. Extend this class to add content.
@@ -43,11 +43,11 @@ public abstract class Message implements Serializable
 
     /**
      * Construct a new message.
-     * @param model SCModelInterface; the supply chain model
+     * @param model SupplyChainModelInterface; the supply chain model
      * @param sender Actor; the sender
      * @param receiver Actor; the receiver
      */
-    public Message(final SCModelInterface model, final Actor sender, final Actor receiver)
+    public Message(final SupplyChainModelInterface model, final Actor sender, final Actor receiver)
     {
         this.sender = sender;
         this.receiver = receiver;
@@ -57,12 +57,12 @@ public abstract class Message implements Serializable
 
     /**
      * Construct a new message from JSON content.
-     * @param model SCModelInterface; the supply chain model
+     * @param model SupplyChainModelInterface; the supply chain model
      * @param json String; the message content encoded as a JSON string
      * @throws IOException when decoding of the message fails
      * @throws ActorNotFoundException when either the sender, or the receiver could not be found in the model's actor map
      */
-    public Message(final SCModelInterface model, final String json) throws IOException, ActorNotFoundException
+    public Message(final SupplyChainModelInterface model, final String json) throws IOException, ActorNotFoundException
     {
         JsonObject jobj = new Gson().fromJson(json, JsonObject.class);
         this.sender = model.getActor(jobj.get("sender").getAsString());

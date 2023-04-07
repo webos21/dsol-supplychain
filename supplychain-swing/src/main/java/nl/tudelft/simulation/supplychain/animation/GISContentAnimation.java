@@ -11,7 +11,7 @@ import org.djutils.draw.point.Point3d;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 
 /**
  * The GISContentAnimation is useful in combination with a GIS based map as a background image. Based on the zoom level of an
@@ -33,7 +33,7 @@ public class GISContentAnimation extends SingleImageRenderable
      * @throws NamingException
      * @throws RemoteException
      */
-    public GISContentAnimation(final Locatable locatable, final SCSimulatorInterface simulator, final URL imageURL)
+    public GISContentAnimation(final Locatable locatable, final SupplyChainSimulatorInterface simulator, final URL imageURL)
             throws RemoteException, NamingException
     {
         super(locatable, simulator, imageURL);
@@ -48,7 +48,7 @@ public class GISContentAnimation extends SingleImageRenderable
      * @throws NamingException
      * @throws RemoteException
      */
-    public GISContentAnimation(final Point3d staticLocation, final Bounds3d size, final SCSimulatorInterface simulator,
+    public GISContentAnimation(final Point3d staticLocation, final Bounds3d size, final SupplyChainSimulatorInterface simulator,
             final URL image) throws RemoteException, NamingException
     {
         super(staticLocation, size, simulator, image);
@@ -63,8 +63,8 @@ public class GISContentAnimation extends SingleImageRenderable
      * @throws NamingException
      * @throws RemoteException
      */
-    public GISContentAnimation(final OrientedPoint3d staticLocation, final Bounds3d size, final SCSimulatorInterface simulator,
-            final URL image) throws RemoteException, NamingException
+    public GISContentAnimation(final OrientedPoint3d staticLocation, final Bounds3d size,
+            final SupplyChainSimulatorInterface simulator, final URL image) throws RemoteException, NamingException
     {
         super(staticLocation, size, simulator, image);
     }

@@ -11,7 +11,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
@@ -39,7 +39,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
     private static final long serialVersionUID = 20221201L;
 
     /** the simulator to schedule time-out events. */
-    protected SCSimulatorInterface simulator;
+    protected SupplyChainSimulatorInterface simulator;
 
     /** the map of unanswered content. */
     private Map<Serializable, TradeMessage> unansweredContentMap =
@@ -48,7 +48,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
     /**
      * @param simulator the simulator
      */
-    public LeanTradeMessageStore(final SCSimulatorInterface simulator)
+    public LeanTradeMessageStore(final SupplyChainSimulatorInterface simulator)
     {
         Throw.whenNull(simulator, "simulator cannot be null");
         this.simulator = simulator;
@@ -68,7 +68,8 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 InternalDemand internalDemand = (InternalDemand) message;
                 this.unansweredContentMap.put(message.getUniqueId(), message);
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), internalDemand.getLatestDeliveryDate());
-                this.simulator.scheduleEventAbs(date, this, "internalDemandTimeout", new Serializable[] {internalDemand, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "internalDemandTimeout",
+                        new Serializable[] {internalDemand, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(RequestForQuote.class) && !sent)
             {
@@ -76,7 +77,8 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.unansweredContentMap.put(message.getUniqueId(), message);
                 this.unansweredContentMap.remove(rfq.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), rfq.getCutoffDate());
-                this.simulator.scheduleEventAbs(date, this, "requestForQuoteTimeout", new Serializable[] {rfq, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "requestForQuoteTimeout",
+                        new Serializable[] {rfq, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(RequestForQuote.class) && sent)
             {
@@ -85,7 +87,8 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.unansweredContentMap.remove(rfq.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(),
                         rfq.getCutoffDate().plus(new Duration(1.0, DurationUnit.DAY)));
-                this.simulator.scheduleEventAbs(date, this, "requestForQuoteTimeout", new Serializable[] {rfq, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "requestForQuoteTimeout",
+                        new Serializable[] {rfq, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(Quote.class))
             {
@@ -106,7 +109,8 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 Time date = Time.max(order.getDeliveryDate(), order.getQuote().getProposedDeliveryDate());
                 date = Time.max(date, order.getQuote().getRequestForQuote().getLatestDeliveryDate());
                 date = Time.max(this.simulator.getAbsSimulatorTime(), date);
-                this.simulator.scheduleEventAbs(date, this, "orderBasedOnQuoteTimeout", new Serializable[] {order, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "orderBasedOnQuoteTimeout",
+                        new Serializable[] {order, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(OrderStandalone.class))
             {
@@ -114,7 +118,8 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.unansweredContentMap.put(message.getUniqueId(), message);
                 this.unansweredContentMap.remove(order.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), order.getDeliveryDate());
-                this.simulator.scheduleEventAbs(date, this, "orderStandAloneTimeout", new Serializable[] {order, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "orderStandAloneTimeout",
+                        new Serializable[] {order, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(OrderConfirmation.class))
             {

@@ -50,8 +50,8 @@ public class OrderPolicyMake extends AbstractOrderPolicy<Order>
                 getOwner().getName(), orderConfirmation);
 
         // this is MTO, so we don't keep stock of this product. Therefore, produce it.
-        ProductionOrder productionOrder = new ProductionOrder(((InventoryActor) getOwner()),
-                order.getInternalDemandId(), order.getDeliveryDate(), order.getProduct(), order.getAmount());
+        ProductionOrder productionOrder = new ProductionOrder(((InventoryActor) getOwner()), order.getInternalDemandId(),
+                order.getDeliveryDate(), order.getProduct(), order.getAmount());
         getOwner().sendMessage(productionOrder);
 
         // production should get an mto stock

@@ -9,14 +9,15 @@ import nl.tudelft.simulation.dsol.simulators.DevsSimulator;
 import nl.tudelft.simulation.naming.context.ContextInterface;
 
 /**
- * SCSimulator extends the DevsSimulator, and offers absolute Time for the simulation time in addition to relative duration.
+ * SupplyChainSimulator extends the DevsSimulator, and offers absolute Time for the simulation time in addition to relative
+ * duration.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SCSimulator extends DevsSimulator<Duration> implements SCSimulatorInterface
+public class SupplyChainSimulator extends DevsSimulator<Duration> implements SupplyChainSimulatorInterface
 {
     /** */
     private static final long serialVersionUID = 20221201L;
@@ -25,12 +26,12 @@ public class SCSimulator extends DevsSimulator<Duration> implements SCSimulatorI
     private final Time absStartTime;
 
     /**
-     * Construct the SCSimulator that extends the DevsSimulator, and offers absolute Time for the simulation time in addition to
-     * relative duration.
+     * Construct the SupplyChainSimulator that extends the DevsSimulator, and offers absolute Time for the simulation time in
+     * addition to relative duration.
      * @param id the simulator id
      * @param absStartTime Time; the start time of the simulator
      */
-    public SCSimulator(final Serializable id, final Time absStartTime)
+    public SupplyChainSimulator(final Serializable id, final Time absStartTime)
     {
         super(id);
         this.absStartTime = absStartTime;
@@ -52,9 +53,9 @@ public class SCSimulator extends DevsSimulator<Duration> implements SCSimulatorI
 
     /** {@inheritDoc} */
     @Override
-    public SCModelInterface getModel()
+    public SupplyChainModelInterface getModel()
     {
-        return (SCModelInterface) super.getModel();
+        return (SupplyChainModelInterface) super.getModel();
     }
 
 }

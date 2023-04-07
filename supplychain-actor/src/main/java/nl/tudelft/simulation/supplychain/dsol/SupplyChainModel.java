@@ -13,15 +13,16 @@ import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.ActorNotFoundException;
 
 /**
- * SCModel is the default model implementation from which model implementations can extend. It defines an empty set of input
- * parameters, an empty set of output statistics, an empty set of actors,
+ * SupplyChainModel is the default model implementation from which model implementations can extend. It defines an empty set of
+ * input parameters, an empty set of output statistics, an empty set of actors,
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class SCModel extends AbstractDSOLModel<Duration, SCSimulatorInterface> implements SCModelInterface
+public abstract class SupplyChainModel extends AbstractDSOLModel<Duration, SupplyChainSimulatorInterface>
+        implements SupplyChainModelInterface
 {
     /** */
     private static final long serialVersionUID = 20230407L;
@@ -34,19 +35,19 @@ public abstract class SCModel extends AbstractDSOLModel<Duration, SCSimulatorInt
 
     /**
      * Create a supply chain model with a specific set of random streams for this replication.
-     * @param simulator SCSimulatorInterface; the simulator
+     * @param simulator SupplyChainSimulatorInterface; the simulator
      * @param streamInformation StreamInformation; information about the random streams to use in a replication
      */
-    public SCModel(final SCSimulatorInterface simulator, final StreamInformation streamInformation)
+    public SupplyChainModel(final SupplyChainSimulatorInterface simulator, final StreamInformation streamInformation)
     {
         super(simulator, streamInformation);
     }
 
     /**
      * Create a supply chain model with a default set of random streams for this replication.
-     * @param simulator SCSimulatorInterface; the simulator
+     * @param simulator SupplyChainSimulatorInterface; the simulator
      */
-    public SCModel(final SCSimulatorInterface simulator)
+    public SupplyChainModel(final SupplyChainSimulatorInterface simulator)
     {
         super(simulator);
     }

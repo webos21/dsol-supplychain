@@ -45,8 +45,8 @@ public class Bill extends TradeMessage
      * @param price Money; the amount to be paid
      * @param description the description
      */
-    public Bill(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
-            final Order order, final Time finalPaymentDate, final Money price, final String description)
+    public Bill(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Order order,
+            final Time finalPaymentDate, final Money price, final String description)
     {
         super(sender, receiver, internalDemandId);
         this.finalPaymentDate = finalPaymentDate;

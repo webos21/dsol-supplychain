@@ -4,7 +4,7 @@ import org.djunits.Throw;
 import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
@@ -37,7 +37,7 @@ public class Supplier extends SupplyChainActor implements SellingActor, Inventor
     /**
      * @param name String; the name of the Supplier
      * @param messageHandler MessageHandlerInterface; the message handler to use
-     * @param simulator SCSimulatorInterface; the simulator
+     * @param simulator SupplyChainSimulatorInterface; the simulator
      * @param location Location; the locatrion of the actor on the map or grid
      * @param locationDescription String; a description of the location of the Supplier
      * @param bank Bank; the bank of the reSuppliertailer
@@ -45,9 +45,9 @@ public class Supplier extends SupplyChainActor implements SellingActor, Inventor
      * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Supplier(final String name, final MessageHandlerInterface messageHandler, final SCSimulatorInterface simulator,
-            final OrientedPoint3d location, final String locationDescription, final Bank bank, final Money initialBalance,
-            final TradeMessageStoreInterface messageStore)
+    public Supplier(final String name, final MessageHandlerInterface messageHandler,
+            final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
+            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
     {
         super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
     }

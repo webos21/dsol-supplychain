@@ -4,7 +4,7 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.dsol.swing.gui.control.ClockPanel;
-import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
 
 /**
  * SCClockPanel for a djunits Time.
@@ -21,9 +21,9 @@ public class SCClockPanel extends ClockPanel.TimeDoubleUnit
 
     /**
      * Construct a clock panel with a double time with a unit.
-     * @param simulator SCSimulatorInterface; the simulator
+     * @param simulator SupplyChainSimulatorInterface; the simulator
      */
-    public SCClockPanel(final SCAnimator simulator)
+    public SCClockPanel(final SupplyChainAnimator simulator)
     {
         super(simulator);
     }

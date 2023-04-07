@@ -20,8 +20,8 @@ import nl.tudelft.simulation.dsol.swing.gui.DSOLPanel;
 import nl.tudelft.simulation.dsol.swing.gui.TablePanel;
 import nl.tudelft.simulation.dsol.swing.gui.animation.DSOLAnimationApplication;
 import nl.tudelft.simulation.language.DSOLException;
-import nl.tudelft.simulation.supplychain.dsol.SCAnimator;
-import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.gui.SCControlPanel;
 import nl.tudelft.simulation.supplychain.gui.plot.BankPlot;
 import nl.tudelft.simulation.supplychain.gui.plot.StockPlot;
@@ -65,7 +65,7 @@ public class TestModelApp extends DSOLAnimationApplication
         TablePanel charts = new TablePanel(3, 2);
         getDSOLPanel().addTab("statistics", charts);
         getDSOLPanel().getTabbedPane().setSelectedIndex(1);
-        SCSimulatorInterface devsSimulator = this.model.getSimulator();
+        SupplyChainSimulatorInterface devsSimulator = this.model.getSimulator();
 
         BankPlot fb = new BankPlot(devsSimulator, "Factory Bank balance", this.model.factory.getBankAccount());
         charts.setCell(fb.getSwingPanel(), 0, 0);
@@ -95,7 +95,7 @@ public class TestModelApp extends DSOLAnimationApplication
         CategoryLogger.setAllLogLevel(Level.INFO);
         CategoryLogger.setAllLogMessageFormat("{level} - {class_name}.{method}:{line}  {message}");
 
-        SCAnimator animator = new SCAnimator("MTSMTO", Time.ZERO);
+        SupplyChainAnimator animator = new SupplyChainAnimator("MTSMTO", Time.ZERO);
         animator.setSpeedFactor(3600.0);
         TestModel model = new TestModel(animator);
         ReplicationInterface<Duration> replication =

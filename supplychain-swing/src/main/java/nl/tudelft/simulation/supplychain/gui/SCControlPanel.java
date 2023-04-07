@@ -23,7 +23,7 @@ public class SCControlPanel extends SCRealTimeControlPanel
 
     /**
      * Construct a real time control panel for a djunits double time unit, with a different set of control buttons. The control
-     * panel assumes a DEVSSimulator and animation. The model specification is not necessarily specified as "real time"; its
+     * panel assumes a DevsSimulator and animation. The model specification is not necessarily specified as "real time"; its
      * execution is.
      * @param model DSOLModel&lt;Duration&gt;; the model for the control panel, to allow a reset of the model
      * @param simulator DEVSRealTimeAnimator&lt;Duration&gt;; the simulator. Specified separately, because the model can have

@@ -15,7 +15,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import nl.tudelft.simulation.dsol.simulators.DEVSRealTimeAnimator;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.dsol.simulators.DevsSimulatorInterface;
 
 /**
  * SCRunSpeedSliderPanel to replace RunSpeedSliderPanel because its !@#$%^&() constructor is not visible.
@@ -49,10 +49,10 @@ public class SCRunSpeedSliderPanel extends JPanel
      * @param initialValue double; the initially selected value on the scale
      * @param factor double; the multiplicaton factor to use for the simulation time
      * @param ticksPerDecade int; the number of steps per decade
-     * @param simulator DEVSSimulatorInterface&lt;?, ?, ?&gt;; the simulator to change the speed of
+     * @param simulator DevsSimulatorInterface&lt;?, ?, ?&gt;; the simulator to change the speed of
      */
     public SCRunSpeedSliderPanel(final double minimum, final double maximum, final double initialValue, final double factor,
-            final int ticksPerDecade, final DEVSSimulatorInterface<?> simulator)
+            final int ticksPerDecade, final DevsSimulatorInterface<?> simulator)
     {
         if (minimum <= 0 || minimum > initialValue || initialValue > maximum)
         {

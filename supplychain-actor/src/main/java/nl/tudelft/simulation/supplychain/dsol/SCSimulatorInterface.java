@@ -6,7 +6,7 @@ import org.djunits.value.vdouble.scalar.Time;
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.Executable;
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEventInterface;
-import nl.tudelft.simulation.dsol.simulators.DEVSSimulatorInterface;
+import nl.tudelft.simulation.dsol.simulators.DevsSimulatorInterface;
 import nl.tudelft.simulation.naming.context.Contextualized;
 
 /**
@@ -18,7 +18,7 @@ import nl.tudelft.simulation.naming.context.Contextualized;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface SCSimulatorInterface extends DEVSSimulatorInterface<Duration>, Contextualized
+public interface SCSimulatorInterface extends DevsSimulatorInterface<Duration>, Contextualized
 {
     /**
      * Schedules a methodCall at an absolute time.

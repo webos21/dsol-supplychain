@@ -1,6 +1,7 @@
 package nl.tudelft.simulation.supplychain.dsol;
 
 import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.djunits.value.vdouble.scalar.Time;
 
@@ -25,7 +26,7 @@ public class SCAnimator extends DEVSRealTimeAnimator.TimeDoubleUnit implements S
     private final Time absStartTime;
 
     /** the counter for the unique message id. */
-    private long uniqueMessageId = 1000000L;
+    private AtomicLong uniqueMessageId = new AtomicLong(1_000_000L);
 
     /**
      * Construct the SCAnimator that extends the DEVSRealTimeAnimator.TimeDoubleUnit, and offers absolute Time for the
@@ -57,7 +58,7 @@ public class SCAnimator extends DEVSRealTimeAnimator.TimeDoubleUnit implements S
     @Override
     public long getUniqueMessageId()
     {
-        return this.uniqueMessageId++;
+        return this.uniqueMessageId.getAndIncrement();
     }
 
     /** {@inheritDoc} */

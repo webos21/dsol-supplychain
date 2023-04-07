@@ -7,7 +7,7 @@ import org.djutils.draw.point.Point;
 import nl.tudelft.simulation.dsol.model.DSOLModel;
 
 /**
- * SCModelInterface defines the extra methods of a supply chain model.
+ * SCModelInterface defines the specific methods of a supply chain model.
  * <p>
  * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.

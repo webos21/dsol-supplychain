@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.actor;
 
+import nl.tudelft.simulation.supplychain.SupplyChainException;
+
 /**
  * ActorAlreadyDefinedException indicates that an actor tried to register itself in the model, but it already existed.
  * <p>
@@ -8,7 +10,7 @@ package nl.tudelft.simulation.supplychain.actor;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class ActorAlreadyDefinedException extends Exception
+public class ActorAlreadyDefinedException extends SupplyChainException
 {
     /** */
     private static final long serialVersionUID = 20230407L;

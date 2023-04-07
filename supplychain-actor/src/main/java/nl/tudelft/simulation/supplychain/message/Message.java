@@ -13,6 +13,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.ActorNotFoundException;
 import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
 
 /**
@@ -59,14 +60,15 @@ public abstract class Message implements Serializable
      * @param model SCModelInterface; the supply chain model
      * @param json String; the message content encoded as a JSON string
      * @throws IOException when decoding of the message fails
+     * @throws ActorNotFoundException when either the sender, or the receiver could not be found
      */
-    public Message(final SCModelInterface model, final String json) throws IOException
+    public Message(final SCModelInterface model, final String json) throws IOException, ActorNotFoundException
     {
         JsonObject jobj = new Gson().fromJson(json, JsonObject.class);
         this.sender = model.getActor(jobj.get("sender").getAsString());
-        this.receiver = model.getActor(jobj.get("sender").getAsString());
+        this.receiver = model.getActor(jobj.get("receiver").getAsString());
         this.timestamp = Time.instantiateSI(jobj.get("timestamp").getAsDouble());
-        this.uniqueId = jobj.get("sender").getAsLong();
+        this.uniqueId = jobj.get("uniqueId").getAsLong();
     }
 
     /**

@@ -1,12 +1,15 @@
 package nl.tudelft.simulation.supplychain.actor;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.djunits.Throw;
+import org.djutils.event.EventListenerMap;
 import org.djutils.event.EventProducer;
+import org.djutils.event.LocalEventProducer;
 
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
@@ -21,7 +24,7 @@ import nl.tudelft.simulation.supplychain.message.policy.MessagePolicyInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class AbstractPolicyHandler extends EventProducer implements PolicyHandlerInterface
+public abstract class AbstractPolicyHandler implements PolicyHandlerInterface
 {
     /** */
     private static final long serialVersionUID = 20221205L;
@@ -34,15 +37,29 @@ public abstract class AbstractPolicyHandler extends EventProducer implements Pol
     @SuppressWarnings("checkstyle:visibilitymodifier")
     protected final Map<Class<? extends Message>, List<MessagePolicyInterface<? extends Message>>> messagePolicies =
             new LinkedHashMap<>();
+    
+    /** the embedded event producer. */
+    private final EventProducer eventProducer;
 
     /**
-     * Create a new PolicyHandler (the superclass of Actor and Role).
+     * Create a new PolicyHandler (the superclass of Actor and Role) with a LocalEventProducer.
      * @param simulator SCSimulatorInterface; the simulator to schedule simulation events on
      */
     public AbstractPolicyHandler(final SCSimulatorInterface simulator)
     {
+        this(simulator, new LocalEventProducer());
+    }
+
+    /**
+     * Create a new PolicyHandler (the superclass of Actor and Role) with a special EventProducer.
+     * @param simulator SCSimulatorInterface; the simulator to schedule simulation events on
+     * @param eventProducer EventProducer; a special EventProducer to use, e.g., a RmiEventProducer
+     */
+    public AbstractPolicyHandler(final SCSimulatorInterface simulator, final EventProducer eventProducer)
+    {
         Throw.whenNull(simulator, "simulator cannot be null");
         this.simulator = simulator;
+        this.eventProducer = eventProducer;
     }
 
     /** {@inheritDoc} */
@@ -96,4 +113,11 @@ public abstract class AbstractPolicyHandler extends EventProducer implements Pol
         return true;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EventListenerMap getEventListenerMap() throws RemoteException
+    {
+        return this.eventProducer.getEventListenerMap();
+    }
+    
 }

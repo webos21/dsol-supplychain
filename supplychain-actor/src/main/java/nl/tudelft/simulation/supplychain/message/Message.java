@@ -7,6 +7,8 @@ import java.io.StringWriter;
 
 import org.djunits.value.vdouble.scalar.Time;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
@@ -40,6 +42,7 @@ public abstract class Message implements Serializable
 
     /**
      * Construct a new message.
+     * @param model SCModelInterface; the supply chain model
      * @param sender Actor; the sender
      * @param receiver Actor; the receiver
      */
@@ -47,22 +50,23 @@ public abstract class Message implements Serializable
     {
         this.sender = sender;
         this.receiver = receiver;
-        this.timestamp = sender.getSimulatorTime();
-        this.uniqueId = sender.getSimulator().getUniqueMessageId();
+        this.timestamp = model.getSimulator().getAbsSimulatorTime();
+        this.uniqueId = model.getUniqueMessageId();
     }
-    
+   
     /**
      * Construct a new message from JSON content.
+     * @param model SCModelInterface; the supply chain model
      * @param json String; the message content encoded as a JSON string
      * @throws IOException when decoding of the message fails
      */
     public Message(final SCModelInterface model, final String json) throws IOException
     {
-        StringReader in = new StringReader(json);
-        JsonReader jr = new JsonReader(in);
-        jr.beginObject();
-        
-        jr.endObject();
+        JsonObject jobj = new Gson().fromJson(json, JsonObject.class);
+        this.sender = model.getActor(jobj.get("sender").getAsString());
+        this.receiver = model.getActor(jobj.get("sender").getAsString());
+        this.timestamp = Time.instantiateSI(jobj.get("timestamp").getAsDouble());
+        this.uniqueId = jobj.get("sender").getAsLong();
     }
 
     /**

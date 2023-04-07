@@ -8,14 +8,14 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.base.Identifiable;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.OrientedPoint2d;
 import org.djutils.exceptions.Throw;
 import org.djutils.immutablecollections.ImmutableLinkedHashSet;
 import org.djutils.immutablecollections.ImmutableSet;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
-import nl.tudelft.simulation.supplychain.SupplyChainRuntimeException;
+import nl.tudelft.simulation.supplychain.dsol.SCModelInterface;
 import nl.tudelft.simulation.supplychain.dsol.SCSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
@@ -50,7 +50,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     private final MessageHandlerInterface messageHandler;
 
     /** the location of the actor. */
-    private final OrientedPoint3d location;
+    private final OrientedPoint2d location;
 
     /** the bounds of the object (size and relative height in the animation). */
     private Bounds3d bounds = new Bounds3d(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
@@ -60,16 +60,19 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
      * @param id String; the short id of the actor
      * @param name String; the longer name of the actor
      * @param messageHandler MessageHandlerInterface; the message handler to use
-     * @param simulator SCSimulatorInterface; the simulator to use
-     * @param location OrientedPoint3d; the location of the actor
+     * @param model SCModelInterface; the model to retrieve the simulator, actor list, etc.
+     * @param location OrientedPoint2d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @throws ActorAlreadyDefinedException when an actor with this id has already been registered
+     * @throws NullPointerException when any of the arguments is null
+     * @throws IllegalArgumentException when the id is the empty string
      */
-    public Actor(final String id, final String name, final MessageHandlerInterface messageHandler,
-            final SCSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription)
+    public Actor(final String id, final String name, final MessageHandlerInterface messageHandler, final SCModelInterface model,
+            final OrientedPoint2d location, final String locationDescription) throws ActorAlreadyDefinedException
     {
-        super(simulator);
+        super(model.getSimulator());
         Throw.whenNull(id, "name cannot be null");
-        Throw.when(id.length() == 0, SupplyChainRuntimeException.class, "id of actor cannot be null");
+        Throw.when(id.length() == 0, IllegalArgumentException.class, "id of actor cannot be null");
         Throw.whenNull(name, "name cannot be null");
         Throw.whenNull(location, "location cannot be null");
         Throw.whenNull(locationDescription, "locationDescription cannot be null");
@@ -78,6 +81,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
         this.locationDescription = locationDescription;
         this.location = location;
         this.messageHandler = messageHandler;
+        model.registerActor(this);
         messageHandler.setOwner(this);
     }
 
@@ -154,7 +158,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     {
         return this.id;
     }
-    
+
     /**
      * Return the longer name of the actor.
      * @return String; the longer name of the actor
@@ -193,7 +197,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
 
     /** {@inheritDoc} */
     @Override
-    public OrientedPoint3d getLocation()
+    public OrientedPoint2d getLocation()
     {
         return this.location;
     }
@@ -241,5 +245,5 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
         Actor other = (Actor) obj;
         return Objects.equals(this.id, other.id);
     }
-    
+
 }

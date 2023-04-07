@@ -1,15 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <groupId>nl.tudelft.simulation</groupId>
   <artifactId>supplychain-parent</artifactId>
   <version>3.0</version>
-    
+
   <packaging>pom</packaging>
 
   <name>Supply chain simulation parent project</name>
   <description>Supply chain simulation parent project</description>
-  
+
   <organization>
     <name>Delft University of Technology</name>
     <url>https://www.tudelft.nl</url>
@@ -29,14 +31,14 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <maven.compiler.target>${jdk.version}</maven.compiler.target>
-    
+
     <supplychain.version>${project.version}</supplychain.version>
-    <djutils.version>2.0.1</djutils.version>
-    <djunits.version>5.0.1</djunits.version>
-    <dsol.version>4.0.1</dsol.version>
+    <djutils.version>2.1.8</djutils.version>
+    <djunits.version>5.0.2</djunits.version>
+    <dsol.version>4.1.2</dsol.version>
     <tinylog.version>1.3.6</tinylog.version>
     <junit.version>4.13.2</junit.version>
-    <javax.annotation.version>1.3.2</javax.annotation.version>
+    <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
     <gson.version>2.9.1</gson.version>
 
     <maven.compiler.version>3.10.1</maven.compiler.version>
@@ -76,9 +78,9 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>javax.annotation-api</artifactId>
-      <version>${javax.annotation.version}</version>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+      <version>${jakarta.annotation.version}</version>
     </dependency>
 
     <dependency>
@@ -211,7 +213,7 @@
         </includes>
       </testResource>
     </testResources>
-  
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -303,12 +305,18 @@
         <configuration>
           <links>
             <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-base/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-naming/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-introspection/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-core/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-animation/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-swing/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-base/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-naming/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-introspection/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-core/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-animation/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-swing/apidocs/</link>
             <link>https://tinylog.org/v1/javadoc/</link>
             <link>https://djunits.org/docs/latest/apidocs/</link>
             <link>https://djutils.org/docs/latest/djutils/apidocs/</link>
@@ -361,7 +369,8 @@
           <excludes>
             <exclude>**/IT*.java</exclude>
           </excludes>
-          <!-- Make sure every unit test is run as a separate process to avoid static leaks between tests -->
+          <!-- Make sure every unit test is run as a separate process to avoid
+          static leaks between tests -->
           <forkCount>1</forkCount>
           <reuseForks>false</reuseForks>
         </configuration>
@@ -372,7 +381,8 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>${maven.failsafe.version}</version>
         <executions>
-          <!-- Ensures that both integration-test and verify goals of the Failsafe Maven plugin are executed. -->
+          <!-- Ensures that both integration-test and verify goals of the
+          Failsafe Maven plugin are executed. -->
           <execution>
             <id>integration-tests</id>
             <goals>
@@ -380,9 +390,11 @@
               <goal>verify</goal>
             </goals>
             <configuration>
-              <!-- Sets the VM argument line used when integration tests are run. -->
+              <!-- Sets the VM argument line used when integration tests are
+              run. -->
               <argLine>${failsafeArgLine}</argLine>
-              <!-- Skips integration tests if the value of skip.integration.tests property is true -->
+              <!-- Skips integration tests if the value of
+              skip.integration.tests property is true -->
               <skipTests>${skip.integration.tests}</skipTests>
             </configuration>
           </execution>
@@ -395,8 +407,10 @@
         <version>${maven.jacoco.version}</version>
         <executions>
 
-          <!-- Prepares the property pointing to the JaCoCo runtime agent which is passed as VM argument when Maven the Surefire
-            plugin is executed. -->
+          <!-- Prepares the property pointing to the JaCoCo runtime agent which
+          is passed as VM argument when Maven the Surefire
+            plugin
+          is executed. -->
           <execution>
             <id>pre-unit-test</id>
             <!-- phase>pre-integration-test</phase -->
@@ -405,13 +419,16 @@
             </goals>
             <configuration>
               <!-- Sets the path to the file which contains the execution data. -->
-              <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-              <!-- Sets the name of the property containing the settings for JaCoCo runtime agent. -->
+              <destFile>
+                ${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+              <!-- Sets the name of the property containing the settings for
+              JaCoCo runtime agent. -->
               <propertyName>surefireArgLine</propertyName>
             </configuration>
           </execution>
 
-          <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run. -->
+          <!-- Ensures that the code coverage report for unit tests is created
+          after unit tests have been run. -->
           <execution>
             <id>post-unit-test</id>
             <phase>test</phase>
@@ -420,7 +437,8 @@
             </goals>
             <configuration>
               <!-- Sets the path to the file which contains the execution data. -->
-              <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+              <dataFile>
+                ${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
               <!-- Sets the output directory for the code coverage report. -->
               <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
             </configuration>
@@ -551,12 +569,18 @@
         <configuration>
           <links>
             <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-base/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-naming/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-introspection/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-core/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-animation/apidocs/</link>
-            <link>https://simulation.tudelft.nl/dsol/docs/latest/dsol-swing/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-base/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-naming/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-introspection/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-core/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-animation/apidocs/</link>
+            <link>
+              https://simulation.tudelft.nl/dsol/docs/latest/dsol-swing/apidocs/</link>
             <link>https://tinylog.org/v1/javadoc/</link>
             <link>https://djunits.org/docs/latest/apidocs/</link>
             <link>https://djutils.org/docs/latest/djutils/apidocs/</link>
@@ -631,20 +655,23 @@
               <report>report</report>
             </reports>
             <configuration>
-              <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+              <dataFile>
+                ${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
               <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
             </configuration>
           </reportSet>
           <!-- Turn this on when JaCoCo Integration tests are run. Otherwise,
-            the unit test report is also not generated. -->
+          the unit test report is also not generated. -->
           <!-- reportSet -->
           <!-- inherited>true</inherited -->
           <!-- reports -->
           <!-- report>report</report -->
           <!-- /reports -->
           <!-- configuration -->
-          <!-- dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile -->
-          <!-- outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory -->
+          <!--
+          dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile -->
+          <!--
+          outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory -->
           <!-- /configuration -->
           <!-- /reportSet -->
         </reportSets>
@@ -792,7 +819,8 @@
 
   <scm>
     <connection>scm:git:git://github.com/averbraeck/dsol-supplychain.git</connection>
-    <developerConnection>scm:git:ssh://github.com:averbraeck/dsol-supplychain.git</developerConnection>
+    <developerConnection>
+      scm:git:ssh://github.com:averbraeck/dsol-supplychain.git</developerConnection>
     <url>https://github.com/averbraeck/dsol-supplychain/tree/master</url>
   </scm>
 

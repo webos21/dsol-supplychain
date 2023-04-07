@@ -93,12 +93,6 @@ public interface SCSimulatorInterface extends DevsSimulatorInterface<Duration>, 
         return getAbsStartTime().plus(getSimulatorTime());
     }
 
-    /**
-     * Return a unique message id.
-     * @return long; a unique message id
-     */
-    long getUniqueMessageId();
-
     /** {@inheritDoc} */
     @Override
     SCModelInterface getModel();

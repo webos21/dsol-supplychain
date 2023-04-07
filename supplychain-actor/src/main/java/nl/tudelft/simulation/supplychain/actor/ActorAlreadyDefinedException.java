@@ -14,31 +14,12 @@ public class ActorAlreadyDefinedException extends Exception
     private static final long serialVersionUID = 20230407L;
 
     /**
-     * Create the exception with a message.
-     * @param message String; the message to explain the exception
+     * Create the exception, identifying the missing actor.
+     * @param actorId String; the actor id that could not be found
      */
-    public ActorAlreadyDefinedException(final String message)
+    public ActorAlreadyDefinedException(final String actorId)
     {
-        super(message);
-    }
-
-    /**
-     * Wrap an earlier exception into this exception.
-     * @param cause Throwable; the earlier exception to wrap
-     */
-    public ActorAlreadyDefinedException(final Throwable cause)
-    {
-        super(cause);
-    }
-
-    /**
-     * Wrap an earlier exception into this exception, and give it a description.
-     * @param message String; the message to explain the exception
-     * @param cause Throwable; the earlier exception to wrap
-     */
-    public ActorAlreadyDefinedException(final String message, final Throwable cause)
-    {
-        super(message, cause);
+        super("Actor with id " + actorId + " has already been defined in the model's actor map");
     }
 
 }

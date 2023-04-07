@@ -66,7 +66,7 @@ public class BillPolicyTimeOut extends BillPolicy
             try
             {
                 bill.getSender().getSimulator().scheduleEventAbs(bill.getFinalPaymentDate().plus(this.maximumTimeOut), this,
-                        this, "checkPayment", new Serializable[] {bill});
+                        "checkPayment", new Serializable[] {bill});
             }
             catch (Exception exception)
             {

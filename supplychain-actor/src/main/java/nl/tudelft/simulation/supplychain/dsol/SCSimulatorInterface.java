@@ -24,33 +24,31 @@ public interface SCSimulatorInterface extends DevsSimulatorInterface<Duration>, 
      * Schedules a methodCall at an absolute time.
      * @param absoluteTime Time; the exact time to schedule the method on the simulator.
      * @param priority short; the priority compared to other events scheduled at the same time.
-     * @param source Object; the source of the event
      * @param target Object; the target
      * @param method String; the method
      * @param args Object[]; the arguments.
      * @return the simulation event so it can be cancelled later
      * @throws SimRuntimeException whenever the event is scheduled in the past.
      */
-    default SimEventInterface<Duration> scheduleEventAbs(final Time absoluteTime, final short priority, final Object source,
-            final Object target, final String method, final Object[] args) throws SimRuntimeException
+    default SimEventInterface<Duration> scheduleEventAbs(final Time absoluteTime, final short priority, final Object target,
+            final String method, final Object[] args) throws SimRuntimeException
     {
-        return scheduleEventAbs(absoluteTime.minus(getAbsStartTime()), priority, source, target, method, args);
+        return scheduleEventAbs(absoluteTime.minus(getAbsStartTime()), priority, target, method, args);
     }
 
     /**
      * Schedules a methodCall at an absolute time.
      * @param absoluteTime Time; the exact time to schedule the method on the simulator.
-     * @param source Object; the source of the event
      * @param target Object; the target
      * @param method String; the method
      * @param args Object[]; the arguments.
      * @return the simulation event so it can be cancelled later
      * @throws SimRuntimeException whenever the event is scheduled in the past.
      */
-    default SimEventInterface<Duration> scheduleEventAbs(final Time absoluteTime, final Object source, final Object target,
-            final String method, final Object[] args) throws SimRuntimeException
+    default SimEventInterface<Duration> scheduleEventAbs(final Time absoluteTime, final Object target, final String method,
+            final Object[] args) throws SimRuntimeException
     {
-        return scheduleEventAbs(absoluteTime.minus(getAbsStartTime()), source, target, method, args);
+        return scheduleEventAbs(absoluteTime.minus(getAbsStartTime()), target, method, args);
     }
 
     /**

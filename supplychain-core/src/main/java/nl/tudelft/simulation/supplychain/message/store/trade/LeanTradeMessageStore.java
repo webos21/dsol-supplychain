@@ -68,8 +68,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 InternalDemand internalDemand = (InternalDemand) message;
                 this.unansweredContentMap.put(message.getUniqueId(), message);
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), internalDemand.getLatestDeliveryDate());
-                this.simulator.scheduleEventAbs(date, this, this, "internalDemandTimeout",
-                        new Serializable[] {internalDemand, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "internalDemandTimeout", new Serializable[] {internalDemand, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(RequestForQuote.class) && !sent)
             {
@@ -77,8 +76,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.unansweredContentMap.put(message.getUniqueId(), message);
                 this.unansweredContentMap.remove(rfq.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), rfq.getCutoffDate());
-                this.simulator.scheduleEventAbs(date, this, this, "requestForQuoteTimeout",
-                        new Serializable[] {rfq, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "requestForQuoteTimeout", new Serializable[] {rfq, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(RequestForQuote.class) && sent)
             {
@@ -87,8 +85,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.unansweredContentMap.remove(rfq.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(),
                         rfq.getCutoffDate().plus(new Duration(1.0, DurationUnit.DAY)));
-                this.simulator.scheduleEventAbs(date, this, this, "requestForQuoteTimeout",
-                        new Serializable[] {rfq, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "requestForQuoteTimeout", new Serializable[] {rfq, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(Quote.class))
             {
@@ -99,8 +96,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                         quote.getRequestForQuote().getCutoffDate().plus(new Duration(1.0, DurationUnit.DAY)));
                 date = Time.max(date, quote.getRequestForQuote().getLatestDeliveryDate());
                 date = Time.max(this.simulator.getAbsSimulatorTime(), date);
-                this.simulator.scheduleEventAbs(date, this, this, "quoteTimeout",
-                        new Serializable[] {quote, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "quoteTimeout", new Serializable[] {quote, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(OrderBasedOnQuote.class))
             {
@@ -110,8 +106,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 Time date = Time.max(order.getDeliveryDate(), order.getQuote().getProposedDeliveryDate());
                 date = Time.max(date, order.getQuote().getRequestForQuote().getLatestDeliveryDate());
                 date = Time.max(this.simulator.getAbsSimulatorTime(), date);
-                this.simulator.scheduleEventAbs(date, this, this, "orderBasedOnQuoteTimeout",
-                        new Serializable[] {order, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "orderBasedOnQuoteTimeout", new Serializable[] {order, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(OrderStandalone.class))
             {
@@ -119,8 +114,7 @@ public class LeanTradeMessageStore extends TradeMessageStore
                 this.unansweredContentMap.put(message.getUniqueId(), message);
                 this.unansweredContentMap.remove(order.getInternalDemandId());
                 Time date = Time.max(this.simulator.getAbsSimulatorTime(), order.getDeliveryDate());
-                this.simulator.scheduleEventAbs(date, this, this, "orderStandAloneTimeout",
-                        new Serializable[] {order, Boolean.valueOf(sent)});
+                this.simulator.scheduleEventAbs(date, this, "orderStandAloneTimeout", new Serializable[] {order, Boolean.valueOf(sent)});
             }
             else if (messageClass.equals(OrderConfirmation.class))
             {

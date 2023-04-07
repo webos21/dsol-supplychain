@@ -85,7 +85,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
 
                 // calculate the actual time out
                 Time time = Time.max(getOwner().getSimulatorTime(), quote.getRequestForQuote().getCutoffDate());
-                getOwner().getSimulator().scheduleEventAbs(time, this, this, "createOrder", args);
+                getOwner().getSimulator().scheduleEventAbs(time, this, "createOrder", args);
             }
             catch (Exception exception)
             {

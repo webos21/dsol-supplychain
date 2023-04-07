@@ -106,7 +106,7 @@ public class DemandGenerationRole extends SupplyChainRole
                 getOwner(). sendMessage(id, this.administrativeDelay.draw());
                 Serializable[] args = {product, demand};
                 Time time = super.simulator.getAbsSimulatorTime().plus(demand.getIntervalDistribution().draw());
-                super.simulator.scheduleEventAbs(time, this, this, "createInternalDemand", args);
+                super.simulator.scheduleEventAbs(time, this, "createInternalDemand", args);
 
                 // we might collect some statistics for the internal demand
                 super.fireEvent(new TimedEvent<Time>(DemandGenerationRole.DEMAND_GENERATED_EVENT, this, id,

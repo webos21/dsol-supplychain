@@ -64,7 +64,7 @@ public class OrderPolicyNoStock extends AbstractOrderPolicy<Order>
             Time shippingTime =
                     Time.max(getOwner().getSimulatorTime().plus(new Duration(8.0, DurationUnit.HOUR)), scheduledShippingTime);
             Serializable[] args = new Serializable[] {order};
-            getOwner().getSimulator().scheduleEventAbs(shippingTime, this, this, "ship", args);
+            getOwner().getSimulator().scheduleEventAbs(shippingTime, this, "ship", args);
 
             Logger.trace("t={} - MTO SHIPPING from actor '{}': scheduled for t={}", getOwner().getSimulatorTime(),
                     getOwner().getName(), shippingTime);

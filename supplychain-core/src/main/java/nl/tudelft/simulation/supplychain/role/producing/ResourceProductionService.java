@@ -101,7 +101,7 @@ public class ResourceProductionService extends ProductionService
         try
         {
             System.out.println("DelayProduction: production started for product: " + productionOrder.getProduct());
-            getOwner().getSimulator().scheduleEventAbs(startTime, this, this, "startProduction", args);
+            getOwner().getSimulator().scheduleEventAbs(startTime, this, "startProduction", args);
         }
         catch (Exception e)
         {

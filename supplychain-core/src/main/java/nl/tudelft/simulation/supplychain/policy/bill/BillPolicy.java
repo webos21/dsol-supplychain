@@ -101,7 +101,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         try
         {
             Serializable[] args = new Serializable[] {bill};
-            getOwner().getSimulator().scheduleEventAbs(paymentTime, this, this, "pay", args);
+            getOwner().getSimulator().scheduleEventAbs(paymentTime, this, "pay", args);
         }
         catch (SimRuntimeException exception)
         {

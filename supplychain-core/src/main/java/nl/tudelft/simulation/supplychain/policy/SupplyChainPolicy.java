@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * for e.g. production orders and for purchase orders; it can be done on the basis of the message sender (in case of production
  * orders the owner itself), or on the basis of the product type.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>

@@ -24,7 +24,7 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
  * A SupplyChainActor is an Actor from the Actor package with a bank account, and a way to keep track of its messages. It can
  * play certain roles, to which it can delegate the handling of its messages. It can also choose to handle messages itself.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -150,7 +150,7 @@ public abstract class SupplyChainActor extends Actor implements SupplyChainActor
     /**
      * SupplyChainActor.Builder builds a SupplyChainActor. This class can be extended.
      * <p>
-     * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
+     * Copyright (c) 2022-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
      * The supply chain Java library uses a BSD-3 style license.
      * </p>
      * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>

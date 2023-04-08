@@ -24,7 +24,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportOptionProvider;
  * direct ordering at a known supplier. When receiving the internal demand, it just creates an Order based on a table that maps
  * Products onto Actors, and sends it after a given time delay.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
@@ -108,7 +108,7 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
     /**
      * INNER CLASS FOR STORING RECORDS OF SUPPLIERS AND PRICE
      * <p>
-     * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
+     * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
      * The supply chain Java library uses a BSD-3 style license.
      * </p>
      * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>

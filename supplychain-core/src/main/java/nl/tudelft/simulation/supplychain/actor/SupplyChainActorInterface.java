@@ -13,7 +13,7 @@ import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreIn
  * SupplyChainActor defines the defining methods of the SupplyChainActor. The SupplyChainActor extends the Actor, and adds a
  * bank account, cost items, and a Store for the sent and received Messages.
  * <p>
- * Copyright (c) 2022-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2022-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>

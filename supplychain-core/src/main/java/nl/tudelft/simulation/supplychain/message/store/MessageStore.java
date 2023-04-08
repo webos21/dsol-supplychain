@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.message.Message;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public interface MessageStoreInterface extends Serializable
+public interface MessageStore extends Serializable
 {
     /**
      * Set the owner for the message store after is has been created. The reason for explicitly having to set the owner and not

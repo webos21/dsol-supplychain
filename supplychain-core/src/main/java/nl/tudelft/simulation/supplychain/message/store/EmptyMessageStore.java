@@ -11,7 +11,7 @@ import nl.tudelft.simulation.supplychain.message.Message;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class EmptyMessageStore implements MessageStoreInterface
+public class EmptyMessageStore implements MessageStore
 {
     /** */
     private static final long serialVersionUID = 20221201L;

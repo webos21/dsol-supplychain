@@ -12,6 +12,7 @@ import org.djutils.event.EventProducer;
 import org.djutils.event.LocalEventProducer;
 import org.djutils.exceptions.Throw;
 
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.policy.MessagePolicy;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
@@ -68,7 +69,7 @@ public abstract class Role implements EventProducer, Identifiable, Serializable
     }
 
     /**
-     * Create a new Role.
+     * Create a new Role with a default local event producer.
      * @param id String; the id of the role
      * @param actor Actor; the actor to which this role belongs
      * @param messageReceiver MessageReceiver; the message handler to use for processing the messages
@@ -131,6 +132,15 @@ public abstract class Role implements EventProducer, Identifiable, Serializable
     public Actor getActor()
     {
         return this.actor;
+    }
+
+    /**
+     * Return the simulator to schedule simulation events on.
+     * @return SupplyChainSimulatorInterface; the simulator
+     */
+    public SupplyChainSimulatorInterface getSimulator()
+    {
+        return getActor().getSimulator();
     }
 
     /** {@inheritDoc} */

@@ -10,6 +10,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import nl.tudelft.simulation.dsol.experiment.StreamInformation;
 import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
 import nl.tudelft.simulation.supplychain.actor.ActorNotFoundException;
 
 /**
@@ -61,9 +62,20 @@ public abstract class SupplyChainModel extends AbstractDSOLModel<Duration, Suppl
 
     /** {@inheritDoc} */
     @Override
+    public void registerActor(final Actor actor) throws ActorAlreadyDefinedException
+    {
+        Throw.whenNull(actor, "actor cannot be null");
+        Throw.when(this.actorMap.containsKey(actor.getId()), ActorAlreadyDefinedException.class,
+                "Actor with id " + actor.getId() + " already defined in model");
+        this.actorMap.put(actor.getId(), actor);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Actor getActor(final String id) throws ActorNotFoundException
     {
-        Throw.when(!this.actorMap.containsKey(id), ActorNotFoundException.class, id);
+        Throw.when(!this.actorMap.containsKey(id), ActorNotFoundException.class,
+                "Actor with id " + id + " not defined in model");
         return this.actorMap.get(id);
     }
 

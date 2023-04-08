@@ -1,22 +1,24 @@
 package nl.tudelft.simulation.supplychain.actor;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.OrientedPoint2d;
 import org.djutils.event.EventType;
+import org.djutils.logger.CategoryLogger;
 import org.djutils.metadata.MetaData;
 import org.djutils.metadata.ObjectDescriptor;
 
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.FixedCost;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
@@ -29,7 +31,7 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class SupplyChainActor extends Actor implements SupplyChainActor
+public abstract class SupplyChainActor extends Actor
 {
     /** */
     private static final long serialVersionUID = 20221201L;
@@ -48,34 +50,23 @@ public abstract class SupplyChainActor extends Actor implements SupplyChainActor
             new MetaData("sent message", "sent message", new ObjectDescriptor("message", "message", Message.class)));
 
     /**
-     * Build the SupplyChainActor with a Builder.
-     * @param builder Builder; the Builder to use
-     */
-    public SupplyChainActor(final Builder builder)
-    {
-        super(builder.name, builder.messageHandler, builder.simulator, builder.location, builder.locationDescription);
-        this.bankAccount = new BankAccount(this, builder.bank, builder.initialBalance);
-        this.messageStore = builder.messageStore;
-        this.messageStore.setOwner(this);
-    }
-
-    /**
      * Construct a new Actor.
-     * @param name String; the name of the actor
-     * @param messageHandler MessageHandlerInterface; the message handler to use
-     * @param simulator SupplyChainSimulatorInterface; the simulator to use
-     * @param location OrientedPoint3d; the location of the actor
+     * @param id String, the unique id of the actor
+     * @param name String; the longer name of the actor
+     * @param model SupplyChainModelInterface; the model
+     * @param location OrientedPoint2d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
      * @param bank Bank; the bank for the BankAccount
      * @param initialBalance Money; the initial balance for the actor
      * @param messageStore TradeMessageStoreInterface; the message store for messages
+     * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public SupplyChainActor(final String name, final MessageHandlerInterface messageHandler,
-            final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
-            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
+    public SupplyChainActor(final String id, final String name, final SupplyChainModelInterface model,
+            final OrientedPoint2d location, final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore) throws ActorAlreadyDefinedException
     {
-        super(name, messageHandler, simulator, location, locationDescription);
+        super(id, name, model, location, locationDescription);
         Throw.whenNull(bank, "bank cannot be null");
         Throw.whenNull(initialBalance, "initialBalance cannot be null");
         Throw.whenNull(messageStore, "messageStore cannot be null");
@@ -118,172 +109,72 @@ public abstract class SupplyChainActor extends Actor implements SupplyChainActor
         }
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Add a fixed cost item for this actor.
+     * @param description String; the description of the fixed cost item
+     * @param interval Duration; the interval at which the amount will be deduced from the bank account
+     * @param amount Money; the amount to deduce at each interval
+     */
     public void addFixedCost(final String description, final Duration interval, final Money amount)
     {
         FixedCost fixedCost = new FixedCost(this, description, interval, amount);
         this.fixedCosts.add(fixedCost);
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Return the MessageStore for the SupplyChainActor.
+     * @return TradeMessageStoreInterface; the messageStore.
+     */
     public TradeMessageStoreInterface getMessageStore()
     {
         return this.messageStore;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Return the bank account of the SupplyChainActor.
+     * @return BankAccount; the bankAccount of the SupplyChainActor.
+     */
     public BankAccount getBankAccount()
     {
         return this.bankAccount;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Return a list of the fixed cost items for this SupplyChainActor.
+     * @return List&lt;FixedCosts&gt;; a list of fixed costs items for this SupplyChainActor.
+     */
     public List<FixedCost> getFixedCosts()
     {
         return this.fixedCosts;
     }
 
-    /**
-     * SupplyChainActor.Builder builds a SupplyChainActor. This class can be extended.
-     * <p>
-     * Copyright (c) 2022-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
-     * The supply chain Java library uses a BSD-3 style license.
-     * </p>
-     * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
-     */
-    @SuppressWarnings({"checkstyle:visibilitymodifier", "checkstyle:hiddenfield"})
-    public abstract static class Builder
+    /** {@inheritDoc} */
+    @Override
+    public void fireEvent(final EventType eventType, final Serializable value)
     {
-        /** name. */
-        protected String name;
-
-        /** messsageHandler. */
-        protected MessageHandlerInterface messageHandler;
-
-        /** simulator. */
-        protected SupplyChainSimulatorInterface simulator;
-
-        /** location. */
-        protected OrientedPoint3d location;
-
-        /** locationDescription. */
-        protected String locationDescription;
-
-        /** bank. */
-        protected Bank bank;
-
-        /** initialbankBalance. */
-        protected Money initialBalance;
-
-        /** messageStore. */
-        protected TradeMessageStoreInterface messageStore;
-
-        /**
-         * Check that all fields are filled and valid.
-         * @return boolean; whether all fields are filled and valid
-         */
-        public Builder check()
+        try
         {
-            Throw.whenNull(this.name, "name cannot be null");
-            Throw.whenNull(this.messageHandler, "messagehandler cannot be null");
-            Throw.whenNull(this.simulator, "simulator cannot be null");
-            Throw.whenNull(this.location, "location cannot be null");
-            Throw.whenNull(this.locationDescription, "locationDescription cannot be null");
-            Throw.whenNull(this.bank, "bank cannot be null");
-            Throw.whenNull(this.initialBalance, "initialBalance cannot be null");
-            Throw.whenNull(this.messageStore, "messageStore cannot be null");
-            return this;
+            super.fireEvent(eventType, value);
         }
-
-        /**
-         * Override this method to build the correct actor.
-         * @return the constructed SupplyChainActor.
-         */
-        public abstract SupplyChainActor build();
-
-        /**
-         * @param name String; the name of the actor
-         * @return Builder for chaining
-         */
-        public Builder setName(final String name)
+        catch (RemoteException e)
         {
-            this.name = name;
-            return this;
+            CategoryLogger.always().error(e);
         }
-
-        /**
-         * @param messageHandler MessageHandlerInterface; the handler for messages
-         * @return Builder for chaining
-         */
-        public Builder setMessageHandler(final MessageHandlerInterface messageHandler)
-        {
-            this.messageHandler = messageHandler;
-            return this;
-        }
-
-        /**
-         * @param simulator SupplyChainSimulatorInterface; the simulator
-         * @return Builder for chaining
-         */
-        public Builder setSimulator(final SupplyChainSimulatorInterface simulator)
-        {
-            this.simulator = simulator;
-            return this;
-        }
-
-        /**
-         * @param location OrientedPoint3d; the location of the actor on the map
-         * @return Builder for chaining
-         */
-        public Builder setLocation(final OrientedPoint3d location)
-        {
-            this.location = location;
-            return this;
-        }
-
-        /**
-         * @param locationDescription String; a description of the location (e.g., "Amsterdam")
-         * @return Builder for chaining
-         */
-        public Builder setLocationDescription(final String locationDescription)
-        {
-            this.locationDescription = locationDescription;
-            return this;
-        }
-
-        /**
-         * @param bank Bank; the bank of this actor
-         * @return Builder for chaining
-         */
-        public Builder setBank(final Bank bank)
-        {
-            this.bank = bank;
-            return this;
-        }
-
-        /**
-         * @param initialBalance Money; the initial balance of the bank account
-         * @return Builder for chaining
-         */
-        public Builder setIinitialBalance(final Money initialBalance)
-        {
-            this.initialBalance = initialBalance;
-            return this;
-        }
-
-        /**
-         * @param messageStore MessageStoreInterface; the messageStore for the messages
-         * @return Builder for chaining
-         */
-        public Builder setMessageStore(final TradeMessageStoreInterface messageStore)
-        {
-            this.messageStore = messageStore;
-            return this;
-        }
-
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public <C extends Comparable<C> & Serializable> void fireTimedEvent(final EventType eventType, final Serializable value,
+            final C time)
+    {
+        try
+        {
+            super.fireTimedEvent(eventType, value, time);
+        }
+        catch (RemoteException e)
+        {
+            CategoryLogger.always().error(e);
+        }
+    }
+
 }

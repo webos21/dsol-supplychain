@@ -1,12 +1,10 @@
 package nl.tudelft.simulation.supplychain.finance;
 
-import java.io.Serializable;
-
 import org.djunits.Throw;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.event.EventProducer;
-import org.djutils.event.TimedEventType;
+import org.djutils.event.EventType;
+import org.djutils.event.LocalEventProducer;
 import org.djutils.metadata.MetaData;
 import org.djutils.metadata.ObjectDescriptor;
 
@@ -22,7 +20,7 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class BankAccount extends EventProducer
+public class BankAccount extends LocalEventProducer
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -37,7 +35,7 @@ public class BankAccount extends EventProducer
     private Money balance;
 
     /** for who is interested, the BankAccount can send updates of changes. */
-    public static final TimedEventType BANK_ACCOUNT_CHANGED_EVENT = new TimedEventType("BANK_ACCOUNT_CHANGED_EVENT",
+    public static final EventType BANK_ACCOUNT_CHANGED_EVENT = new EventType("BANK_ACCOUNT_CHANGED_EVENT",
             new MetaData("account", "bank account", new ObjectDescriptor("balance", "bank balance", double.class)));
 
     /**
@@ -122,13 +120,6 @@ public class BankAccount extends EventProducer
         }
         this.roundBalance();
         this.owner.getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "interest", null);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Serializable getSourceId()
-    {
-        return this.owner.getName() + ".BankAccount";
     }
 
 }

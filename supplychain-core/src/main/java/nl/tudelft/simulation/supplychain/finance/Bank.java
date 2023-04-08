@@ -1,21 +1,14 @@
 package nl.tudelft.simulation.supplychain.finance;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.OrientedPoint2d;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
-import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
-import nl.tudelft.simulation.supplychain.message.store.trade.EmptyTradeMessageStore;
-import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 
 /**
  * The Bank to store the interest rates for the Bank accounts. In this case, we have chosen to not make the Bank work with
- * Messages, but this is of course possible ti implement, e.g. to simulate risks of banks handling international transactions
+ * Messages, but this is of course possible to implement, e.g. to simulate risks of banks handling international transactions
  * slowly, or to simulate cyber attacks on the financial infrastructure.
  * <p>
  * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
@@ -23,7 +16,7 @@ import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreIn
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Bank extends Actor implements SupplyChainActor
+public class Bank extends Actor
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221127L;
@@ -34,29 +27,19 @@ public class Bank extends Actor implements SupplyChainActor
     /** the interest rate for a negative bank account. */
     private double annualInterestRateNeg = 0.08;
 
-    /** the store for the content to use. */
-    private final TradeMessageStoreInterface messageStore;
-
-    /** the bank account of the actor. */
-    private final BankAccount bankAccount;
-
-    /** the fixed costs for this supply chain actor. */
-    private List<FixedCost> fixedCosts = new ArrayList<FixedCost>();
-
     /**
      * Create a new Bank.
+     * @param id String; the id of the bank
      * @param name String; the name of the bank
-     * @param messageHandler MessageHandlerInterface; the handler for messages
-     * @param simulator SupplyChainSimulatorInterface; the simulator
+     * @param model SupplyChainModelInterface; the model
      * @param location OrientedPoint3d; the location on the map
      * @param locationDescription String; a description of the location (e.g., "Frankfurt")
+     * @throws ActorAlreadyDefinedException when the bank has already been defined
      */
-    public Bank(final String name, final MessageHandlerInterface messageHandler, final SupplyChainSimulatorInterface simulator,
-            final OrientedPoint3d location, final String locationDescription)
+    public Bank(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription) throws ActorAlreadyDefinedException
     {
-        super(name, messageHandler, simulator, location, locationDescription);
-        this.bankAccount = new BankAccount(this, this, new Money(0.0, MoneyUnit.USD));
-        this.messageStore = new EmptyTradeMessageStore();
+        super(id, name, model, location, locationDescription);
     }
 
     /**
@@ -95,31 +78,4 @@ public class Bank extends Actor implements SupplyChainActor
         this.annualInterestRatePos = annualInterestRatePos;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void addFixedCost(final String description, final Duration interval, final Money amount)
-    {
-        // ignore.
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<FixedCost> getFixedCosts()
-    {
-        return this.fixedCosts;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public TradeMessageStoreInterface getMessageStore()
-    {
-        return this.messageStore;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public BankAccount getBankAccount()
-    {
-        return this.bankAccount;
-    }
 }

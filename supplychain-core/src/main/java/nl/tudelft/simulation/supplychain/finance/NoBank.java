@@ -1,9 +1,9 @@
 package nl.tudelft.simulation.supplychain.finance;
 
-import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.OrientedPoint2d;
 
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
-import nl.tudelft.simulation.supplychain.message.handler.DirectMessageHandler;
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 
 /**
  * NoBank is a class that can be used for organizations that do not need any banking services.
@@ -20,11 +20,12 @@ public class NoBank extends Bank
 
     /**
      * Create a placeholder for a Bank.
-     * @param simulator SupplyChainSimulatorInterface; needed since it cannot be null
+     * @param model SupplyChainModelInterface; the model to register the 'no bank'
+     * @throws ActorAlreadyDefinedException when "nobank" is registered twice
      */
-    public NoBank(final SupplyChainSimulatorInterface simulator)
+    public NoBank(final SupplyChainModelInterface model) throws ActorAlreadyDefinedException
     {
-        super("nobank", new DirectMessageHandler(), simulator, new OrientedPoint3d(0, 0, 0), "");
+        super("nobank", "no bank", model, new OrientedPoint2d(0, 0), "");
     }
 
 }

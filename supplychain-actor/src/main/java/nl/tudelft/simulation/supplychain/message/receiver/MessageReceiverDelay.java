@@ -1,19 +1,20 @@
-package nl.tudelft.simulation.supplychain.message.handler;
+package nl.tudelft.simulation.supplychain.message.receiver;
 
 import org.djunits.Throw;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.message.Message;
+import nl.tudelft.simulation.supplychain.message.policy.MessagePolicy;
 
 /**
- * MessageHandlerDelay implements a message handler for an actor that handles messages after a (stochastic) delay time.
+ * MessageReceiverDelay implements a message queuing mechanism for an actor that handles messages after a (stochastic) delay.
  * <p>
  * Copyright (c) 2022-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class MessageHandlerDelay extends MessageHandler
+public class MessageReceiverDelay extends MessageReceiver
 {
     /** */
     private static final long serialVersionUID = 20221127L;
@@ -22,22 +23,21 @@ public class MessageHandlerDelay extends MessageHandler
     private DistContinuousDuration delayDistribution;
 
     /**
-     * Create a message handler for an actor that immediately handles the message upon receipt.
+     * Create a message queuing mechanism for an actor that handles messages after a (stochastic) delay.
      * @param delayDistribution DistContinuousDuration; the delay distribution for handling messages (note that the distribution
-     *            can be changed, e.g., for implementing administrative delays)
+     *            can be changed later, e.g., for implementing temporary administrative delays)
      */
-    public MessageHandlerDelay(final DistContinuousDuration delayDistribution)
+    public MessageReceiverDelay(final DistContinuousDuration delayDistribution)
     {
-        super("DirectMessageHandler");
-        Throw.whenNull(delayDistribution, "delayDistribution cannot be null");
-        this.delayDistribution = delayDistribution;
+        super("MessageReceiverDelay");
+        setDelayDistribution(delayDistribution);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void handleMessageReceipt(final Message message)
+    public <M extends Message> void receiveMessage(final M message, final MessagePolicy<M> messagePolicy)
     {
-        message.getSender().getSimulator().scheduleEventRel(this.delayDistribution.draw(), this, "dispatchMessageProcessing",
+        getRole().getActor().getSimulator().scheduleEventRel(this.delayDistribution.draw(), messagePolicy, "handleMessage",
                 new Object[] {message});
     }
 

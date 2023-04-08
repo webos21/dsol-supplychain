@@ -1,5 +1,7 @@
 package nl.tudelft.simulation.supplychain.actor;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -9,27 +11,31 @@ import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.base.Identifiable;
 import org.djutils.draw.bounds.Bounds3d;
 import org.djutils.draw.point.OrientedPoint2d;
+import org.djutils.event.EventListenerMap;
+import org.djutils.event.EventProducer;
+import org.djutils.event.LocalEventProducer;
 import org.djutils.exceptions.Throw;
 import org.djutils.immutablecollections.ImmutableLinkedHashSet;
 import org.djutils.immutablecollections.ImmutableSet;
 import org.djutils.logger.CategoryLogger;
+import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 
 /**
  * The actor is the basic class in the nl.tudelft.simulation.actor package. It implements the behavior of a 'communicating'
- * object, that is able to exchange messages with other actors and process the incoming messages.
+ * object, that is able to exchange messages with other actors and process the incoming messages through the policies that are
+ * present in the Roles that the Actor fulfills.
  * <p>
- * Copyright (c) 2003-2022 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
+ * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Actor extends AbstractPolicyHandler implements PolicyHandlerInterface, Locatable, Identifiable
+public abstract class Actor implements EventProducer, Locatable, Identifiable, Serializable
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221126L;
@@ -43,11 +49,14 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     /** the location description of the actor (e.g., a city, country). */
     private final String locationDescription;
 
+    /** the model. */
+    private final SupplyChainModelInterface model;
+
     /** the roles. */
     private ImmutableSet<Role> roles = new ImmutableLinkedHashSet<>(new LinkedHashSet<>());
 
-    /** the message handler. */
-    private final MessageHandlerInterface messageHandler;
+    /** the embedded event producer. */
+    private final EventProducer eventProducer;
 
     /** the location of the actor. */
     private final OrientedPoint2d location;
@@ -56,10 +65,40 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     private Bounds3d bounds = new Bounds3d(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
 
     /**
-     * Construct a new Actor.
+     * Construct a new Actor. The actor delegates all message handling to one or more Roles.
      * @param id String; the short id of the actor
      * @param name String; the longer name of the actor
-     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param model SupplyChainModelInterface; the model to retrieve the simulator, actor list, etc.
+     * @param location OrientedPoint2d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @param eventProducer EventProducer; a special EventProducer to use, e.g., a RmiEventProducer
+     * @throws ActorAlreadyDefinedException when an actor with this id has already been registered
+     * @throws NullPointerException when any of the arguments is null
+     * @throws IllegalArgumentException when the id is the empty string
+     */
+    public Actor(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription, final EventProducer eventProducer) throws ActorAlreadyDefinedException
+    {
+        Throw.whenNull(model, "model cannot be null");
+        Throw.whenNull(id, "name cannot be null");
+        Throw.when(id.length() == 0, IllegalArgumentException.class, "id of actor cannot be null");
+        Throw.whenNull(name, "name cannot be null");
+        Throw.whenNull(location, "location cannot be null");
+        Throw.whenNull(locationDescription, "locationDescription cannot be null");
+        Throw.whenNull(eventProducer, "eventProducer cannot be null");
+        this.id = id;
+        this.name = name;
+        this.locationDescription = locationDescription;
+        this.model = model;
+        this.location = location;
+        this.eventProducer = eventProducer;
+        model.registerActor(this);
+    }
+
+    /**
+     * Construct a new Actor. The actor delegates all message handling to one or more Roles.
+     * @param id String; the short id of the actor
+     * @param name String; the longer name of the actor
      * @param model SupplyChainModelInterface; the model to retrieve the simulator, actor list, etc.
      * @param location OrientedPoint2d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
@@ -67,23 +106,10 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
      * @throws NullPointerException when any of the arguments is null
      * @throws IllegalArgumentException when the id is the empty string
      */
-    public Actor(final String id, final String name, final MessageHandlerInterface messageHandler,
-            final SupplyChainModelInterface model, final OrientedPoint2d location, final String locationDescription)
-            throws ActorAlreadyDefinedException
+    public Actor(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription) throws ActorAlreadyDefinedException
     {
-        super(model.getSimulator());
-        Throw.whenNull(id, "name cannot be null");
-        Throw.when(id.length() == 0, IllegalArgumentException.class, "id of actor cannot be null");
-        Throw.whenNull(name, "name cannot be null");
-        Throw.whenNull(location, "location cannot be null");
-        Throw.whenNull(locationDescription, "locationDescription cannot be null");
-        this.id = id;
-        this.name = name;
-        this.locationDescription = locationDescription;
-        this.location = location;
-        this.messageHandler = messageHandler;
-        model.registerActor(this);
-        messageHandler.setOwner(this);
+        this(id, name, model, location, locationDescription, new LocalEventProducer());
     }
 
     /**
@@ -108,7 +134,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     }
 
     /**
-     * Receive a message from another actor, and handle it (storing or handling, depending on the MessageHandler). When the
+     * Receive a message from another actor, and handle it (storing or handling, depending on the MessageReceiver). When the
      * message is not intended for this actor, a log warning is given, and the message is not processed.
      * @param message message; the message to receive
      */
@@ -120,7 +146,15 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
         }
         else
         {
-            this.messageHandler.handleMessageReceipt(message);
+            boolean processed = false;
+            for (Role role : getRoles())
+            {
+                processed |= role.handleMessage(message);
+            }
+            if (!processed)
+            {
+                Logger.warn(this.toString() + " does not have a handler for " + message.getClass().getSimpleName());
+            }
         }
     }
 
@@ -138,7 +172,7 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
         {
             CategoryLogger.always().warn("Message " + message + " not originating from sender " + toString());
         }
-        this.simulator.scheduleEventRel(delay, message.getReceiver(), "receiveMessage", new Object[] {message});
+        getSimulator().scheduleEventRel(delay, message.getReceiver(), "receiveMessage", new Object[] {message});
     }
 
     /**
@@ -179,12 +213,21 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     }
 
     /**
+     * Return the model that this actor is a part of.
+     * @return SupplyChainModelInterface; the model
+     */
+    public SupplyChainModelInterface getModel()
+    {
+        return this.model;
+    }
+
+    /**
      * Return the simulator to schedule simulation events on.
-     * @return simulator SupplyChainSimulatorInterface the simulator
+     * @return SupplyChainSimulatorInterface; the simulator
      */
     public SupplyChainSimulatorInterface getSimulator()
     {
-        return this.simulator;
+        return this.model.getSimulator();
     }
 
     /**
@@ -194,6 +237,13 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
     public Time getSimulatorTime()
     {
         return getSimulator().getAbsSimulatorTime();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EventListenerMap getEventListenerMap() throws RemoteException
+    {
+        return this.eventProducer.getEventListenerMap();
     }
 
     /** {@inheritDoc} */
@@ -221,13 +271,6 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
 
     /** {@inheritDoc} */
     @Override
-    public String toString()
-    {
-        return this.name;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public int hashCode()
     {
         return Objects.hash(this.id);
@@ -245,6 +288,13 @@ public abstract class Actor extends AbstractPolicyHandler implements PolicyHandl
             return false;
         Actor other = (Actor) obj;
         return Objects.equals(this.id, other.id);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString()
+    {
+        return this.id;
     }
 
 }

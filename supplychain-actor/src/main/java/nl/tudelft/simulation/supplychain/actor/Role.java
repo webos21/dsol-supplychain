@@ -66,6 +66,7 @@ public abstract class Role implements EventProducer, Identifiable, Serializable
         this.messageReceiver = messageReceiver;
         this.eventProducer = eventProducer;
         this.messageReceiver.setRole(this);
+        actor.addRole(this);
     }
 
     /**

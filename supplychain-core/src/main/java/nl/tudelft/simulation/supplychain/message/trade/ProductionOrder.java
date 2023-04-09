@@ -2,10 +2,10 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
 
 /**
  * An ProductionOrder indicates: I want to produce a certain amount of products on a certain date. The attributes "product",
@@ -41,8 +41,8 @@ public class ProductionOrder extends TradeMessage
      * @param product Product; the product that has to be produced
      * @param amount double; the amount of products to be produced, in the product's units
      */
-    public ProductionOrder(final InventoryActor owner, final long internalDemandId, final Time dateReady, final Product product,
-            final double amount)
+    public ProductionOrder(final SupplyChainActor owner, final long internalDemandId, final Time dateReady,
+            final Product product, final double amount)
     {
         super(owner, owner, internalDemandId);
         this.dateReady = dateReady;

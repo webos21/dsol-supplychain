@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
-import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
 import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
@@ -68,7 +68,7 @@ public class DemoSupplier extends Supplier
 
         FaxDevice fax = new FaxDevice("fax-" + name, this.simulator);
         super.addSendingDevice(fax);
-        MessageHandlerInterface faxChecker = new HandleAllMessages(this);
+        MessageReceiver faxChecker = new HandleAllMessages(this);
         super.addReceivingDevice(fax, faxChecker, new DistConstantDuration(new Duration(1.0, DurationUnit.HOUR)));
 
         // REGISTER IN YP

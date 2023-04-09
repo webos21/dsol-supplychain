@@ -30,7 +30,7 @@ import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.message.handler.DirectMessageHandler;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.product.BillOfMaterials;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.product.Sku;
@@ -100,7 +100,7 @@ public class BullwhipModel extends AbstractDSOLModel<Duration, SupplyChainSimula
             pcBOM.add(monitor, 1.0);
 
             // create the bank
-            Bank ing = new Bank("ING", new DirectMessageHandler(), getSimulator(), new OrientedPoint3d(0, 0, 0), null);
+            Bank ing = new Bank("ING", new MessageReceiverDirect(), getSimulator(), new OrientedPoint3d(0, 0, 0), null);
             ing.setAnnualInterestRateNeg(0.080);
             ing.setAnnualInterestRatePos(0.025);
 

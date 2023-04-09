@@ -6,9 +6,9 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
@@ -37,23 +37,23 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  * @param <O> The specific order type (if any) for which this policy applies
  */
-public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPolicy<O>
+public abstract class OrderPolicy<O extends Order> extends SupplyChainPolicy<O>
 {
     /** */
     private static final long serialVersionUID = 20221201L;
 
     /** access to the owner's stock to look at availability of products. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
-    protected InventoryInterface stock;
+    protected Inventory stock;
 
     /**
      * Construct a new OrderHandler. The OrderHandler is abstract, so this constructor can not be called directly.
      * @param id String; the id of the policy
-     * @param owner SupplyChainActor; the owner of the handler
+     * @param owner SupplyChainRole; the owner of the policy
      * @param stock StockInterface; the stock to use to handle the incoming order
      * @param messageClass MessageClass; the specific order message class
      */
-    public AbstractOrderPolicy(final String id, final SupplyChainActor owner, final InventoryInterface stock,
+    public OrderPolicy(final String id, final SupplyChainRole owner, final Inventory stock,
             final Class<O> messageClass)
     {
         super(id, owner, messageClass);
@@ -78,7 +78,7 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
             {
                 // try again in one day
                 Serializable[] args = new Serializable[] {order};
-                getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "ship", args);
+                getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "ship", args);
             }
             else
             {
@@ -87,22 +87,22 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
                 // available: make shipment and ship to customer
                 Money unitPrice = this.stock.getUnitPrice(product);
                 double actualAmount = this.stock.removeFromInventory(product, amount);
-                Shipment shipment = new Shipment(getOwner(), order.getSender(), order.getInternalDemandId(), order, product,
+                Shipment shipment = new Shipment(getActor(), order.getSender(), order.getInternalDemandId(), order, product,
                         actualAmount, unitPrice.multiplyBy(actualAmount));
                 shipment.setInTransit(true);
 
                 Duration transportTime = order.getTransportOption().estimatedTotalTransportDuration(product.getSku());
                 Logger.trace("OrderHandlerStock: transportation delay for order: {} is: {}", order, transportTime);
-                getOwner().sendMessage(shipment, transportTime);
+                sendMessage(shipment, transportTime);
 
                 // send a bill when the shipment leaves...
-                Bill bill = new Bill(getOwner(), order.getSender(), order.getInternalDemandId(), order,
-                        getOwner().getSimulatorTime().plus(new Duration(14.0, DurationUnit.DAY)), shipment.getTotalCargoValue(),
-                        "SALE");
+                Bill bill = new Bill(getActor(), order.getSender(), order.getInternalDemandId(), order,
+                        getSimulator().getAbsSimulatorTime().plus(new Duration(14.0, DurationUnit.DAY)),
+                        shipment.getTotalCargoValue(), "SALE");
 
                 // ... by scheduling it based on the transportation delay
                 Serializable[] args = new Serializable[] {bill};
-                getOwner().getSimulator().scheduleEventRel(transportTime, this, "sendBill", args);
+                getSimulator().scheduleEventRel(transportTime, this, "sendBill", args);
             }
         }
         catch (Exception e)
@@ -119,6 +119,6 @@ public abstract class AbstractOrderPolicy<O extends Order> extends SupplyChainPo
     protected void sendBill(final Bill bill)
     {
         // send after accepting the order.
-        getOwner().sendMessage(bill, new Duration(1.0, DurationUnit.MINUTE));
+        sendMessage(bill, new Duration(1.0, DurationUnit.MINUTE));
     }
 }

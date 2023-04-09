@@ -7,8 +7,8 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
@@ -21,17 +21,17 @@ import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class OrderPolicyNoStock extends AbstractOrderPolicy<Order>
+public class OrderPolicyNoStock extends OrderPolicy<Order>
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
     /**
      * Construct a new OrderHandler that purchases the goods when ordered.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainRole; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
-    public OrderPolicyNoStock(final SupplyChainActor owner, final InventoryInterface stock)
+    public OrderPolicyNoStock(final SupplyChainRole owner, final Inventory stock)
     {
         super("OrderPolicyNoStock", owner, stock, Order.class);
     }
@@ -41,12 +41,12 @@ public class OrderPolicyNoStock extends AbstractOrderPolicy<Order>
     public boolean handleMessage(final Order order)
     {
         // send out the confirmation
-        OrderConfirmation orderConfirmation = new OrderConfirmation(getOwner(), order.getSender(), order.getInternalDemandId(),
+        OrderConfirmation orderConfirmation = new OrderConfirmation(getActor(), order.getSender(), order.getInternalDemandId(),
                 order, OrderConfirmation.CONFIRMED);
-        getOwner().sendMessage(orderConfirmation, Duration.ZERO);
+        sendMessage(orderConfirmation, Duration.ZERO);
 
-        Logger.trace("t={} - NOSTOCK ORDER CONFIRMATION of actor '{}': sent '{}'", getOwner().getSimulatorTime(),
-                getOwner().getName(), orderConfirmation);
+        Logger.trace("t={} - NOSTOCK ORDER CONFIRMATION of actor '{}': sent '{}'", getSimulator().getSimulatorTime(),
+                getActor().getName(), orderConfirmation);
 
         // production should get an mto stock
         // tell the stock that we claimed some amount
@@ -61,13 +61,13 @@ public class OrderPolicyNoStock extends AbstractOrderPolicy<Order>
             Time scheduledShippingTime = proposedShippingDate.minus(transportationDuration);
 
             // start shipping 8 hours from now at the earliest
-            Time shippingTime =
-                    Time.max(getOwner().getSimulatorTime().plus(new Duration(8.0, DurationUnit.HOUR)), scheduledShippingTime);
+            Time shippingTime = Time.max(getSimulator().getAbsSimulatorTime().plus(new Duration(8.0, DurationUnit.HOUR)),
+                    scheduledShippingTime);
             Serializable[] args = new Serializable[] {order};
-            getOwner().getSimulator().scheduleEventAbs(shippingTime, this, "ship", args);
+            getSimulator().scheduleEventAbs(shippingTime, this, "ship", args);
 
-            Logger.trace("t={} - MTO SHIPPING from actor '{}': scheduled for t={}", getOwner().getSimulatorTime(),
-                    getOwner().getName(), shippingTime);
+            Logger.trace("t={} - MTO SHIPPING from actor '{}': scheduled for t={}", getSimulator().getSimulatorTime(),
+                    getActor().getName(), shippingTime);
         }
         catch (Exception e)
         {

@@ -5,13 +5,13 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
 
 /**
  * The RequestForQuotehandler implements the business logic for a supplier who receives a RequestForQuote. The most simple
@@ -29,9 +29,9 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
     private static final long serialVersionUID = 20221201L;
 
     /** the inventory on which checks can take place. */
-    private InventoryInterface inventory;
+    private Inventory inventory;
 
-    /** the reaction time of the handler in simulation time units. */
+    /** the reaction time of the policy in simulation time units. */
     private DistContinuousDuration handlingTime;
 
     /** the profit margin to use in the quotes, 1.0 is no profit. */
@@ -42,13 +42,13 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
 
     /**
      * Construct a new RFQ handler.
-     * @param owner a trader in this case as only traders handle RFQs
+     * @param owner SupplyChainRole; the role belonging to this policy
      * @param inventory the stock to check for products when quoting
      * @param profitMargin double; the profit margin to use; 1.0 is no profit
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the RFQ
      * @param validityDuration Duration;
      */
-    public RequestForQuotePolicy(final InventoryActor owner, final InventoryInterface inventory, final double profitMargin,
+    public RequestForQuotePolicy(final SupplyChainRole owner, final Inventory inventory, final double profitMargin,
             final DistContinuousDuration handlingTime, final Duration validityDuration)
     {
         super("RequestForQuotePolicy", owner, RequestForQuote.class);
@@ -83,11 +83,11 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
         Money price = this.inventory.getUnitPrice(product).multiplyBy(rfq.getAmount() * this.profitMargin).plus(transportCosts);
         // then look at the delivery date
         Time proposedShippingDate =
-                Time.max(getOwner().getSimulatorTime(), rfq.getEarliestDeliveryDate().minus(shippingDuration));
+                Time.max(getSimulator().getAbsSimulatorTime(), rfq.getEarliestDeliveryDate().minus(shippingDuration));
         // construct the quote
-        Quote quote = new Quote(getOwner(), rfq.getSender(), rfq, product, rfq.getAmount(), price, proposedShippingDate,
-                rfq.getPreferredTransportOption(), getOwner().getSimulatorTime().plus(this.validityDuration));
-        getOwner().sendMessage(quote, this.handlingTime.draw());
+        Quote quote = new Quote(getActor(), rfq.getSender(), rfq, product, rfq.getAmount(), price, proposedShippingDate,
+                rfq.getPreferredTransportOption(), getSimulator().getAbsSimulatorTime().plus(this.validityDuration));
+        sendMessage(quote, this.handlingTime.draw());
         return true;
     }
 

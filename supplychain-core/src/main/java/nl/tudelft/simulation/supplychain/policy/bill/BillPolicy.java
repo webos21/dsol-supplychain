@@ -9,7 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
@@ -42,12 +42,12 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
 
     /**
      * Constructs a new BillHandler with possibilities to pay early or late.
-     * @param owner SupplyChainActor; the owner of the policy.
+     * @param owner SupplyChainRole; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      * @param paymentPolicy the payment policy to use (early, late, etc.).
      * @param paymentDelay the delay to use in early or late payment
      */
-    public BillPolicy(final SupplyChainActor owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
+    public BillPolicy(final SupplyChainRole owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
             final DistContinuousDuration paymentDelay)
     {
         super("BillPolicy", owner, Bill.class);
@@ -58,10 +58,10 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
 
     /**
      * Constructs a new BillHandler that takes care of paying exactly on time.
-     * @param owner SupplyChainActor; the owner of the policy.
+     * @param owner SupplyChainRole; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      */
-    public BillPolicy(final SupplyChainActor owner, final BankAccount bankAccount)
+    public BillPolicy(final SupplyChainRole owner, final BankAccount bankAccount)
     {
         this(owner, bankAccount, PaymentPolicyEnum.PAYMENT_ON_TIME, null);
     }
@@ -76,7 +76,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         }
         // schedule the payment
         Time currentTime = Time.ZERO;
-        currentTime = getOwner().getSimulator().getAbsSimulatorTime();
+        currentTime = getRole().getSimulator().getAbsSimulatorTime();
         Time paymentTime = bill.getFinalPaymentDate();
         switch (this.paymentPolicy)
         {
@@ -101,7 +101,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         try
         {
             Serializable[] args = new Serializable[] {bill};
-            getOwner().getSimulator().scheduleEventAbs(paymentTime, this, "pay", args);
+            getRole().getSimulator().scheduleEventAbs(paymentTime, this, "pay", args);
         }
         catch (SimRuntimeException exception)
         {
@@ -123,7 +123,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
             try
             {
                 Serializable[] args = new Serializable[] {bill};
-                getOwner().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "pay", args);
+                getRole().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "pay", args);
             }
             catch (SimRuntimeException exception)
             {
@@ -133,8 +133,9 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         }
         // make a payment to send out
         this.bankAccount.withdrawFromBalance(bill.getPrice());
-        Payment payment = new Payment(getOwner(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
-        getOwner().sendMessage(payment, Duration.ZERO);
+        Payment payment =
+                new Payment(getRole().getActor(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
+        getRole().getActor().sendMessage(payment, Duration.ZERO);
     }
 
     /**

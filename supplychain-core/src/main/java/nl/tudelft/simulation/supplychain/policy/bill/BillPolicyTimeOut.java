@@ -6,7 +6,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
@@ -39,7 +39,7 @@ public class BillPolicyTimeOut extends BillPolicy
      * @param paymentDelay the payment delay
      * @param maximumTimeOut the maximum time out for a bill
      */
-    public BillPolicyTimeOut(final SupplyChainActor owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
+    public BillPolicyTimeOut(final SupplyChainRole owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
             final DistContinuousDuration paymentDelay, final Duration maximumTimeOut)
     {
         super(owner, bankAccount, paymentPolicy, paymentDelay);
@@ -48,11 +48,11 @@ public class BillPolicyTimeOut extends BillPolicy
 
     /**
      * Constructs a new BillHandler that takes care of paying exactly on time.
-     * @param owner SupplyChainActor; the owner of the policy.
+     * @param owner SupplyChainRole; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      * @param maximumTimeOut the maximum time out for a bill
      */
-    public BillPolicyTimeOut(final SupplyChainActor owner, final BankAccount bankAccount, final Duration maximumTimeOut)
+    public BillPolicyTimeOut(final SupplyChainRole owner, final BankAccount bankAccount, final Duration maximumTimeOut)
     {
         this(owner, bankAccount, PaymentPolicyEnum.PAYMENT_ON_TIME, null, maximumTimeOut);
     }
@@ -97,8 +97,9 @@ public class BillPolicyTimeOut extends BillPolicy
     {
         // make a payment to send out
         super.bankAccount.withdrawFromBalance(bill.getPrice());
-        Payment payment = new Payment(getOwner(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
-        getOwner().sendMessage(payment, Duration.ZERO);
+        Payment payment =
+                new Payment(getRole().getActor(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
+        getRole().getActor().sendMessage(payment, Duration.ZERO);
         if (this.debug)
         {
             System.out.println("DEBUG -- BILLTIMEOUTHANDLER: FORCED PAYMENT IMPOSED: ");

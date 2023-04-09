@@ -7,10 +7,12 @@ import java.util.Map;
 
 import org.djunits.Throw;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.product.ProductAmount;
 
 /**
  * The inventory role is a role that handles the storage of products, which can be raw materials for production or finished
@@ -28,7 +30,7 @@ public abstract class InventoryRole extends SupplyChainRole
 
     /** the inventory with products. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
-    protected final InventoryInterface inventory;
+    protected final Inventory inventory;
 
     /** the restocking services per product. */
     private final Map<Product, RestockingServiceInterface> restockingServices = new LinkedHashMap<>();
@@ -37,22 +39,22 @@ public abstract class InventoryRole extends SupplyChainRole
      * Create an InventoryRole object for an actor, with an empty inventory.
      * @param owner SupplyChainActor; the owner of this role
      */
-    public InventoryRole(final InventoryActor owner)
+    public InventoryRole(final SupplyChainActor owner)
     {
-        super(owner);
-        this.inventory = new Inventory(owner);
+        super("inventory", owner, new MessageReceiverDirect());
+        this.inventory = new Inventory(this);
     }
 
     /**
      * Create an InventoryRole object for an actor.
      * @param owner SupplyChainActor; the owner of this role
-     * @param initialInventory InventoryInterface; the Inventory to use within this role
+     * @param initialInventory List&lt;ProductAmount&gt;; the Inventory to use within this role
      */
-    public InventoryRole(final InventoryActor owner, final InventoryInterface initialInventory)
+    public InventoryRole(final SupplyChainActor owner, final List<ProductAmount> initialInventory)
     {
-        super(owner);
+        super("inventory", owner, new MessageReceiverDirect());
         Throw.whenNull(initialInventory, "initialInventory cannot be null");
-        this.inventory = new Inventory(owner, initialInventory);
+        this.inventory = new Inventory(this, initialInventory);
     }
 
     /**
@@ -88,9 +90,9 @@ public abstract class InventoryRole extends SupplyChainRole
 
     /**
      * Return the inventory of this Role.
-     * @return InventoryInterface; the inventory of this Role
+     * @return Inventory; the inventory of this Role
      */
-    public InventoryInterface getInventory()
+    public Inventory getInventory()
     {
         return this.inventory;
     }

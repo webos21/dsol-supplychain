@@ -6,8 +6,9 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -29,7 +30,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
     private SupplyChainSimulatorInterface simulator;
 
     /** the inventory for which the service holds. */
-    private InventoryInterface inventory;
+    private Inventory inventory;
 
     /** the product that has to be restocked. */
     private Product product;
@@ -47,7 +48,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
      * @param checkInterval the distribution of the interval for restocking or checking
      * @param maxDeliveryDuration the maximum delivery time to use
      */
-    public AbstractRestockingService(final InventoryInterface inventory, final Product product,
+    public AbstractRestockingService(final Inventory inventory, final Product product,
             final DistContinuousDuration checkInterval, final Duration maxDeliveryDuration)
     {
         this.simulator = inventory.getOwner().getSimulator();
@@ -92,7 +93,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
      */
     protected void createInternalDemand(final double orderAmount)
     {
-        InventoryActor owner = this.inventory.getOwner();
+        SupplyChainActor owner = this.inventory.getOwner();
         InternalDemand internalDemand = new InternalDemand(owner, this.product, orderAmount, owner.getSimulatorTime(),
                 owner.getSimulatorTime().plus(this.maxDeliveryDuration));
         owner.sendMessage(internalDemand, Duration.ZERO);
@@ -123,7 +124,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
 
     /** {@inheritDoc} */
     @Override
-    public InventoryInterface getInventory()
+    public Inventory getInventory()
     {
         return this.inventory;
     }

@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.role.inventory;
 
 import org.djunits.value.vdouble.scalar.Duration;
 
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
@@ -24,7 +24,7 @@ public class RestockingServiceNoStock extends RestockingServiceFixed
      * @param inventory the inventory for which the service holds
      * @param product Product; the product that will not be restocked
      */
-    public RestockingServiceNoStock(final InventoryInterface inventory, final Product product)
+    public RestockingServiceNoStock(final Inventory inventory, final Product product)
     {
         super(inventory, product, new DistConstantDuration(Duration.POS_MAXVALUE), false, 0.0, false, Duration.ZERO);
     }

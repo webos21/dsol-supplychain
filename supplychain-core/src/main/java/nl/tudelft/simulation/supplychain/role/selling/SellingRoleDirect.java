@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.selling;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 
 /**
@@ -25,18 +25,18 @@ public class SellingRoleDirect extends SellingRole
      * @param orderPolicy the order handler
      * @param paymentPolicy the payment handler
      */
-    public SellingRoleDirect(final SupplyChainActor owner, final AbstractOrderPolicy<?> orderPolicy,
+    public SellingRoleDirect(final SupplyChainActor owner, final OrderPolicy<?> orderPolicy,
             final PaymentPolicy paymentPolicy)
     {
         super(owner);
-        addMessagePolicy(orderPolicy);
-        addMessagePolicy(paymentPolicy);
+        setMessagePolicy(orderPolicy);
+        setMessagePolicy(paymentPolicy);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getId()
     {
-        return getOwner().getName() + "-SELLING(direct)";
+        return getActor().getName() + "-SELLING(direct)";
     }
 }

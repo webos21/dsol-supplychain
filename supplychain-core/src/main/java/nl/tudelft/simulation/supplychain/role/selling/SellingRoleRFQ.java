@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.selling;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
 
@@ -28,18 +28,18 @@ public class SellingRoleRFQ extends SellingRole
      * @param paymentPolicy the payment handler
      */
     public SellingRoleRFQ(final SupplyChainActor owner, final RequestForQuotePolicy rfqPolicy,
-            final AbstractOrderPolicy<?> orderPolicy, final PaymentPolicy paymentPolicy)
+            final OrderPolicy<?> orderPolicy, final PaymentPolicy paymentPolicy)
     {
         super(owner);
-        addMessagePolicy(rfqPolicy);
-        addMessagePolicy(orderPolicy);
-        addMessagePolicy(paymentPolicy);
+        setMessagePolicy(rfqPolicy);
+        setMessagePolicy(orderPolicy);
+        setMessagePolicy(paymentPolicy);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getId()
     {
-        return getOwner().getName() + "-SELLING(RFQ)";
+        return getActor().getName() + "-SELLING(RFQ)";
     }
 }

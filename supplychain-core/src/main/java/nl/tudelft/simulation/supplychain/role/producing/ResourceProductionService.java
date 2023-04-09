@@ -15,7 +15,7 @@ import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryRole;
 
 /**
  * The ResourceProductionService simulates a manufacturing or assembly process that is constrained by the (non-)availability of
@@ -47,14 +47,14 @@ public class ResourceProductionService extends ProductionService
 
     /**
      * Constructs a new production service for one product.
-     * @param owner the actor that owns the production service.
+     * @param owner InventoryRole; the role that owns the production service.
      * @param product Product; the product of the production service.
      * @param productionTime the time distribution to produce products.
      * @param fixedTime fixed time, independent of order size; otherwise, the time is per unit.
      * @param greedy if true, immediately start picking raw materials when production has to start.
      * @param profitMargin the fraction that is added to the cost of the materials.
      */
-    public ResourceProductionService(final InventoryActor owner, final Product product,
+    public ResourceProductionService(final InventoryRole owner, final Product product,
             final DistContinuousDuration productionTime, final boolean fixedTime, final boolean greedy,
             final double profitMargin)
     {
@@ -82,7 +82,7 @@ public class ResourceProductionService extends ProductionService
             ptime = ptime.times(productionOrder.getAmount());
         }
         Time startTime = productionOrder.getDateReady().minus(ptime);
-        startTime = Time.max(getOwner().getSimulatorTime(), startTime);
+        startTime = Time.max(getOwner().getActor().getSimulatorTime(), startTime);
         // determine the needed raw materials
         Product _product = productionOrder.getProduct();
         ImmutableMap<Product, Double> bom = _product.getBillOfMaterials().getMaterials();

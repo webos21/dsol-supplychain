@@ -1,14 +1,17 @@
 package nl.tudelft.simulation.supplychain.role.producing;
 
+import java.io.Serializable;
+
 import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
 
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
+import nl.tudelft.simulation.supplychain.role.inventory.InventoryRole;
 
 /**
- * The abstract class ProductionService implements the ProductionServiceInterface and is a simple starting point for the
+ * The abstract class ProductionService implements the ProductionService and is a simple starting point for the
  * production of goods. The bill of materials of the product determines the required raw materials to use.
  * <p>
  * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
@@ -16,23 +19,23 @@ import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class ProductionService implements ProductionServiceInterface
+public abstract class ProductionService implements Serializable
 {
     /** */
     private static final long serialVersionUID = 20221201L;
 
     /** The actor that owns the production service. */
-    private InventoryActor owner;
+    private InventoryRole owner;
 
     /** The product of the production service. */
     private Product product;
 
     /**
      * Constructs a new production service for one product.
-     * @param owner the actor that owns the production service.
+     * @param owner InventoryRole; the role that owns the production service.
      * @param product Product; the product of the production service.
      */
-    public ProductionService(final InventoryActor owner, final Product product)
+    public ProductionService(final InventoryRole owner, final Product product)
     {
         Throw.whenNull(owner, "owner cannot be null");
         Throw.whenNull(product, "product cannot be null");
@@ -40,28 +43,43 @@ public abstract class ProductionService implements ProductionServiceInterface
         this.product = product;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * @param productionOrder the order to produce
+     */
     public abstract void acceptProductionOrder(ProductionOrder productionOrder);
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Method getExpectedProductionDuration.
+     * @param productionOrder the production order
+     * @return returns the expected production time for an order in simulator time units
+     */
     public abstract Duration getExpectedProductionDuration(ProductionOrder productionOrder);
 
     /**
-     * @return the product.
+     * Return the product for which the ProductionService applies.
+     * @return Product; the product for which the ProductionService applies
      */
-    @Override
     public Product getProduct()
     {
         return this.product;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public InventoryActor getOwner()
+    /**
+     * Return the role with inventory.
+     * @return InventoryRole; the actor with inventory
+     */
+    public InventoryRole getOwner()
     {
         return this.owner;
+    }
+
+    /**
+     * Return the inventory.
+     * @return Inventory; the inevntory.
+     */
+    public Inventory getInventory()
+    {
+        return getOwner().getInventory();
     }
 
 }

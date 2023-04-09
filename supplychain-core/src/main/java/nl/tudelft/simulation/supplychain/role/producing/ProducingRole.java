@@ -5,10 +5,11 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
 
 /**
  * The producing role is a role that handles the production of products from parts, based on a Bill of Materials (BOM). Parts
@@ -26,15 +27,15 @@ public abstract class ProducingRole extends SupplyChainRole
     private static final long serialVersionUID = 20221206L;
 
     /** the production services per product for this role. */
-    private Map<Product, ProductionServiceInterface> productionServices = new LinkedHashMap<>();
+    private Map<Product, ProductionService> productionServices = new LinkedHashMap<>();
 
     /**
      * Create a ProducingRole object for an actor.
      * @param owner SupplyChainActor; the owner of this role
      */
-    public ProducingRole(final InventoryActor owner)
+    public ProducingRole(final SupplyChainActor owner)
     {
-        super(owner);
+        super("producing", owner, new MessageReceiverDirect());
     }
 
     /**
@@ -56,12 +57,12 @@ public abstract class ProducingRole extends SupplyChainRole
         if (this.productionServices.containsKey(productionOrder.getProduct()))
         {
             Logger.trace("Production for actor '{}': acceptProductionOrder: production service found for product: {}",
-                    getOwner().getName(), productionOrder.getProduct().getName());
+                    getActor().getName(), productionOrder.getProduct().getName());
             this.productionServices.get(productionOrder.getProduct()).acceptProductionOrder(productionOrder);
             return true;
         }
         Logger.trace("Production for actor '{}': acceptProductionOrder: could not find production service for product: {}",
-                getOwner().getName(), productionOrder.getProduct().getName());
+                getActor().getName(), productionOrder.getProduct().getName());
         return false;
     }
 
@@ -69,7 +70,7 @@ public abstract class ProducingRole extends SupplyChainRole
      * Method getProductionServices.
      * @return returns the production services
      */
-    public Map<Product, ProductionServiceInterface> getProductionServices()
+    public Map<Product, ProductionService> getProductionServices()
     {
         return this.productionServices;
     }

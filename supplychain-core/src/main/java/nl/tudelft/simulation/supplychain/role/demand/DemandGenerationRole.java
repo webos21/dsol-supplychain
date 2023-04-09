@@ -5,8 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.djunits.value.vdouble.scalar.Time;
+import org.djutils.event.EventType;
 import org.djutils.event.TimedEvent;
-import org.djutils.event.TimedEventType;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.DistContinuous;
@@ -14,6 +14,7 @@ import nl.tudelft.simulation.jstats.distributions.DistDiscrete;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -32,7 +33,7 @@ public class DemandGenerationRole extends SupplyChainRole
     private static final long serialVersionUID = 20221206L;
 
     /** an event fired in case demand has been generated. */
-    public static final TimedEventType DEMAND_GENERATED_EVENT = new TimedEventType("DEMAND_GENERATED_EVENT");
+    public static final EventType DEMAND_GENERATED_EVENT = new EventType("DEMAND_GENERATED_EVENT");
 
     /** map of Product - Demand pairs. */
     private Map<Product, Demand> demandGenerators = new LinkedHashMap<Product, Demand>();
@@ -46,7 +47,7 @@ public class DemandGenerationRole extends SupplyChainRole
      */
     public DemandGenerationRole(final SupplyChainActor owner, final DistContinuousDuration administrativeDelay)
     {
-        super(owner);
+        super("demandGeneration", owner, new MessageReceiverDirect());
         this.administrativeDelay = administrativeDelay;
     }
 
@@ -60,7 +61,7 @@ public class DemandGenerationRole extends SupplyChainRole
         try
         {
             Serializable[] args = {product, demand};
-            super.simulator.scheduleEventRel(demand.getIntervalDistribution().draw(), this, "createInternalDemand", args);
+            getSimulator().scheduleEventRel(demand.getIntervalDistribution().draw(), this, "createInternalDemand", args);
         }
         catch (Exception e)
         {
@@ -100,17 +101,17 @@ public class DemandGenerationRole extends SupplyChainRole
                 double amount = demand.getAmountDistribution() instanceof DistContinuous
                         ? ((DistContinuous) demand.getAmountDistribution()).draw()
                         : ((DistDiscrete) demand.getAmountDistribution()).draw();
-                InternalDemand id = new InternalDemand(getOwner(), product, amount,
-                        this.simulator.getAbsSimulatorTime().plus(demand.getEarliestDeliveryDurationDistribution().draw()),
-                        this.simulator.getAbsSimulatorTime().plus(demand.getLatestDeliveryDurationDistribution().draw()));
-                getOwner().sendMessage(id, this.administrativeDelay.draw());
+                InternalDemand id = new InternalDemand(getActor(), product, amount,
+                        getSimulator().getAbsSimulatorTime().plus(demand.getEarliestDeliveryDurationDistribution().draw()),
+                        getSimulator().getAbsSimulatorTime().plus(demand.getLatestDeliveryDurationDistribution().draw()));
+                getActor().sendMessage(id, this.administrativeDelay.draw());
                 Serializable[] args = {product, demand};
-                Time time = super.simulator.getAbsSimulatorTime().plus(demand.getIntervalDistribution().draw());
-                super.simulator.scheduleEventAbs(time, this, "createInternalDemand", args);
+                Time time = getSimulator().getAbsSimulatorTime().plus(demand.getIntervalDistribution().draw());
+                getSimulator().scheduleEventAbs(time, this, "createInternalDemand", args);
 
                 // we might collect some statistics for the internal demand
-                super.fireEvent(new TimedEvent<Time>(DemandGenerationRole.DEMAND_GENERATED_EVENT, this, id,
-                        super.simulator.getAbsSimulatorTime()));
+                super.fireEvent(new TimedEvent<Time>(DemandGenerationRole.DEMAND_GENERATED_EVENT, id,
+                        getSimulator().getAbsSimulatorTime()));
             }
             catch (Exception e)
             {
@@ -123,7 +124,7 @@ public class DemandGenerationRole extends SupplyChainRole
     @Override
     public String getId()
     {
-        return getOwner().getName() + "-DEMAND(periodic)";
+        return getActor().getId() + "-DEMAND(periodic)";
     }
 
     /**

@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -13,20 +13,20 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class ShipmentPolicyStock extends AbstractShipmentPolicy
+public class ShipmentPolicyStock extends ShipmentPolicy
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
     /** access to the owner's stock to look at availability of products. */
-    protected InventoryInterface stock;
+    protected Inventory stock;
 
     /**
      * Construct a new ShipmentHandlerStock handler.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainRole; the owner of the policy
      * @param stock the stock to use for storing the incoming cargo
      */
-    public ShipmentPolicyStock(final SupplyChainActor owner, final InventoryInterface stock)
+    public ShipmentPolicyStock(final SupplyChainRole owner, final Inventory stock)
     {
         super("ShipmentPolicyStock", owner);
         this.stock = stock;

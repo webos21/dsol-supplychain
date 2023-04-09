@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 
 /**
@@ -11,16 +11,16 @@ import nl.tudelft.simulation.supplychain.message.trade.Shipment;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class ShipmentPolicyConsume extends AbstractShipmentPolicy
+public class ShipmentPolicyConsume extends ShipmentPolicy
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
     /**
      * Construct a new ShipmentHandlerConsume handler.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainRole; the owner of the policy
      */
-    public ShipmentPolicyConsume(final SupplyChainActor owner)
+    public ShipmentPolicyConsume(final SupplyChainRole owner)
     {
         super("ShipmentPolicyConsume", owner);
     }

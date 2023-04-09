@@ -13,7 +13,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -60,7 +60,7 @@ public class InternalDemandPolicyRFQ extends InternalDemandPolicy
      */
     public InternalDemandPolicyRFQ(final SupplyChainRole owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
-            final Duration cutoffDuration, final InventoryInterface stock)
+            final Duration cutoffDuration, final Inventory stock)
     {
         super("InternalDemandPolicyRFQ", owner, handlingTime, stock);
         Throw.whenNull(transportOptionProvider, "transportOptionProvider cannot be null");
@@ -120,9 +120,9 @@ public class InternalDemandPolicyRFQ extends InternalDemandPolicy
             return false;
         }
         // create an RFQ for each of the suppliers
-        if (super.stock != null)
+        if (super.inventory != null)
         {
-            super.stock.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
+            super.inventory.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
         }
         Duration delay = this.handlingTime.draw();
         for (SupplyChainActor supplier : supplierSet)

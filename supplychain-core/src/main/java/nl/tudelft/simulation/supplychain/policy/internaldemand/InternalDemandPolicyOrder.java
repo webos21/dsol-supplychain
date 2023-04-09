@@ -11,7 +11,7 @@ import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderStandalone;
@@ -54,7 +54,7 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
      */
     public InternalDemandPolicyOrder(final SupplyChainRole owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
-            final InventoryInterface stock)
+            final Inventory stock)
     {
         super("InternalDemandPolicyOrder", owner, handlingTime, stock);
         Throw.whenNull(transportOptionProvider, "transportOptionProvider cannot be null");
@@ -90,9 +90,9 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
             return false;
         }
         // create an immediate order
-        if (super.stock != null)
+        if (super.inventory != null)
         {
-            super.stock.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
+            super.inventory.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
         }
         SupplyChainActor supplier = supplierRecord.getSupplier();
         Money price = supplierRecord.getUnitPrice().multiplyBy(internalDemand.getAmount());

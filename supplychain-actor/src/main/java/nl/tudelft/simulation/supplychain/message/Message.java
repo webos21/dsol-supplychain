@@ -1,20 +1,11 @@
 package nl.tudelft.simulation.supplychain.message;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.util.Objects;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.ActorNotFoundException;
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 
 /**
  * A message, which can be sent from a sender to a receiver. Extend this class to add content.
@@ -43,32 +34,15 @@ public abstract class Message implements Serializable
 
     /**
      * Construct a new message.
-     * @param model SupplyChainModelInterface; the supply chain model
-     * @param sender Actor; the sender
+     * @param sender Actor; the sender (necessary for a possible reply)
      * @param receiver Actor; the receiver
      */
-    public Message(final SupplyChainModelInterface model, final Actor sender, final Actor receiver)
+    public Message(final Actor sender, final Actor receiver)
     {
         this.sender = sender;
         this.receiver = receiver;
-        this.timestamp = model.getSimulator().getAbsSimulatorTime();
-        this.uniqueId = model.getUniqueMessageId();
-    }
-
-    /**
-     * Construct a new message from JSON content.
-     * @param model SupplyChainModelInterface; the supply chain model
-     * @param json String; the message content encoded as a JSON string
-     * @throws IOException when decoding of the message fails
-     * @throws ActorNotFoundException when either the sender, or the receiver could not be found in the model's actor map
-     */
-    public Message(final SupplyChainModelInterface model, final String json) throws IOException, ActorNotFoundException
-    {
-        JsonObject jobj = new Gson().fromJson(json, JsonObject.class);
-        this.sender = model.getActor(jobj.get("sender").getAsString());
-        this.receiver = model.getActor(jobj.get("receiver").getAsString());
-        this.timestamp = Time.instantiateSI(jobj.get("timestamp").getAsDouble());
-        this.uniqueId = jobj.get("uniqueId").getAsLong();
+        this.timestamp = sender.getModel().getSimulator().getAbsSimulatorTime();
+        this.uniqueId = sender.getModel().getUniqueMessageId();
     }
 
     /**
@@ -106,46 +80,6 @@ public abstract class Message implements Serializable
     {
         return this.uniqueId;
     }
-
-    /**
-     * Return the content of the message as a JSON string.
-     * @return String; the content of the message as a JSON string
-     * @throws IOException when encoding of the message fails
-     */
-    protected String toJson() throws IOException
-    {
-        StringWriter out = new StringWriter();
-        JsonWriter jw = new JsonWriter(out);
-        jw.beginObject();
-        jw.name("sender");
-        jw.value(getSender().getId());
-        jw.name("receiver");
-        jw.value(getReceiver().getId());
-        jw.name("uniqueId");
-        jw.value(getUniqueId());
-        jw.name("timestamp");
-        jw.value(getTimestamp().getSI());
-        encodeAsJson(jw);
-        jw.endObject();
-        jw.close();
-        return out.toString();
-    }
-
-    /**
-     * Write the further content of this message to a JSON string. The sender, receiver, unique id, and timestamp have already
-     * been written.
-     * @param jw JsonWriter; the JSON writer to use to encode the message
-     * @throws IOException when encoding of the message fails
-     */
-    public abstract void encodeAsJson(JsonWriter jw) throws IOException;
-
-    /**
-     * Decode the further content of this message from a JSON string. The sender, receiver, unique id, and timestamp have
-     * already been read.
-     * @param jr JsonReader; the JSON reader to use to decode the message
-     * @throws IOException when decoding of the message fails
-     */
-    public abstract void decodeFromJson(JsonReader jr) throws IOException;
 
     /** {@inheritDoc} */
     @Override

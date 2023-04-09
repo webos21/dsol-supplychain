@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.policy.yp;
+package nl.tudelft.simulation.supplychain.policy.yellowpage;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.djunits.value.vdouble.scalar.Length;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.Point2d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
-import nl.tudelft.simulation.supplychain.yellowpage.YellowPageActor;
+import nl.tudelft.simulation.supplychain.role.yellowpage.YellowPageRole;
 
 /**
  * The YellowPageRequestHandler implements the business logic for a yellow page actor who receives a YellowPageRequest and has
@@ -33,15 +33,15 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
-    /** the handling time of the handler in simulation time units. */
+    /** the handling time of the policy in simulation time units. */
     private DistContinuousDuration handlingTime;
 
     /**
      * Constructs a new YellowPageRequestHandler.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainRole; the owner of the policy
      * @param handlingTime the distribution of the time to react on the YP request
      */
-    public YellowPageRequestPolicy(final YellowPageActor owner, final DistContinuousDuration handlingTime)
+    public YellowPageRequestPolicy(final YellowPageRole owner, final DistContinuousDuration handlingTime)
     {
         super("YellowPageRequestPolicy", owner, YellowPageRequest.class);
         this.handlingTime = handlingTime;
@@ -55,10 +55,10 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
         {
             return false;
         }
-        Set<SupplyChainActor> supplierSet = ((YellowPageActor) getOwner()).getSuppliers(ypRequest.getProduct());
+        Set<SupplyChainActor> supplierSet = ((YellowPageRole) getRole()).getSuppliers(ypRequest.getProduct());
         if (supplierSet == null)
         {
-            Logger.warn("YellowPage '{}' has no supplier map for product {}", getOwner().getName(),
+            Logger.warn("YellowPage '{}' has no supplier map for product {}", getActor().getName(),
                     ypRequest.getProduct().getName());
             return false;
         }
@@ -66,9 +66,9 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
                 pruneDistance(supplierSet, ypRequest.getMaximumDistance(), ypRequest.getSender().getLocation());
         pruneNumber(suppliers, ypRequest.getMaximumNumber());
         List<SupplyChainActor> potentialSuppliers = new ArrayList<>(suppliers.values());
-        YellowPageAnswer ypAnswer = new YellowPageAnswer(getOwner(), ypRequest.getSender(), ypRequest.getInternalDemandId(),
+        YellowPageAnswer ypAnswer = new YellowPageAnswer(getActor(), ypRequest.getSender(), ypRequest.getInternalDemandId(),
                 potentialSuppliers, ypRequest);
-        getOwner().sendMessage(ypAnswer, this.handlingTime.draw());
+        sendMessage(ypAnswer, this.handlingTime.draw());
         return true;
     }
 
@@ -80,12 +80,12 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
      * @return a map of suppliers, sorted on distance
      */
     private SortedMap<Length, SupplyChainActor> pruneDistance(final Set<SupplyChainActor> supplierSet, final Length maxDistance,
-            final Point3d location)
+            final Point2d location)
     {
         SortedMap<Length, SupplyChainActor> sortedSuppliers = new TreeMap<>();
         for (SupplyChainActor actor : sortedSuppliers.values())
         {
-            Length distance = getOwner().getSimulator().getModel().calculateDistance(actor.getLocation(), location);
+            Length distance = getRole().getSimulator().getModel().calculateDistance(actor.getLocation(), location);
             if (distance.le(maxDistance))
             {
                 sortedSuppliers.put(distance, actor);
@@ -111,6 +111,13 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
                 supplierIterator.remove();
             }
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public YellowPageRole getRole()
+    {
+        return (YellowPageRole) super.getRole();
     }
 
 }

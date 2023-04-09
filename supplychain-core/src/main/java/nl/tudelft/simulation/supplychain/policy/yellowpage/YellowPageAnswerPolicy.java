@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.policy.yp;
+package nl.tudelft.simulation.supplychain.policy.yellowpage;
 
 import java.util.List;
 import java.util.Set;
@@ -9,7 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
@@ -41,7 +41,7 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
     /** the provider to choose between transport options. */
     private final TransportChoiceProvider transportChoiceProvider;
 
-    /** the handling time of the handler in simulation time units. */
+    /** the handling time of the policy in simulation time units. */
     private DistContinuousDuration handlingTime;
 
     /** the maximum time after which the RFQ will stop collecting quotes. */
@@ -49,13 +49,13 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
 
     /**
      * Constructs a new YellowPageAnswerHandler.
-     * @param owner SupplyChainActor; the owner of the policy
+     * @param owner SupplyChainRole; the owner of the policy
      * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
      * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the YP answer
      * @param cutoffDuration Duration; the maximum time after which the RFQ will stop collecting quotes
      */
-    public YellowPageAnswerPolicy(final SupplyChainActor owner, final TransportOptionProvider transportOptionProvider,
+    public YellowPageAnswerPolicy(final SupplyChainRole owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
             final Duration cutoffDuration)
     {
@@ -78,14 +78,14 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
         {
             return false;
         }
-        TradeMessageStoreInterface messageStore = getOwner().getMessageStore();
+        TradeMessageStoreInterface messageStore = getActor().getMessageStore();
         YellowPageRequest ypRequest = ypAnswer.getYellowPageRequest();
         List<InternalDemand> internalDemandList =
                 messageStore.getMessageList(ypRequest.getInternalDemandId(), InternalDemand.class);
         if (internalDemandList.size() == 0) // we send it to ourselves, so it is 2x in the content store
         {
             Logger.warn("YPAnswerHandler - Actor '{}' could not find InternalDemandID '{}' for YPAnswer '{}'",
-                    getOwner().getName(), ypRequest.getInternalDemandId(), ypAnswer.toString());
+                    getActor().getName(), ypRequest.getInternalDemandId(), ypAnswer.toString());
             return false;
         }
         InternalDemand internalDemand = internalDemandList.get(0);
@@ -93,12 +93,12 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
         Duration delay = this.handlingTime.draw();
         for (SupplyChainActor supplier : potentialSuppliers)
         {
-            Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getOwner());
+            Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getActor());
             TransportOption transportOption =
                     this.transportChoiceProvider.chooseTransportOptions(transportOptions, ypRequest.getProduct().getSku());
             RequestForQuote rfq =
-                    new RequestForQuote(getOwner(), supplier, internalDemand, transportOption, this.cutoffDuration);
-            getOwner().sendMessage(rfq, delay);
+                    new RequestForQuote(getActor(), supplier, internalDemand, transportOption, this.cutoffDuration);
+            sendMessage(rfq, delay);
         }
         return true;
     }

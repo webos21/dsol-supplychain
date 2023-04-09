@@ -6,7 +6,7 @@ import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPol
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
-import nl.tudelft.simulation.supplychain.policy.yp.YellowPageAnswerPolicy;
+import nl.tudelft.simulation.supplychain.policy.yellowpage.YellowPageAnswerPolicy;
 
 /**
  * The buying role with yellow pages is a role that organizes the buying based on a YellowPageRequest, and continues from there.

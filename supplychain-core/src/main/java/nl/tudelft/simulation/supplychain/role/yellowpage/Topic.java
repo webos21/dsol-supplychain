@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.yellowpage;
+package nl.tudelft.simulation.supplychain.role.yellowpage;
 
 import java.io.Serializable;
 

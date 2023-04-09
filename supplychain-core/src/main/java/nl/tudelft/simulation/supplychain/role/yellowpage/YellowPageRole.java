@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.yellowpage;
+package nl.tudelft.simulation.supplychain.role.yellowpage;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,27 +8,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.djutils.draw.point.OrientedPoint3d;
-
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
-import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.finance.NoBank;
-import nl.tudelft.simulation.supplychain.message.handler.DirectMessageHandler;
-import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * YellowPageActor is a base implementation of an organization that provides information about other actors in the model.
+ * YellowPageRole is a base implementation of providing information about other actors in the model. Actors can register
+ * themselves in the registry.
  * <p>
  * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class YellowPageActor extends SupplyChainActor implements YellowPageInterface
+public class YellowPageRole extends SupplyChainRole
 {
     /** */
     private static final long serialVersionUID = 20221201L;
@@ -40,17 +35,12 @@ public class YellowPageActor extends SupplyChainActor implements YellowPageInter
     private Map<Product, HashSet<SupplyChainActor>> productDictionary = new LinkedHashMap<>();
 
     /**
-     * Create a new YellowPage organization.
-     * @param name String;
-     * @param simulator SupplyChainSimulatorInterface;
-     * @param position OrientedPoint3d;
-     * @param messageStore TradeMessageStoreInterface;
+     * Create a new YellowPage role.
+     * @param owner SupplyChainActor; the actor that owns the YP role
      */
-    public YellowPageActor(final String name, final SupplyChainSimulatorInterface simulator, final OrientedPoint3d position,
-            final TradeMessageStoreInterface messageStore)
+    public YellowPageRole(final SupplyChainActor owner)
     {
-        super(name, new DirectMessageHandler(), simulator, position, name, new NoBank(simulator), new Money(0.0, MoneyUnit.USD),
-                messageStore);
+        super("yp", owner, new MessageReceiverDirect());
     }
 
     /**
@@ -97,8 +87,11 @@ public class YellowPageActor extends SupplyChainActor implements YellowPageInter
         return supplierSet;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * finds actors based on the regex.
+     * @param regex the name of the actor as regular expression
+     * @return Actor[] the result
+     */
     public List<Actor> findActor(final String regex)
     {
         List<Actor> result = new ArrayList<Actor>();
@@ -115,8 +108,12 @@ public class YellowPageActor extends SupplyChainActor implements YellowPageInter
         return result;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * finds an actor based on the regex.
+     * @param regex the name of the actor as regular expression
+     * @param topic the topic for which this actor is registered
+     * @return Actor[] the result
+     */
     public List<Actor> findActor(final String regex, final Topic topic)
     {
         List<Actor> result = new ArrayList<Actor>();
@@ -137,8 +134,11 @@ public class YellowPageActor extends SupplyChainActor implements YellowPageInter
         return result;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * finds an actor based on the category.
+     * @param topic the category for this actor
+     * @return Actor[] the result
+     */
     public List<Actor> findActor(final Topic topic)
     {
         List<Actor> actors = new ArrayList<Actor>();
@@ -152,8 +152,12 @@ public class YellowPageActor extends SupplyChainActor implements YellowPageInter
         return actors;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * registers an actor.
+     * @param actor the actor
+     * @param topic the category
+     * @return success
+     */
     public boolean register(final Actor actor, final Topic topic)
     {
         List<Actor> actors = this.topicDictionary.get(topic);

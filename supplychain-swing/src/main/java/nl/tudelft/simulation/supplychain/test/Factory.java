@@ -17,7 +17,7 @@ import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
-import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
@@ -44,7 +44,7 @@ public class Factory extends Supplier
 
     /**
      * @param name String; the name of the Customer
-     * @param messageHandler MessageHandlerInterface; the message handler to use
+     * @param messageReceiver MessageReceiver; the message handler to use
      * @param simulator SupplyChainSimulatorInterface; the simulator
      * @param location Location; the locatrion of the actor on the map or grid
      * @param locationDescription String; a description of the location of the Customer
@@ -57,12 +57,12 @@ public class Factory extends Supplier
      * @throws NamingException on animation error
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Factory(final String name, final MessageHandlerInterface messageHandler,
+    public Factory(final String name, final MessageReceiver messageReceiver,
             final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
             final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore, final Product product,
             final double amount) throws RemoteException, NamingException
     {
-        super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
+        super(name, messageReceiver, simulator, location, locationDescription, bank, initialBalance, messageStore);
         // give the retailer some stock
         Inventory _stock = new Inventory(this);
         if (product != null)

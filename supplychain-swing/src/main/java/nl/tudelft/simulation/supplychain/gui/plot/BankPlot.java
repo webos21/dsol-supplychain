@@ -8,7 +8,7 @@ import org.djutils.event.EventInterface;
 import org.djutils.event.EventListenerInterface;
 import org.djutils.event.EventProducer;
 import org.djutils.event.TimedEvent;
-import org.djutils.event.TimedEventType;
+import org.djutils.event.EventType;
 
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
@@ -71,7 +71,7 @@ public class BankPlot extends XYChart
         private final SupplyChainSimulatorInterface simulator;
 
         /** An event to indicate stock levels changed */
-        static final TimedEventType BALANCE_CHANGE_EVENT = new TimedEventType("BALANCE_CHANGE_EVENT");
+        static final EventType BALANCE_CHANGE_EVENT = new EventType("BALANCE_CHANGE_EVENT");
 
         /**
          * @param simulator

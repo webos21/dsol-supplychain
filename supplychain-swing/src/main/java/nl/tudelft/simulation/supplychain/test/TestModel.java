@@ -20,7 +20,7 @@ import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.message.handler.DirectMessageHandler;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.product.Sku;
@@ -84,7 +84,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SupplyChainAnimator>
             }
 
             // create the bank
-            Bank ing = new Bank("ING", new DirectMessageHandler(), this.devsSimulator, new OrientedPoint3d(0, 0, 0), "ING");
+            Bank ing = new Bank("ING", new MessageReceiverDirect(), this.devsSimulator, new OrientedPoint3d(0, 0, 0), "ING");
             ing.setAnnualInterestRateNeg(0.080);
             ing.setAnnualInterestRatePos(0.025);
 

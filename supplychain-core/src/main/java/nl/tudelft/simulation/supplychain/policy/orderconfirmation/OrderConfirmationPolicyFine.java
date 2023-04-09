@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
@@ -41,7 +41,7 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
      * @param fineMargin the margin
      * @param fixedFine the fixed fine
      */
-    public OrderConfirmationPolicyFine(final SupplyChainActor owner, final Duration maximumTimeOut, final double fineMargin,
+    public OrderConfirmationPolicyFine(final SupplyChainRole owner, final Duration maximumTimeOut, final double fineMargin,
             final Money fixedFine)
     {
         super(owner);
@@ -67,9 +67,9 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
             {
                 try
                 {
-                    orderConfirmation.getSender().getSimulator()
+                    getSimulator()
                             .scheduleEventRel(
-                                    orderConfirmation.getOrder().getDeliveryDate().minus(getOwner().getSimulatorTime())
+                                    orderConfirmation.getOrder().getDeliveryDate().minus(getSimulator().getAbsSimulatorTime())
                                             .plus(this.maximumTimeOut),
                                     this, "checkShipment", new Serializable[] {orderConfirmation});
                 }
@@ -88,7 +88,7 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
      */
     protected void checkShipment(final OrderConfirmation orderConfirmation)
     {
-        if (getOwner().getMessageStore().getMessageList(orderConfirmation.getInternalDemandId(), Shipment.class).isEmpty())
+        if (getActor().getMessageStore().getMessageList(orderConfirmation.getInternalDemandId(), Shipment.class).isEmpty())
         {
 
             // there is still an order, but no shipment... we fine!

@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.policy.orderconfirmation;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
@@ -12,7 +12,7 @@ import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
  * The OrderConfirmationHandler is a simple implementation of the business logic for a OrderConfirmation that comes in. When the
  * confirmation is positive: just ignore it. When it is negative: it is more difficult. The easiest is to go to the 'next'
  * option, e.g. to the next Quote when there were quotes. It is also possible to redo the entire ordering process from scratch.
- * The latter strategy is implemented in this version of the handler.
+ * The latter strategy is implemented in this version of the policy.
  * <p>
  * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -29,9 +29,9 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation
 
     /**
      * Constructs a new OrderConfirmationHandler.
-     * @param owner SupplyChainActor; the owner of the policy.
+     * @param owner SupplyChainRole; the owner of the policy.
      */
-    public OrderConfirmationPolicy(final SupplyChainActor owner)
+    public OrderConfirmationPolicy(final SupplyChainRole owner)
     {
         super("OrderConfirmationPolicy", owner, OrderConfirmation.class);
     }
@@ -59,7 +59,7 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation
             try
             {
                 // TODO: place some business logic here to handle the problem
-                oldID = getOwner().getMessageStore()
+                oldID = getActor().getMessageStore()
                         .getMessageList(orderConfirmation.getInternalDemandId(), InternalDemand.class).get(0);
 
                 if (oldID == null)
@@ -78,10 +78,10 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation
 
             InternalDemand newID = new InternalDemand(oldID.getSender(), oldID.getProduct(), oldID.getAmount(),
                     oldID.getEarliestDeliveryDate(), oldID.getLatestDeliveryDate());
-            getOwner().sendMessage(newID, Duration.ZERO);
+            sendMessage(newID, Duration.ZERO);
 
             // also clean the messageStore for the old internal demand
-            getOwner().getMessageStore().removeAllMessages(orderConfirmation.getInternalDemandId());
+            getActor().getMessageStore().removeAllMessages(orderConfirmation.getInternalDemandId());
         }
         return true;
     }

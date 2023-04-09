@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class StockUpdateData implements Serializable
+public class InventoryUpdateData implements Serializable
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -32,7 +32,7 @@ public class StockUpdateData implements Serializable
      * @param claimedAmount the claimed amount
      * @param orderedAmount the ordered amount
      */
-    public StockUpdateData(final String productName, final double actualAmount, final double claimedAmount,
+    public InventoryUpdateData(final String productName, final double actualAmount, final double claimedAmount,
             final double orderedAmount)
     {
         this.productName = productName;

@@ -6,11 +6,11 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.inventory.InventoryActor;
 
 /**
  * A InventoryRecord keeps the information about products, such as actual, ordered and claimed amounts of products. It assists
@@ -27,7 +27,7 @@ public class InventoryRecord implements Serializable
     private static final long serialVersionUID = 20221209L;
 
     /** the owner. */
-    private InventoryActor owner = null;
+    private SupplyChainActor owner = null;
 
     /** the simulator to schedule the depriciation. */
     private SupplyChainSimulatorInterface simulator = null;
@@ -55,7 +55,7 @@ public class InventoryRecord implements Serializable
      * @param simulator the simulator
      * @param product Product; the product
      */
-    public InventoryRecord(final InventoryActor owner, final SupplyChainSimulatorInterface simulator, final Product product)
+    public InventoryRecord(final SupplyChainActor owner, final SupplyChainSimulatorInterface simulator, final Product product)
     {
         this.owner = owner;
         this.simulator = simulator;

@@ -4,6 +4,7 @@ import org.djunits.value.vdouble.scalar.Length;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
@@ -17,7 +18,7 @@ import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class InternalDemandPolicyYP extends AbstractInternalDemandPolicy
+public class InternalDemandPolicyYP extends InternalDemandPolicy
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -40,7 +41,7 @@ public class InternalDemandPolicyYP extends AbstractInternalDemandPolicy
      * @param maximumNumber the max number of suppliers to return
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicyYP(final SupplyChainActor owner, final DistContinuousDuration handlingTime,
+    public InternalDemandPolicyYP(final SupplyChainRole owner, final DistContinuousDuration handlingTime,
             final SupplyChainActor yp, final Length maximumDistance, final int maximumNumber, final InventoryInterface stock)
     {
         super("InternalDemandPolicyYP", owner, handlingTime, stock);
@@ -62,10 +63,10 @@ public class InternalDemandPolicyYP extends AbstractInternalDemandPolicy
             super.stock.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
         }
         // create a YellowPageRequest
-        YellowPageRequest ypRequest = new YellowPageRequest(getOwner(), this.yp, internalDemand.getUniqueId(),
+        YellowPageRequest ypRequest = new YellowPageRequest(getActor(), this.yp, internalDemand.getUniqueId(),
                 internalDemand.getProduct(), this.maximumDistance, this.maximumNumber);
         // and send it out immediately
-        getOwner().sendMessage(ypRequest, this.handlingTime.draw());
+        sendMessage(ypRequest, this.handlingTime.draw());
         return true;
     }
 }

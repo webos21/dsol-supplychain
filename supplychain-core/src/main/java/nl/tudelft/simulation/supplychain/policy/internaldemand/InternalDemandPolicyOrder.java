@@ -9,6 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
@@ -29,7 +30,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportOptionProvider;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
+public class InternalDemandPolicyOrder extends InternalDemandPolicy
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -45,13 +46,13 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
 
     /**
      * Constructs a new InternalDemandPolicyOrder.
-     * @param owner the owner of the internal demand
+     * @param owner SupplyChainRole; the owner of the internal demand
      * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
      * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
      * @param handlingTime the handling time distribution
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicyOrder(final SupplyChainActor owner, final TransportOptionProvider transportOptionProvider,
+    public InternalDemandPolicyOrder(final SupplyChainRole owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
             final InventoryInterface stock)
     {
@@ -84,7 +85,7 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
         SupplierRecord supplierRecord = this.suppliers.get(internalDemand.getProduct());
         if (supplierRecord == null)
         {
-            Logger.warn("checkContent", "InternalDemand for actor " + getOwner() + " contains product "
+            Logger.warn("checkContent", "InternalDemand for actor " + getRole() + " contains product "
                     + internalDemand.getProduct().toString() + " without a supplier");
             return false;
         }
@@ -95,13 +96,13 @@ public class InternalDemandPolicyOrder extends AbstractInternalDemandPolicy
         }
         SupplyChainActor supplier = supplierRecord.getSupplier();
         Money price = supplierRecord.getUnitPrice().multiplyBy(internalDemand.getAmount());
-        Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getOwner());
+        Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getActor());
         TransportOption transportOption =
                 this.transportChoiceProvider.chooseTransportOptions(transportOptions, internalDemand.getProduct().getSku());
-        Order order = new OrderStandalone(getOwner(), supplier, internalDemand, internalDemand.getLatestDeliveryDate(),
+        Order order = new OrderStandalone(getActor(), supplier, internalDemand, internalDemand.getLatestDeliveryDate(),
                 internalDemand.getProduct(), internalDemand.getAmount(), price, transportOption);
         // and send it out after the handling time
-        getOwner().sendMessage(order, this.handlingTime.draw());
+        sendMessage(order, this.handlingTime.draw());
         return true;
     }
 

@@ -12,6 +12,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
@@ -31,7 +32,7 @@ import nl.tudelft.simulation.supplychain.transport.TransportOptionProvider;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
+public class InternalDemandPolicyRFQ extends InternalDemandPolicy
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -50,14 +51,14 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
 
     /**
      * Constructs a new InternalDemandPolicyRFQ.
-     * @param owner the owner of the internal demand
+     * @param owner SupplyChainRole; the owner of the internal demand
      * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
      * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the YP answer
      * @param cutoffDuration Duration; the maximum time after which the RFQ will stop collecting quotes
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicyRFQ(final SupplyChainActor owner, final TransportOptionProvider transportOptionProvider,
+    public InternalDemandPolicyRFQ(final SupplyChainRole owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
             final Duration cutoffDuration, final InventoryInterface stock)
     {
@@ -107,14 +108,14 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
         if (!isValidMessage(internalDemand))
         {
             Logger.warn("handleContent",
-                    "InternalDemand " + internalDemand.toString() + " for actor " + getOwner() + " not considered valid.");
+                    "InternalDemand " + internalDemand.toString() + " for actor " + getRole() + " not considered valid.");
             return false;
         }
         // resolve the suplier
         Set<SupplyChainActor> supplierSet = this.suppliers.get(internalDemand.getProduct());
         if (supplierSet == null)
         {
-            Logger.warn("handleContent", "InternalDemand for actor " + getOwner() + " contains product "
+            Logger.warn("handleContent", "InternalDemand for actor " + getRole() + " contains product "
                     + internalDemand.getProduct().toString() + " without any suppliers.");
             return false;
         }
@@ -126,12 +127,12 @@ public class InternalDemandPolicyRFQ extends AbstractInternalDemandPolicy
         Duration delay = this.handlingTime.draw();
         for (SupplyChainActor supplier : supplierSet)
         {
-            Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getOwner());
+            Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getActor());
             TransportOption transportOption =
                     this.transportChoiceProvider.chooseTransportOptions(transportOptions, internalDemand.getProduct().getSku());
             RequestForQuote rfq =
-                    new RequestForQuote(getOwner(), supplier, internalDemand, transportOption, this.cutoffDuration);
-            getOwner().sendMessage(rfq, delay);
+                    new RequestForQuote(getActor(), supplier, internalDemand, transportOption, this.cutoffDuration);
+            sendMessage(rfq, delay);
         }
         return true;
     }

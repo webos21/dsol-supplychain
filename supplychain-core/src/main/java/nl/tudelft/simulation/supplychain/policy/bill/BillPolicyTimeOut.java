@@ -65,7 +65,7 @@ public class BillPolicyTimeOut extends BillPolicy
         {
             try
             {
-                bill.getSender().getSimulator().scheduleEventAbs(bill.getFinalPaymentDate().plus(this.maximumTimeOut), this,
+                getSimulator().scheduleEventAbs(bill.getFinalPaymentDate().plus(this.maximumTimeOut), this,
                         "checkPayment", new Serializable[] {bill});
             }
             catch (Exception exception)
@@ -98,8 +98,8 @@ public class BillPolicyTimeOut extends BillPolicy
         // make a payment to send out
         super.bankAccount.withdrawFromBalance(bill.getPrice());
         Payment payment =
-                new Payment(getRole().getActor(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
-        getRole().getActor().sendMessage(payment, Duration.ZERO);
+                new Payment(getActor(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
+        sendMessage(payment, Duration.ZERO);
         if (this.debug)
         {
             System.out.println("DEBUG -- BILLTIMEOUTHANDLER: FORCED PAYMENT IMPOSED: ");

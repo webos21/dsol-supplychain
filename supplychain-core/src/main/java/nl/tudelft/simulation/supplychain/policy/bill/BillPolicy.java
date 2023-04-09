@@ -76,7 +76,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         }
         // schedule the payment
         Time currentTime = Time.ZERO;
-        currentTime = getRole().getSimulator().getAbsSimulatorTime();
+        currentTime = getSimulator().getAbsSimulatorTime();
         Time paymentTime = bill.getFinalPaymentDate();
         switch (this.paymentPolicy)
         {
@@ -101,7 +101,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         try
         {
             Serializable[] args = new Serializable[] {bill};
-            getRole().getSimulator().scheduleEventAbs(paymentTime, this, "pay", args);
+            getSimulator().scheduleEventAbs(paymentTime, this, "pay", args);
         }
         catch (SimRuntimeException exception)
         {
@@ -123,7 +123,7 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
             try
             {
                 Serializable[] args = new Serializable[] {bill};
-                getRole().getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "pay", args);
+                getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "pay", args);
             }
             catch (SimRuntimeException exception)
             {
@@ -134,8 +134,8 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
         // make a payment to send out
         this.bankAccount.withdrawFromBalance(bill.getPrice());
         Payment payment =
-                new Payment(getRole().getActor(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
-        getRole().getActor().sendMessage(payment, Duration.ZERO);
+                new Payment(getActor(), bill.getSender(), bill.getInternalDemandId(), bill, bill.getPrice());
+        sendMessage(payment, Duration.ZERO);
     }
 
     /**

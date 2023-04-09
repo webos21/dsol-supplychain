@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 import org.djunits.value.vdouble.scalar.Time;
-import org.djutils.draw.point.Point3d;
+import org.djutils.draw.point.Point2d;
 import org.djutils.exceptions.Throw;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 
@@ -29,19 +29,19 @@ public class QuoteComparator implements Comparator<Quote>, Serializable
     private QuoteComparatorEnum comparatorType;
 
     /** ownerPosition stores the position of the owner. */
-    private Point3d ownerPosition;
+    private Point2d ownerPosition;
 
     /**
      * @param owner the supply chain actor
      * @param comparatorType the type of comparator to use
      */
-    public QuoteComparator(final SupplyChainActor owner, final QuoteComparatorEnum comparatorType)
+    public QuoteComparator(final SupplyChainRole owner, final QuoteComparatorEnum comparatorType)
     {
         super();
         Throw.whenNull(owner, "owner cannot be null");
         Throw.whenNull(comparatorType, "comparatorType cannot be null");
         this.comparatorType = comparatorType;
-        this.ownerPosition = owner.getLocation();
+        this.ownerPosition = owner.getActor().getLocation();
     }
 
     /** {@inheritDoc} */

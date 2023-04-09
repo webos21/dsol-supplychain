@@ -10,7 +10,7 @@ import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
@@ -27,7 +27,7 @@ import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class QuotePolicyTimeout extends AbstractQuotePolicy
+public class QuotePolicyTimeout extends QuotePolicy
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -37,13 +37,13 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
 
     /**
      * Constructor of the QuoteHandlerTimeout with a user defined comparator for quotes.
-     * @param owner the actor for this QuoteHandler.
+     * @param owner the role for this QuoteHandler.
      * @param comparator the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
      */
-    public QuotePolicyTimeout(final SupplyChainActor owner, final Comparator<Quote> comparator,
+    public QuotePolicyTimeout(final SupplyChainRole owner, final Comparator<Quote> comparator,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
         super("QuotePolicyTimeout", owner, comparator, handlingTime, maximumPriceMargin, minimumAmountMargin);
@@ -57,7 +57,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the minimal amount margin
      */
-    public QuotePolicyTimeout(final SupplyChainActor owner, final QuoteComparatorEnum comparatorType,
+    public QuotePolicyTimeout(final SupplyChainRole owner, final QuoteComparatorEnum comparatorType,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
         super("QuotePolicyTimeout", owner, comparatorType, handlingTime, maximumPriceMargin, minimumAmountMargin);
@@ -72,7 +72,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
             return false;
         }
         long internalDemandId = quote.getInternalDemandId();
-        TradeMessageStoreInterface messageStore = getOwner().getMessageStore();
+        TradeMessageStoreInterface messageStore = getActor().getMessageStore();
         int numberQuotes = messageStore.getMessageList(internalDemandId, Quote.class).size();
         int numberRFQs = messageStore.getMessageList(internalDemandId, RequestForQuote.class).size();
         // when the first quote comes in, schedule the timeout
@@ -84,8 +84,8 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
                 Serializable[] args = new Serializable[] {internalDemandId};
 
                 // calculate the actual time out
-                Time time = Time.max(getOwner().getSimulatorTime(), quote.getRequestForQuote().getCutoffDate());
-                getOwner().getSimulator().scheduleEventAbs(time, this, "createOrder", args);
+                Time time = Time.max(getSimulator().getAbsSimulatorTime(), quote.getRequestForQuote().getCutoffDate());
+                getSimulator().scheduleEventAbs(time, this, "createOrder", args);
             }
             catch (Exception exception)
             {
@@ -112,7 +112,7 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
         if (this.unansweredIDs.contains(internalDemandId))
         {
             this.unansweredIDs.remove(internalDemandId);
-            TradeMessageStoreInterface messageStore = getOwner().getMessageStore();
+            TradeMessageStoreInterface messageStore = getActor().getMessageStore();
             List<Quote> quotes = messageStore.getMessageList(internalDemandId, Quote.class);
 
             // the size of the quotes is at least one
@@ -121,9 +121,9 @@ public class QuotePolicyTimeout extends AbstractQuotePolicy
             Quote bestQuote = this.selectBestQuote(quotes);
             if (bestQuote != null)
             {
-                Order order = new OrderBasedOnQuote(getOwner(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(),
+                Order order = new OrderBasedOnQuote(getActor(), bestQuote.getSender(), bestQuote.getProposedDeliveryDate(),
                         bestQuote, bestQuote.getTransportOption());
-                getOwner().sendMessage(order, this.getHandlingTime().draw());
+                sendMessage(order, this.getHandlingTime().draw());
             }
         }
     }

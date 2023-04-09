@@ -7,14 +7,15 @@ import java.util.Set;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
-import nl.tudelft.simulation.supplychain.message.policy.AbstractMessagePolicy;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.message.policy.MessagePolicy;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * SupplyChainPolicy is the SupplyChainActor specific MessagePolicy class. It has a SupplyChainActor as owner, making it
- * unnecessary to cast the Actor all the time to a SupplyChainActor. <br>
+ * SupplyChainPolicy is the SupplyChainRole specific MessagePolicy class. It has a SupplyChainRole as owner, making it
+ * unnecessary to cast the Role all the time to a SupplyChainRole. <br>
  * The abstract SupplyChainPolicy has the methods to check whether the content is of the right type, and methods to do basic
  * filtering on product and on the partner with whom the owner is dealing. This makes it very easy to have different policies
  * for e.g. production orders and for purchase orders; it can be done on the basis of the message sender (in case of production
@@ -26,7 +27,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  * @param <T> The type of TradeMessage for which this policy applies
  */
-public abstract class SupplyChainPolicy<T extends TradeMessage> extends AbstractMessagePolicy<T>
+public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessagePolicy<T>
 {
     /** */
     private static final long serialVersionUID = 20221201L;
@@ -41,10 +42,10 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
 
     /**
      * @param id String; the id of the policy
-     * @param owner SupplyChainActor; the owner of this policy
+     * @param owner SupplyChainRole; the owner of this policy
      * @param messageClass Class&lt;T&gt;; the message type that this policy can process
      */
-    public SupplyChainPolicy(final String id, final SupplyChainActor owner, final Class<T> messageClass)
+    public SupplyChainPolicy(final String id, final SupplyChainRole owner, final Class<T> messageClass)
     {
         super(id, owner, messageClass);
     }
@@ -58,13 +59,13 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
     {
         if (!getMessageClass().equals(message.getClass()))
         {
-            Logger.warn("checkContent - Wrong content type for actor " + getOwner() + ", policy " + this.getClass() + ": "
+            Logger.warn("checkContent - Wrong content type for actor " + getRole() + ", policy " + this.getClass() + ": "
                     + message.getClass());
             return false;
         }
-        if (!message.getReceiver().equals(getOwner()))
+        if (!message.getReceiver().equals(getRole()))
         {
-            Logger.warn("checkContent - Wrong receiver for content " + message.toString() + " sent to actor " + getOwner());
+            Logger.warn("checkContent - Wrong receiver for content " + message.toString() + " sent to actor " + getRole());
             return false;
         }
         return true;
@@ -103,10 +104,6 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
      */
     private boolean checkValidProduct(final TradeMessage message)
     {
-        if (this.validProducts == null)
-        {
-            return true;
-        }
         if (this.validProducts.size() == 0)
         {
             return true;
@@ -117,7 +114,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
         }
         long id = message.getInternalDemandId();
         // get the internal demand to retrieve the product
-        List<InternalDemand> storedIDs = getOwner().getMessageStore().getMessageList(id, InternalDemand.class);
+        List<InternalDemand> storedIDs = getRole().getActor().getMessageStore().getMessageList(id, InternalDemand.class);
         if (storedIDs.size() == 0)
         {
             return false;
@@ -128,9 +125,9 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends Abstract
 
     /** {@inheritDoc} */
     @Override
-    public SupplyChainActor getOwner()
+    public SupplyChainRole getRole()
     {
-        return (SupplyChainActor) super.getOwner();
+        return (SupplyChainRole) super.getRole();
     }
 
     /**

@@ -1,13 +1,12 @@
 package nl.tudelft.simulation.supplychain.message.store.trade;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.djutils.event.EventProducer;
+import org.djutils.event.LocalEventProducer;
 import org.djutils.exceptions.Throw;
 import org.pmw.tinylog.Logger;
 
@@ -42,7 +41,7 @@ import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class TradeMessageStore extends EventProducer implements TradeMessageStoreInterface
+public class TradeMessageStore extends LocalEventProducer implements TradeMessageStoreInterface
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221203L;
@@ -472,13 +471,6 @@ public class TradeMessageStore extends EventProducer implements TradeMessageStor
     public SupplyChainActor getOwner()
     {
         return this.owner;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Serializable getSourceId()
-    {
-        return this.owner.getName() + ".TradeMessageStore";
     }
 
 }

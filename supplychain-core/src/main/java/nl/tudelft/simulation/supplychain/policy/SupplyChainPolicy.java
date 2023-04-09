@@ -4,10 +4,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
+import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.policy.MessagePolicy;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
@@ -63,7 +67,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
                     + message.getClass());
             return false;
         }
-        if (!message.getReceiver().equals(getRole()))
+        if (!message.getReceiver().equals(getActor()))
         {
             Logger.warn("checkContent - Wrong receiver for content " + message.toString() + " sent to actor " + getRole());
             return false;
@@ -130,6 +134,52 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
         return (SupplyChainRole) super.getRole();
     }
 
+    /**
+     * Convenience method: return the SupplyChainActor that owns this policy.
+     * @return the SupplyChainActor that owns this policy
+     */
+    public SupplyChainActor getActor()
+    {
+        return getRole().getActor();
+    }
+    
+    /**
+     * Convenience method: return the Model.
+     * @return SupplyChainModelInterface; the model
+     */
+    public SupplyChainModelInterface getModel()
+    {
+        return getRole().getActor().getModel();
+    }
+
+    /**
+     * Convenience method: return the Simulator.
+     * @return SupplyChainSimulatorInterface; the simulator of this model
+     */
+    public SupplyChainSimulatorInterface getSimulator()
+    {
+        return getRole().getActor().getSimulator();
+    }
+    
+    /**
+     * Convenience method: send a message to another actor with a delay.
+     * @param message message; the message to send
+     * @param delay Duration; the time it takes between sending and receiving
+     */
+    protected void sendMessage(final Message message, final Duration delay)
+    {
+        getActor().sendMessage(message, delay);
+    }
+
+    /**
+     * Convenience method: send a message to another actor without a delay.
+     * @param message message; the message to send
+     */
+    protected void sendMessage(final Message message)
+    {
+        getActor().sendMessage(message);
+    }
+    
     /**
      * Add a valid partner to the list of supply chain partners to handle with this policy.
      * @param partner a new valid partner to use

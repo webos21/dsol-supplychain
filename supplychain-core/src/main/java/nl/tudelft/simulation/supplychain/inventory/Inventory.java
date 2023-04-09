@@ -3,6 +3,7 @@ package nl.tudelft.simulation.supplychain.inventory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -19,6 +20,7 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.product.ProductAmount;
 import nl.tudelft.simulation.supplychain.role.inventory.InventoryRole;
 
 /**
@@ -70,18 +72,14 @@ public class Inventory extends LocalEventProducer implements Serializable, Event
      * @param inventoryRole InventoryRole; the Role that physically handles the inventory.
      * @param initialInventory the initial inventory
      */
-    public Inventory(final InventoryRole inventoryRole, final Inventory initialInventory)
+    public Inventory(final InventoryRole inventoryRole, final List<ProductAmount> initialInventory)
     {
         this(inventoryRole);
-        for (Product product : initialInventory.getProducts())
+        Throw.whenNull(initialInventory, "initialInventory cannot be null");
+        for (ProductAmount productAmount : initialInventory)
         {
-            addToInventory(product, initialInventory.getActualAmount(product), product.getUnitMarketPrice());
-            this.changeClaimedAmount(product, initialInventory.getClaimedAmount(product));
-            this.changeFutureClaimedAmount(product, initialInventory.getClaimedAmount(product),
-                    inventoryRole.getSimulator().getAbsSimulatorTime());
-            this.changeOrderedAmount(product, initialInventory.getOrderedAmount(product));
-            this.changeFutureOrderedAmount(product, initialInventory.getOrderedAmount(product),
-                    inventoryRole.getSimulator().getAbsSimulatorTime());
+            Product product = productAmount.getProduct();
+            addToInventory(product, productAmount.getAmount(), product.getUnitMarketPrice());
             sendInventoryUpdateEvent(product);
         }
     }

@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.djunits.Throw;
-import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.OrientedPoint2d;
 
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
-import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.product.Product;
-import nl.tudelft.simulation.supplychain.role.producing.ProducingActor;
 import nl.tudelft.simulation.supplychain.role.producing.ProducingRole;
 
 /**
@@ -24,7 +23,7 @@ import nl.tudelft.simulation.supplychain.role.producing.ProducingRole;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Manufacturer extends DistributionCenter implements ProducingActor
+public class Manufacturer extends DistributionCenter
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -33,32 +32,37 @@ public class Manufacturer extends DistributionCenter implements ProducingActor
     private ProducingRole producingRole;
 
     /**
-     * @param name String; the name of the Supplier
-     * @param messageHandler MessageHandlerInterface; the message handler to use
-     * @param simulator SupplyChainSimulatorInterface; the simulator
-     * @param location Location; the locatrion of the actor on the map or grid
-     * @param locationDescription String; a description of the location of the Supplier
-     * @param bank Bank; the bank of the reSuppliertailer
-     * @param initialBalance Money; the initial bank balance
-     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
+     * @param id String, the unique id of the supplier
+     * @param name String; the longer name of the supplier
+     * @param model SupplyChainModelInterface; the model
+     * @param location OrientedPoint2d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @param bank Bank; the bank for the BankAccount
+     * @param initialBalance Money; the initial balance for the actor
+     * @param messageStore TradeMessageStoreInterface; the message store for messages
+     * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Manufacturer(final String name, final MessageHandlerInterface messageHandler,
-            final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
-            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
+    public Manufacturer(final String id, final String name, final SupplyChainModelInterface model,
+            final OrientedPoint2d location, final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore) throws ActorAlreadyDefinedException
     {
-        super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
+        super(id, name, model, location, locationDescription, bank, initialBalance, messageStore);
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Return the producing role.
+     * @return ProducingRole; the producing role
+     */
     public ProducingRole getProducingRole()
     {
         return this.producingRole;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Set the producing role
+     * @param producingRole ProducingRole; the new producing role
+     */
     public void setProducingRole(final ProducingRole producingRole)
     {
         Throw.whenNull(this.producingRole, "producingRole cannot be null");

@@ -1,12 +1,17 @@
 package nl.tudelft.simulation.supplychain.reference;
 
-import org.djutils.draw.point.OrientedPoint3d;
+import java.io.Serializable;
 
-import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
+import org.djunits.Throw;
+import org.djutils.draw.point.OrientedPoint2d;
+
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
+import nl.tudelft.simulation.supplychain.finance.Bank;
+import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
-import nl.tudelft.simulation.supplychain.policy.yp.YellowPageRequestPolicy;
-import nl.tudelft.simulation.supplychain.yellowpage.YellowPageActor;
+import nl.tudelft.simulation.supplychain.role.yellowpage.YellowPageRole;
 
 /**
  * Reference implementation of the YellowPage.
@@ -16,24 +21,52 @@ import nl.tudelft.simulation.supplychain.yellowpage.YellowPageActor;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class YellowPage extends YellowPageActor
+public class YellowPage extends SupplyChainActor implements Serializable
 {
     /** */
     private static final long serialVersionUID = 20221206L;
 
+    /** The yellow page role. */
+    private YellowPageRole yellowPageRole = null;
+
     /**
      * Create a YellowPage actor.
-     * @param name String; the name of the Supplier
-     * @param simulator SupplyChainSimulatorInterface; the simulator
-     * @param position OrientedPoint3d; the locatrion of the actor on the map or grid
-     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
-     * @param handlingTime DistContinuousDuration; the duration to handle a request
+     * @param id String, the unique id of the customer
+     * @param name String; the longer name of the customer
+     * @param model SupplyChainModelInterface; the model
+     * @param location OrientedPoint2d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @param bank Bank; the bank for the BankAccount
+     * @param initialBalance Money; the initial balance for the actor
+     * @param messageStore TradeMessageStoreInterface; the message store for messages
+     * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      */
-    public YellowPage(final String name, final SupplyChainSimulatorInterface simulator, final OrientedPoint3d position,
-            final TradeMessageStoreInterface messageStore, final DistContinuousDuration handlingTime)
+    public YellowPage(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore) throws ActorAlreadyDefinedException
     {
-        super(name, simulator, position, messageStore);
-        addMessagePolicy(new YellowPageRequestPolicy(this, handlingTime));
+        super(id, name, model, location, locationDescription, bank, initialBalance, messageStore);
+    }
+
+    /**
+     * Return the yellow page role.
+     * @return YellowPageRole; the yellow page role
+     */
+    public YellowPageRole getYellowPageRole()
+    {
+        return this.yellowPageRole;
+    }
+
+    /**
+     * Set the yellow page role
+     * @param yellowPageRole YellowPageRole; the new yellow page role
+     */
+    public void setYellowPageRole(final YellowPageRole yellowPageRole)
+    {
+        Throw.whenNull(yellowPageRole, "yellowpageRole cannot be null");
+        Throw.when(this.yellowPageRole != null, IllegalStateException.class, "yellowpageRole already initialized");
+        addRole(yellowPageRole);
+        this.yellowPageRole = yellowPageRole;
     }
 
 }

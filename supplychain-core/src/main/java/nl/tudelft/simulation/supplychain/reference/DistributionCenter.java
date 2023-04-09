@@ -1,11 +1,11 @@
 package nl.tudelft.simulation.supplychain.reference;
 
-import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.OrientedPoint2d;
 
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.message.handler.MessageHandlerInterface;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 
 /**
@@ -22,21 +22,22 @@ public class DistributionCenter extends Retailer
     private static final long serialVersionUID = 20221206L;
 
     /**
-     * @param name String; the name of the DistributionCenter
-     * @param messageHandler MessageHandlerInterface; the message handler to use
-     * @param simulator SupplyChainSimulatorInterface; the simulator
-     * @param location Location; the locatrion of the actor on the map or grid
-     * @param locationDescription String; a description of the location of the DistributionCenter
-     * @param bank Bank; the bank of the DistributionCenter
-     * @param initialBalance Money; the initial bank balance
-     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
+     * @param id String, the unique id of the distribution center
+     * @param name String; the longer name of the distributin center
+     * @param model SupplyChainModelInterface; the model
+     * @param location OrientedPoint2d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @param bank Bank; the bank for the BankAccount
+     * @param initialBalance Money; the initial balance for the actor
+     * @param messageStore TradeMessageStoreInterface; the message store for messages
+     * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public DistributionCenter(final String name, final MessageHandlerInterface messageHandler,
-            final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
-            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
+    public DistributionCenter(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore) throws ActorAlreadyDefinedException
     {
-        super(name, messageHandler, simulator, location, locationDescription, bank, initialBalance, messageStore);
+        super(id, name, model, location, locationDescription, bank, initialBalance, messageStore);
     }
 
 }

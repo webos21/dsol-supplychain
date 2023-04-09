@@ -32,19 +32,19 @@ import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageSto
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyYP;
-import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyMake;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
-import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicyAll;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
-import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicyConsume;
-import nl.tudelft.simulation.supplychain.policy.yp.YellowPageAnswerPolicy;
+import nl.tudelft.simulation.supplychain.policy.yellowpage.YellowPageAnswerPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Manufacturer;
 import nl.tudelft.simulation.supplychain.reference.YellowPage;
@@ -120,7 +120,7 @@ public class DemoManufacturer extends Manufacturer
         DistContinuousDuration administrativeDelayInternalDemand =
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
         InternalDemandPolicyYP internalDemandHandler = new InternalDemandPolicyYP(this, administrativeDelayInternalDemand,
-                ypProduction, new Length(1E6, LengthUnit.METER), 1000, super.stock);
+                ypProduction, new Length(1E6, LengthUnit.METER), 1000, super.inventory);
 
         DistContinuousDuration administrativeDelayYellowPageAnswer =
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
@@ -128,12 +128,12 @@ public class DemoManufacturer extends Manufacturer
 
         DistContinuousDuration administrativeDelayQuote =
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
-        AbstractQuotePolicy quoteHandler =
+        QuotePolicy quoteHandler =
                 new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE, administrativeDelayQuote, 0.4, 0);
 
         OrderConfirmationPolicy orderConfirmationHandler = new OrderConfirmationPolicy(this);
 
-        AbstractShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
+        ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
 
         DistContinuousDuration paymentDelay = new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
         BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME, paymentDelay);
@@ -144,14 +144,14 @@ public class DemoManufacturer extends Manufacturer
 
         // SELLING HANDLERS
 
-        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.stock, 1.2,
+        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.inventory, 1.2,
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
 
-        AbstractOrderPolicy orderHandler;
+        OrderPolicy orderHandler;
         if (mts)
-            orderHandler = new OrderPolicyStock(this, super.stock);
+            orderHandler = new OrderPolicyStock(this, super.inventory);
         else
-            orderHandler = new OrderPolicyMake(this, super.stock);
+            orderHandler = new OrderPolicyMake(this, super.inventory);
 
         PaymentPolicy paymentHandler = new PaymentPolicy(this, super.bankAccount);
 
@@ -160,12 +160,12 @@ public class DemoManufacturer extends Manufacturer
 
         // RESTOCKING
 
-        Iterator<Product> stockIter = super.stock.iterator();
+        Iterator<Product> stockIter = super.inventory.iterator();
         while (stockIter.hasNext())
         {
             Product stockProduct = stockIter.next();
             // the restocking policy will generate InternalDemand, handled by the BuyingRole
-            new RestockingServiceSafety(super.stock, stockProduct, new Duration(24.0, DurationUnit.HOUR), false, initialStock,
+            new RestockingServiceSafety(super.inventory, stockProduct, new Duration(24.0, DurationUnit.HOUR), false, initialStock,
                     true, 2.0 * initialStock, new Duration(14.0, DurationUnit.DAY));
         }
 

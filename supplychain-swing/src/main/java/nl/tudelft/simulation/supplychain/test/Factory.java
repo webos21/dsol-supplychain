@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
-import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
@@ -86,11 +86,11 @@ public class Factory extends Supplier
     public void init() throws RemoteException
     {
         // tell Factory to use the RFQhandler to handle RFQs
-        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.stock, 1.2,
+        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.inventory, 1.2,
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
         //
         // create an order handler
-        AbstractOrderPolicy orderHandler = new OrderPolicyStock(this, super.stock);
+        OrderPolicy orderHandler = new OrderPolicyStock(this, super.inventory);
         //
         // hopefully, Factory will get payments in the end
         PaymentPolicy paymentHandler = new PaymentPolicy(this, getBankAccount());

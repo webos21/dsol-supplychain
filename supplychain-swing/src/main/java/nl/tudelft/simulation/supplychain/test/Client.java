@@ -26,10 +26,10 @@ import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyRFQ;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
-import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
 import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicyAll;
-import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicyConsume;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Customer;
@@ -112,7 +112,7 @@ public class Client extends Customer
         internalDemandHandler.addSupplier(this.product, this.retailer);
         //
         // tell Client to use the Quotehandler to handle quotes
-        AbstractQuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE,
+        QuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE,
                 new DistConstantDuration(new Duration(2.0, DurationUnit.HOUR)), 0.4, 0.1);
         //
         // Client has the standard order confirmation handler
@@ -123,7 +123,7 @@ public class Client extends Customer
                 new DistConstantDuration(Duration.ZERO));
         //
         // hopefully, Client will get laptop shipments
-        AbstractShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
+        ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
         //
         // add the handlers to the buying role for Client
         BuyingRoleYP buyingRole = new BuyingRoleYP(this, super.simulator, internalDemandHandler, quoteHandler,

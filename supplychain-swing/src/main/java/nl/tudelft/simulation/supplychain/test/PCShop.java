@@ -22,16 +22,16 @@ import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyRFQ;
-import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
-import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
 import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicyAll;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
-import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicyStock;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Retailer;
@@ -102,11 +102,11 @@ public class PCShop extends Retailer
     public void init() throws RemoteException
     {
         // tell PCshop to use the RFQhandler to handle RFQs
-        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.stock, 1.2,
+        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.inventory, 1.2,
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
         //
         // create an order handler
-        AbstractOrderPolicy orderHandler = new OrderPolicyStock(this, super.stock);
+        OrderPolicy orderHandler = new OrderPolicyStock(this, super.inventory);
         //
         // hopefully, the PCShop will get payments in the end
         PaymentPolicy paymentHandler = new PaymentPolicy(this, getBankAccount());
@@ -117,11 +117,11 @@ public class PCShop extends Retailer
         //
         // After a while, the PC Shop needs to restock and order
         // do this for every product we have initially in stock
-        Iterator<Product> stockIter = super.stock.iterator();
+        Iterator<Product> stockIter = super.inventory.iterator();
         while (stockIter.hasNext())
         {
             Product product = stockIter.next();
-            new RestockingServiceSafety(super.stock, product, new Duration(24.0, DurationUnit.HOUR), false, 5.0, true, 10.0,
+            new RestockingServiceSafety(super.inventory, product, new Duration(24.0, DurationUnit.HOUR), false, 5.0, true, 10.0,
                     new Duration(14.0, DurationUnit.DAY));
             // order 100 PCs when actual+claimed < 100
             // policy will schedule itself
@@ -131,8 +131,8 @@ public class PCShop extends Retailer
         //
         // tell PCShop to use the InternalDemandPolicy for all products
         InternalDemandPolicyRFQ internalDemandHandler =
-                new InternalDemandPolicyRFQ(this, new Duration(1.0, DurationUnit.HOUR), super.stock);
-        Iterator<Product> productIter = super.stock.iterator();
+                new InternalDemandPolicyRFQ(this, new Duration(1.0, DurationUnit.HOUR), super.inventory);
+        Iterator<Product> productIter = super.inventory.iterator();
         while (productIter.hasNext())
         {
             Product product = productIter.next();
@@ -140,7 +140,7 @@ public class PCShop extends Retailer
         }
         //
         // tell PCShop to use the Quotehandler to handle quotes
-        AbstractQuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_DATE_PRICE_DISTANCE,
+        QuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_DATE_PRICE_DISTANCE,
                 new Duration(1.0, DurationUnit.HOUR), 0.4, 0.1);
         //
         // PCShop has the standard order confirmation handler
@@ -151,7 +151,7 @@ public class PCShop extends Retailer
                 new DistConstantDuration(Duration.ZERO));
         //
         // hopefully, PCShop will get laptop shipments, put them in stock
-        AbstractShipmentPolicy shipmentHandler = new ShipmentPolicyStock(this, super.stock);
+        ShipmentPolicy shipmentHandler = new ShipmentPolicyStock(this, super.inventory);
         //
         // add the handlers to the buying role for PCShop
         BuyingRoleYP buyingRole = new BuyingRoleYP(this, this.simulator, internalDemandHandler, quoteHandler,

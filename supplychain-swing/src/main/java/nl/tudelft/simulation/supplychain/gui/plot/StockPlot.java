@@ -13,8 +13,8 @@ import org.djutils.event.EventType;
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
-import nl.tudelft.simulation.supplychain.inventory.InventoryInterface;
-import nl.tudelft.simulation.supplychain.inventory.StockUpdateData;
+import nl.tudelft.simulation.supplychain.inventory.Inventory;
+import nl.tudelft.simulation.supplychain.inventory.InventoryUpdateData;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -46,7 +46,7 @@ public class StockPlot extends XYChart
      * @param product
      */
     @SuppressWarnings("static-access")
-    public StockPlot(final SupplyChainSimulatorInterface simulator, final String title, final InventoryInterface stock,
+    public StockPlot(final SupplyChainSimulatorInterface simulator, final String title, final Inventory stock,
             final Product product)
     {
         super(simulator, title);
@@ -103,7 +103,7 @@ public class StockPlot extends XYChart
          * @param stock
          * @param product
          */
-        public StockListener(final SupplyChainSimulatorInterface simulator, final InventoryInterface stock,
+        public StockListener(final SupplyChainSimulatorInterface simulator, final Inventory stock,
                 final Product product)
         {
             super();
@@ -111,7 +111,7 @@ public class StockPlot extends XYChart
             this.simulator = simulator;
             try
             {
-                stock.addListener(this, InventoryInterface.INVENTORY_CHANGE_EVENT);
+                stock.addListener(this, Inventory.INVENTORY_CHANGE_EVENT);
             }
             catch (RemoteException exception)
             {
@@ -123,7 +123,7 @@ public class StockPlot extends XYChart
         @Override
         public void notify(final EventInterface event) throws RemoteException
         {
-            StockUpdateData data = (StockUpdateData) event.getContent();
+            InventoryUpdateData data = (InventoryUpdateData) event.getContent();
             if (!data.getProductName().equals(this.product.getName()))
                 return;
             fireEvent(new TimedEvent<Double>(STOCK_ACTUAL_CHANGE_EVENT, this, data.getActualAmount(),

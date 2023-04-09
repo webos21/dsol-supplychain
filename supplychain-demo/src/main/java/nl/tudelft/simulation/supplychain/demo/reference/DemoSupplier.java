@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
 import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
-import nl.tudelft.simulation.supplychain.policy.order.AbstractOrderPolicy;
+import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
@@ -83,10 +83,10 @@ public class DemoSupplier extends Supplier
 
         // SELLING HANDLERS
 
-        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.stock, 1.2,
+        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.inventory, 1.2,
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
 
-        AbstractOrderPolicy orderHandler = new OrderPolicyStock(this, super.stock);
+        OrderPolicy orderHandler = new OrderPolicyStock(this, super.inventory);
 
         PaymentPolicy paymentHandler = new PaymentPolicy(this, super.bankAccount);
 
@@ -95,12 +95,12 @@ public class DemoSupplier extends Supplier
 
         // RESTOCKING
 
-        Iterator<Product> stockIter = super.stock.iterator();
+        Iterator<Product> stockIter = super.inventory.iterator();
         while (stockIter.hasNext())
         {
             Product stockProduct = stockIter.next();
             // the restocking policy will generate InternalDemand, handled by the BuyingRole
-            new RestockingServiceSafety(super.stock, stockProduct, new Duration(24.0, DurationUnit.HOUR), false, initialStock,
+            new RestockingServiceSafety(super.inventory, stockProduct, new Duration(24.0, DurationUnit.HOUR), false, initialStock,
                     true, 2.0 * initialStock, new Duration(14.0, DurationUnit.DAY));
         }
 

@@ -31,11 +31,11 @@ import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPol
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicyEnum;
 import nl.tudelft.simulation.supplychain.policy.quote.QuoteComparatorEnum;
-import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
 import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicyAll;
-import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicyConsume;
-import nl.tudelft.simulation.supplychain.policy.yp.YellowPageAnswerPolicy;
+import nl.tudelft.simulation.supplychain.policy.yellowpage.YellowPageAnswerPolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Customer;
 import nl.tudelft.simulation.supplychain.reference.YellowPage;
@@ -101,12 +101,12 @@ public class DemoMarket extends Customer
 
         DistContinuousDuration administrativeDelayQuote =
                 new DistContinuousDuration(new DistTriangular(stream, 2, 2.5, 3), DurationUnit.HOUR);
-        AbstractQuotePolicy quoteHandler =
+        QuotePolicy quoteHandler =
                 new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE, administrativeDelayQuote, 0.5, 0);
 
         OrderConfirmationPolicy orderConfirmationHandler = new OrderConfirmationPolicy(this);
 
-        AbstractShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
+        ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
 
         DistContinuousDuration paymentDelay = new DistContinuousDuration(new DistConstant(stream, 0.0), DurationUnit.HOUR);
         BillPolicy billHandler = new BillPolicy(this, this.getBankAccount(), PaymentPolicyEnum.PAYMENT_ON_TIME, paymentDelay);

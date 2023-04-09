@@ -19,7 +19,7 @@ import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
 import nl.tudelft.simulation.supplychain.message.store.EmptyMessageStore;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.messagehandlers.HandleAllMessages;
-import nl.tudelft.simulation.supplychain.policy.yp.YellowPageRequestPolicy;
+import nl.tudelft.simulation.supplychain.policy.yellowpage.YellowPageRequestPolicy;
 import nl.tudelft.simulation.supplychain.reference.YellowPage;
 
 /**

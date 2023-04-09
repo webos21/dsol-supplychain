@@ -4,8 +4,8 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyRFQ;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
-import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
-import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
 
 /**
  * The buying role based on a RFQ is a role that organizes the buying based on a RequestForQuote that is sent to a fixed set of
@@ -31,22 +31,22 @@ public class BuyingRoleRFQ extends BuyingRole
      * @param billPolicy the bill handler
      */
     public BuyingRoleRFQ(final SupplyChainActor owner, final InternalDemandPolicyRFQ internalDemandPolicy,
-            final AbstractQuotePolicy quotePolicy, final OrderConfirmationPolicy orderConfirmationPolicy,
-            final AbstractShipmentPolicy shipmentPolicy, final BillPolicy billPolicy)
+            final QuotePolicy quotePolicy, final OrderConfirmationPolicy orderConfirmationPolicy,
+            final ShipmentPolicy shipmentPolicy, final BillPolicy billPolicy)
     {
         super(owner);
-        addMessagePolicy(internalDemandPolicy);
-        addMessagePolicy(quotePolicy);
-        addMessagePolicy(orderConfirmationPolicy);
-        addMessagePolicy(shipmentPolicy);
-        addMessagePolicy(billPolicy);
+        setMessagePolicy(internalDemandPolicy);
+        setMessagePolicy(quotePolicy);
+        setMessagePolicy(orderConfirmationPolicy);
+        setMessagePolicy(shipmentPolicy);
+        setMessagePolicy(billPolicy);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getId()
     {
-        return getOwner().getName() + "-BUYING(RFQ)";
+        return getActor().getId() + "-BUYING(RFQ)";
     }
 
 }

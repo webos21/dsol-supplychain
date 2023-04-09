@@ -4,7 +4,7 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyOrder;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
-import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
 
 /**
  * The direct buying role is a role that organizes the buying based on a single supplier, and continues from there.
@@ -28,21 +28,21 @@ public class BuyingRoleDirect extends BuyingRole
      * @param billPolicy the bill handler
      */
     public BuyingRoleDirect(final SupplyChainActor owner, final InternalDemandPolicyOrder internalDemandPolicy,
-            final OrderConfirmationPolicy orderConfirmationPolicy, final AbstractShipmentPolicy shipmentPolicy,
+            final OrderConfirmationPolicy orderConfirmationPolicy, final ShipmentPolicy shipmentPolicy,
             final BillPolicy billPolicy)
     {
         super(owner);
-        addMessagePolicy(internalDemandPolicy);
-        addMessagePolicy(orderConfirmationPolicy);
-        addMessagePolicy(shipmentPolicy);
-        addMessagePolicy(billPolicy);
+        setMessagePolicy(internalDemandPolicy);
+        setMessagePolicy(orderConfirmationPolicy);
+        setMessagePolicy(shipmentPolicy);
+        setMessagePolicy(billPolicy);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getId()
     {
-        return getOwner().getName() + "-BUYING(direct)";
+        return getActor().getId() + "-BUYING(direct)";
     }
 
 }

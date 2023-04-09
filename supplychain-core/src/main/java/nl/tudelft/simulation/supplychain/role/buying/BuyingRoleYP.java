@@ -4,8 +4,8 @@ import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.policy.bill.BillPolicy;
 import nl.tudelft.simulation.supplychain.policy.internaldemand.InternalDemandPolicyYP;
 import nl.tudelft.simulation.supplychain.policy.orderconfirmation.OrderConfirmationPolicy;
-import nl.tudelft.simulation.supplychain.policy.quote.AbstractQuotePolicy;
-import nl.tudelft.simulation.supplychain.policy.shipment.AbstractShipmentPolicy;
+import nl.tudelft.simulation.supplychain.policy.quote.QuotePolicy;
+import nl.tudelft.simulation.supplychain.policy.shipment.ShipmentPolicy;
 import nl.tudelft.simulation.supplychain.policy.yp.YellowPageAnswerPolicy;
 
 /**
@@ -32,24 +32,24 @@ public class BuyingRoleYP extends BuyingRole
      * @param billPolicy the bill handler
      */
     public BuyingRoleYP(final SupplyChainActor owner, final InternalDemandPolicyYP internalDemandPolicy,
-            final YellowPageAnswerPolicy ypAnswerPolicy, final AbstractQuotePolicy quotePolicy,
-            final OrderConfirmationPolicy orderConfirmationPolicy, final AbstractShipmentPolicy shipmentPolicy,
+            final YellowPageAnswerPolicy ypAnswerPolicy, final QuotePolicy quotePolicy,
+            final OrderConfirmationPolicy orderConfirmationPolicy, final ShipmentPolicy shipmentPolicy,
             final BillPolicy billPolicy)
     {
         super(owner);
-        addMessagePolicy(internalDemandPolicy);
-        addMessagePolicy(ypAnswerPolicy);
-        addMessagePolicy(quotePolicy);
-        addMessagePolicy(orderConfirmationPolicy);
-        addMessagePolicy(shipmentPolicy);
-        addMessagePolicy(billPolicy);
+        setMessagePolicy(internalDemandPolicy);
+        setMessagePolicy(ypAnswerPolicy);
+        setMessagePolicy(quotePolicy);
+        setMessagePolicy(orderConfirmationPolicy);
+        setMessagePolicy(shipmentPolicy);
+        setMessagePolicy(billPolicy);
     }
 
     /** {@inheritDoc} */
     @Override
     public String getId()
     {
-        return getOwner().getName() + "-BUYING(yp)";
+        return getActor().getId() + "-BUYING(yp)";
     }
 
 }

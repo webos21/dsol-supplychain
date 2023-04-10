@@ -43,8 +43,8 @@ public class BankPlot extends XYChart
         BalanceListener balanceListener = new BalanceListener(model.getSimulator(), bankAccount);
         try
         {
-            this.balancePersistent =
-                    new SimPersistent<Duration>("balance " + title, model, balanceListener, BalanceListener.BALANCE_CHANGE_EVENT);
+            this.balancePersistent = new SimPersistent<Duration>("balance " + title, model, balanceListener,
+                    BalanceListener.BALANCE_CHANGE_EVENT);
             add("balance", this.balancePersistent, SimPersistent.TIMED_OBSERVATION_ADDED_EVENT);
         }
         catch (RemoteException exception)

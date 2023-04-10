@@ -7,17 +7,17 @@ import javax.naming.NamingException;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.OrientedPoint2d;
 
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
-import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
-import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicyStock;
@@ -26,6 +26,7 @@ import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.reference.Supplier;
 import nl.tudelft.simulation.supplychain.role.selling.SellingRole;
+import nl.tudelft.simulation.supplychain.role.selling.SellingRoleRFQ;
 import nl.tudelft.simulation.supplychain.transport.TransportMode;
 import nl.tudelft.simulation.supplychain.util.DistConstantDuration;
 
@@ -43,39 +44,35 @@ public class Factory extends Supplier
     private static final long serialVersionUID = 20221201L;
 
     /**
-     * @param name String; the name of the Customer
-     * @param messageReceiver MessageReceiver; the message handler to use
-     * @param simulator SupplyChainSimulatorInterface; the simulator
-     * @param location Location; the locatrion of the actor on the map or grid
-     * @param locationDescription String; a description of the location of the Customer
-     * @param bank Bank; the bank of the customer
-     * @param initialBalance Money; the initial bank balance
-     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
+     * @param id String, the unique id of the supplier
+     * @param name String; the longer name of the supplier
+     * @param model SupplyChainModelInterface; the model
+     * @param location OrientedPoint2d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @param bank Bank; the bank for the BankAccount
+     * @param initialBalance Money; the initial balance for the actor
+     * @param messageStore TradeMessageStoreInterface; the message store for messages
      * @param product initial stock product
      * @param amount amount of initial stock
-     * @throws RemoteException remote simulator error
+     * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      * @throws NamingException on animation error
+     * @throws RemoteException on animation error
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Factory(final String name, final MessageReceiver messageReceiver,
-            final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
-            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore, final Product product,
-            final double amount) throws RemoteException, NamingException
+    public Factory(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore, final Product product, final double amount)
+            throws ActorAlreadyDefinedException, RemoteException, NamingException
     {
-        super(name, messageReceiver, simulator, location, locationDescription, bank, initialBalance, messageStore);
+        super(id, name, model, location, locationDescription, bank, initialBalance, messageStore);
         // give the retailer some stock
-        Inventory _stock = new Inventory(this);
-        if (product != null)
-        {
-            _stock.addToInventory(product, amount, product.getUnitMarketPrice().multiplyBy(amount));
-            super.setInitialStock(_stock);
-        }
+        getInventory().addToInventory(product, amount, product.getUnitMarketPrice().multiplyBy(amount));
         // We initialize Factory
         this.init();
         // Let's give Factory its corresponding image
-        if (simulator instanceof AnimatorInterface)
+        if (getSimulator() instanceof AnimatorInterface)
         {
-            new SingleImageRenderable<>(this, simulator,
+            new SingleImageRenderable<>(this, getSimulator(),
                     Factory.class.getResource("/nl/tudelft/simulation/supplychain/images/Manufacturer.gif"));
         }
     }
@@ -85,18 +82,18 @@ public class Factory extends Supplier
      */
     public void init() throws RemoteException
     {
-        // tell Factory to use the RFQhandler to handle RFQs
-        RequestForQuotePolicy rfqHandler = new RequestForQuotePolicy(this, super.inventory, 1.2,
+        // tell Factory to use the RFQPolicy to handle RFQs
+        RequestForQuotePolicy rfqPolicy = new RequestForQuotePolicy(this, getInventory(), 1.2,
                 new DistConstantDuration(new Duration(1.23, DurationUnit.HOUR)), TransportMode.PLANE);
         //
-        // create an order handler
-        OrderPolicy orderHandler = new OrderPolicyStock(this, super.inventory);
+        // create an order Policy
+        OrderPolicy orderPolicy = new OrderPolicyStock(this, getInventory());
         //
         // hopefully, Factory will get payments in the end
-        PaymentPolicy paymentHandler = new PaymentPolicy(this, getBankAccount());
+        PaymentPolicy paymentPolicy = new PaymentPolicy(this, getBankAccount());
         //
-        // add the handlers to the SellingRole
-        SellingRole sellingRole = new SellingRole(this, getSimulator(), rfqHandler, orderHandler, paymentHandler);
+        // add the Policys to the SellingRole
+        SellingRole sellingRole = new SellingRoleRFQ(this, getSimulator(), rfqPolicy, orderPolicy, paymentPolicy);
         super.setSellingRole(sellingRole);
         //
         // CHARTS
@@ -113,5 +110,10 @@ public class Factory extends Supplier
     public Bounds3d getBounds()
     {
         return new Bounds3d(25.0, 25.0, 1.0);
+    }
+    
+    public Inventory getInventory()
+    {
+        return getInventoryRole().getInventory();
     }
 }

@@ -7,6 +7,7 @@ import javax.naming.NamingException;
 import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
+import org.djutils.draw.point.OrientedPoint2d;
 import org.djutils.draw.point.OrientedPoint3d;
 
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
@@ -16,6 +17,8 @@ import nl.tudelft.simulation.jstats.distributions.DistConstant;
 import nl.tudelft.simulation.jstats.distributions.DistExponential;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.jstats.streams.StreamInterface;
+import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
@@ -58,33 +61,34 @@ public class Client extends Customer
     private Retailer retailer;
 
     /**
-     * @param name String; the name of the Customer
-     * @param messageReceiver MessageReceiver; the message handler to use
-     * @param simulator SupplyChainSimulatorInterface; the simulator
-     * @param location Location; the locatrion of the actor on the map or grid
-     * @param locationDescription String; a description of the location of the Customer
-     * @param bank Bank; the bank of the customer
-     * @param initialBalance Money; the initial bank balance
-     * @param messageStore TradeMessageStoreInterface; the messageStore for the messages
+     * @param id String, the unique id of the supplier
+     * @param name String; the longer name of the supplier
+     * @param model SupplyChainModelInterface; the model
+     * @param location OrientedPoint2d; the location of the actor
+     * @param locationDescription String; the location description of the actor (e.g., a city, country)
+     * @param bank Bank; the bank for the BankAccount
+     * @param initialBalance Money; the initial balance for the actor
+     * @param messageStore TradeMessageStoreInterface; the message store for messages
      * @param product product to order
      * @param retailer fixed retailer to use
-     * @throws RemoteException on remote simulator error
+     * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      * @throws NamingException on animation error
-     */
+     * @throws RemoteException on animation error
+    */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Client(final String name, final MessageReceiver messageReceiver,
-            final SupplyChainSimulatorInterface simulator, final OrientedPoint3d location, final String locationDescription,
-            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore, final Product product,
-            final Retailer retailer) throws RemoteException, NamingException
+    public Client(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription, final Bank bank, final Money initialBalance,
+            final TradeMessageStoreInterface messageStore, final Product product, final Retailer retailer)
+            throws ActorAlreadyDefinedException, RemoteException, NamingException
     {
-        super(name, messageReceiver, simulator, location, locationDescription, bank, initialBalance, messageStore);
+        super(id, name, model, location, locationDescription, bank, initialBalance, messageStore);
         this.product = product;
         this.retailer = retailer;
         this.init();
         // Let's give Client its corresponding image
-        if (simulator instanceof AnimatorInterface)
+        if (getSimulator() instanceof AnimatorInterface)
         {
-            new SingleImageRenderable<>(this, simulator,
+            new SingleImageRenderable<>(this, getSimulator(),
                     Factory.class.getResource("/nl/tudelft/simulation/supplychain/images/Market.gif"));
         }
     }
@@ -107,27 +111,27 @@ public class Client extends Customer
         super.setDemandGeneration(dg);
         //
         // tell Client to use the InternalDemandPolicy
-        InternalDemandPolicyRFQ internalDemandHandler =
+        InternalDemandPolicyRFQ internalDemandPolicy =
                 new InternalDemandPolicyRFQ(this, new Duration(24.0, DurationUnit.HOUR), null); // XXX: Why does it need stock?
-        internalDemandHandler.addSupplier(this.product, this.retailer);
+        internalDemandPolicy.addSupplier(this.product, this.retailer);
         //
-        // tell Client to use the Quotehandler to handle quotes
-        QuotePolicy quoteHandler = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE,
+        // tell Client to use the QuotePolicy to handle quotes
+        QuotePolicy quotePolicy = new QuotePolicyAll(this, QuoteComparatorEnum.SORT_PRICE_DATE_DISTANCE,
                 new DistConstantDuration(new Duration(2.0, DurationUnit.HOUR)), 0.4, 0.1);
         //
-        // Client has the standard order confirmation handler
-        OrderConfirmationPolicy confirmationHandler = new OrderConfirmationPolicy(this);
+        // Client has the standard order confirmation Policy
+        OrderConfirmationPolicy confirmationPolicy = new OrderConfirmationPolicy(this);
         //
         // Client will get a bill in the end
-        BillPolicy billHandler = new BillPolicy(this, getBankAccount(), PaymentPolicyEnum.PAYMENT_IMMEDIATE,
+        BillPolicy billPolicy = new BillPolicy(this, getBankAccount(), PaymentPolicyEnum.PAYMENT_IMMEDIATE,
                 new DistConstantDuration(Duration.ZERO));
         //
         // hopefully, Client will get laptop shipments
-        ShipmentPolicy shipmentHandler = new ShipmentPolicyConsume(this);
+        ShipmentPolicy shipmentPolicy = new ShipmentPolicyConsume(this);
         //
-        // add the handlers to the buying role for Client
-        BuyingRoleYP buyingRole = new BuyingRoleYP(this, super.simulator, internalDemandHandler, quoteHandler,
-                confirmationHandler, shipmentHandler, billHandler);
+        // add the Policys to the buying role for Client
+        BuyingRoleYP buyingRole = new BuyingRoleYP(this, super.simulator, internalDemandPolicy, quotePolicy,
+                confirmationPolicy, shipmentPolicy, billPolicy);
         super.setBuyingRole(buyingRole);
 
         //

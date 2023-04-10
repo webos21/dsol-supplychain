@@ -6,21 +6,23 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.unit.MassUnit;
 import org.djunits.unit.VolumeUnit;
 import org.djunits.value.vdouble.scalar.Duration;
+import org.djunits.value.vdouble.scalar.Length;
 import org.djunits.value.vdouble.scalar.Mass;
 import org.djunits.value.vdouble.scalar.Volume;
 import org.djutils.draw.bounds.Bounds3d;
+import org.djutils.draw.point.OrientedPoint2d;
 import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.Point;
 
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
-import nl.tudelft.simulation.dsol.model.AbstractDSOLModel;
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimator;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModel;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
-import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.message.store.trade.LeanTradeMessageStore;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.product.Sku;
@@ -33,7 +35,7 @@ import nl.tudelft.simulation.supplychain.product.Sku;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class TestModel extends AbstractDSOLModel<Duration, SupplyChainAnimator>
+public class TestModel extends SupplyChainModel
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -84,7 +86,7 @@ public class TestModel extends AbstractDSOLModel<Duration, SupplyChainAnimator>
             }
 
             // create the bank
-            Bank ing = new Bank("ING", new MessageReceiverDirect(), this.devsSimulator, new OrientedPoint3d(0, 0, 0), "ING");
+            Bank ing = new Bank("ING", "ING", this, new OrientedPoint2d(0, 0), "ING");
             ing.setAnnualInterestRateNeg(0.080);
             ing.setAnnualInterestRatePos(0.025);
 
@@ -93,18 +95,18 @@ public class TestModel extends AbstractDSOLModel<Duration, SupplyChainAnimator>
                     new Volume(0.05, VolumeUnit.CUBIC_METER), 0.0);
 
             // create a manufacturer
-            this.factory = new Factory("Factory", this.devsSimulator, new OrientedPoint3d(200, 200, 0), ing,
-                    new Money(50000.0, MoneyUnit.USD), this.laptop, 1000, new LeanTradeMessageStore(this.devsSimulator));
+            this.factory = new Factory("Factory", "Factory", this, new OrientedPoint2d(200, 200), "", ing,
+                    new Money(50000.0, MoneyUnit.USD), new LeanTradeMessageStore(this.devsSimulator), this.laptop, 1000);
 
             // create a retailer
-            this.pcShop = new PCShop("PCshop", this.devsSimulator, new OrientedPoint3d(20, 200, 0), ing,
-                    new Money(50000.0, MoneyUnit.USD), this.laptop, 10, this.factory,
-                    new LeanTradeMessageStore(this.devsSimulator));
+            this.pcShop = new PCShop("PCshop", "PCshop", this, new OrientedPoint2d(20, 200), "", ing,
+                    new Money(50000.0, MoneyUnit.USD), new LeanTradeMessageStore(this.devsSimulator), this.laptop, 10,
+                    this.factory);
 
             // create a customer
-            this.client = new Client("Client", this.devsSimulator, new OrientedPoint3d(100, 100, 0), ing,
-                    new Money(1500000.0, MoneyUnit.USD), this.laptop, this.pcShop,
-                    new LeanTradeMessageStore(this.devsSimulator));
+            this.client = new Client("Client", "Client", this, new OrientedPoint2d(100, 100), "", ing,
+                    new Money(1500000.0, MoneyUnit.USD), new LeanTradeMessageStore(this.devsSimulator), this.laptop,
+                    this.pcShop);
 
             // schedule a remark that the simulation is ready
             Duration endTime =
@@ -131,6 +133,15 @@ public class TestModel extends AbstractDSOLModel<Duration, SupplyChainAnimator>
         System.err.println("End of TestModel replication");
         System.err.println("Runtime = " + ((System.currentTimeMillis() - this.startTimeMs) / 1000) + " seconds.");
         System.err.println("Simulation time = " + this.devsSimulator.getSimulatorTime());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Length calculateDistance(final Point<?> loc1, final Point<?> loc2)
+    {
+        double dx = loc2.getX() - loc1.getX();
+        double dy = loc2.getY() - loc1.getY();
+        return Length.instantiateSI(Math.sqrt(dx * dx + dy * dy));
     }
 
 }

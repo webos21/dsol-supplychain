@@ -67,19 +67,19 @@ public class TestModelApp extends DSOLAnimationApplication
         getDSOLPanel().getTabbedPane().setSelectedIndex(1);
         SupplyChainSimulatorInterface devsSimulator = this.model.getSimulator();
 
-        BankPlot fb = new BankPlot(devsSimulator, "Factory Bank balance", this.model.factory.getBankAccount());
+        BankPlot fb = new BankPlot(this.model, "Factory Bank balance", this.model.factory.getBankAccount());
         charts.setCell(fb.getSwingPanel(), 0, 0);
 
-        BankPlot pb = new BankPlot(devsSimulator, "PCShop Bank balance", this.model.pcShop.getBankAccount());
+        BankPlot pb = new BankPlot(this.model, "PCShop Bank balance", this.model.pcShop.getBankAccount());
         charts.setCell(pb.getSwingPanel(), 1, 0);
 
-        BankPlot cb = new BankPlot(devsSimulator, "Client Bank balance", this.model.client.getBankAccount());
+        BankPlot cb = new BankPlot(this.model, "Client Bank balance", this.model.client.getBankAccount());
         charts.setCell(cb.getSwingPanel(), 2, 0);
 
-        StockPlot fs = new StockPlot(devsSimulator, "Factory stock Laptop", this.model.factory.getStock(), this.model.laptop);
+        StockPlot fs = new StockPlot(this.model, "Factory stock Laptop", this.model.factory.getInventory(), this.model.laptop);
         charts.setCell(fs.getSwingPanel(), 0, 1);
 
-        StockPlot ps = new StockPlot(devsSimulator, "PCShop stock Laptop", this.model.pcShop.getStock(), this.model.laptop);
+        StockPlot ps = new StockPlot(this.model, "PCShop stock Laptop", this.model.pcShop.getInventory(), this.model.laptop);
         charts.setCell(ps.getSwingPanel(), 1, 1);
     }
 

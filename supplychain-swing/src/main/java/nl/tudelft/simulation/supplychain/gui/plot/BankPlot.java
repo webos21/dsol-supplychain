@@ -1,17 +1,17 @@
 package nl.tudelft.simulation.supplychain.gui.plot;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.event.EventInterface;
-import org.djutils.event.EventListenerInterface;
-import org.djutils.event.EventProducer;
-import org.djutils.event.TimedEvent;
+import org.djutils.event.Event;
+import org.djutils.event.EventListener;
 import org.djutils.event.EventType;
+import org.djutils.event.LocalEventProducer;
+import org.djutils.event.TimedEvent;
 
 import nl.tudelft.simulation.dsol.statistics.SimPersistent;
 import nl.tudelft.simulation.dsol.swing.charts.xy.XYChart;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
@@ -33,18 +33,18 @@ public class BankPlot extends XYChart
     private SimPersistent<Duration> balancePersistent;
 
     /**
-     * @param simulator
+     * @param model
      * @param title
      * @param bankAccount
      */
-    public BankPlot(final SupplyChainSimulatorInterface simulator, final String title, final BankAccount bankAccount)
+    public BankPlot(final SupplyChainModelInterface model, final String title, final BankAccount bankAccount)
     {
-        super(simulator, title);
-        BalanceListener balanceListener = new BalanceListener(simulator, bankAccount);
+        super(model.getSimulator(), title);
+        BalanceListener balanceListener = new BalanceListener(model.getSimulator(), bankAccount);
         try
         {
             this.balancePersistent =
-                    new SimPersistent<>("balance " + title, simulator, balanceListener, BalanceListener.BALANCE_CHANGE_EVENT);
+                    new SimPersistent<Duration>("balance " + title, model, balanceListener, BalanceListener.BALANCE_CHANGE_EVENT);
             add("balance", this.balancePersistent, SimPersistent.TIMED_OBSERVATION_ADDED_EVENT);
         }
         catch (RemoteException exception)
@@ -54,7 +54,7 @@ public class BankPlot extends XYChart
     }
 
     /**
-     * LalanceListener - delegate class to handle the bank account balance change subscription and event production for the
+     * BalanceListener - delegate class to handle the bank account balance change subscription and event production for the
      * Persistent variables. <br>
      * <br>
      * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
@@ -62,7 +62,7 @@ public class BankPlot extends XYChart
      * </p>
      * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
      */
-    private static class BalanceListener extends EventProducer implements EventListenerInterface
+    private static class BalanceListener extends LocalEventProducer implements EventListener
     {
         /** */
         private static final long serialVersionUID = 20221201L;
@@ -86,18 +86,10 @@ public class BankPlot extends XYChart
 
         /** {@inheritDoc} */
         @Override
-        public void notify(final EventInterface event) throws RemoteException
+        public void notify(final Event event) throws RemoteException
         {
             Money balance = (Money) event.getContent();
-            fireEvent(new TimedEvent<Double>(BALANCE_CHANGE_EVENT, this, balance.getAmount(),
-                    this.simulator.getSimulatorTime().si));
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public Serializable getSourceId()
-        {
-            return "BalanceListener";
+            fireEvent(new TimedEvent<Double>(BALANCE_CHANGE_EVENT, balance.getAmount(), this.simulator.getSimulatorTime().si));
         }
 
     }

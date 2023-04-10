@@ -6,12 +6,11 @@ import java.rmi.RemoteException;
 
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.draw.bounds.Bounds3d;
-import org.djutils.draw.point.OrientedPoint3d;
+import org.djutils.draw.point.OrientedPoint2d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.dsol.animation.D2.SingleImageRenderable;
-import nl.tudelft.simulation.dsol.animation.interpolation.LinearInterpolation;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
@@ -37,7 +36,7 @@ public class ContentAnimation implements Locatable, Serializable
     private SupplyChainSimulatorInterface simulator;
 
     /** a helper instance for linear interpolation. */
-    private LinearInterpolation linearInterpolation = null;
+    private LinearInterpolation2d linearInterpolation = null;
 
     /** the content of the source. */
     private TradeMessage content = null;
@@ -98,7 +97,7 @@ public class ContentAnimation implements Locatable, Serializable
             this.simulator = content.getSender().getSimulator();
 
             // We define its location
-            this.linearInterpolation = new LinearInterpolation(this.simulator.getSimulatorTime().si,
+            this.linearInterpolation = new LinearInterpolation2d(this.simulator.getSimulatorTime().si,
                     this.simulator.getSimulatorTime().si + delay.si, content.getSender().getLocation(),
                     content.getReceiver().getLocation());
 
@@ -123,10 +122,9 @@ public class ContentAnimation implements Locatable, Serializable
 
     /** {@inheritDoc} */
     @Override
-    public OrientedPoint3d getLocation() throws RemoteException
+    public OrientedPoint2d getLocation() throws RemoteException
     {
-        OrientedPoint3d dp = this.linearInterpolation.getLocation(this.simulator.getSimulatorTime().si);
-        return new OrientedPoint3d(dp.x, dp.y, 100.0);
+        return this.linearInterpolation.getLocation(this.simulator.getSimulatorTime().si);
     }
 
     /** {@inheritDoc} */

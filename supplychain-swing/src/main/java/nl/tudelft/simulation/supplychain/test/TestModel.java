@@ -133,11 +133,4 @@ public class TestModel extends AbstractDSOLModel<Duration, SupplyChainAnimator>
         System.err.println("Simulation time = " + this.devsSimulator.getSimulatorTime());
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Serializable getSourceId()
-    {
-        return "TestModel";
-    }
-
 }

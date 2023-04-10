@@ -96,14 +96,14 @@ public class Factory extends Supplier
         PaymentPolicy paymentHandler = new PaymentPolicy(this, getBankAccount());
         //
         // add the handlers to the SellingRole
-        SellingRole sellingRole = new SellingRole(this, this.simulator, rfqHandler, orderHandler, paymentHandler);
+        SellingRole sellingRole = new SellingRole(this, getSimulator(), rfqHandler, orderHandler, paymentHandler);
         super.setSellingRole(sellingRole);
         //
         // CHARTS
         //
-        if (this.simulator instanceof AnimatorInterface)
+        if (getSimulator() instanceof AnimatorInterface)
         {
-            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + getName());
+            XYChart bankChart = new XYChart(getSimulator(), "BankAccount " + getName());
             bankChart.add("bank account", getBankAccount(), BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
         }
     }

@@ -94,7 +94,7 @@ public class Client extends Customer
      */
     public void init() throws RemoteException
     {
-        StreamInterface stream = this.simulator.getModel().getStream("default");
+        StreamInterface stream = getSimulator().getModel().getStream("default");
         Duration hour = new Duration(1.0, DurationUnit.HOUR);
         //
         // create the internal demand for PCs
@@ -133,9 +133,9 @@ public class Client extends Customer
         //
         // CHARTS
         //
-        if (this.simulator instanceof AnimatorInterface)
+        if (getSimulator() instanceof AnimatorInterface)
         {
-            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + getName());
+            XYChart bankChart = new XYChart(getSimulator(), "BankAccount " + getName());
             bankChart.add("bank account", getBankAccount(), BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
         }
     }

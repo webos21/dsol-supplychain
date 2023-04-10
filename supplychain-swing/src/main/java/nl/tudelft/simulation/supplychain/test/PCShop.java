@@ -112,7 +112,7 @@ public class PCShop extends Retailer
         PaymentPolicy paymentHandler = new PaymentPolicy(this, getBankAccount());
         //
         // add the handlers to the buying role for PCShop
-        SellingRole sellingRole = new SellingRole(this, this.simulator, rfqHandler, orderHandler, paymentHandler);
+        SellingRole sellingRole = new SellingRole(this, getSimulator(), rfqHandler, orderHandler, paymentHandler);
         super.setSellingRole(sellingRole);
         //
         // After a while, the PC Shop needs to restock and order
@@ -154,15 +154,15 @@ public class PCShop extends Retailer
         ShipmentPolicy shipmentHandler = new ShipmentPolicyStock(this, super.inventory);
         //
         // add the handlers to the buying role for PCShop
-        BuyingRoleYP buyingRole = new BuyingRoleYP(this, this.simulator, internalDemandHandler, quoteHandler,
+        BuyingRoleYP buyingRole = new BuyingRoleYP(this, getSimulator(), internalDemandHandler, quoteHandler,
                 confirmationHandler, shipmentHandler, billHandler);
         super.setBuyingRole(buyingRole);
         //
         // CHARTS
         //
-        if (this.simulator instanceof AnimatorInterface)
+        if (getSimulator() instanceof AnimatorInterface)
         {
-            XYChart bankChart = new XYChart(this.simulator, "BankAccount " + getName());
+            XYChart bankChart = new XYChart(getSimulator(), "BankAccount " + getName());
             bankChart.add("bank account", getBankAccount(), BankAccount.BANK_ACCOUNT_CHANGED_EVENT);
         }
     }

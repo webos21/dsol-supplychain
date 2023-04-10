@@ -12,7 +12,7 @@ import org.djutils.logger.CategoryLogger;
 import org.pmw.tinylog.Level;
 
 import nl.tudelft.simulation.dsol.SimRuntimeException;
-import nl.tudelft.simulation.dsol.experiment.ReplicationInterface;
+import nl.tudelft.simulation.dsol.experiment.Replication;
 import nl.tudelft.simulation.dsol.experiment.SingleReplication;
 import nl.tudelft.simulation.dsol.swing.gui.ConsoleLogger;
 import nl.tudelft.simulation.dsol.swing.gui.ConsoleOutput;
@@ -98,7 +98,7 @@ public class TestModelApp extends DSOLAnimationApplication
         SupplyChainAnimator animator = new SupplyChainAnimator("MTSMTO", Time.ZERO);
         animator.setSpeedFactor(3600.0);
         TestModel model = new TestModel(animator);
-        ReplicationInterface<Duration> replication =
+        Replication<Duration> replication =
                 new SingleReplication<Duration>("rep1", Duration.ZERO, Duration.ZERO, new Duration(1800.0, DurationUnit.HOUR));
         animator.initialize(model, replication);
         DSOLPanel panel = new DSOLPanel(new SCControlPanel(model, animator));

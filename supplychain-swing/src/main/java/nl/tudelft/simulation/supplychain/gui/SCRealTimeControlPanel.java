@@ -8,12 +8,12 @@ import java.rmi.RemoteException;
 import javax.swing.JButton;
 
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.event.EventInterface;
+import org.djutils.event.Event;
 
 import nl.tudelft.simulation.dsol.model.DSOLModel;
 import nl.tudelft.simulation.dsol.simulators.DevsRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.RunState;
-import nl.tudelft.simulation.dsol.swing.gui.control.DevsControlPanel;
+import nl.tudelft.simulation.dsol.swing.gui.control.DEVSControlPanel;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
 
 /**
@@ -24,7 +24,7 @@ import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class SCRealTimeControlPanel extends DevsControlPanel<Duration, SupplyChainAnimator> implements PropertyChangeListener
+public class SCRealTimeControlPanel extends DEVSControlPanel<Duration, SupplyChainAnimator> implements PropertyChangeListener
 {
     /** */
     private static final long serialVersionUID = 20201227L;
@@ -129,7 +129,7 @@ public class SCRealTimeControlPanel extends DevsControlPanel<Duration, SupplyCha
 
     /** {@inheritDoc} */
     @Override
-    public void notify(final EventInterface event) throws RemoteException
+    public void notify(final Event event) throws RemoteException
     {
         if (event.getType().equals(DevsRealTimeAnimator.CHANGE_SPEED_FACTOR_EVENT))
         {

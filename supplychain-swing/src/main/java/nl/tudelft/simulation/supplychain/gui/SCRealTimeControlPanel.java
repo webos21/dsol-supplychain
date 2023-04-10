@@ -10,11 +10,11 @@ import javax.swing.JButton;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.Event;
 
-import nl.tudelft.simulation.dsol.model.DSOLModel;
 import nl.tudelft.simulation.dsol.simulators.DevsRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.RunState;
 import nl.tudelft.simulation.dsol.swing.gui.control.DEVSControlPanel;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 
 /**
  * SCRealTimeControlPanel.java.
@@ -45,7 +45,7 @@ public class SCRealTimeControlPanel extends DEVSControlPanel<Duration, SupplyCha
      *            whereas the panel needs a RealTimeControlAnimator)
      * @throws RemoteException when simulator cannot be accessed for listener attachment
      */
-    public SCRealTimeControlPanel(final DSOLModel<Duration, SupplyChainAnimator> model, final SupplyChainAnimator simulator)
+    public SCRealTimeControlPanel(final SupplyChainModelInterface model, final SupplyChainAnimator simulator)
             throws RemoteException
     {
         super(model, simulator);

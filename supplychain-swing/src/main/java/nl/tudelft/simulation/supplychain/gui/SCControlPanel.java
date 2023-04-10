@@ -7,6 +7,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import nl.tudelft.simulation.dsol.model.DSOLModel;
 import nl.tudelft.simulation.dsol.swing.gui.control.RunUntilPanel;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainAnimator;
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 
 /**
  * DEVS Real Time ControlPanel for a djunits double timeunit.
@@ -31,7 +32,7 @@ public class SCControlPanel extends SCRealTimeControlPanel
      *            specified with a DevsAnimator, whereas the panel needs a RealTimeControlAnimator)
      * @throws RemoteException when simulator cannot be accessed for listener attachment
      */
-    public SCControlPanel(final DSOLModel<Duration, SupplyChainAnimator> model, final SupplyChainAnimator simulator)
+    public SCControlPanel(final SupplyChainModelInterface model, final SupplyChainAnimator simulator)
             throws RemoteException
     {
         super(model, simulator);

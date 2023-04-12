@@ -91,7 +91,7 @@ public class TestModel extends SupplyChainModel
             ing.setAnnualInterestRatePos(0.025);
 
             // create a product
-            this.laptop = new Product("Laptop", Sku.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM),
+            this.laptop = new Product(this, "Laptop", Sku.PIECE, new Money(1400.0, MoneyUnit.USD), new Mass(6.5, MassUnit.KILOGRAM),
                     new Volume(0.05, VolumeUnit.CUBIC_METER), 0.0);
 
             // create a manufacturer

@@ -7,6 +7,7 @@ import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Mass;
 import org.djunits.value.vdouble.scalar.Volume;
 
+import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 
@@ -49,6 +50,7 @@ public class Product implements Serializable
 
     /**
      * Construct a new product with an empty Bill of Materials.
+     * @param model SupplyChainModelInterface; the model to register the products
      * @param name String; the descriptive name of the product.
      * @param sku Sku; the stock keeping unit in which this product is shipped (boxes, pallets, kilograms, m3, containers)
      * @param initialUnitMarketPrice Money; the initial world market price of the product per SKU
@@ -56,7 +58,7 @@ public class Product implements Serializable
      * @param averageSkuVolume Volume; the average volume per SKU
      * @param depreciation double; the depreciation as a factor per day for the product
      */
-    public Product(final String name, final Sku sku, final Money initialUnitMarketPrice, final Mass averageSkuWeight,
+    public Product(final SupplyChainModelInterface model, final String name, final Sku sku, final Money initialUnitMarketPrice, final Mass averageSkuWeight,
             final Volume averageSkuVolume, final double depreciation)
     {
         Throw.whenNull(name, "name cannot be null");

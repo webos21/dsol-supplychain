@@ -58,8 +58,8 @@ public class Product implements Serializable
      * @param averageSkuVolume Volume; the average volume per SKU
      * @param depreciation double; the depreciation as a factor per day for the product
      */
-    public Product(final SupplyChainModelInterface model, final String name, final Sku sku, final Money initialUnitMarketPrice, final Mass averageSkuWeight,
-            final Volume averageSkuVolume, final double depreciation)
+    public Product(final SupplyChainModelInterface model, final String name, final Sku sku, final Money initialUnitMarketPrice,
+            final Mass averageSkuWeight, final Volume averageSkuVolume, final double depreciation)
     {
         Throw.whenNull(name, "name cannot be null");
         Throw.whenNull(sku, "sku cannot be null");

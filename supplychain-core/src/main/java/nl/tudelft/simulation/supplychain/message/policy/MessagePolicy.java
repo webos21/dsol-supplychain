@@ -1,4 +1,4 @@
-package nl.tudelft.simulation.supplychain.policy;
+package nl.tudelft.simulation.supplychain.message.policy;
 
 import java.io.Serializable;
 

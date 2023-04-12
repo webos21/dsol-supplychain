@@ -20,7 +20,6 @@
   <inceptionYear>2003</inceptionYear>
 
   <modules>
-    <module>supplychain-actor</module>
     <module>supplychain-core</module>
     <module>supplychain-swing</module>
     <module>supplychain-demo</module>
@@ -149,12 +148,6 @@
         <groupId>nl.tudelft.simulation</groupId>
         <artifactId>dsol-swing</artifactId>
         <version>${dsol.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>nl.tudelft.simulation</groupId>
-        <artifactId>supplychain-actor</artifactId>
-        <version>${supplychain.version}</version>
       </dependency>
 
       <dependency>

@@ -120,8 +120,8 @@ public class DelayProductionService extends ProductionService
             ptime = ptime.times(productionOrder.getAmount());
         }
 
-        Product _product = productionOrder.getProduct();
-        ImmutableMap<Product, Double> bom = _product.getBillOfMaterials().getMaterials();
+        Product product = productionOrder.getProduct();
+        ImmutableMap<Product, Double> bom = product.getBillOfMaterials().getMaterials();
 
         // check whether there is enough on stock for this order
         HashMap<Product, Double> availableMaterials = new LinkedHashMap<>();

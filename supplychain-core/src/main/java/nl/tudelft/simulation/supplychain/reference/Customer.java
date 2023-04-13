@@ -61,7 +61,7 @@ public class Customer extends SupplyChainActor
     }
 
     /**
-     * Set the buying role
+     * Set the buying role.
      * @param buyingRole BuyingRole; the new buying role
      */
     public void setBuyingRole(final BuyingRole buyingRole)

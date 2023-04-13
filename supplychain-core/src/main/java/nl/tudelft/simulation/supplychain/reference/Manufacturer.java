@@ -60,7 +60,7 @@ public class Manufacturer extends DistributionCenter
     }
 
     /**
-     * Set the producing role
+     * Set the producing role.
      * @param producingRole ProducingRole; the new producing role
      */
     public void setProducingRole(final ProducingRole producingRole)

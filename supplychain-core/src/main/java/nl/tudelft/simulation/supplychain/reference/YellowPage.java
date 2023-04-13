@@ -58,7 +58,7 @@ public class YellowPage extends SupplyChainActor implements Serializable
     }
 
     /**
-     * Set the yellow page role
+     * Set the yellow page role.
      * @param yellowPageRole YellowPageRole; the new yellow page role
      */
     public void setYellowPageRole(final YellowPageRole yellowPageRole)

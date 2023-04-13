@@ -46,7 +46,7 @@ public class RoleTest
     {
         private static final long serialVersionUID = 1L;
 
-        public TestRole(final String id, final Actor actor, final MessageReceiver messageReceiver)
+        TestRole(final String id, final Actor actor, final MessageReceiver messageReceiver)
         {
             super(id, actor, messageReceiver);
         }

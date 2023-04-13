@@ -84,8 +84,8 @@ public class ResourceProductionService extends ProductionService
         Time startTime = productionOrder.getDateReady().minus(ptime);
         startTime = Time.max(getOwner().getActor().getSimulatorTime(), startTime);
         // determine the needed raw materials
-        Product _product = productionOrder.getProduct();
-        ImmutableMap<Product, Double> bom = _product.getBillOfMaterials().getMaterials();
+        Product product = productionOrder.getProduct();
+        ImmutableMap<Product, Double> bom = product.getBillOfMaterials().getMaterials();
 
         HashMap<Product, Double> availableMaterials = new LinkedHashMap<>();
         Iterator<Product> bomIter = bom.keySet().iterator();

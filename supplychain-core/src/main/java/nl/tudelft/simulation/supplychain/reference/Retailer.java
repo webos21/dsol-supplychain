@@ -67,7 +67,7 @@ public class Retailer extends SupplyChainActor implements Serializable
     }
 
     /**
-     * Set the buying role
+     * Set the buying role.
      * @param buyingRole BuyingRole; the new buying role
      */
     public void setBuyingRole(final BuyingRole buyingRole)
@@ -88,7 +88,7 @@ public class Retailer extends SupplyChainActor implements Serializable
     }
 
     /**
-     * Set the selling role
+     * Set the selling role.
      * @param sellingRole SellingRole; the new selling role
      */
     public void setSellingRole(final SellingRole sellingRole)
@@ -109,7 +109,7 @@ public class Retailer extends SupplyChainActor implements Serializable
     }
 
     /**
-     * Set the inventory role
+     * Set the inventory role.
      * @param inventoryRole InventoryRole; the new inventory role
      */
     public void setInventoryRole(final InventoryRole inventoryRole)

@@ -22,7 +22,7 @@ public class SellingRoleRFQ extends SellingRole
 
     /**
      * Constructs a new SellingRole for RFQ - Order - Payment.
-     * @param owner SupplyChainActor; the owner this role
+     * @param owner Actor; the owner this role
      * @param rfqPolicy the Request for Quote handler
      * @param orderPolicy the order handler
      * @param paymentPolicy the payment handler

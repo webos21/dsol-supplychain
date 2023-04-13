@@ -37,8 +37,8 @@ public class Bill extends TradeMessage
 
     /**
      * Constructs a new Bill.
-     * @param sender SupplyChainActor; the sender
-     * @param receiver SupplyChainActor; the receiver
+     * @param sender Actor; the sender
+     * @param receiver Actor; the receiver
      * @param internalDemandId the unique internal demand id of this bill
      * @param order the order the bill is sent for
      * @param finalPaymentDate the final payment date of the bill

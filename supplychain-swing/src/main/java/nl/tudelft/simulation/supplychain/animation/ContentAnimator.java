@@ -28,7 +28,7 @@ public class ContentAnimator implements EventListener
     private final SupplyChainSimulatorInterface simulator;
 
     /**
-     * Create an animator for the moving content that listens to the SupplyChainActor.SEND_CONTENT_EVENT.
+     * Create an animator for the moving content that listens to the Actor.SEND_CONTENT_EVENT.
      * @param simulator the simulator
      */
     public ContentAnimator(final SupplyChainSimulatorInterface simulator)
@@ -37,7 +37,7 @@ public class ContentAnimator implements EventListener
     }
 
     /**
-     * Subscribe ourselves to the SupplyChainActor.SEND_CONTENT_EVENT.
+     * Subscribe ourselves to the Actor.SEND_CONTENT_EVENT.
      * @param sca the actor that can send messages
      * @throws RemoteException on network error
      */

@@ -135,8 +135,8 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
     }
 
     /**
-     * Convenience method: return the SupplyChainActor that owns this policy.
-     * @return the SupplyChainActor that owns this policy
+     * Convenience method: return the Actor that owns this policy.
+     * @return the Actor that owns this policy
      */
     public Actor getActor()
     {

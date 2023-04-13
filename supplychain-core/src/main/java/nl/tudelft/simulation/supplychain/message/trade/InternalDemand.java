@@ -36,7 +36,7 @@ public class InternalDemand extends TradeMessage
 
     /**
      * Constructs a new InternalDemand.
-     * @param sender SupplyChainActor; the sender of the internal demand
+     * @param sender Actor; the sender of the internal demand
      * @param product Product; the product which is demanded
      * @param amount double; the amount of the product in the product's SKU
      * @param earliestDeliveryDate Time; the earliest delivery date

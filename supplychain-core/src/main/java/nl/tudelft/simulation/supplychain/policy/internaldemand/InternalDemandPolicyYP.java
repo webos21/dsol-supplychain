@@ -36,7 +36,7 @@ public class InternalDemandPolicyYP extends InternalDemandPolicy
      * Constructs a new InternalDemandPolicyYP.
      * @param owner the owner of the internal demand
      * @param handlingTime the handling time distribution delay to use
-     * @param yp the SupplyChainActor that provides the yp service
+     * @param yp the Actor that provides the yp service
      * @param maximumDistance the search distance to use for all products
      * @param maximumNumber the max number of suppliers to return
      * @param stock the stock for being able to change the ordered amount

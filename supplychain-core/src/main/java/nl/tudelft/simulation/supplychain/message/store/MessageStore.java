@@ -20,9 +20,9 @@ public interface MessageStore extends Serializable
 {
     /**
      * Set the owner for the message store after is has been created. The reason for explicitly having to set the owner and not
-     * include the owner in the constructor is that the SupplyChainActor needs a MessageStore in its constructor, so the
+     * include the owner in the constructor is that the Actor needs a MessageStore in its constructor, so the
      * MessageStore cannot be constructed with the owner.
-     * @param owner SupplyChainActor; the owner
+     * @param owner Actor; the owner
      */
     void setOwner(Actor owner);
 
@@ -49,7 +49,7 @@ public interface MessageStore extends Serializable
 
     /**
      * Return the owner.
-     * @return SupplyChainActor; the owner
+     * @return Actor; the owner
      */
     Actor getOwner();
 }

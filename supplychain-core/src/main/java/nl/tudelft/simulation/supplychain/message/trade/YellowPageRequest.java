@@ -31,8 +31,8 @@ public class YellowPageRequest extends TradeMessage
 
     /**
      * Construct a YellowPageRequest with a maximum distance.
-     * @param sender SupplyChainActor; the sender of the yellow page request
-     * @param receiver SupplyChainActor; the receiver of the yellow page request
+     * @param sender Actor; the sender of the yellow page request
+     * @param receiver Actor; the receiver of the yellow page request
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      * @param maximumDistance the maximum distance around the 'sender' to search for suppliers
@@ -45,8 +45,8 @@ public class YellowPageRequest extends TradeMessage
 
     /**
      * Construct a YellowPageRequest with a maximum number of answers. The nearest 'maximumNumber' suppliers are returned.
-     * @param sender SupplyChainActor; the sender of the yellow page request
-     * @param receiver SupplyChainActor; the receiver of the yellow page request
+     * @param sender Actor; the sender of the yellow page request
+     * @param receiver Actor; the receiver of the yellow page request
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      * @param maximumNumber the maximum number of supplier to return
@@ -59,8 +59,8 @@ public class YellowPageRequest extends TradeMessage
 
     /**
      * Construct a YellowPageRequest without constraints.
-     * @param sender SupplyChainActor; the sender of the yellow page request
-     * @param receiver SupplyChainActor; the receiver of the yellow page request
+     * @param sender Actor; the sender of the yellow page request
+     * @param receiver Actor; the receiver of the yellow page request
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      */
@@ -73,8 +73,8 @@ public class YellowPageRequest extends TradeMessage
     /**
      * Construct a YellowPageRequest with a maximum number of answers and a geographic range to search in. Only nearest
      * 'maximumNumber' suppliers within the given range are returned.
-     * @param sender SupplyChainActor; the sender of the yellow page request
-     * @param receiver SupplyChainActor; the receiver of the yellow page request
+     * @param sender Actor; the sender of the yellow page request
+     * @param receiver Actor; the receiver of the yellow page request
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param product Product; the product we are interested in
      * @param maximumDistance the maximum distance around the 'sender' to search for suppliers

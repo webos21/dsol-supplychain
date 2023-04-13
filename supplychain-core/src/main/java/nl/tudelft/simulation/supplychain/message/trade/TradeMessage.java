@@ -25,8 +25,8 @@ public abstract class TradeMessage extends Message
 
     /**
      * Constructs a new TradeMessage object.
-     * @param sender SupplyChainActor; the sending actor of the message content
-     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param sender Actor; the sending actor of the message content
+     * @param receiver Actor; the receiving actor of the message content
      * @param internalDemandId long; the InternalDemandId that triggered the chain
      */
     public TradeMessage(final Actor sender, final Actor receiver, final long internalDemandId)
@@ -38,8 +38,8 @@ public abstract class TradeMessage extends Message
     /**
      * Constructs a new TradeMessage object, specifically an InternalDemand object, where the internalDemandId is set to the
      * value of the uniqueId.
-     * @param sender SupplyChainActor; the sending actor of the message content
-     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param sender Actor; the sending actor of the message content
+     * @param receiver Actor; the receiving actor of the message content
      */
     public TradeMessage(final Actor sender, final Actor receiver)
     {

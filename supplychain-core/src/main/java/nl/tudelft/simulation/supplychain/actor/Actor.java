@@ -288,7 +288,7 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
     }
 
     /**
-     * Return the MessageStore for the SupplyChainActor.
+     * Return the MessageStore for the Actor.
      * @return TradeMessageStoreInterface; the messageStore.
      */
     public TradeMessageStoreInterface getMessageStore()
@@ -397,8 +397,8 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
     }
 
     /**
-     * Return the bank account of the SupplyChainActor.
-     * @return BankAccount; the bankAccount of the SupplyChainActor.
+     * Return the bank account of the Actor.
+     * @return BankAccount; the bankAccount of the Actor.
      */
     public BankAccount getBankAccount()
     {
@@ -406,8 +406,8 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
     }
 
     /**
-     * Return a list of the fixed cost items for this SupplyChainActor.
-     * @return List&lt;FixedCosts&gt;; a list of fixed costs items for this SupplyChainActor.
+     * Return a list of the fixed cost items for this Actor.
+     * @return List&lt;FixedCosts&gt;; a list of fixed costs items for this Actor.
      */
     public List<FixedCost> getFixedCosts()
     {

@@ -45,8 +45,8 @@ public class Quote extends TradeMessage
     /**
      * The Constructor for a Quote. Note that the Quote contains a product and an amount. This sounds superfluous, but it is
      * not. The quote might contain a replacement product or less amount than the original request in the RFQ.
-     * @param sender SupplyChainActor; the sender actor of the message content
-     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param sender Actor; the sender actor of the message content
+     * @param receiver Actor; the receving actor of the message content
      * @param requestForQuote RequestForQuote; the RFQ for which this is the quote
      * @param product Product; the product of the quote
      * @param amount double; the amount of products

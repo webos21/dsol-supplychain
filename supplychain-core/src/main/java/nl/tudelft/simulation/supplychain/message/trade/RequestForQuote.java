@@ -32,8 +32,8 @@ public class RequestForQuote extends TradeMessage
 
     /**
      * Create a new RFQ, based on an internal demand.
-     * @param sender SupplyChainActor; the sender actor of the message content
-     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param sender Actor; the sender actor of the message content
+     * @param receiver Actor; the receving actor of the message content
      * @param internalDemand InternalDemand; internal demand that triggered the process
      * @param preferredTransportOption TransportOption; the preferred transport option for moving the product from sender to
      *            receiver

@@ -31,7 +31,7 @@ public abstract class ProducingRole extends SupplyChainRole
 
     /**
      * Create a ProducingRole object for an actor.
-     * @param owner SupplyChainActor; the owner of this role
+     * @param owner Actor; the owner of this role
      */
     public ProducingRole(final Actor owner)
     {

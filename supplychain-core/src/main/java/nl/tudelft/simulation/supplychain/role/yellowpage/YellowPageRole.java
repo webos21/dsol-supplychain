@@ -36,7 +36,7 @@ public class YellowPageRole extends SupplyChainRole
 
     /**
      * Create a new YellowPage role.
-     * @param owner SupplyChainActor; the actor that owns the YP role
+     * @param owner Actor; the actor that owns the YP role
      */
     public YellowPageRole(final Actor owner)
     {

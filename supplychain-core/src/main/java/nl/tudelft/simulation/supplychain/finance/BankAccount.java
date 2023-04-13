@@ -11,7 +11,7 @@ import org.djutils.metadata.ObjectDescriptor;
 import nl.tudelft.simulation.supplychain.actor.Actor;
 
 /**
- * The BackAccount keeps track of the balance of a SupplyChainActor. This simple implementation just has one number as the
+ * The BackAccount keeps track of the balance of a Actor. This simple implementation just has one number as the
  * account. No investments or loans are possible through this implementation. The BankAccount itself does not contain logic to
  * prevent it from going negative.
  * <p>

@@ -37,7 +37,7 @@ public abstract class InventoryRole extends SupplyChainRole
 
     /**
      * Create an InventoryRole object for an actor, with an empty inventory.
-     * @param owner SupplyChainActor; the owner of this role
+     * @param owner Actor; the owner of this role
      */
     public InventoryRole(final Actor owner)
     {
@@ -47,7 +47,7 @@ public abstract class InventoryRole extends SupplyChainRole
 
     /**
      * Create an InventoryRole object for an actor.
-     * @param owner SupplyChainActor; the owner of this role
+     * @param owner Actor; the owner of this role
      * @param initialInventory List&lt;ProductAmount&gt;; the Inventory to use within this role
      */
     public InventoryRole(final Actor owner, final List<ProductAmount> initialInventory)

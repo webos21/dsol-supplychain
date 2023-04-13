@@ -37,8 +37,8 @@ public class Shipment extends TradeMessage
     private boolean delivered = false;
 
     /**
-     * @param sender SupplyChainActor; the sender actor of the message content
-     * @param receiver SupplyChainActor; the receiving actor of the message content
+     * @param sender Actor; the sender actor of the message content
+     * @param receiver Actor; the receiving actor of the message content
      * @param internalDemandId internal demand that triggered the process
      * @param order the order for which this is the shipment
      * @param product Product; the product type

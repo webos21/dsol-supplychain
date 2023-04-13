@@ -86,7 +86,7 @@ public class Inventory extends LocalEventProducer implements Serializable, Event
 
     /**
      * Return the actor who owns this inventory.
-     * @return SupplyChainActor; the actor who owns this inventory
+     * @return Actor; the actor who owns this inventory
      */
     public Actor getOwner()
     {

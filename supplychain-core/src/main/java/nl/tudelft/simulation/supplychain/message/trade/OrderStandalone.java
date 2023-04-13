@@ -33,8 +33,8 @@ public class OrderStandalone extends Order
 
     /**
      * The constructor for the OrderStandAlone.
-     * @param sender SupplyChainActor; the sender actor of the message content
-     * @param receiver SupplyChainActor; the receving actor of the message content
+     * @param sender Actor; the sender actor of the message content
+     * @param receiver Actor; the receving actor of the message content
      * @param internalDemand the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      * @param product Product; the ordered product

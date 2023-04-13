@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.store;
 
 import java.io.Serializable;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.Message;
 
 /**
@@ -24,7 +24,7 @@ public interface MessageStore extends Serializable
      * MessageStore cannot be constructed with the owner.
      * @param owner SupplyChainActor; the owner
      */
-    void setOwner(SupplyChainActor owner);
+    void setOwner(Actor owner);
 
     /**
      * Method addMessage stores a new message object into the store.
@@ -51,5 +51,5 @@ public interface MessageStore extends Serializable
      * Return the owner.
      * @return SupplyChainActor; the owner
      */
-    SupplyChainActor getOwner();
+    Actor getOwner();
 }

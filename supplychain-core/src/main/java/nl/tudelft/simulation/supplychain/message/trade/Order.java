@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
@@ -39,7 +39,7 @@ public abstract class Order extends TradeMessage
      * @param deliveryDate the intended delivery date of the products
      * @param transportOption TransportOption; the accepted transport option
      */
-    public Order(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
+    public Order(final Actor sender, final Actor receiver, final InternalDemand internalDemand,
             final Time deliveryDate, final TransportOption transportOption)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());

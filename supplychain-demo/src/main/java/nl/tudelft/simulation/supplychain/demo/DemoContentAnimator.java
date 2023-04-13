@@ -6,7 +6,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djutils.event.EventInterface;
 
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimation;
 import nl.tudelft.simulation.supplychain.animation.ContentAnimator;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
@@ -36,7 +36,7 @@ public class DemoContentAnimator extends ContentAnimator
     @Override
     public void notify(EventInterface event) throws RemoteException
     {
-        if (event.getType().equals(SupplyChainActor.SEND_MESSAGE_EVENT))
+        if (event.getType().equals(Actor.SEND_MESSAGE_EVENT))
         {
             if (getSimulator() instanceof AnimatorInterface)
             {

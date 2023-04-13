@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -45,7 +45,7 @@ public class Shipment extends TradeMessage
      * @param amount double; the number of product units
      * @param totalCargoValue the price of the cargo
      */
-    public Shipment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+    public Shipment(final Actor sender, final Actor receiver, final long internalDemandId,
             final Order order, final Product product, final double amount, final Money totalCargoValue)
     {
         super(sender, receiver, internalDemandId);

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -32,13 +32,13 @@ public class YellowPageRole extends SupplyChainRole
     private Map<Topic, List<Actor>> topicDictionary = new LinkedHashMap<Topic, List<Actor>>();
 
     /** the dictionary of product-actor combinations. */
-    private Map<Product, HashSet<SupplyChainActor>> productDictionary = new LinkedHashMap<>();
+    private Map<Product, HashSet<Actor>> productDictionary = new LinkedHashMap<>();
 
     /**
      * Create a new YellowPage role.
      * @param owner SupplyChainActor; the actor that owns the YP role
      */
-    public YellowPageRole(final SupplyChainActor owner)
+    public YellowPageRole(final Actor owner)
     {
         super("yp", owner, new MessageReceiverDirect());
     }
@@ -48,12 +48,12 @@ public class YellowPageRole extends SupplyChainRole
      * @param product Product; the product with a set of suppliers.
      * @param supplier a supplier for that product.
      */
-    public void addSupplier(final Product product, final SupplyChainActor supplier)
+    public void addSupplier(final Product product, final Actor supplier)
     {
-        HashSet<SupplyChainActor> supplierSet = this.productDictionary.get(product);
+        HashSet<Actor> supplierSet = this.productDictionary.get(product);
         if (supplierSet == null)
         {
-            supplierSet = new LinkedHashSet<SupplyChainActor>();
+            supplierSet = new LinkedHashSet<Actor>();
             this.productDictionary.put(product, supplierSet);
         }
         supplierSet.add(supplier);
@@ -64,9 +64,9 @@ public class YellowPageRole extends SupplyChainRole
      * @param product Product; the product.
      * @param supplier the supplier for that product to be removed.
      */
-    public void removeSupplier(final Product product, final SupplyChainActor supplier)
+    public void removeSupplier(final Product product, final Actor supplier)
     {
-        HashSet<SupplyChainActor> supplierSet = this.productDictionary.get(product);
+        HashSet<Actor> supplierSet = this.productDictionary.get(product);
         if (supplierSet != null)
         {
             supplierSet.remove(supplier);
@@ -77,9 +77,9 @@ public class YellowPageRole extends SupplyChainRole
      * @param product Product; the product for which to search for suppliers
      * @return the list of suppliers of the product (or an empty list)
      */
-    public Set<SupplyChainActor> getSuppliers(final Product product)
+    public Set<Actor> getSuppliers(final Product product)
     {
-        Set<SupplyChainActor> supplierSet = new LinkedHashSet<>();
+        Set<Actor> supplierSet = new LinkedHashSet<>();
         if (this.productDictionary.get(product) != null)
         {
             supplierSet.addAll(this.productDictionary.get(product));

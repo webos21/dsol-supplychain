@@ -6,7 +6,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
@@ -93,7 +93,7 @@ public abstract class AbstractRestockingService implements RestockingServiceInte
      */
     protected void createInternalDemand(final double orderAmount)
     {
-        SupplyChainActor owner = this.inventory.getOwner();
+        Actor owner = this.inventory.getOwner();
         InternalDemand internalDemand = new InternalDemand(owner, this.product, orderAmount, owner.getSimulatorTime(),
                 owner.getSimulatorTime().plus(this.maxDeliveryDuration));
         owner.sendMessage(internalDemand, Duration.ZERO);

@@ -7,7 +7,7 @@ import java.util.Set;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
@@ -42,7 +42,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
 
     /** the partner actors for which this policy is valid; if empty, all partners are valid. */
     @SuppressWarnings("checkstyle:visibilitymodifier")
-    protected Set<SupplyChainActor> validPartners = new LinkedHashSet<>();
+    protected Set<Actor> validPartners = new LinkedHashSet<>();
 
     /**
      * @param id String; the id of the policy
@@ -138,7 +138,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
      * Convenience method: return the SupplyChainActor that owns this policy.
      * @return the SupplyChainActor that owns this policy
      */
-    public SupplyChainActor getActor()
+    public Actor getActor()
     {
         return getRole().getActor();
     }
@@ -184,7 +184,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
      * Add a valid partner to the list of supply chain partners to handle with this policy.
      * @param partner a new valid partner to use
      */
-    public void addValidPartner(final SupplyChainActor partner)
+    public void addValidPartner(final Actor partner)
     {
         this.validPartners.add(partner);
     }
@@ -192,7 +192,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
     /**
      * @return the valid partners.
      */
-    public Set<SupplyChainActor> getValidPartners()
+    public Set<Actor> getValidPartners()
     {
         return this.validPartners;
     }
@@ -201,7 +201,7 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
      * Replace the current set of valid partners. If you want to ADD a set, use addValidPartner per partner instead.
      * @param validPartners A new set of valid partners.
      */
-    public void setValidPartners(final Set<SupplyChainActor> validPartners)
+    public void setValidPartners(final Set<Actor> validPartners)
     {
         this.validPartners = validPartners;
     }

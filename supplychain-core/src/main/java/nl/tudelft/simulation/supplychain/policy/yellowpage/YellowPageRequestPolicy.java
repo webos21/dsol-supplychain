@@ -12,7 +12,7 @@ import org.djutils.draw.point.Point2d;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageAnswer;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
@@ -55,17 +55,17 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
         {
             return false;
         }
-        Set<SupplyChainActor> supplierSet = ((YellowPageRole) getRole()).getSuppliers(ypRequest.getProduct());
+        Set<Actor> supplierSet = ((YellowPageRole) getRole()).getSuppliers(ypRequest.getProduct());
         if (supplierSet == null)
         {
             Logger.warn("YellowPage '{}' has no supplier map for product {}", getActor().getName(),
                     ypRequest.getProduct().getName());
             return false;
         }
-        SortedMap<Length, SupplyChainActor> suppliers =
+        SortedMap<Length, Actor> suppliers =
                 pruneDistance(supplierSet, ypRequest.getMaximumDistance(), ypRequest.getSender().getLocation());
         pruneNumber(suppliers, ypRequest.getMaximumNumber());
-        List<SupplyChainActor> potentialSuppliers = new ArrayList<>(suppliers.values());
+        List<Actor> potentialSuppliers = new ArrayList<>(suppliers.values());
         YellowPageAnswer ypAnswer = new YellowPageAnswer(getActor(), ypRequest.getSender(), ypRequest.getInternalDemandId(),
                 potentialSuppliers, ypRequest);
         sendMessage(ypAnswer, this.handlingTime.draw());
@@ -79,11 +79,11 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
      * @param location the location to compare the supplier locations with
      * @return a map of suppliers, sorted on distance
      */
-    private SortedMap<Length, SupplyChainActor> pruneDistance(final Set<SupplyChainActor> supplierSet, final Length maxDistance,
+    private SortedMap<Length, Actor> pruneDistance(final Set<Actor> supplierSet, final Length maxDistance,
             final Point2d location)
     {
-        SortedMap<Length, SupplyChainActor> sortedSuppliers = new TreeMap<>();
-        for (SupplyChainActor actor : sortedSuppliers.values())
+        SortedMap<Length, Actor> sortedSuppliers = new TreeMap<>();
+        for (Actor actor : sortedSuppliers.values())
         {
             Length distance = getRole().getSimulator().getModel().calculateDistance(actor.getLocation(), location);
             if (distance.le(maxDistance))
@@ -99,10 +99,10 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
      * @param suppliers the map of suppliers (sorted on distance)
      * @param maxNumber the maximum number to leave
      */
-    private void pruneNumber(final SortedMap<Length, SupplyChainActor> suppliers, final int maxNumber)
+    private void pruneNumber(final SortedMap<Length, Actor> suppliers, final int maxNumber)
     {
         int count = 0;
-        Iterator<SupplyChainActor> supplierIterator = suppliers.values().iterator();
+        Iterator<Actor> supplierIterator = suppliers.values().iterator();
         while (supplierIterator.hasNext())
         {
             supplierIterator.next();

@@ -6,7 +6,7 @@ import org.djunits.Throw;
 import org.djutils.draw.point.OrientedPoint2d;
 
 import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.finance.Bank;
 import nl.tudelft.simulation.supplychain.finance.Money;
@@ -21,7 +21,7 @@ import nl.tudelft.simulation.supplychain.role.yellowpage.YellowPageRole;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class YellowPage extends SupplyChainActor implements Serializable
+public class YellowPage extends Actor implements Serializable
 {
     /** */
     private static final long serialVersionUID = 20221206L;

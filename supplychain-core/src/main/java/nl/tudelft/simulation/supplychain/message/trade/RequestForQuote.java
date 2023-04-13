@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
 
@@ -39,7 +39,7 @@ public class RequestForQuote extends TradeMessage
      *            receiver
      * @param cutoffDuration Duration; after how much time will the RFQ stop collecting quotes?
      */
-    public RequestForQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
+    public RequestForQuote(final Actor sender, final Actor receiver, final InternalDemand internalDemand,
             final TransportOption preferredTransportOption, final Duration cutoffDuration)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());

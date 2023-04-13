@@ -8,7 +8,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
@@ -89,9 +89,9 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
             return false;
         }
         InternalDemand internalDemand = internalDemandList.get(0);
-        List<SupplyChainActor> potentialSuppliers = ypAnswer.getSuppliers();
+        List<Actor> potentialSuppliers = ypAnswer.getSuppliers();
         Duration delay = this.handlingTime.draw();
-        for (SupplyChainActor supplier : potentialSuppliers)
+        for (Actor supplier : potentialSuppliers)
         {
             Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getActor());
             TransportOption transportOption =

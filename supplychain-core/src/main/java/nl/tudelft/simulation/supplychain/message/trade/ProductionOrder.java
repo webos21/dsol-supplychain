@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -41,7 +41,7 @@ public class ProductionOrder extends TradeMessage
      * @param product Product; the product that has to be produced
      * @param amount double; the amount of products to be produced, in the product's units
      */
-    public ProductionOrder(final SupplyChainActor owner, final long internalDemandId, final Time dateReady,
+    public ProductionOrder(final Actor owner, final long internalDemandId, final Time dateReady,
             final Product product, final double amount)
     {
         super(owner, owner, internalDemandId);

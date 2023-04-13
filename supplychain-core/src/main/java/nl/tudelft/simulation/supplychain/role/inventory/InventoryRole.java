@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.djunits.Throw;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
@@ -39,7 +39,7 @@ public abstract class InventoryRole extends SupplyChainRole
      * Create an InventoryRole object for an actor, with an empty inventory.
      * @param owner SupplyChainActor; the owner of this role
      */
-    public InventoryRole(final SupplyChainActor owner)
+    public InventoryRole(final Actor owner)
     {
         super("inventory", owner, new MessageReceiverDirect());
         this.inventory = new Inventory(this);
@@ -50,7 +50,7 @@ public abstract class InventoryRole extends SupplyChainRole
      * @param owner SupplyChainActor; the owner of this role
      * @param initialInventory List&lt;ProductAmount&gt;; the Inventory to use within this role
      */
-    public InventoryRole(final SupplyChainActor owner, final List<ProductAmount> initialInventory)
+    public InventoryRole(final Actor owner, final List<ProductAmount> initialInventory)
     {
         super("inventory", owner, new MessageReceiverDirect());
         Throw.whenNull(initialInventory, "initialInventory cannot be null");

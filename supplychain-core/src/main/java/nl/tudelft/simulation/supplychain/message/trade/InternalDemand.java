@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -42,7 +42,7 @@ public class InternalDemand extends TradeMessage
      * @param earliestDeliveryDate Time; the earliest delivery date
      * @param latestDeliveryDate Time; the latest delivery date
      */
-    public InternalDemand(final SupplyChainActor sender, final Product product, final double amount,
+    public InternalDemand(final Actor sender, final Product product, final double amount,
             final Time earliestDeliveryDate, final Time latestDeliveryDate)
     {
         super(sender, sender);

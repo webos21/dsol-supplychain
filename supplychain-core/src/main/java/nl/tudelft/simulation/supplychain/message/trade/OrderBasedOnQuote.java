@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
@@ -32,7 +32,7 @@ public class OrderBasedOnQuote extends Order
      * @param quote the quote on which the order is based
      * @param transportOption TransportOption; the accepted transport option
      */
-    public OrderBasedOnQuote(final SupplyChainActor sender, final SupplyChainActor receiver, final Time deliveryDate,
+    public OrderBasedOnQuote(final Actor sender, final Actor receiver, final Time deliveryDate,
             final Quote quote, final TransportOption transportOption)
     {
         super(sender, receiver, quote.getInternalDemand(), deliveryDate, transportOption);

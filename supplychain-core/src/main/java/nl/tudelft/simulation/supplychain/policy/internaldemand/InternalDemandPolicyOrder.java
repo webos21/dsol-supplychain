@@ -8,7 +8,7 @@ import org.djunits.Throw;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
@@ -68,7 +68,7 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
      * @param supplier the supplier for that product.
      * @param unitPrice the price per unit to ask for.
      */
-    public void addSupplier(final Product product, final SupplyChainActor supplier, final Money unitPrice)
+    public void addSupplier(final Product product, final Actor supplier, final Money unitPrice)
     {
         this.suppliers.put(product, new SupplierRecord(supplier, unitPrice));
     }
@@ -94,7 +94,7 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
         {
             super.inventory.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
         }
-        SupplyChainActor supplier = supplierRecord.getSupplier();
+        Actor supplier = supplierRecord.getSupplier();
         Money price = supplierRecord.getUnitPrice().multiplyBy(internalDemand.getAmount());
         Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getActor());
         TransportOption transportOption =
@@ -117,7 +117,7 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
     protected class SupplierRecord
     {
         /** the supplier. */
-        private SupplyChainActor supplier;
+        private Actor supplier;
 
         /** the agreed price to pay per unit of product. */
         private Money unitPrice;
@@ -127,7 +127,7 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
          * @param supplier the supplier
          * @param unitPrice the price per unit
          */
-        public SupplierRecord(final SupplyChainActor supplier, final Money unitPrice)
+        public SupplierRecord(final Actor supplier, final Money unitPrice)
         {
             super();
             this.supplier = supplier;
@@ -137,7 +137,7 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
         /**
          * @return the supplier.
          */
-        public SupplyChainActor getSupplier()
+        public Actor getSupplier()
         {
             return this.supplier;
         }

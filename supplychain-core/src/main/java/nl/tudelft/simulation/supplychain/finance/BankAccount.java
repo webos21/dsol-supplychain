@@ -8,7 +8,7 @@ import org.djutils.event.LocalEventProducer;
 import org.djutils.metadata.MetaData;
 import org.djutils.metadata.ObjectDescriptor;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 
 /**
  * The BackAccount keeps track of the balance of a SupplyChainActor. This simple implementation just has one number as the
@@ -26,7 +26,7 @@ public class BankAccount extends LocalEventProducer
     private static final long serialVersionUID = 20221201L;
 
     /** the owner of the bank account. */
-    private SupplyChainActor owner;
+    private Actor owner;
 
     /** the bank. */
     private Bank bank;
@@ -44,7 +44,7 @@ public class BankAccount extends LocalEventProducer
      * @param bank the bank where this account is located
      * @param initialBalance the opening balance
      */
-    public BankAccount(final SupplyChainActor owner, final Bank bank, final Money initialBalance)
+    public BankAccount(final Actor owner, final Bank bank, final Money initialBalance)
     {
         Throw.whenNull(owner, "owner cannot be null");
         Throw.whenNull(bank, "bank cannot be null");

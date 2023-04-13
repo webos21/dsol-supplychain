@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -45,7 +45,7 @@ public class Bill extends TradeMessage
      * @param price Money; the amount to be paid
      * @param description the description
      */
-    public Bill(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Order order,
+    public Bill(final Actor sender, final Actor receiver, final long internalDemandId, final Order order,
             final Time finalPaymentDate, final Money price, final String description)
     {
         super(sender, receiver, internalDemandId);

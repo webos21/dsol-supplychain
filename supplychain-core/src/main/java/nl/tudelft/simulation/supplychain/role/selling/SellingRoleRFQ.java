@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.role.selling;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 import nl.tudelft.simulation.supplychain.policy.rfq.RequestForQuotePolicy;
@@ -27,7 +27,7 @@ public class SellingRoleRFQ extends SellingRole
      * @param orderPolicy the order handler
      * @param paymentPolicy the payment handler
      */
-    public SellingRoleRFQ(final SupplyChainActor owner, final RequestForQuotePolicy rfqPolicy,
+    public SellingRoleRFQ(final Actor owner, final RequestForQuotePolicy rfqPolicy,
             final OrderPolicy<?> orderPolicy, final PaymentPolicy paymentPolicy)
     {
         super(owner);

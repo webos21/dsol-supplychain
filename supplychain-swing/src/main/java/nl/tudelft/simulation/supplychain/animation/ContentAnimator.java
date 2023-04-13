@@ -7,7 +7,7 @@ import org.djutils.event.Event;
 import org.djutils.event.EventListener;
 
 import nl.tudelft.simulation.dsol.simulators.AnimatorInterface;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 
@@ -41,16 +41,16 @@ public class ContentAnimator implements EventListener
      * @param sca the actor that can send messages
      * @throws RemoteException on network error
      */
-    public void subscribe(final SupplyChainActor sca) throws RemoteException
+    public void subscribe(final Actor sca) throws RemoteException
     {
-        sca.addListener(this, SupplyChainActor.SEND_MESSAGE_EVENT);
+        sca.addListener(this, Actor.SEND_MESSAGE_EVENT);
     }
 
     /** {@inheritDoc} */
     @Override
     public void notify(final Event event) throws RemoteException
     {
-        if (event.getType().equals(SupplyChainActor.SEND_MESSAGE_EVENT))
+        if (event.getType().equals(Actor.SEND_MESSAGE_EVENT))
         {
             if (this.simulator instanceof AnimatorInterface)
             {

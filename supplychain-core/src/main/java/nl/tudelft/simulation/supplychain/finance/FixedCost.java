@@ -6,7 +6,7 @@ import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEventInterface;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 
 /**
  * When a supply chain actor is created, one or more FixedCost objects can be created to book fixed costs for e.g. personnel,
@@ -24,7 +24,7 @@ public class FixedCost implements Serializable
     private static final long serialVersionUID = 20221127L;
 
     /** the supply chain actor. */
-    private SupplyChainActor owner;
+    private Actor owner;
 
     /** the description of the type of fixed cost. */
     private String description;
@@ -45,7 +45,7 @@ public class FixedCost implements Serializable
      * @param interval Duration; the interval for booking fixed cost
      * @param amount double; the fixed cost per interval
      */
-    public FixedCost(final SupplyChainActor owner, final String description, final Duration interval, final Money amount)
+    public FixedCost(final Actor owner, final String description, final Duration interval, final Money amount)
     {
         Throw.whenNull(owner, "owner cannot be null");
         Throw.whenNull(description, "description cannot be null");
@@ -126,7 +126,7 @@ public class FixedCost implements Serializable
      * Return the actor to which these fixed costs apply.
      * @return SupplyChainActor; the actor to which these fixed costs apply
      */
-    public SupplyChainActor getOwner()
+    public Actor getOwner()
     {
         return this.owner;
     }

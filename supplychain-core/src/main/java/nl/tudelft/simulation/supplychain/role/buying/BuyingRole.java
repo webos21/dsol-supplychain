@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.role.buying;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 
@@ -25,7 +25,7 @@ public abstract class BuyingRole extends SupplyChainRole
      * Create a BuyingRole object for an actor.
      * @param owner SupplyChainActor; the owner of this role
      */
-    public BuyingRole(final SupplyChainActor owner)
+    public BuyingRole(final Actor owner)
     {
         super("buying", owner, new MessageReceiverDirect());
     }

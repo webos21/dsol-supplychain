@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
@@ -56,7 +56,7 @@ public class Quote extends TradeMessage
      * @param validityTime Time; the time on the simulator clock until which the quote is valid
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Quote(final SupplyChainActor sender, final SupplyChainActor receiver, final RequestForQuote requestForQuote,
+    public Quote(final Actor sender, final Actor receiver, final RequestForQuote requestForQuote,
             final Product product, final double amount, final Money price, final Time proposedShippingDate,
             final TransportOption transportOption, final Time validityTime)
     {

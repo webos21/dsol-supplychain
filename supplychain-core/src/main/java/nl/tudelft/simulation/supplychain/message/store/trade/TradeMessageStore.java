@@ -10,7 +10,7 @@ import org.djutils.event.LocalEventProducer;
 import org.djutils.exceptions.Throw;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
@@ -59,11 +59,11 @@ public class TradeMessageStore extends LocalEventProducer implements TradeMessag
             Collections.synchronizedMap(new LinkedHashMap<>());
 
     /** the owner. */
-    private SupplyChainActor owner;
+    private Actor owner;
 
     /** {@inheritDoc} */
     @Override
-    public void setOwner(final SupplyChainActor owner)
+    public void setOwner(final Actor owner)
     {
         Throw.whenNull(owner, "owner cannot be null");
         Throw.when(this.owner != null, RuntimeException.class,
@@ -468,7 +468,7 @@ public class TradeMessageStore extends LocalEventProducer implements TradeMessag
      * @return the owner.
      */
     @Override
-    public SupplyChainActor getOwner()
+    public Actor getOwner()
     {
         return this.owner;
     }

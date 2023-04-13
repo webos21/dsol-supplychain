@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.role.selling;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.policy.order.OrderPolicy;
 import nl.tudelft.simulation.supplychain.policy.payment.PaymentPolicy;
 
@@ -25,7 +25,7 @@ public class SellingRoleDirect extends SellingRole
      * @param orderPolicy the order handler
      * @param paymentPolicy the payment handler
      */
-    public SellingRoleDirect(final SupplyChainActor owner, final OrderPolicy<?> orderPolicy,
+    public SellingRoleDirect(final Actor owner, final OrderPolicy<?> orderPolicy,
             final PaymentPolicy paymentPolicy)
     {
         super(owner);

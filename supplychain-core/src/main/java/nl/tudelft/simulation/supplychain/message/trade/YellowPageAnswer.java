@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import java.util.List;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -20,7 +20,7 @@ public class YellowPageAnswer extends TradeMessage
     private static final long serialVersionUID = 20221201L;
 
     /** the suppliers of the requested product. */
-    private final List<SupplyChainActor> suppliers;
+    private final List<Actor> suppliers;
 
     /** the request that triggered this yellow page anawer. */
     private final YellowPageRequest ypRequest;
@@ -33,8 +33,8 @@ public class YellowPageAnswer extends TradeMessage
      * @param suppliers the suppliers of the requested product
      * @param ypRequest the request that triggered this YP answer
      */
-    public YellowPageAnswer(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
-            final List<SupplyChainActor> suppliers, final YellowPageRequest ypRequest)
+    public YellowPageAnswer(final Actor sender, final Actor receiver, final long internalDemandId,
+            final List<Actor> suppliers, final YellowPageRequest ypRequest)
     {
         super(sender, receiver, internalDemandId);
         this.suppliers = suppliers;
@@ -44,7 +44,7 @@ public class YellowPageAnswer extends TradeMessage
     /**
      * @return the suppliers.
      */
-    public List<SupplyChainActor> getSuppliers()
+    public List<Actor> getSuppliers()
     {
         return this.suppliers;
     }

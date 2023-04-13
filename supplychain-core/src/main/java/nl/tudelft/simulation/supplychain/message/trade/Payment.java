@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -31,7 +31,7 @@ public class Payment extends TradeMessage
      * @param bill the bill for which this is the payment
      * @param payment the payment
      */
-    public Payment(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId, final Bill bill,
+    public Payment(final Actor sender, final Actor receiver, final long internalDemandId, final Bill bill,
             final Money payment)
     {
         super(sender, receiver, internalDemandId);

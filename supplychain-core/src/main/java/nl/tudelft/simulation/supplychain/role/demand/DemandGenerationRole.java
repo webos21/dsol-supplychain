@@ -12,7 +12,7 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.DistContinuous;
 import nl.tudelft.simulation.jstats.distributions.DistDiscrete;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
@@ -45,7 +45,7 @@ public class DemandGenerationRole extends SupplyChainRole
      * @param owner the actor that has this role
      * @param administrativeDelay the administrative delay when sending messages
      */
-    public DemandGenerationRole(final SupplyChainActor owner, final DistContinuousDuration administrativeDelay)
+    public DemandGenerationRole(final Actor owner, final DistContinuousDuration administrativeDelay)
     {
         super("demandGeneration", owner, new MessageReceiverDirect());
         this.administrativeDelay = administrativeDelay;

@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -29,7 +29,7 @@ public abstract class TradeMessage extends Message
      * @param receiver SupplyChainActor; the receiving actor of the message content
      * @param internalDemandId long; the InternalDemandId that triggered the chain
      */
-    public TradeMessage(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId)
+    public TradeMessage(final Actor sender, final Actor receiver, final long internalDemandId)
     {
         super(sender, receiver);
         this.internalDemandId = internalDemandId;
@@ -41,7 +41,7 @@ public abstract class TradeMessage extends Message
      * @param sender SupplyChainActor; the sending actor of the message content
      * @param receiver SupplyChainActor; the receiving actor of the message content
      */
-    public TradeMessage(final SupplyChainActor sender, final SupplyChainActor receiver)
+    public TradeMessage(final Actor sender, final Actor receiver)
     {
         super(sender, receiver);
         this.internalDemandId = getUniqueId();
@@ -64,16 +64,16 @@ public abstract class TradeMessage extends Message
 
     /** {@inheritDoc} */
     @Override
-    public SupplyChainActor getSender()
+    public Actor getSender()
     {
-        return (SupplyChainActor) super.getSender();
+        return (Actor) super.getSender();
     }
 
     /** {@inheritDoc} */
     @Override
-    public SupplyChainActor getReceiver()
+    public Actor getReceiver()
     {
-        return (SupplyChainActor) super.getReceiver();
+        return (Actor) super.getReceiver();
     }
 
     /** {@inheritDoc} */

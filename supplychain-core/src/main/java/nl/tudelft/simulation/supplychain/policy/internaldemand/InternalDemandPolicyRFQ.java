@@ -11,7 +11,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
@@ -38,7 +38,7 @@ public class InternalDemandPolicyRFQ extends InternalDemandPolicy
     private static final long serialVersionUID = 20221201L;
 
     /** a table to map the products onto a list of possible suppliers. */
-    private Map<Product, HashSet<SupplyChainActor>> suppliers = new LinkedHashMap<Product, HashSet<SupplyChainActor>>();
+    private Map<Product, HashSet<Actor>> suppliers = new LinkedHashMap<Product, HashSet<Actor>>();
 
     /** the provider of transport options betwween two locations. */
     private final TransportOptionProvider transportOptionProvider;
@@ -76,12 +76,12 @@ public class InternalDemandPolicyRFQ extends InternalDemandPolicy
      * @param product Product; the product with a set of suppliers.
      * @param supplier a supplier for that product.
      */
-    public void addSupplier(final Product product, final SupplyChainActor supplier)
+    public void addSupplier(final Product product, final Actor supplier)
     {
-        HashSet<SupplyChainActor> supplierSet = this.suppliers.get(product);
+        HashSet<Actor> supplierSet = this.suppliers.get(product);
         if (supplierSet == null)
         {
-            supplierSet = new LinkedHashSet<SupplyChainActor>();
+            supplierSet = new LinkedHashSet<Actor>();
             this.suppliers.put(product, supplierSet);
         }
         supplierSet.add(supplier);
@@ -92,9 +92,9 @@ public class InternalDemandPolicyRFQ extends InternalDemandPolicy
      * @param product Product; the product.
      * @param supplier the supplier for that product to be removed.
      */
-    public void removeSupplier(final Product product, final SupplyChainActor supplier)
+    public void removeSupplier(final Product product, final Actor supplier)
     {
-        HashSet<SupplyChainActor> supplierSet = this.suppliers.get(product);
+        HashSet<Actor> supplierSet = this.suppliers.get(product);
         if (supplierSet != null)
         {
             supplierSet.remove(supplier);
@@ -112,7 +112,7 @@ public class InternalDemandPolicyRFQ extends InternalDemandPolicy
             return false;
         }
         // resolve the suplier
-        Set<SupplyChainActor> supplierSet = this.suppliers.get(internalDemand.getProduct());
+        Set<Actor> supplierSet = this.suppliers.get(internalDemand.getProduct());
         if (supplierSet == null)
         {
             Logger.warn("handleContent", "InternalDemand for actor " + getRole() + " contains product "
@@ -125,7 +125,7 @@ public class InternalDemandPolicyRFQ extends InternalDemandPolicy
             super.inventory.changeOrderedAmount(internalDemand.getProduct(), internalDemand.getAmount());
         }
         Duration delay = this.handlingTime.draw();
-        for (SupplyChainActor supplier : supplierSet)
+        for (Actor supplier : supplierSet)
         {
             Set<TransportOption> transportOptions = this.transportOptionProvider.provideTransportOptions(supplier, getActor());
             TransportOption transportOption =

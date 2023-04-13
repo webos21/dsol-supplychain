@@ -2,7 +2,7 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
@@ -43,7 +43,7 @@ public class OrderStandalone extends Order
      * @param transportOption TransportOption; the accepted transport option
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public OrderStandalone(final SupplyChainActor sender, final SupplyChainActor receiver, final InternalDemand internalDemand,
+    public OrderStandalone(final Actor sender, final Actor receiver, final InternalDemand internalDemand,
             final Time deliveryDate, final Product product, final double amount, final Money price,
             final TransportOption transportOption)
     {

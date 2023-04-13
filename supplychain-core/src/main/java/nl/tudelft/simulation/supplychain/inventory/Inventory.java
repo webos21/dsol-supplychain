@@ -16,7 +16,7 @@ import org.djutils.event.LocalEventProducer;
 import org.djutils.event.TimedEvent;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -45,7 +45,7 @@ public class Inventory extends LocalEventProducer implements Serializable, Event
     public static final EventType STOCK_FORECAST_UPDATE_EVENT = new EventType("STOCK_FORECAST_UPDATE_EVENT");
 
     /** the actow that owns the inventory. */
-    private final SupplyChainActor owner;
+    private final Actor owner;
 
     /** the InventoryRole of the owner. */
     private final InventoryRole inventoryRole;
@@ -88,7 +88,7 @@ public class Inventory extends LocalEventProducer implements Serializable, Event
      * Return the actor who owns this inventory.
      * @return SupplyChainActor; the actor who owns this inventory
      */
-    public SupplyChainActor getOwner()
+    public Actor getOwner()
     {
         return this.owner;
     }

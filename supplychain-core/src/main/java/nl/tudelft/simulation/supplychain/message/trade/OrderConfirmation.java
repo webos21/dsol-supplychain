@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
@@ -42,7 +42,7 @@ public class OrderConfirmation extends TradeMessage
      * @param order the order for which this is the confirmation
      * @param status the confirmation status (accepted, not accepted)
      */
-    public OrderConfirmation(final SupplyChainActor sender, final SupplyChainActor receiver, final long internalDemandId,
+    public OrderConfirmation(final Actor sender, final Actor receiver, final long internalDemandId,
             final Order order, final int status)
     {
         super(sender, receiver, internalDemandId);

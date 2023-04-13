@@ -24,7 +24,7 @@ public abstract class SupplyChainRole extends Role
      * @param messageReceiver MessageReceiver; the message handler to use for processing the messages
      * @param eventProducer EventProducer; a special EventProducer to use, e.g., a RmiEventProducer
      */
-    public SupplyChainRole(final String id, final SupplyChainActor actor, final MessageReceiver messageReceiver,
+    public SupplyChainRole(final String id, final Actor actor, final MessageReceiver messageReceiver,
             final EventProducer eventProducer)
     {
         super(id, actor, messageReceiver, eventProducer);
@@ -37,16 +37,16 @@ public abstract class SupplyChainRole extends Role
      * @param actor SupplyChainActor; the actor to which this role belongs
      * @param messageReceiver MessageReceiver; the message handler to use for processing the messages
      */
-    public SupplyChainRole(final String id, final SupplyChainActor actor, final MessageReceiver messageReceiver)
+    public SupplyChainRole(final String id, final Actor actor, final MessageReceiver messageReceiver)
     {
         super(id, actor, messageReceiver);
     }
 
     /** {@inheritDoc} */
     @Override
-    public SupplyChainActor getActor()
+    public Actor getActor()
     {
-        return (SupplyChainActor) super.getActor();
+        return (Actor) super.getActor();
     }
 
 }

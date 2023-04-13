@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.policy.internaldemand;
 import org.djunits.value.vdouble.scalar.Length;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
+import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
@@ -24,7 +24,7 @@ public class InternalDemandPolicyYP extends InternalDemandPolicy
     private static final long serialVersionUID = 20221201L;
 
     /** the yellow page actor to use. */
-    private SupplyChainActor yp;
+    private Actor yp;
 
     /** maximum distance to use in the search. */
     private Length maximumDistance;
@@ -42,7 +42,7 @@ public class InternalDemandPolicyYP extends InternalDemandPolicy
      * @param stock the stock for being able to change the ordered amount
      */
     public InternalDemandPolicyYP(final SupplyChainRole owner, final DistContinuousDuration handlingTime,
-            final SupplyChainActor yp, final Length maximumDistance, final int maximumNumber, final Inventory stock)
+            final Actor yp, final Length maximumDistance, final int maximumNumber, final Inventory stock)
     {
         super("InternalDemandPolicyYP", owner, handlingTime, stock);
         this.yp = yp;

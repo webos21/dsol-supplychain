@@ -2,9 +2,7 @@ package nl.tudelft.simulation.supplychain.actor;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,10 +26,6 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.dsol.animation.Locatable;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
-import nl.tudelft.simulation.supplychain.finance.Bank;
-import nl.tudelft.simulation.supplychain.finance.BankAccount;
-import nl.tudelft.simulation.supplychain.finance.FixedCost;
-import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
@@ -78,12 +72,6 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
     /** the store for the content to use. */
     private final TradeMessageStoreInterface messageStore;
 
-    /** the bank account of the actor. */
-    private final BankAccount bankAccount;
-
-    /** the fixed costs for this supply chain actor. */
-    private List<FixedCost> fixedCosts = new ArrayList<FixedCost>();
-
     /** the event to indicate that information has been sent. E.g., for animation. */
     public static final EventType SEND_MESSAGE_EVENT = new EventType("SEND_MESSAGE_EVENT",
             new MetaData("sent message", "sent message", new ObjectDescriptor("message", "message", Message.class)));
@@ -96,15 +84,12 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
      * @param location OrientedPoint2d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
      * @param eventProducer EventProducer; a special EventProducer to use, e.g., a RmiEventProducer
-     * @param bank Bank; the bank for the BankAccount
-     * @param initialBalance Money; the initial balance for the actor
      * @param messageStore TradeMessageStoreInterface; the message store for messages
      * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Actor(final String id, final String name, final SupplyChainModelInterface model,
-            final OrientedPoint2d location, final String locationDescription, final EventProducer eventProducer,
-            final Bank bank, final Money initialBalance, final TradeMessageStoreInterface messageStore)
+    public Actor(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription, final EventProducer eventProducer, final TradeMessageStoreInterface messageStore)
             throws ActorAlreadyDefinedException
     {
         Throw.whenNull(model, "model cannot be null");
@@ -114,8 +99,6 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
         Throw.whenNull(location, "location cannot be null");
         Throw.whenNull(locationDescription, "locationDescription cannot be null");
         Throw.whenNull(eventProducer, "eventProducer cannot be null");
-        Throw.whenNull(bank, "bank cannot be null");
-        Throw.whenNull(initialBalance, "initialBalance cannot be null");
         Throw.whenNull(messageStore, "messageStore cannot be null");
         this.id = id;
         this.name = name;
@@ -123,7 +106,6 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
         this.model = model;
         this.location = location;
         this.eventProducer = eventProducer;
-        this.bankAccount = new BankAccount(this, bank, initialBalance);
         this.messageStore = messageStore;
         this.messageStore.setOwner(this);
         model.registerActor(this);
@@ -136,17 +118,14 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
      * @param model SupplyChainModelInterface; the model
      * @param location OrientedPoint2d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
-     * @param bank Bank; the bank for the BankAccount
-     * @param initialBalance Money; the initial balance for the actor
      * @param messageStore TradeMessageStoreInterface; the message store for messages
      * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public Actor(final String id, final String name, final SupplyChainModelInterface model,
-            final OrientedPoint2d location, final String locationDescription, final Bank bank, final Money initialBalance,
-            final TradeMessageStoreInterface messageStore) throws ActorAlreadyDefinedException
+    public Actor(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
+            final String locationDescription, final TradeMessageStoreInterface messageStore) throws ActorAlreadyDefinedException
     {
-        this(id, name, model, location, locationDescription, new LocalEventProducer(), bank, initialBalance, messageStore);
+        this(id, name, model, location, locationDescription, new LocalEventProducer(), messageStore);
     }
 
     /**
@@ -380,38 +359,6 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
     public String toString()
     {
         return this.id;
-    }
-
-    /* ****************************** SHOULD GO TO FINANCING ROLE ****************************** */
-
-    /**
-     * Add a fixed cost item for this actor.
-     * @param description String; the description of the fixed cost item
-     * @param interval Duration; the interval at which the amount will be deduced from the bank account
-     * @param amount Money; the amount to deduce at each interval
-     */
-    public void addFixedCost(final String description, final Duration interval, final Money amount)
-    {
-        FixedCost fixedCost = new FixedCost(this, description, interval, amount);
-        this.fixedCosts.add(fixedCost);
-    }
-
-    /**
-     * Return the bank account of the Actor.
-     * @return BankAccount; the bankAccount of the Actor.
-     */
-    public BankAccount getBankAccount()
-    {
-        return this.bankAccount;
-    }
-
-    /**
-     * Return a list of the fixed cost items for this Actor.
-     * @return List&lt;FixedCosts&gt;; a list of fixed costs items for this Actor.
-     */
-    public List<FixedCost> getFixedCosts()
-    {
-        return this.fixedCosts;
     }
 
 }

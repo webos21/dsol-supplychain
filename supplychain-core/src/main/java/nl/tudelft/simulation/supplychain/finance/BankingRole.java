@@ -2,8 +2,8 @@ package nl.tudelft.simulation.supplychain.finance;
 
 import org.djutils.draw.point.OrientedPoint2d;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 
 /**
@@ -16,7 +16,7 @@ import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Bank extends Actor
+public class BankingRole extends Role
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221127L;
@@ -28,7 +28,7 @@ public class Bank extends Actor
     private double annualInterestRateNeg = 0.08;
 
     /**
-     * Create a new Bank.
+     * Create a new BankingRole.
      * @param id String; the id of the bank
      * @param name String; the name of the bank
      * @param model SupplyChainModelInterface; the model

@@ -30,7 +30,7 @@ public final class JsonActorFactory
     private final SupplyChainModelInterface model;
 
     /** static map of JsonMessageFactory singletons per model. */
-    private static final Map<SupplyChainModelInterface, JsonActorFactory> instanceMap = new LinkedHashMap<>();
+    private static final Map<SupplyChainModelInterface, JsonActorFactory> INSTANCE_MAP = new LinkedHashMap<>();
 
     /**
      * Create a JsonMessageFactory with the special type adapters.
@@ -72,12 +72,12 @@ public final class JsonActorFactory
      */
     public static Gson instance(final SupplyChainModelInterface model)
     {
-        if (!instanceMap.containsKey(model))
+        if (!INSTANCE_MAP.containsKey(model))
         {
             JsonActorFactory factory = new JsonActorFactory(model);
-            instanceMap.put(model, factory);
+            INSTANCE_MAP.put(model, factory);
         }
-        return instanceMap.get(model).getGson();
+        return INSTANCE_MAP.get(model).getGson();
     }
 
 }

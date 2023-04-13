@@ -90,6 +90,7 @@ public abstract class Message implements Serializable
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("checkstyle:needbraces")
     public boolean equals(final Object obj)
     {
         if (this == obj)

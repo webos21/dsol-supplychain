@@ -160,6 +160,7 @@ public abstract class Role implements EventProducer, Identifiable, Serializable
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("checkstyle:needbraces")
     public boolean equals(final Object obj)
     {
         if (this == obj)

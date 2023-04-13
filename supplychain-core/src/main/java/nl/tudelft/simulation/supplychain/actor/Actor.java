@@ -278,6 +278,7 @@ public abstract class Actor implements EventProducer, Locatable, Identifiable, S
 
     /** {@inheritDoc} */
     @Override
+    @SuppressWarnings("checkstyle:needbraces")
     public boolean equals(final Object obj)
     {
         if (this == obj)

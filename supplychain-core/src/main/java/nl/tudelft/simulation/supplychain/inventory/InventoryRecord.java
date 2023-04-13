@@ -29,7 +29,7 @@ public class InventoryRecord implements Serializable
     /** the owner. */
     private SupplyChainActor owner = null;
 
-    /** the simulator to schedule the depriciation. */
+    /** the simulator to schedule the depreciation. */
     private SupplyChainSimulatorInterface simulator = null;
 
     /** the product for which to keep information. */
@@ -110,13 +110,13 @@ public class InventoryRecord implements Serializable
 
     /**
      * Method setActualAmount.
-     * @param actualAmount the actual amount
+     * @param newActualAmount the actual amount
      * @param unitprice the unit price
      */
-    public void setActualAmount(final double actualAmount, final Money unitprice)
+    public void setActualAmount(final double newActualAmount, final Money unitprice)
     {
-        this.actualAmount = actualAmount;
-        this.costprice = unitprice.multiplyBy(actualAmount);
+        this.actualAmount = newActualAmount;
+        this.costprice = unitprice.multiplyBy(newActualAmount);
     }
 
     /**

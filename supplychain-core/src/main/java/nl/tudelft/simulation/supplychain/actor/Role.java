@@ -1,15 +1,11 @@
 package nl.tudelft.simulation.supplychain.actor;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import org.djutils.base.Identifiable;
-import org.djutils.event.EventListenerMap;
-import org.djutils.event.EventProducer;
-import org.djutils.event.LocalEventProducer;
 import org.djutils.exceptions.Throw;
 
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
@@ -28,7 +24,7 @@ import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class Role implements EventProducer, Identifiable, Serializable
+public abstract class Role implements Identifiable, Serializable
 {
     /** */
     private static final long serialVersionUID = 20221121L;
@@ -45,39 +41,22 @@ public abstract class Role implements EventProducer, Identifiable, Serializable
     /** the message handling policies. */
     private final Map<Class<? extends Message>, MessagePolicy<? extends Message>> messagePolicies = new LinkedHashMap<>();
 
-    /** the embedded event producer. */
-    private final EventProducer eventProducer;
-
     /**
      * Create a new Role.
-     * @param id String; the id of the role
-     * @param actor Actor; the actor to which this role belongs
-     * @param messageReceiver MessageReceiver; the message handler to use for processing the messages
-     * @param eventProducer EventProducer; a special EventProducer to use, e.g., a RmiEventProducer
-     */
-    public Role(final String id, final Actor actor, final MessageReceiver messageReceiver, final EventProducer eventProducer)
-    {
-        Throw.whenNull(id, "id cannot be null");
-        Throw.whenNull(actor, "actor cannot be null");
-        Throw.whenNull(messageReceiver, "messageReceiver cannot be null");
-        Throw.whenNull(eventProducer, "eventProducer cannot be null");
-        this.id = id;
-        this.actor = actor;
-        this.messageReceiver = messageReceiver;
-        this.eventProducer = eventProducer;
-        this.messageReceiver.setRole(this);
-        actor.addRole(this);
-    }
-
-    /**
-     * Create a new Role with a default local event producer.
      * @param id String; the id of the role
      * @param actor Actor; the actor to which this role belongs
      * @param messageReceiver MessageReceiver; the message handler to use for processing the messages
      */
     public Role(final String id, final Actor actor, final MessageReceiver messageReceiver)
     {
-        this(id, actor, messageReceiver, new LocalEventProducer());
+        Throw.whenNull(id, "id cannot be null");
+        Throw.whenNull(actor, "actor cannot be null");
+        Throw.whenNull(messageReceiver, "messageReceiver cannot be null");
+        this.id = id;
+        this.actor = actor;
+        this.messageReceiver = messageReceiver;
+        this.messageReceiver.setRole(this);
+        actor.addRole(this);
     }
 
     /**
@@ -117,13 +96,6 @@ public abstract class Role implements EventProducer, Identifiable, Serializable
         }
         this.messageReceiver.receiveMessage(message, (MessagePolicy<M>) this.messagePolicies.get(message.getClass()));
         return true;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public EventListenerMap getEventListenerMap() throws RemoteException
-    {
-        return this.eventProducer.getEventListenerMap();
     }
 
     /**

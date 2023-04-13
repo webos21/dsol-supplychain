@@ -5,6 +5,7 @@ import org.djutils.draw.point.OrientedPoint2d;
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
+import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStore;
 
 /**
  * TestActor reference implementaion to use in unit tests.
@@ -21,6 +22,6 @@ public class TestActor extends Actor
     public TestActor(final String id, final String name, final SupplyChainModelInterface model,
             final OrientedPoint2d location, final String locationDescription) throws ActorAlreadyDefinedException
     {
-        super(id, name, model, location, locationDescription);
+        super(id, name, model, location, locationDescription, null, null, new TradeMessageStore());
     }
 }

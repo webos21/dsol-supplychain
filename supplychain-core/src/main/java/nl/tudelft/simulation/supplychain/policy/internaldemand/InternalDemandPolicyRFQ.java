@@ -12,7 +12,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
@@ -51,14 +51,14 @@ public class InternalDemandPolicyRFQ extends InternalDemandPolicy
 
     /**
      * Constructs a new InternalDemandPolicyRFQ.
-     * @param owner SupplyChainRole; the owner of the internal demand
+     * @param owner Role; the owner of the internal demand
      * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
      * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the YP answer
      * @param cutoffDuration Duration; the maximum time after which the RFQ will stop collecting quotes
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicyRFQ(final SupplyChainRole owner, final TransportOptionProvider transportOptionProvider,
+    public InternalDemandPolicyRFQ(final Role owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
             final Duration cutoffDuration, final Inventory stock)
     {

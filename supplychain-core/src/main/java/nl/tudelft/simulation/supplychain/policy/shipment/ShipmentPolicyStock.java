@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -23,10 +23,10 @@ public class ShipmentPolicyStock extends ShipmentPolicy
 
     /**
      * Construct a new ShipmentHandlerStock handler.
-     * @param owner SupplyChainRole; the owner of the policy
+     * @param owner Role; the owner of the policy
      * @param stock the stock to use for storing the incoming cargo
      */
-    public ShipmentPolicyStock(final SupplyChainRole owner, final Inventory stock)
+    public ShipmentPolicyStock(final Role owner, final Inventory stock)
     {
         super("ShipmentPolicyStock", owner);
         this.stock = stock;

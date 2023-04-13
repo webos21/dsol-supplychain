@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
@@ -20,9 +20,9 @@ public abstract class ShipmentPolicy extends SupplyChainPolicy<Shipment>
     /**
      * Construct a new ShipmentPolicy.
      * @param id String; the id of the policy
-     * @param owner SupplyChainRole; the owner of the policy
+     * @param owner Role; the owner of the policy
      */
-    public ShipmentPolicy(final String id, final SupplyChainRole owner)
+    public ShipmentPolicy(final String id, final Role owner)
     {
         super(id, owner, Shipment.class);
     }

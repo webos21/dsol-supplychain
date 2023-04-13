@@ -7,7 +7,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
@@ -28,10 +28,10 @@ public class OrderPolicyMake extends OrderPolicy<Order>
 
     /**
      * Construct a new OrderHandler that makes the goods when ordered.
-     * @param owner SupplyChainRole; the owner of the policy
+     * @param owner Role; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
-    public OrderPolicyMake(final SupplyChainRole owner, final Inventory stock)
+    public OrderPolicyMake(final Role owner, final Inventory stock)
     {
         super("OrderPolicyMake", owner, stock, Order.class);
     }

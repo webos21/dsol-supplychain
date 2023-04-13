@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.policy.payment;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
@@ -23,10 +23,10 @@ public class PaymentPolicy extends SupplyChainPolicy<Payment>
 
     /**
      * Constructs a new PaymentHandler.
-     * @param owner SupplyChainRole; the owner of the policy.
+     * @param owner Role; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      */
-    public PaymentPolicy(final SupplyChainRole owner, final BankAccount bankAccount)
+    public PaymentPolicy(final Role owner, final BankAccount bankAccount)
     {
         super("PaymentPolicy", owner, Payment.class);
         this.bankAccount = bankAccount;

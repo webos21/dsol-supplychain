@@ -10,7 +10,7 @@ import java.util.Set;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.product.Product;
 
@@ -23,7 +23,7 @@ import nl.tudelft.simulation.supplychain.product.Product;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class YellowPageRole extends SupplyChainRole
+public class YellowPageRole extends Role
 {
     /** */
     private static final long serialVersionUID = 20221201L;

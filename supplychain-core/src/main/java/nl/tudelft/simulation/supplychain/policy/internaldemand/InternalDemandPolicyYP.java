@@ -4,7 +4,7 @@ import org.djunits.value.vdouble.scalar.Length;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.YellowPageRequest;
@@ -41,7 +41,7 @@ public class InternalDemandPolicyYP extends InternalDemandPolicy
      * @param maximumNumber the max number of suppliers to return
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicyYP(final SupplyChainRole owner, final DistContinuousDuration handlingTime,
+    public InternalDemandPolicyYP(final Role owner, final DistContinuousDuration handlingTime,
             final Actor yp, final Length maximumDistance, final int maximumNumber, final Inventory stock)
     {
         super("InternalDemandPolicyYP", owner, handlingTime, stock);

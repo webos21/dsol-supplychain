@@ -5,7 +5,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
@@ -42,13 +42,13 @@ public class RequestForQuotePolicy extends SupplyChainPolicy<RequestForQuote>
 
     /**
      * Construct a new RFQ handler.
-     * @param owner SupplyChainRole; the role belonging to this policy
+     * @param owner Role; the role belonging to this policy
      * @param inventory the stock to check for products when quoting
      * @param profitMargin double; the profit margin to use; 1.0 is no profit
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the RFQ
      * @param validityDuration Duration;
      */
-    public RequestForQuotePolicy(final SupplyChainRole owner, final Inventory inventory, final double profitMargin,
+    public RequestForQuotePolicy(final Role owner, final Inventory inventory, final double profitMargin,
             final DistContinuousDuration handlingTime, final Duration validityDuration)
     {
         super("RequestForQuotePolicy", owner, RequestForQuote.class);

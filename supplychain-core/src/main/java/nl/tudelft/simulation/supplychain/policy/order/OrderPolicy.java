@@ -6,7 +6,7 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
@@ -49,11 +49,11 @@ public abstract class OrderPolicy<O extends Order> extends SupplyChainPolicy<O>
     /**
      * Construct a new OrderHandler. The OrderHandler is abstract, so this constructor can not be called directly.
      * @param id String; the id of the policy
-     * @param owner SupplyChainRole; the owner of the policy
+     * @param owner Role; the owner of the policy
      * @param stock StockInterface; the stock to use to handle the incoming order
      * @param messageClass MessageClass; the specific order message class
      */
-    public OrderPolicy(final String id, final SupplyChainRole owner, final Inventory stock,
+    public OrderPolicy(final String id, final Role owner, final Inventory stock,
             final Class<O> messageClass)
     {
         super(id, owner, messageClass);

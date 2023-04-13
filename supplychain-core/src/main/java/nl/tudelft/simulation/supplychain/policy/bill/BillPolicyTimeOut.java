@@ -6,7 +6,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
@@ -39,7 +39,7 @@ public class BillPolicyTimeOut extends BillPolicy
      * @param paymentDelay the payment delay
      * @param maximumTimeOut the maximum time out for a bill
      */
-    public BillPolicyTimeOut(final SupplyChainRole owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
+    public BillPolicyTimeOut(final Role owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
             final DistContinuousDuration paymentDelay, final Duration maximumTimeOut)
     {
         super(owner, bankAccount, paymentPolicy, paymentDelay);
@@ -48,11 +48,11 @@ public class BillPolicyTimeOut extends BillPolicy
 
     /**
      * Constructs a new BillHandler that takes care of paying exactly on time.
-     * @param owner SupplyChainRole; the owner of the policy.
+     * @param owner Role; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      * @param maximumTimeOut the maximum time out for a bill
      */
-    public BillPolicyTimeOut(final SupplyChainRole owner, final BankAccount bankAccount, final Duration maximumTimeOut)
+    public BillPolicyTimeOut(final Role owner, final BankAccount bankAccount, final Duration maximumTimeOut)
     {
         this(owner, bankAccount, PaymentPolicyEnum.PAYMENT_ON_TIME, null, maximumTimeOut);
     }

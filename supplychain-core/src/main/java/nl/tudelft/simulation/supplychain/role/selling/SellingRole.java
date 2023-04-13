@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.selling;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 
 /**
@@ -14,7 +14,7 @@ import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public abstract class SellingRole extends SupplyChainRole
+public abstract class SellingRole extends Role
 {
     /** */
     private static final long serialVersionUID = 20221206L;

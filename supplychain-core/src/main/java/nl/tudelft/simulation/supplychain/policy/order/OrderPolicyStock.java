@@ -7,7 +7,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
@@ -30,10 +30,10 @@ public class OrderPolicyStock extends OrderPolicy<Order>
 
     /**
      * Construct a new OrderHandler that takes the goods from stock when ordered.
-     * @param owner SupplyChainRole; the owner of the policy
+     * @param owner Role; the owner of the policy
      * @param stock the stock to use to handle the incoming order
      */
-    public OrderPolicyStock(final SupplyChainRole owner, final Inventory stock)
+    public OrderPolicyStock(final Role owner, final Inventory stock)
     {
         super("OrderPolicyStock", owner, stock, Order.class);
     }

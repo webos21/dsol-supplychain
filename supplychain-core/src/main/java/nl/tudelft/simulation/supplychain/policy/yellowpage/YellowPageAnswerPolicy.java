@@ -9,7 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.RequestForQuote;
@@ -49,13 +49,13 @@ public class YellowPageAnswerPolicy extends SupplyChainPolicy<YellowPageAnswer>
 
     /**
      * Constructs a new YellowPageAnswerHandler.
-     * @param owner SupplyChainRole; the owner of the policy
+     * @param owner Role; the owner of the policy
      * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
      * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
      * @param handlingTime DistContinuousDuration; the distribution of the time to react on the YP answer
      * @param cutoffDuration Duration; the maximum time after which the RFQ will stop collecting quotes
      */
-    public YellowPageAnswerPolicy(final SupplyChainRole owner, final TransportOptionProvider transportOptionProvider,
+    public YellowPageAnswerPolicy(final Role owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
             final Duration cutoffDuration)
     {

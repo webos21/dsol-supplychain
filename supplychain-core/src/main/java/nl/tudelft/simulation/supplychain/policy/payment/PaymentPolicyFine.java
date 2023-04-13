@@ -4,7 +4,7 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Time;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
@@ -39,7 +39,7 @@ public class PaymentPolicyFine extends PaymentPolicy
      * @param fineMarginPerDay the fine margin per day
      * @param fixedFinePerDay the fixed fine per day
      */
-    public PaymentPolicyFine(final SupplyChainRole owner, final BankAccount bankAccount, final double fineMarginPerDay,
+    public PaymentPolicyFine(final Role owner, final BankAccount bankAccount, final double fineMarginPerDay,
             final Money fixedFinePerDay)
     {
         super(owner, bankAccount);

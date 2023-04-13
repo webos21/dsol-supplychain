@@ -7,7 +7,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
 
@@ -50,7 +50,7 @@ public abstract class QuotePolicy extends SupplyChainPolicy<Quote>
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
      */
-    public QuotePolicy(final String id, final SupplyChainRole owner, final QuoteComparatorEnum comparatorType,
+    public QuotePolicy(final String id, final Role owner, final QuoteComparatorEnum comparatorType,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
         super(id, owner, Quote.class);
@@ -63,13 +63,13 @@ public abstract class QuotePolicy extends SupplyChainPolicy<Quote>
     /**
      * Constructor of the QuoteHandler with a user defined comparator for quotes.
      * @param id String; the id of the policy
-     * @param owner SupplyChainRole; the role for this QuoteHandler.
+     * @param owner Role; the role for this QuoteHandler.
      * @param comparator the predefined sorting comparator type.
      * @param handlingTime the time to handle the quotes
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
      */
-    public QuotePolicy(final String id, final SupplyChainRole owner, final Comparator<Quote> comparator,
+    public QuotePolicy(final String id, final Role owner, final Comparator<Quote> comparator,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
         super(id, owner, Quote.class);

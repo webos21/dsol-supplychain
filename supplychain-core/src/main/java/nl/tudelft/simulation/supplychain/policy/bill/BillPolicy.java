@@ -9,7 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.dsol.SimRuntimeException;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.message.trade.Bill;
 import nl.tudelft.simulation.supplychain.message.trade.Payment;
@@ -42,12 +42,12 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
 
     /**
      * Constructs a new BillHandler with possibilities to pay early or late.
-     * @param owner SupplyChainRole; the owner of the policy.
+     * @param owner Role; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      * @param paymentPolicy the payment policy to use (early, late, etc.).
      * @param paymentDelay the delay to use in early or late payment
      */
-    public BillPolicy(final SupplyChainRole owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
+    public BillPolicy(final Role owner, final BankAccount bankAccount, final PaymentPolicyEnum paymentPolicy,
             final DistContinuousDuration paymentDelay)
     {
         super("BillPolicy", owner, Bill.class);
@@ -58,10 +58,10 @@ public class BillPolicy extends SupplyChainPolicy<Bill>
 
     /**
      * Constructs a new BillHandler that takes care of paying exactly on time.
-     * @param owner SupplyChainRole; the owner of the policy.
+     * @param owner Role; the owner of the policy.
      * @param bankAccount the bankaccount to use.
      */
-    public BillPolicy(final SupplyChainRole owner, final BankAccount bankAccount)
+    public BillPolicy(final Role owner, final BankAccount bankAccount)
     {
         this(owner, bankAccount, PaymentPolicyEnum.PAYMENT_ON_TIME, null);
     }

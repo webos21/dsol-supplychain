@@ -8,7 +8,7 @@ import org.djutils.draw.point.Point2d;
 import org.djutils.exceptions.Throw;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.trade.Quote;
 
@@ -35,7 +35,7 @@ public class QuoteComparator implements Comparator<Quote>, Serializable
      * @param owner the supply chain actor
      * @param comparatorType the type of comparator to use
      */
-    public QuoteComparator(final SupplyChainRole owner, final QuoteComparatorEnum comparatorType)
+    public QuoteComparator(final Role owner, final QuoteComparatorEnum comparatorType)
     {
         super();
         Throw.whenNull(owner, "owner cannot be null");

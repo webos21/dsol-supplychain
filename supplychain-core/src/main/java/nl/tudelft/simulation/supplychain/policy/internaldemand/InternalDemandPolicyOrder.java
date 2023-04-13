@@ -9,7 +9,7 @@ import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
@@ -46,13 +46,13 @@ public class InternalDemandPolicyOrder extends InternalDemandPolicy
 
     /**
      * Constructs a new InternalDemandPolicyOrder.
-     * @param owner SupplyChainRole; the owner of the internal demand
+     * @param owner Role; the owner of the internal demand
      * @param transportOptionProvider TransportOptionProvider; the provider of transport options betwween two locations
      * @param transportChoiceProvider TransportChoiceProvider; the provider to choose between transport options
      * @param handlingTime the handling time distribution
      * @param stock the stock for being able to change the ordered amount
      */
-    public InternalDemandPolicyOrder(final SupplyChainRole owner, final TransportOptionProvider transportOptionProvider,
+    public InternalDemandPolicyOrder(final Role owner, final TransportOptionProvider transportOptionProvider,
             final TransportChoiceProvider transportChoiceProvider, final DistContinuousDuration handlingTime,
             final Inventory stock)
     {

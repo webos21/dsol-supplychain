@@ -3,7 +3,7 @@ package nl.tudelft.simulation.supplychain.policy.orderconfirmation;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
@@ -29,9 +29,9 @@ public class OrderConfirmationPolicy extends SupplyChainPolicy<OrderConfirmation
 
     /**
      * Constructs a new OrderConfirmationHandler.
-     * @param owner SupplyChainRole; the owner of the policy.
+     * @param owner Role; the owner of the policy.
      */
-    public OrderConfirmationPolicy(final SupplyChainRole owner)
+    public OrderConfirmationPolicy(final Role owner)
     {
         super("OrderConfirmationPolicy", owner, OrderConfirmation.class);
     }

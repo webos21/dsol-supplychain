@@ -1,6 +1,6 @@
 package nl.tudelft.simulation.supplychain.policy.shipment;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
 
 /**
@@ -18,9 +18,9 @@ public class ShipmentPolicyConsume extends ShipmentPolicy
 
     /**
      * Construct a new ShipmentHandlerConsume handler.
-     * @param owner SupplyChainRole; the owner of the policy
+     * @param owner Role; the owner of the policy
      */
-    public ShipmentPolicyConsume(final SupplyChainRole owner)
+    public ShipmentPolicyConsume(final Role owner)
     {
         super("ShipmentPolicyConsume", owner);
     }

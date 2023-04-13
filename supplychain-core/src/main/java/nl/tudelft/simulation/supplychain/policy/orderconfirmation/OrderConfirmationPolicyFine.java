@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.message.trade.OrderConfirmation;
@@ -41,7 +41,7 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
      * @param fineMargin the margin
      * @param fixedFine the fixed fine
      */
-    public OrderConfirmationPolicyFine(final SupplyChainRole owner, final Duration maximumTimeOut, final double fineMargin,
+    public OrderConfirmationPolicyFine(final Role owner, final Duration maximumTimeOut, final double fineMargin,
             final Money fixedFine)
     {
         super(owner);

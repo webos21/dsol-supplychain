@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.policy.internaldemand;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.inventory.Inventory;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
 import nl.tudelft.simulation.supplychain.policy.SupplyChainPolicy;
@@ -31,11 +31,11 @@ public abstract class InternalDemandPolicy extends SupplyChainPolicy<InternalDem
     /**
      * Construct a new InternalDemandPolicy.
      * @param id String; the id of the policy
-     * @param owner the SupplyChainRole that has this policy.
+     * @param owner the Role that has this policy.
      * @param handlingTime the distribution of the time to handle an internal demand
      * @param inventory the inventory for being able to change the ordered amount
      */
-    public InternalDemandPolicy(final String id, final SupplyChainRole owner,
+    public InternalDemandPolicy(final String id, final Role owner,
             final DistContinuousDuration handlingTime, final Inventory inventory)
     {
         super(id, owner, InternalDemand.class);

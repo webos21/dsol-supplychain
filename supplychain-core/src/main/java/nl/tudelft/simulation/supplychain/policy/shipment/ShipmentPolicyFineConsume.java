@@ -4,7 +4,7 @@ import org.djunits.unit.DurationUnit;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.finance.MoneyUnit;
 import nl.tudelft.simulation.supplychain.message.trade.Shipment;
@@ -39,7 +39,7 @@ public class ShipmentPolicyFineConsume extends ShipmentPolicyConsume
      * @param fineMarginPerDay the fine margin per day
      * @param fixedFinePerDay the fixed fine per day
      */
-    public ShipmentPolicyFineConsume(final SupplyChainRole owner, final Duration maximumTimeOut, final double fineMarginPerDay,
+    public ShipmentPolicyFineConsume(final Role owner, final Duration maximumTimeOut, final double fineMarginPerDay,
             final Money fixedFinePerDay)
     {
         super(owner);

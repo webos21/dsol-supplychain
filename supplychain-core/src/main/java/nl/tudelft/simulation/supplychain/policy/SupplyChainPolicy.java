@@ -8,7 +8,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainSimulatorInterface;
 import nl.tudelft.simulation.supplychain.message.Message;
@@ -18,8 +18,8 @@ import nl.tudelft.simulation.supplychain.message.trade.TradeMessage;
 import nl.tudelft.simulation.supplychain.product.Product;
 
 /**
- * SupplyChainPolicy is the SupplyChainRole specific MessagePolicy class. It has a SupplyChainRole as owner, making it
- * unnecessary to cast the Role all the time to a SupplyChainRole. <br>
+ * SupplyChainPolicy is the Role specific MessagePolicy class. It has a Role as owner, making it
+ * unnecessary to cast the Role all the time to a Role. <br>
  * The abstract SupplyChainPolicy has the methods to check whether the content is of the right type, and methods to do basic
  * filtering on product and on the partner with whom the owner is dealing. This makes it very easy to have different policies
  * for e.g. production orders and for purchase orders; it can be done on the basis of the message sender (in case of production
@@ -46,10 +46,10 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
 
     /**
      * @param id String; the id of the policy
-     * @param owner SupplyChainRole; the owner of this policy
+     * @param owner Role; the owner of this policy
      * @param messageClass Class&lt;T&gt;; the message type that this policy can process
      */
-    public SupplyChainPolicy(final String id, final SupplyChainRole owner, final Class<T> messageClass)
+    public SupplyChainPolicy(final String id, final Role owner, final Class<T> messageClass)
     {
         super(id, owner, messageClass);
     }
@@ -129,9 +129,9 @@ public abstract class SupplyChainPolicy<T extends TradeMessage> extends MessageP
 
     /** {@inheritDoc} */
     @Override
-    public SupplyChainRole getRole()
+    public Role getRole()
     {
-        return (SupplyChainRole) super.getRole();
+        return (Role) super.getRole();
     }
 
     /**

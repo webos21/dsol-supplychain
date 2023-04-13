@@ -6,7 +6,7 @@ import java.util.List;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.SupplyChainRole;
+import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
 import nl.tudelft.simulation.supplychain.message.trade.Order;
 import nl.tudelft.simulation.supplychain.message.trade.OrderBasedOnQuote;
@@ -38,7 +38,7 @@ public class QuotePolicyAll extends QuotePolicy
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the margin within which the offered amount may differ from the requested amount.
      */
-    public QuotePolicyAll(final SupplyChainRole owner, final Comparator<Quote> comparator,
+    public QuotePolicyAll(final Role owner, final Comparator<Quote> comparator,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
         super("QuotePolicyAll", owner, comparator, handlingTime, maximumPriceMargin, minimumAmountMargin);
@@ -52,7 +52,7 @@ public class QuotePolicyAll extends QuotePolicy
      * @param maximumPriceMargin the maximum margin (e.g. 0.4 for 40 % above unitprice) above the unitprice of a product
      * @param minimumAmountMargin the minimal amount margin
      */
-    public QuotePolicyAll(final SupplyChainRole owner, final QuoteComparatorEnum comparatorType,
+    public QuotePolicyAll(final Role owner, final QuoteComparatorEnum comparatorType,
             final DistContinuousDuration handlingTime, final double maximumPriceMargin, final double minimumAmountMargin)
     {
         super("QuotePolicyAll", owner, comparatorType, handlingTime, maximumPriceMargin, minimumAmountMargin);

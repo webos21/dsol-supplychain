@@ -40,6 +40,12 @@ public interface Actor extends EventProducer, Locatable, Identifiable, Serializa
     ImmutableSet<Role> getRoles();
 
     /**
+     * Check whether the necessary roles are set before executing a role-dependent method.
+     * @throws IllegalStateException when some of the roles are not set
+     */
+    void checkNecessaryRoles();
+    
+    /**
      * Receive a message from another actor, and handle it (storing or handling, depending on the MessageReceiver). When the
      * message is not intended for this actor, a log warning is given, and the message is not processed.
      * @param message message; the message to receive

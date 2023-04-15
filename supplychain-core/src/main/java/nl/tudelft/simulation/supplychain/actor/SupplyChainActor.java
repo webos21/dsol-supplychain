@@ -146,6 +146,7 @@ public abstract class SupplyChainActor implements Actor
     @Override
     public void receiveMessage(final Message message)
     {
+        checkNecessaryRoles();
         if (!message.getReceiver().equals(this))
         {
             CategoryLogger.always().warn("Message " + message + " not meant for receiver " + toString());

@@ -1,7 +1,7 @@
 package nl.tudelft.simulation.supplychain.role.buying;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.Role;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 
 /**
@@ -22,11 +22,22 @@ public abstract class BuyingRole extends Role
     private static final long serialVersionUID = 20221206L;
 
     /**
-     * Create a BuyingRole object for an actor.
+     * Create a BuyingRole object for an actor with a default message receiver.
      * @param owner Actor; the owner of this role
      */
-    public BuyingRole(final Actor owner)
+    public BuyingRole(final BuyingActor owner)
     {
-        super("buying", owner, new MessageReceiverDirect());
+        this(owner, new MessageReceiverDirect());
     }
+
+    /**
+     * Create a BuyingRole object for an actor with a specific message receiver.
+     * @param owner Actor; the owner of this role
+     * @param messageReceiver MessageReceiver; the message receiver to use
+     */
+    public BuyingRole(final BuyingActor owner, final MessageReceiver messageReceiver)
+    {
+        super("buying", owner, messageReceiver);
+    }
+
 }

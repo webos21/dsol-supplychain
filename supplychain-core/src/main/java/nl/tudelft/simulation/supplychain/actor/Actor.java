@@ -5,7 +5,11 @@ import java.io.Serializable;
 import org.djunits.value.vdouble.scalar.Duration;
 import org.djunits.value.vdouble.scalar.Time;
 import org.djutils.base.Identifiable;
+import org.djutils.draw.Oriented;
+import org.djutils.draw.bounds.Bounds;
 import org.djutils.draw.bounds.Bounds3d;
+import org.djutils.draw.point.Point;
+import org.djutils.draw.point.Point3d;
 import org.djutils.event.EventProducer;
 import org.djutils.immutablecollections.ImmutableSet;
 
@@ -44,7 +48,7 @@ public interface Actor extends EventProducer, Locatable, Identifiable, Serializa
      * @throws IllegalStateException when some of the roles are not set
      */
     void checkNecessaryRoles();
-    
+
     /**
      * Receive a message from another actor, and handle it (storing or handling, depending on the MessageReceiver). When the
      * message is not intended for this actor, a log warning is given, and the message is not processed.
@@ -118,5 +122,38 @@ public interface Actor extends EventProducer, Locatable, Identifiable, Serializa
      * @param bounds the bounds for the (animation) object
      */
     void setBounds(final Bounds3d bounds);
+
+    /** {@inheritDoc} */
+    @Override
+    Point<?> getLocation();
+
+    /**
+     * Return the z-value of the location, or 0.0 when the location is in 2 dimensions, avoiding the RemoteException.
+     * @return double; the z-value of the location, or 0.0 when the location is in 2 dimensions, or when getLocation() returns
+     *         null
+     */
+    @Override
+    default double getZ()
+    {
+        Point<?> p = getLocation();
+        return p == null ? 0.0 : p instanceof Point3d ? ((Point3d) p).getZ() : 0.0;
+    }
+
+    /**
+     * Return the z-direction of the location in radians, or 0.0 when the location has no direction, , avoiding the
+     * RemoteException.
+     * @return double; the z-direction of the location in radians, or 0.0 when the location has no direction, or when
+     *         getLocation() returns null
+     */
+    @Override
+    default double getDirZ()
+    {
+        Point<?> p = getLocation();
+        return p == null ? 0.0 : p instanceof Oriented ? ((Oriented<?>) p).getDirZ() : 0.0;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    Bounds<?, ?, ?> getBounds();
 
 }

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.message.trade.ProductionOrder;
@@ -31,9 +30,9 @@ public abstract class ProducingRole extends Role
 
     /**
      * Create a ProducingRole object for an actor.
-     * @param owner Actor; the owner of this role
+     * @param owner ProducingActor; the owner of this role
      */
-    public ProducingRole(final Actor owner)
+    public ProducingRole(final ProducingActor owner)
     {
         super("producing", owner, new MessageReceiverDirect());
     }

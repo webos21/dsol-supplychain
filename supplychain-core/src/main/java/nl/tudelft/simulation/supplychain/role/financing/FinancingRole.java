@@ -3,17 +3,14 @@ package nl.tudelft.simulation.supplychain.role.financing;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.djunits.Throw;
 import org.djunits.value.vdouble.scalar.Duration;
-import org.djutils.event.EventProducer;
-import org.djutils.event.LocalEventProducer;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.finance.BankAccount;
 import nl.tudelft.simulation.supplychain.finance.FixedCost;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiver;
+import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 
 /**
  * The FinancingRole manages the bank account of an organization and can take care of paying bills and receiving money.
@@ -37,32 +34,26 @@ public class FinancingRole extends Role
     /**
      * Create a new FinancingRole with an attached BankAccount.
      * @param id String; the id of the role
-     * @param actor Actor; the actor to which this role belongs
+     * @param owner FinancingActor; the actor that has this role
      * @param messageReceiver MessageReceiver; the message handler to use for processing the messages
-     * @param eventProducer EventProducer; a special EventProducer to use, e.g., a RmiEventProducer
-     * @param bank Bank; the bank for the BankAccount
-     * @param initialBalance Money; the initial balance for the actor
+     * @param bankAccount BankAccount; the BankAccount
      */
-    public FinancingRole(final String id, final Actor actor, final MessageReceiver messageReceiver, final BankAccount bankAccount,
-            final EventProducer eventProducer)
+    public FinancingRole(final String id, final FinancingActor owner, final MessageReceiver messageReceiver,
+            final BankAccount bankAccount)
     {
-        super(id, actor, messageReceiver, eventProducer);
-        Throw.whenNull(bank, "bank cannot be null");
-        Throw.whenNull(initialBalance, "initialBalance cannot be null");
-        this.bankAccount = new BankAccount(this, bank, initialBalance);
+        super("financing", owner, messageReceiver);
+        this.bankAccount = bankAccount;
     }
 
     /**
      * Create a new FinancingRole with an attached BankAccount.
      * @param id String; the id of the role
-     * @param actor Actor; the actor to which this role belongs
-     * @param messageReceiver MessageReceiver; the message handler to use for processing the messages
-     * @param bank Bank; the bank for the BankAccount
-     * @param initialBalance Money; the initial balance for the actor
+     * @param owner FinancingActor; the actor that has this role
+     * @param bankAccount BankAccount; the BankAccount
      */
-    public FinancingRole(final String id, final Actor actor, final MessageReceiver messageReceiver, final BankAccount bankAccount)
+    public FinancingRole(final String id, final FinancingActor owner, final BankAccount bankAccount)
     {
-        this(id, actor, messageReceiver, bankAccount, new LocalEventProducer());
+        this(id, owner, new MessageReceiverDirect(), bankAccount);
     }
 
     /**

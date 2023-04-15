@@ -4,6 +4,7 @@ import java.util.List;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.yellowpage.YellowPageActor;
 
 /**
  * The YellowPageAnswer is the answer from a Yellow Page actor to a YellowPageRequest. It contains a list of actors that might
@@ -27,13 +28,13 @@ public class YellowPageAnswer extends TradeMessage
 
     /**
      * Constructs a new YellowPageAnswer.
-     * @param sender Actor; the sender of the yellow page answer
+     * @param sender YellowPageActor; the sender of the yellow page answer
      * @param receiver Actor; the receiver of the yellow page answer
      * @param internalDemandId the internal demand that triggered the yellow page process
      * @param suppliers the suppliers of the requested product
      * @param ypRequest the request that triggered this YP answer
      */
-    public YellowPageAnswer(final Actor sender, final Actor receiver, final long internalDemandId,
+    public YellowPageAnswer(final YellowPageActor sender, final Actor receiver, final long internalDemandId,
             final List<Actor> suppliers, final YellowPageRequest ypRequest)
     {
         super(sender, receiver, internalDemandId);
@@ -62,6 +63,13 @@ public class YellowPageAnswer extends TradeMessage
     public Product getProduct()
     {
         return this.ypRequest.getProduct();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public YellowPageActor getSender()
+    {
+        return (YellowPageActor) super.getSender();
     }
 
     /** {@inheritDoc} */

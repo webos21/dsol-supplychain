@@ -4,13 +4,12 @@ import org.djunits.Throw;
 import org.djutils.draw.point.OrientedPoint2d;
 
 import nl.tudelft.simulation.supplychain.actor.ActorAlreadyDefinedException;
-import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.actor.SupplyChainActor;
 import nl.tudelft.simulation.supplychain.dsol.SupplyChainModelInterface;
-import nl.tudelft.simulation.supplychain.finance.Bank;
-import nl.tudelft.simulation.supplychain.finance.Money;
-import nl.tudelft.simulation.supplychain.message.Message;
 import nl.tudelft.simulation.supplychain.message.store.trade.TradeMessageStoreInterface;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingActor;
 import nl.tudelft.simulation.supplychain.role.buying.BuyingRole;
+import nl.tudelft.simulation.supplychain.role.demand.DemandGeneratingActor;
 import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRole;
 
 /**
@@ -21,7 +20,7 @@ import nl.tudelft.simulation.supplychain.role.demand.DemandGenerationRole;
  * </p>
  * @author <a href="https://www.tudelft.nl/averbraeck">Alexander Verbraeck</a>
  */
-public class Customer extends Actor
+public class Customer extends SupplyChainActor implements BuyingActor, DemandGeneratingActor
 {
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
@@ -38,32 +37,25 @@ public class Customer extends Actor
      * @param model SupplyChainModelInterface; the model
      * @param location OrientedPoint2d; the location of the actor
      * @param locationDescription String; the location description of the actor (e.g., a city, country)
-     * @param bank Bank; the bank for the BankAccount
-     * @param initialBalance Money; the initial balance for the actor
      * @param messageStore TradeMessageStoreInterface; the message store for messages
      * @throws ActorAlreadyDefinedException when the actor was already registered in the model
      */
     @SuppressWarnings("checkstyle:parameternumber")
     public Customer(final String id, final String name, final SupplyChainModelInterface model, final OrientedPoint2d location,
-            final String locationDescription, final Bank bank, final Money initialBalance,
-            final TradeMessageStoreInterface messageStore) throws ActorAlreadyDefinedException
+            final String locationDescription, final TradeMessageStoreInterface messageStore) throws ActorAlreadyDefinedException
     {
-        super(id, name, model, location, locationDescription, bank, initialBalance, messageStore);
+        super(id, name, model, location, locationDescription, messageStore);
     }
 
-    /**
-     * Return the buying role.
-     * @return BuyingRole; the buying role
-     */
+    /** {@inheritDoc} */
+    @Override
     public BuyingRole getBuyingRole()
     {
         return this.buyingRole;
     }
 
-    /**
-     * Set the buying role.
-     * @param buyingRole BuyingRole; the new buying role
-     */
+    /** {@inheritDoc} */
+    @Override
     public void setBuyingRole(final BuyingRole buyingRole)
     {
         Throw.whenNull(buyingRole, "buyingRole cannot be null");
@@ -95,10 +87,9 @@ public class Customer extends Actor
 
     /** {@inheritDoc} */
     @Override
-    public void receiveMessage(final Message message)
+    public void checkNecessaryRoles()
     {
         Throw.whenNull(this.buyingRole, "BuyingRole not initialized for Customer: " + this.getName());
         Throw.whenNull(this.demandGenerationRole, "DemandGenerationRole not initialized for Customer: " + this.getName());
-        super.receiveMessage(message);
     }
 }

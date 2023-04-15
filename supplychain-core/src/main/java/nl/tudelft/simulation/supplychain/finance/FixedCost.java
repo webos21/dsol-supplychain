@@ -7,6 +7,7 @@ import org.djunits.value.vdouble.scalar.Duration;
 
 import nl.tudelft.simulation.dsol.formalisms.eventscheduling.SimEventInterface;
 import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.role.financing.FinancingActor;
 
 /**
  * When a supply chain actor is created, one or more FixedCost objects can be created to book fixed costs for e.g. personnel,
@@ -23,8 +24,8 @@ public class FixedCost implements Serializable
     /** the serial version uid. */
     private static final long serialVersionUID = 20221127L;
 
-    /** the supply chain actor. */
-    private Actor owner;
+    /** the supply chain actor with a FinancingRole. */
+    private FinancingActor owner;
 
     /** the description of the type of fixed cost. */
     private String description;
@@ -40,12 +41,12 @@ public class FixedCost implements Serializable
 
     /**
      * Create a Fixed cost item for an actor.
-     * @param owner Actor; the supply chain actor
+     * @param owner FinancingActor; the supply chain actor with a FinancingRole
      * @param description String; the description
      * @param interval Duration; the interval for booking fixed cost
      * @param amount double; the fixed cost per interval
      */
-    public FixedCost(final Actor owner, final String description, final Duration interval, final Money amount)
+    public FixedCost(final FinancingActor owner, final String description, final Duration interval, final Money amount)
     {
         Throw.whenNull(owner, "owner cannot be null");
         Throw.whenNull(description, "description cannot be null");
@@ -91,7 +92,7 @@ public class FixedCost implements Serializable
      */
     protected void bookFixedCost()
     {
-        this.owner.getBankAccount().withdrawFromBalance(this.amount);
+        this.owner.getFinancingRole().getBankAccount().withdrawFromBalance(this.amount);
         this.fixedAmountEvent = this.owner.getSimulator().scheduleEventRel(this.interval, this, "bookFixedCost", null);
     }
 

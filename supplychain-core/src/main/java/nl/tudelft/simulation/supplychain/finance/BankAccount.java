@@ -8,12 +8,13 @@ import org.djutils.event.LocalEventProducer;
 import org.djutils.metadata.MetaData;
 import org.djutils.metadata.ObjectDescriptor;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
+import nl.tudelft.simulation.supplychain.role.banking.BankingActor;
+import nl.tudelft.simulation.supplychain.role.financing.FinancingActor;
 
 /**
- * The BackAccount keeps track of the balance of a Actor. This simple implementation just has one number as the
- * account. No investments or loans are possible through this implementation. The BankAccount itself does not contain logic to
- * prevent it from going negative.
+ * The BackAccount keeps track of the balance of a Actor. This simple implementation just has one number as the account. No
+ * investments or loans are possible through this implementation. The BankAccount itself does not contain logic to prevent it
+ * from going negative.
  * <p>
  * Copyright (c) 2003-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
@@ -25,11 +26,11 @@ public class BankAccount extends LocalEventProducer
     /** the serial version uid. */
     private static final long serialVersionUID = 20221201L;
 
-    /** the owner of the bank account. */
-    private Actor owner;
+    /** the owner of the bank account, which has a FinancingRole. */
+    private FinancingActor owner;
 
-    /** the bank. */
-    private Bank bank;
+    /** the bank actor, which has a BankingRole. */
+    private BankingActor bank;
 
     /** the balance of the actor. */
     private Money balance;
@@ -40,11 +41,11 @@ public class BankAccount extends LocalEventProducer
 
     /**
      * Constructor for BankAccount.
-     * @param owner the owner of the bank account
-     * @param bank the bank where this account is located
-     * @param initialBalance the opening balance
+     * @param owner FinancingActor; the owner of the bank account, which has a FinancingRole
+     * @param bank BankingActor; the bank actor, , which has a BankingRole, where this account is located
+     * @param initialBalance Money; the opening balance
      */
-    public BankAccount(final Actor owner, final Bank bank, final Money initialBalance)
+    public BankAccount(final FinancingActor owner, final BankingActor bank, final Money initialBalance)
     {
         Throw.whenNull(owner, "owner cannot be null");
         Throw.whenNull(bank, "bank cannot be null");
@@ -112,11 +113,11 @@ public class BankAccount extends LocalEventProducer
     {
         if (this.balance.getAmount() < 0)
         {
-            addToBalance(this.balance.multiplyBy(this.bank.getAnnualInterestRateNeg() / 365.0));
+            addToBalance(this.balance.multiplyBy(this.bank.getBankingRole().getAnnualInterestRateNeg() / 365.0));
         }
         else
         {
-            addToBalance(this.balance.multiplyBy(this.bank.getAnnualInterestRatePos() / 365.0));
+            addToBalance(this.balance.multiplyBy(this.bank.getBankingRole().getAnnualInterestRatePos() / 365.0));
         }
         this.roundBalance();
         this.owner.getSimulator().scheduleEventRel(new Duration(1.0, DurationUnit.DAY), this, "interest", null);

@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import nl.tudelft.simulation.supplychain.actor.Actor;
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.product.Product;
@@ -36,9 +35,9 @@ public class YellowPageRole extends Role
 
     /**
      * Create a new YellowPage role.
-     * @param owner Actor; the actor that owns the YP role
+     * @param owner YellowPageActor; the actor that owns the YP role
      */
-    public YellowPageRole(final Actor owner)
+    public YellowPageRole(final YellowPageActor owner)
     {
         super("yp", owner, new MessageReceiverDirect());
     }

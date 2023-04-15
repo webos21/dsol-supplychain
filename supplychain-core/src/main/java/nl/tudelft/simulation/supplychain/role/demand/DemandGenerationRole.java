@@ -12,7 +12,6 @@ import org.pmw.tinylog.Logger;
 import nl.tudelft.simulation.jstats.distributions.DistContinuous;
 import nl.tudelft.simulation.jstats.distributions.DistDiscrete;
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.actor.Role;
 import nl.tudelft.simulation.supplychain.message.receiver.MessageReceiverDirect;
 import nl.tudelft.simulation.supplychain.message.trade.InternalDemand;
@@ -45,7 +44,7 @@ public class DemandGenerationRole extends Role
      * @param owner the actor that has this role
      * @param administrativeDelay the administrative delay when sending messages
      */
-    public DemandGenerationRole(final Actor owner, final DistContinuousDuration administrativeDelay)
+    public DemandGenerationRole(final DemandGeneratingActor owner, final DistContinuousDuration administrativeDelay)
     {
         super("demandGeneration", owner, new MessageReceiverDirect());
         this.administrativeDelay = administrativeDelay;
@@ -110,7 +109,7 @@ public class DemandGenerationRole extends Role
                 getSimulator().scheduleEventAbs(time, this, "createInternalDemand", args);
 
                 // we might collect some statistics for the internal demand
-                super.fireEvent(new TimedEvent<Time>(DemandGenerationRole.DEMAND_GENERATED_EVENT, id,
+                getActor().fireEvent(new TimedEvent<Time>(DemandGenerationRole.DEMAND_GENERATED_EVENT, id,
                         getSimulator().getAbsSimulatorTime()));
             }
             catch (Exception e)

@@ -2,9 +2,10 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingActor;
+import nl.tudelft.simulation.supplychain.role.selling.SellingActor;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
 
 /**
@@ -33,8 +34,8 @@ public class OrderStandalone extends Order
 
     /**
      * The constructor for the OrderStandAlone.
-     * @param sender Actor; the sender actor of the message content
-     * @param receiver Actor; the receving actor of the message content
+     * @param sender BuyingActor; the sender actor of the message content
+     * @param receiver SellingActor; the receving actor of the message content
      * @param internalDemand the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      * @param product Product; the ordered product
@@ -43,7 +44,7 @@ public class OrderStandalone extends Order
      * @param transportOption TransportOption; the accepted transport option
      */
     @SuppressWarnings("checkstyle:parameternumber")
-    public OrderStandalone(final Actor sender, final Actor receiver, final InternalDemand internalDemand,
+    public OrderStandalone(final BuyingActor sender, final SellingActor receiver, final InternalDemand internalDemand,
             final Time deliveryDate, final Product product, final double amount, final Money price,
             final TransportOption transportOption)
     {

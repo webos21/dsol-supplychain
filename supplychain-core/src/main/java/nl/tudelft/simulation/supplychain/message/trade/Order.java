@@ -2,9 +2,10 @@ package nl.tudelft.simulation.supplychain.message.trade;
 
 import org.djunits.value.vdouble.scalar.Time;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.finance.Money;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingActor;
+import nl.tudelft.simulation.supplychain.role.selling.SellingActor;
 import nl.tudelft.simulation.supplychain.transport.TransportOption;
 
 /**
@@ -33,13 +34,13 @@ public abstract class Order extends TradeMessage
 
     /**
      * Constructor for an order. This abstract constructor has to be called by every extending class.
-     * @param sender Actor; the sender actor of the message content
-     * @param receiver Actor; the receving actor of the message content
+     * @param sender BuyingActor; the sender actor of the message content
+     * @param receiver SellingActor; the receving actor of the message content
      * @param internalDemand the internal demand that triggered the order
      * @param deliveryDate the intended delivery date of the products
      * @param transportOption TransportOption; the accepted transport option
      */
-    public Order(final Actor sender, final Actor receiver, final InternalDemand internalDemand,
+    public Order(final BuyingActor sender, final SellingActor receiver, final InternalDemand internalDemand,
             final Time deliveryDate, final TransportOption transportOption)
     {
         super(sender, receiver, internalDemand.getInternalDemandId());
@@ -84,6 +85,20 @@ public abstract class Order extends TradeMessage
     public TransportOption getTransportOption()
     {
         return this.transportOption;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BuyingActor getSender()
+    {
+        return (BuyingActor) super.getSender();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SellingActor getReceiver()
+    {
+        return (SellingActor) super.getReceiver();
     }
 
     /** {@inheritDoc} */

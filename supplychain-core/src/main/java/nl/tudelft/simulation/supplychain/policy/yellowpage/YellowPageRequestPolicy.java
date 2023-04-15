@@ -8,7 +8,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.djunits.value.vdouble.scalar.Length;
-import org.djutils.draw.point.Point2d;
+import org.djutils.draw.point.Point;
 import org.pmw.tinylog.Logger;
 
 import nl.tudelft.simulation.jstats.distributions.unit.DistContinuousDuration;
@@ -80,7 +80,7 @@ public class YellowPageRequestPolicy extends SupplyChainPolicy<YellowPageRequest
      * @return a map of suppliers, sorted on distance
      */
     private SortedMap<Length, Actor> pruneDistance(final Set<Actor> supplierSet, final Length maxDistance,
-            final Point2d location)
+            final Point<?> location)
     {
         SortedMap<Length, Actor> sortedSuppliers = new TreeMap<>();
         for (Actor actor : sortedSuppliers.values())

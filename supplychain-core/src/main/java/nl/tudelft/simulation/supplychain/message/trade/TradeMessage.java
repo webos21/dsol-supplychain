@@ -64,20 +64,6 @@ public abstract class TradeMessage extends Message
 
     /** {@inheritDoc} */
     @Override
-    public Actor getSender()
-    {
-        return (Actor) super.getSender();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Actor getReceiver()
-    {
-        return (Actor) super.getReceiver();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public String toString()
     {
         return getClass().getSimpleName() + " from " + this.getSender().getName() + " to " + this.getReceiver().getName();

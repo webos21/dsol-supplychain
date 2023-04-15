@@ -1,7 +1,8 @@
 package nl.tudelft.simulation.supplychain.message.trade;
 
-import nl.tudelft.simulation.supplychain.actor.Actor;
 import nl.tudelft.simulation.supplychain.product.Product;
+import nl.tudelft.simulation.supplychain.role.buying.BuyingActor;
+import nl.tudelft.simulation.supplychain.role.selling.SellingActor;
 
 /**
  * The OrderConfirmation is the response when an Actor sends in an Order to another actor. The conformation can be positive or
@@ -36,13 +37,13 @@ public class OrderConfirmation extends TradeMessage
     private int status;
 
     /**
-     * @param sender Actor; the sender actor of the message content
-     * @param receiver Actor; the receving actor of the message content
+     * @param sender SellingActor; the sender actor of the message content
+     * @param receiver BuyingActor; the receving actor of the message content
      * @param internalDemandId the internal demand that triggered the order
      * @param order the order for which this is the confirmation
      * @param status the confirmation status (accepted, not accepted)
      */
-    public OrderConfirmation(final Actor sender, final Actor receiver, final long internalDemandId,
+    public OrderConfirmation(final SellingActor sender, final BuyingActor receiver, final long internalDemandId,
             final Order order, final int status)
     {
         super(sender, receiver, internalDemandId);
@@ -95,4 +96,19 @@ public class OrderConfirmation extends TradeMessage
     {
         return this.order.getProduct();
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SellingActor getSender()
+    {
+        return (SellingActor) super.getSender();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BuyingActor getReceiver()
+    {
+        return (BuyingActor) super.getReceiver();
+    }
+
 }

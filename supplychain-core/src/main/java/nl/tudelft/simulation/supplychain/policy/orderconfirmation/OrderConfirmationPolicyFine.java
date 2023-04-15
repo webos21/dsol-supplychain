@@ -104,8 +104,8 @@ public class OrderConfirmationPolicyFine extends OrderConfirmationPolicy
             sendMessage(bill, Duration.ZERO);
             */
 
-            orderConfirmation.getSender().getBankAccount().withdrawFromBalance(fine);
-            orderConfirmation.getReceiver().getBankAccount().addToBalance(fine);
+            orderConfirmation.getSender().getFinancingRole().getBankAccount().withdrawFromBalance(fine);
+            orderConfirmation.getReceiver().getFinancingRole().getBankAccount().addToBalance(fine);
         }
     }
 }

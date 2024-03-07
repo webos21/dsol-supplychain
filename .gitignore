@@ -25,6 +25,7 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 /.apt_generated/
 /.apt_generated_tests/
+.flattened-pom.xml
 
 ##############################
 ## Gradle
@@ -53,6 +54,8 @@ bin/
 tmp/
 .metadata
 .classpath
+.project
+.settings/
 *.tmp
 *.bak
 *.swp
@@ -81,3 +84,4 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
+

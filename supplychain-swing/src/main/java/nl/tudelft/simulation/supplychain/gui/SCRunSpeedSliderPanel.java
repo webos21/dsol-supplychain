@@ -18,7 +18,7 @@ import nl.tudelft.simulation.dsol.simulators.DevsRealTimeAnimator;
 import nl.tudelft.simulation.dsol.simulators.DevsSimulatorInterface;
 
 /**
- * SCRunSpeedSliderPanel to replace RunSpeedSliderPanel because its !@#$%^&() constructor is not visible.
+ * SCRunSpeedSliderPanel to replace RunSpeedSliderPanel because its constructor is not visible.
  * <p>
  * Copyright (c) 2022-2023 Delft University of Technology, Delft, the Netherlands. All rights reserved. <br>
  * The supply chain Java library uses a BSD-3 style license.
